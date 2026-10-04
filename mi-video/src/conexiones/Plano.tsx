@@ -60,15 +60,40 @@ const NombreCalle: React.FC<{
   </text>
 );
 
+export type Resaltes = Partial<Record<"izquierda" | "derecha" | "v0" | "v1" | "final", number>>;
+
+/** Trazo lima que ilumina una calle cuando se nombra. */
+const Resalte: React.FC<{ readonly x1: number; readonly y1: number; readonly x2: number; readonly y2: number; readonly p?: number }> = ({
+  x1,
+  y1,
+  x2,
+  y2,
+  p = 0,
+}) =>
+  p > 0 ? (
+    <line
+      x1={x1}
+      y1={y1}
+      x2={x1 + (x2 - x1) * p}
+      y2={y1 + (y2 - y1) * p}
+      stroke={COLOR.lima}
+      strokeWidth={ANCHO_CALLE + 16}
+      strokeOpacity={0.55}
+      strokeLinecap="round"
+    />
+  ) : null;
+
 /**
  * Esquema de un tramo de calle cortado por una parcela.
  * Calle izquierda y derecha alineadas; en medio, el obstáculo (rosa).
- * Opcionalmente, dos calles verticales que delimitan el obstáculo.
+ * Opcional: dos calles verticales que delimitan el obstáculo y una calle final
+ * perpendicular al extremo derecho (p. ej. San Pedro de Alcántara).
  */
 export const PlanoTramo: React.FC<{
   readonly izquierda: string;
   readonly derecha: string;
   readonly verticales?: readonly [string, string];
+  readonly final?: string;
   readonly obstaculo: string;
   /** x inicial y final del hueco ocupado por el obstáculo. */
   readonly hueco: readonly [number, number];
@@ -78,10 +103,33 @@ export const PlanoTramo: React.FC<{
   readonly demolicion?: number;
   readonly conexion?: number;
   readonly obra?: boolean;
-}> = ({ izquierda, derecha, verticales, obstaculo, hueco, calles, bloque, demolicion = 0, conexion = 0, obra = false }) => {
+  readonly resaltes?: Resaltes;
+  /** 0→1: un punto recorre la nueva conexión de izquierda a derecha (y la calle final). */
+  readonly recorrido?: number;
+}> = ({
+  izquierda,
+  derecha,
+  verticales,
+  final,
+  obstaculo,
+  hueco,
+  calles,
+  bloque,
+  demolicion = 0,
+  conexion = 0,
+  obra = false,
+  resaltes = {},
+  recorrido = 0,
+}) => {
   const [a, b] = hueco;
+  const XF = 880;
+  const finDerecha = final ? XF : 1000;
   const nombres = interpolate(calles, [0.6, 1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const piezas = [0, 1, 2, 3, 4, 5];
+  // Recorrido: de x=40 a XF por la calle y luego hacia arriba por la calle final
+  const tramoH = (finDerecha - 40) / (finDerecha - 40 + (final ? 320 : 0));
+  const rx = recorrido <= tramoH ? 40 + (finDerecha - 40) * (recorrido / tramoH) : finDerecha;
+  const ry = recorrido <= tramoH ? Y : Y - 320 * ((recorrido - tramoH) / (1 - tramoH));
   return (
     <svg viewBox="0 0 1000 800" width="100%" height="100%">
       <defs>
@@ -93,24 +141,33 @@ export const PlanoTramo: React.FC<{
       {/* Manzanas */}
       {[
         [20, 40, a - 60, 300],
-        [b + 40, 40, 980 - b - 40, 300],
+        [b + 40, 40, finDerecha - b - 80, 300],
         [20, 470, a - 60, 290],
-        [b + 40, 470, 980 - b - 40, 290],
+        [b + 40, 470, finDerecha - b - 80, 290],
         [a + 40, 40, b - a - 80, 290],
         [a + 40, 480, b - a - 80, 280],
+        ...(final ? [[XF + 40, 40, 80, 720]] : []),
       ].map(([x, y, w, h], i) => (
         <rect key={i} x={x} y={y} width={w} height={h} rx={14} fill={MANZANA} opacity={calles} />
       ))}
 
+      {/* Resaltes (bajo el asfalto) */}
+      <Resalte x1={0} y1={Y} x2={a} y2={Y} p={resaltes.izquierda} />
+      <Resalte x1={b} y1={Y} x2={finDerecha} y2={Y} p={resaltes.derecha} />
+      {verticales ? <Resalte x1={a} y1={0} x2={a} y2={800} p={resaltes.v0} /> : null}
+      {verticales ? <Resalte x1={b} y1={0} x2={b} y2={800} p={resaltes.v1} /> : null}
+      {final ? <Resalte x1={XF} y1={800} x2={XF} y2={0} p={resaltes.final} /> : null}
+
       {/* Calles */}
       <Calle x1={0} y1={Y} x2={a} y2={Y} progreso={calles} />
-      <Calle x1={1000} y1={Y} x2={b} y2={Y} progreso={calles} />
+      <Calle x1={finDerecha} y1={Y} x2={b} y2={Y} progreso={calles} />
       {verticales ? (
         <>
           <Calle x1={a} y1={0} x2={a} y2={800} progreso={calles} discontinua={false} />
           <Calle x1={b} y1={800} x2={b} y2={0} progreso={calles} discontinua={false} />
         </>
       ) : null}
+      {final ? <Calle x1={XF} y1={800} x2={XF} y2={0} progreso={calles} /> : null}
 
       {/* Prolongación prevista (discontinua lima) */}
       <line
@@ -159,11 +216,19 @@ export const PlanoTramo: React.FC<{
         opacity={conexion > 0 ? 1 : 0}
       />
 
+      {/* Recorrido */}
+      {recorrido > 0 && recorrido < 1 ? (
+        <g>
+          <circle cx={rx} cy={ry} r={34} fill={COLOR.lima} opacity={0.3} />
+          <circle cx={rx} cy={ry} r={20} fill={COLOR.lima} stroke={COLOR.negro} strokeWidth={5} />
+        </g>
+      ) : null}
+
       {/* Nombres */}
       <NombreCalle x={a / 2} y={Y} opacidad={nombres}>
         {izquierda}
       </NombreCalle>
-      <NombreCalle x={(1000 + b) / 2} y={Y} opacidad={nombres}>
+      <NombreCalle x={(finDerecha + b) / 2} y={Y} opacidad={nombres}>
         {derecha}
       </NombreCalle>
       {verticales ? (
@@ -175,6 +240,11 @@ export const PlanoTramo: React.FC<{
             {verticales[1]}
           </NombreCalle>
         </>
+      ) : null}
+      {final ? (
+        <NombreCalle x={XF} y={620} vertical opacidad={nombres}>
+          {final}
+        </NombreCalle>
       ) : null}
       <text
         x={(a + b) / 2}
@@ -191,6 +261,16 @@ export const PlanoTramo: React.FC<{
     </svg>
   );
 };
+
+/** Movimiento de cámara sobre un esquema: zoom hacia un punto (coordenadas del plano 1000×800). */
+export const Camara: React.FC<{
+  readonly zoom: number;
+  readonly x: number;
+  readonly y: number;
+  readonly children: React.ReactNode;
+}> = ({ zoom, x, y, children }) => (
+  <div style={{ width: "100%", height: "100%", scale: zoom, transformOrigin: `${x / 10}% ${y / 8}%` }}>{children}</div>
+);
 
 /** Plano general esquemático con dos puntos numerados que parpadean. */
 export const PlanoGeneral: React.FC<{

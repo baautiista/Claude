@@ -92,41 +92,52 @@ export const ESCENAS: readonly EscenaGuion<EscenaId>[] = [
   },
 ];
 
-/** Momentos anclados a palabras del guion. */
-export const MOMENTOS: Record<
-  | "puntos"
-  | "fotosIntro"
-  | "viviendas"
-  | "rotuloObstaculo"
-  | "dosMeses"
-  | "demoler"
-  | "sello2"
-  | "metros"
-  | "euros"
-  | "dia15"
-  | "conexionColon"
-  | "granImpacto"
-  | "papel"
-  | "terreno"
-  | "fotoFinal",
-  Momento
-> = {
-  puntos: { escena: "intro", frase: 0, palabra: "puntos" },
-  fotosIntro: { escena: "intro", frase: 0, palabra: "desbloquear" },
-  viviendas: { escena: "filomenaProblema", frase: 1, palabra: "viviendas" },
-  rotuloObstaculo: { escena: "filomenaProblema", frase: 2, palabra: "decisiva" },
-  dosMeses: { escena: "filomenaDemolicion", frase: 0, palabra: "plazo" },
-  demoler: { escena: "filomenaDemolicion", frase: 3, palabra: "desaparecido" },
-  sello2: { escena: "colonExpropiacion", frase: 0, palabra: "ocupación" },
-  metros: { escena: "colonExpropiacion", frase: 1, palabra: "83" },
-  euros: { escena: "colonExpropiacion", frase: 1, palabra: "31.800" },
-  dia15: { escena: "colonExpropiacion", frase: 2, palabra: "15" },
-  conexionColon: { escena: "colonExpropiacion", frase: 3, palabra: "desbloquearse" },
-  granImpacto: { escena: "conclusion", frase: 1, palabra: "importancia" },
-  papel: { escena: "conclusion", frase: 3, palabra: "papel" },
-  terreno: { escena: "conclusion", frase: 3, palabra: "convertirse" },
-  fotoFinal: { escena: "conclusion", frase: 3, palabra: "reales" },
-};
+/** Momentos anclados a palabras del guion (frase 0 = primera de la escena). */
+const m = (escena: EscenaId, frase: number, palabra?: string, mas?: number): Momento => ({ escena, frase, palabra, mas });
+
+export const MOMENTOS = {
+  // 1. Intro
+  puntos: m("intro", 0, "puntos"),
+  fotosIntro: m("intro", 0, "Ayuntamiento"),
+  zoomIntro: m("intro", 0, "conexiones"),
+  // 2. Santa Filomena: el problema
+  calleSantaFilomena: m("filomenaProblema", 1, "calle"),
+  giralda: m("filomenaProblema", 1, "Giralda"),
+  viviendas: m("filomenaProblema", 1, "viviendas"),
+  puntoRibot: m("filomenaProblema", 1, "Punto"),
+  calderon: m("filomenaProblema", 1, "Calderón"),
+  rotuloObstaculo: m("filomenaProblema", 2, "decisiva"),
+  // 3. Santa Filomena: la demolición
+  euros48: m("filomenaDemolicion", 0, "48.000"),
+  dosMeses: m("filomenaDemolicion", 0, "dos"),
+  planeamiento: m("filomenaDemolicion", 2, "planeamiento"),
+  expropiaciones: m("filomenaDemolicion", 2, "expropiaciones"),
+  despejando: m("filomenaDemolicion", 2, "despejando"),
+  finDeAnio: m("filomenaDemolicion", 3, "final"),
+  demoler: m("filomenaDemolicion", 3, "desaparecido"),
+  urbanizar: m("filomenaDemolicion", 4, "urbanizar"),
+  nuevoViario: m("filomenaDemolicion", 4, "nuevo"),
+  // 4. Calle Colón: el problema
+  esquemaColon: m("colonProblema", 1, "expediente"),
+  conectar: m("colonProblema", 1, "conectar"),
+  viales: m("colonProblema", 1, "viales"),
+  // 5. Calle Colón: la expropiación
+  sello1: m("colonExpropiacion", 0, "expropiación"),
+  sello2: m("colonExpropiacion", 0, "ocupación"),
+  metros: m("colonExpropiacion", 1, "83"),
+  euros: m("colonExpropiacion", 1, "31.800"),
+  dia15: m("colonExpropiacion", 2, "15"),
+  acta: m("colonExpropiacion", 2, "acta"),
+  ocupacion: m("colonExpropiacion", 3, "ocupación"),
+  conexionColon: m("colonExpropiacion", 3, "desbloquearse"),
+  // 6. Conclusión
+  tamano: m("conclusion", 0, "tamaño"),
+  granImpacto: m("conclusion", 1, "importancia"),
+  eliminando: m("conclusion", 2, "eliminando"),
+  continuidad: m("conclusion", 2, "continuidad"),
+  terreno: m("conclusion", 3, "empiecen,"),
+  fotoFinal: m("conclusion", 3, "convertirse"),
+} satisfies Record<string, Momento>;
 
 /** Datos de la noticia (cifras y fechas que aparecen en pantalla). */
 export const DATOS = {
@@ -139,11 +150,13 @@ export const DATOS = {
 
 /** Fotos (opcionales: si no existen, se usan solo los esquemas). */
 export const FOTOS = {
+  /** Santa Filomena / Calderón de la Barca (prolongación de Punto Ribot). */
   santaFilomena: "conexiones/santa-filomena.jpg",
-  santaFilomenaCalle: "conexiones/santa-filomena-calle.jpg",
+  santaFilomenaSatelite: "conexiones/santa-filomena-satelite.jpg",
+  puntoRibotAntesDespues: "conexiones/punto-ribot-antes-despues.jpg",
+  /** Calle Colón, 92 (conexión con Urb. Doña Curra y San Pedro de Alcántara). */
   colon: "conexiones/colon-92.jpg",
-  colonSatelite: "conexiones/colon-92-satelite.jpg",
-  antesDespues: "conexiones/antes-despues.jpg",
+  colonCalle: "conexiones/colon-92-calle.jpg",
 } as const;
 
 /** Palabras que deben leerse de otra forma en la locución (solo afecta al audio). */

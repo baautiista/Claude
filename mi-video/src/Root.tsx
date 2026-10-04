@@ -23,7 +23,7 @@ export const RemotionRoot: React.FC = () => {
           width={1080}
           height={1920}
         />
-        <Still id="Miniatura" component={MiniaturaConexiones} width={1280} height={720} />
+        <Still id="Miniatura" component={MiniaturaConexiones} width={1080} height={1920} />
       </Folder>
       <Folder name="La-Linea">
         <Composition

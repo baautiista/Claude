@@ -19,6 +19,7 @@ Actúa como director creativo, diseñador audiovisual y editor de vídeo de **In
 ## Formato
 
 - Vertical 9:16, **1080 × 1920**, 30 fps. Para TikTok, Reels y Shorts.
+- **Miniaturas también verticales 1080 × 1920** (composición Still). El texto principal en la franja central 3:4, que es la que muestran las cuadrículas de perfil.
 - Zonas importantes lejos de bordes e interfaces de las apps (referencia: ≥200 px arriba, ≥380 px abajo, ≥80 px laterales; el lateral derecho inferior lo ocupan los botones).
 
 ## Tipografía y rótulos
@@ -96,5 +97,7 @@ Antes de crear nada, analizar qué recursos visuales explican de verdad la histo
 - All Round Gothic es comercial: se carga si existen `public/fonts/AllRoundGothic-Demi.woff2` / `AllRoundGothic-Bold.woff2`.
 - Fuentes locales en `mi-video/public/fonts/` (este entorno bloquea Google Fonts).
 - Renderizar en este entorno con `--browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell` (la descarga de Chrome de Remotion está bloqueada).
-- Locución con ElevenLabs: `npm run locucion` (requiere `ELEVENLABS_API_KEY` y acceso de red a `api.elevenlabs.io`).
+- Cada vídeo vive en su carpeta: `src/<vídeo>/` (config.ts con guion, tiempos y MOMENTOS anclados a palabras) y `public/<vídeo>/` (fotos, locucion.mp3, musica.mp3). Motor de tiempos compartido en `src/marca/guion.ts`; piezas reutilizables en `src/marca/` (Titular, Tramo, TarjetaDato, Contador, Foto, AntesDespues, Sello, Calendario, LineaPasos, BandaObra, Firma, Subtitulos).
+- Ritmo: un corte o elemento nuevo anclado a palabras de la locución cada 2–3 s; las calles o datos se iluminan cuando se nombran.
+- Locución con ElevenLabs: `npm run locucion -- <vídeo>` (requiere `ELEVENLABS_API_KEY` y acceso de red a `api.elevenlabs.io`).
 - `OrigenNombreLaLinea` se hizo antes de definir este sistema (estética sepia/dorada): no usarlo como referencia de estilo.

@@ -11,13 +11,17 @@ export const LineaPasos: React.FC<{
   readonly actual: number;
   readonly desde: number;
   readonly avance?: number;
-}> = ({ pasos, actual, desde, avance = 9 }) => {
+  /** Si se indica, controla directamente el avance (0 = primer paso, 1 = segundo…). */
+  readonly progreso?: number;
+}> = ({ pasos, actual, desde, avance = 9, progreso: externo }) => {
   const frame = useCurrentFrame();
   const ALTO = 112;
-  const progreso = interpolate(frame, [desde, desde + avance * actual + 10], [0, actual], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const progreso =
+    externo ??
+    interpolate(frame, [desde, desde + avance * actual + 10], [0, actual], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    });
   return (
     <div style={{ position: "relative", paddingLeft: 10 }}>
       <div
@@ -45,7 +49,7 @@ export const LineaPasos: React.FC<{
       {pasos.map((paso, i) => {
         const visible = suave(frame, desde + i * 5, 10);
         const hecho = progreso >= i - 0.05;
-        const esActual = i === actual && progreso >= actual - 0.05;
+        const esActual = Math.round(progreso) === i && progreso >= i - 0.05 && i <= actual;
         return (
           <div
             key={paso}
