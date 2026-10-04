@@ -1,4 +1,8 @@
-import { Composition, Folder } from "remotion";
+import { Composition, Folder, Still } from "remotion";
+import { duracionTotal } from "./lalinea/tiempos";
+import { FPS } from "./lalinea/config";
+import { Miniatura } from "./lalinea/Miniatura";
+import { OrigenNombreLaLinea } from "./lalinea/OrigenNombreLaLinea";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
@@ -7,6 +11,22 @@ import { TitleScene } from "./TitleScene";
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Folder name="La-Linea">
+        <Composition
+          id="OrigenNombreLaLinea"
+          component={OrigenNombreLaLinea}
+          durationInFrames={duracionTotal()}
+          fps={FPS}
+          width={1080}
+          height={1920}
+        />
+        <Still
+          id="Miniatura"
+          component={Miniatura}
+          width={1280}
+          height={720}
+        />
+      </Folder>
       <Folder name="Escenas">
         <Composition
           id="Intro"
