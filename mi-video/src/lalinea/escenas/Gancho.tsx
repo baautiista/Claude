@@ -9,14 +9,14 @@ import {
 import { MOMENTOS } from "../config";
 import { COLORES, FUENTES, ZONA_SEGURA } from "../estilo";
 import { EscenaBase, entrada, suave } from "../comun";
-import { aFrames, getEscena } from "../tiempos";
+import { frameEnEscena } from "../tiempos";
 
 const LINEA_MAPA = "M120 980 C260 930 360 1060 500 1000 C640 940 760 1060 960 990";
 
 export const Gancho: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
-  const tachar = aFrames(MOMENTOS.tacharLinea - getEscena("gancho").inicio);
+  const tachar = frameEnEscena(MOMENTOS.tacharLinea);
 
   const dibujo = suave(frame, 0.8 * fps, 1.4 * fps);
   const aspa1 = suave(frame, tachar, 0.3 * fps);

@@ -3,12 +3,12 @@ import { MOMENTOS } from "../config";
 import { COLORES, FUENTES, ZONA_SEGURA } from "../estilo";
 import { Capitulo, EscenaBase, entrada, suave } from "../comun";
 import { Fondo } from "../Fondo";
-import { aFrames, getEscena } from "../tiempos";
+import { frameEnEscena } from "../tiempos";
 
 export const Curiosidad: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const impacto = aFrames(MOMENTOS.impactoVictoria - getEscena("curiosidad").inicio);
+  const impacto = frameEnEscena(MOMENTOS.impactoVictoria);
 
   const golpe = entrada(frame, impacto, 0.5 * fps, 11);
   const desdeImpacto = frame - impacto;

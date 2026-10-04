@@ -6,6 +6,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { LINEA_DE_TIEMPO } from "./config";
+import { getEscena, segundoDe } from "./tiempos";
 import { COLORES, FUENTES, ZONA_SEGURA } from "./estilo";
 
 const ANCHO = 920;
@@ -15,9 +16,9 @@ const SEPARACION = ANCHO / LINEA_DE_TIEMPO.hitos.length;
 export const LineaDeTiempo: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
-  // Segundos absolutos del vídeo (la secuencia empieza en LINEA_DE_TIEMPO.inicio)
-  const t = LINEA_DE_TIEMPO.inicio + frame / fps;
-  const tiempos = LINEA_DE_TIEMPO.hitos.map((h) => h.en);
+  // Segundos absolutos del vídeo (la secuencia empieza con la escena `desde`)
+  const t = getEscena(LINEA_DE_TIEMPO.desde).inicio + frame / fps;
+  const tiempos = LINEA_DE_TIEMPO.hitos.map(segundoDe);
   const posiciones = LINEA_DE_TIEMPO.hitos.map(
     (_, i) => SEPARACION / 2 + i * SEPARACION,
   );
@@ -69,7 +70,7 @@ export const LineaDeTiempo: React.FC = () => {
           }}
         />
         {LINEA_DE_TIEMPO.hitos.map((hito, i) => {
-          const activo = interpolate(t, [hito.en - 0.1, hito.en + 0.4], [0, 1], {
+          const activo = interpolate(t, [tiempos[i] - 0.1, tiempos[i] + 0.4], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
             easing: Easing.spring({ damping: 12 }),

@@ -3,12 +3,16 @@
  * ======================================================
  * Todos los tiempos están en SEGUNDOS desde el inicio del vídeo.
  *
- * Cuando grabes la locución (public/locucion.mp3), ajusta aquí:
+ * Si generas la locución con ElevenLabs (`npm run locucion`), los tiempos
+ * se calculan solos a partir del audio y lo de abajo se ignora.
+ *
+ * Si grabas tú la locución (public/locucion.mp3), ajusta aquí:
  *  - `inicio` y `fin` de cada escena.
  *  - Opcional: el `inicio` de cada frase, para que los subtítulos y las
  *    animaciones caigan justo cuando la dices. Si una frase no tiene
  *    `inicio`, se reparte automáticamente según su longitud.
- *  - Los momentos (`en`) de los hitos de la línea de tiempo.
+ *  - Los efectos (MOMENTOS) y los hitos van anclados a palabras del guion,
+ *    así que se mueven solos con las frases.
  *
  * La duración total del vídeo es el `fin` de la última escena.
  */
@@ -100,28 +104,70 @@ export const ESCENAS: readonly Escena[] = [
   },
 ];
 
-/** Línea de tiempo inferior (visible durante las escenas 2–4). */
-export const LINEA_DE_TIEMPO = {
-  inicio: 6,
-  fin: 42,
-  hitos: [
-    { texto: "Línea de Gibraltar", en: 17.8 },
-    { texto: "1870", en: 20.5 },
-    { texto: "Municipio independiente", en: 23 },
-    { texto: "La Línea de la Concepción", en: 36 },
-  ],
-} as const;
+/**
+ * Un "momento" se ancla a una palabra del guion, así se mantiene sincronizado
+ * aunque cambien los tiempos de la locución.
+ *  - escena / frase: qué frase (la primera frase es 0).
+ *  - palabra: palabra de esa frase (sin importar mayúsculas ni signos).
+ *    Si no se indica, se usa el inicio de la frase.
+ *  - mas: segundos a sumar (o restar, si es negativo).
+ */
+export type Momento = {
+  readonly escena: EscenaId;
+  readonly frase: number;
+  readonly palabra?: string;
+  readonly mas?: number;
+};
 
-/** Momentos concretos (segundos) para sincronizar efectos con palabras clave. */
-export const MOMENTOS = {
-  /** Escena 1: se tacha la línea del mapa ("no tiene nada que ver…"). */
-  tacharLinea: 4.4,
+/** Línea de tiempo inferior (visible durante las escenas 2–4). */
+export const LINEA_DE_TIEMPO: {
+  readonly desde: EscenaId;
+  readonly hasta: EscenaId;
+  readonly hitos: readonly (Momento & { readonly texto: string })[];
+} = {
+  desde: "origen",
+  hasta: "nombre",
+  hitos: [
+    { texto: "Línea de Gibraltar", escena: "origen", frase: 2, palabra: "Línea" },
+    { texto: "1870", escena: "anio1870", frase: 0, palabra: "1870" },
+    { texto: "Municipio independiente", escena: "anio1870", frase: 0, palabra: "separarse" },
+    { texto: "La Línea de la Concepción", escena: "nombre", frase: 1, palabra: "Concepción", mas: 0.4 },
+  ],
+};
+
+/** Momentos concretos para sincronizar efectos con palabras clave. */
+export const MOMENTOS: Record<
+  "tacharLinea" | "rotuloLineaDeGibraltar" | "escrituraNombre" | "selloAprobado" | "impactoVictoria",
+  Momento
+> = {
+  /** Escena 1: se tacha la línea del mapa. */
+  tacharLinea: { escena: "gancho", frase: 1, palabra: "nada" },
   /** Escena 2: aparece el rótulo "Línea de Gibraltar". */
-  rotuloLineaDeGibraltar: 17.8,
+  rotuloLineaDeGibraltar: { escena: "origen", frase: 2, palabra: "Línea" },
+  /** Escena 4: empieza a escribirse el nombre en el acta. */
+  escrituraNombre: { escena: "nombre", frase: 1, palabra: "Línea", mas: -0.2 },
   /** Escena 4: cae el sello "Aprobado por unanimidad". */
-  selloAprobado: 37,
+  selloAprobado: { escena: "nombre", frase: 1, palabra: "Concepción", mas: 0.5 },
   /** Escena 5: impacto de "La Línea de la Victoria". */
-  impactoVictoria: 47.6,
+  impactoVictoria: { escena: "curiosidad", frase: 1, palabra: "Victoria", mas: -0.1 },
+};
+
+/**
+ * Locución generada con ElevenLabs (npm run locucion).
+ * Las palabras que deben leerse de otra forma se sustituyen solo en el audio.
+ */
+export const ELEVENLABS = {
+  modelo: "eleven_multilingual_v2",
+  /** Cambia por el ID de la voz que elijas en ElevenLabs (o usa ELEVENLABS_VOICE_ID). */
+  vozPorDefecto: "JBFqnCBsd6RMkjVDRZzb",
+  ajustes: { stability: 0.5, similarity_boost: 0.75, style: 0.15, use_speaker_boost: true },
+  pronunciacion: {
+    "1870": "mil ochocientos setenta",
+    "20": "veinte",
+    "30": "treinta",
+  } as Record<string, string>,
+  /** Silencio (s) que se deja al final del vídeo tras la última frase. */
+  colaFinal: 1.2,
 } as const;
 
 /** Audio. Los archivos son opcionales: si no existen, el vídeo funciona sin ellos. */

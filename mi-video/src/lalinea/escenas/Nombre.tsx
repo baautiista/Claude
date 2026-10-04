@@ -3,16 +3,15 @@ import { MOMENTOS } from "../config";
 import { COLORES, FUENTES, ZONA_SEGURA } from "../estilo";
 import { Capitulo, EscenaBase, entrada, suave } from "../comun";
 import { Fondo } from "../Fondo";
-import { aFrames, beatsDeEscena, getEscena } from "../tiempos";
+import { beatsDeEscena, frameEnEscena } from "../tiempos";
 
 export const Nombre: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const [, aprobacion] = beatsDeEscena("nombre");
-  const sello = aFrames(MOMENTOS.selloAprobado - getEscena("nombre").inicio);
+  const escritura = frameEnEscena(MOMENTOS.escrituraNombre);
+  const sello = frameEnEscena(MOMENTOS.selloAprobado);
 
-  // La escritura empieza un poco después de "aprobaron por unanimidad el nombre de…"
-  const escritura = aprobacion + 1.0 * fps;
   const linea1 = suave(frame, escritura, 1.1 * fps);
   const linea2 = suave(frame, escritura + 1.0 * fps, 1.5 * fps);
   const golpe = entrada(frame, sello, 0.45 * fps, 14);

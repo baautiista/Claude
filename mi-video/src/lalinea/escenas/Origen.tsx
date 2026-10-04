@@ -12,7 +12,7 @@ import { Capitulo, EscenaBase, entrada, suave } from "../comun";
 import { Fondo } from "../Fondo";
 import { IconoFortificacion } from "../Iconos";
 import { Penon } from "../Penon";
-import { aFrames, beatsDeEscena, getEscena } from "../tiempos";
+import { beatsDeEscena, frameEnEscena } from "../tiempos";
 
 const FUERTES = [0, 1, 2, 3, 4, 5];
 
@@ -20,7 +20,7 @@ export const Origen: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const [, fortificaciones] = beatsDeEscena("origen");
-  const rotulo = aFrames(MOMENTOS.rotuloLineaDeGibraltar - getEscena("origen").inicio);
+  const rotulo = frameEnEscena(MOMENTOS.rotuloLineaDeGibraltar);
 
   const ilustracion = suave(frame, fortificaciones - 0.3 * fps, 0.8 * fps);
   const muralla = suave(frame, fortificaciones + 0.3 * fps, 2.4 * fps);

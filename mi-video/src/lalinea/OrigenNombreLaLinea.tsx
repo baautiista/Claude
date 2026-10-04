@@ -62,8 +62,10 @@ export const OrigenNombreLaLinea: React.FC = () => {
 
       <Sequence
         name="Línea de tiempo"
-        from={aFrames(LINEA_DE_TIEMPO.inicio)}
-        durationInFrames={aFrames(LINEA_DE_TIEMPO.fin - LINEA_DE_TIEMPO.inicio)}
+        from={aFrames(getEscena(LINEA_DE_TIEMPO.desde).inicio)}
+        durationInFrames={aFrames(
+          getEscena(LINEA_DE_TIEMPO.hasta).fin - getEscena(LINEA_DE_TIEMPO.desde).inicio,
+        )}
         premountFor={fps}
       >
         <LineaDeTiempo />

@@ -27,6 +27,9 @@
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "locucion": "node --env-file-if-exists=.env --experimental-strip-types --no-warnings scripts/generar-locucion.ts",
+    "render": "remotion render OrigenNombreLaLinea out/origen-nombre-la-linea.mp4",
+    "miniatura": "remotion still Miniatura out/miniatura.png"
   }
 }
