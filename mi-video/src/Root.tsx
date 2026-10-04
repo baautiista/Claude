@@ -5,6 +5,9 @@ import { Miniatura } from "./lalinea/Miniatura";
 import { OrigenNombreLaLinea } from "./lalinea/OrigenNombreLaLinea";
 import { ConexionesViariasLaLinea } from "./conexiones/ConexionesViariasLaLinea";
 import { MiniaturaConexiones } from "./conexiones/Miniatura";
+import { AntiguoHospitalLaLinea } from "./hospital/AntiguoHospitalLaLinea";
+import { MiniaturaHospital } from "./hospital/Miniatura";
+import { duracionTotal as duracionHospital } from "./hospital/tiempos";
 import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
@@ -14,6 +17,17 @@ import { TitleScene } from "./TitleScene";
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Folder name="Ciudad">
+        <Composition
+          id="AntiguoHospitalLaLinea"
+          component={AntiguoHospitalLaLinea}
+          durationInFrames={duracionHospital()}
+          fps={FPS}
+          width={1080}
+          height={1920}
+        />
+        <Still id="Miniatura" component={MiniaturaHospital} width={1080} height={1920} />
+      </Folder>
       <Folder name="Urbanismo">
         <Composition
           id="ConexionesViariasLaLinea"
@@ -23,7 +37,7 @@ export const RemotionRoot: React.FC = () => {
           width={1080}
           height={1920}
         />
-        <Still id="Miniatura" component={MiniaturaConexiones} width={1080} height={1920} />
+        <Still id="MiniaturaConexionesViariasLaLinea" component={MiniaturaConexiones} width={1080} height={1920} />
       </Folder>
       <Folder name="La-Linea">
         <Composition

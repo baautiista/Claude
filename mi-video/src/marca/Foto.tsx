@@ -1,6 +1,7 @@
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { suave } from "./animacion";
 import { COLOR, FUENTE, existe } from "./marca";
+import { Placeholder } from "./Placeholder";
 
 /**
  * Foto a pantalla completa con Ken Burns suave. Entra con un barrido del fondo azul.
@@ -47,9 +48,12 @@ export const TarjetaFoto: React.FC<{
   readonly etiqueta?: string;
   readonly enfoque?: string;
   readonly rotacion?: number;
-}> = ({ archivo, ancho, alto, desde, etiqueta, enfoque = "50% 50%", rotacion = 0 }) => {
+  /** Si el archivo no existe, muestra un placeholder con este nombre (si no, nada). */
+  readonly placeholder?: string;
+}> = ({ archivo, ancho, alto, desde, etiqueta, enfoque = "50% 50%", rotacion = 0, placeholder }) => {
   const frame = useCurrentFrame();
-  if (!existe(archivo)) return null;
+  const hay = existe(archivo);
+  if (!hay && !placeholder) return null;
   const p = suave(frame, desde, 14);
   return (
     <div
@@ -66,19 +70,23 @@ export const TarjetaFoto: React.FC<{
         scale: interpolate(p, [0, 1], [0.9, 1]),
       }}
     >
-      <Img
-        src={staticFile(archivo)}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: enfoque,
-          scale: interpolate(frame, [desde, desde + 300], [1.08, 1.0], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          }),
-        }}
-      />
+      {hay ? (
+        <Img
+          src={staticFile(archivo)}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: enfoque,
+            scale: interpolate(frame, [desde, desde + 300], [1.08, 1.0], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            }),
+          }}
+        />
+      ) : (
+        <Placeholder nombre={placeholder ?? ""} archivo={archivo.split("/").pop()} />
+      )}
       {etiqueta ? (
         <div
           style={{
