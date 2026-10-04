@@ -160,7 +160,9 @@ export const ELEVENLABS = {
   modelo: "eleven_multilingual_v2",
   /** Cambia por el ID de la voz que elijas en ElevenLabs (o usa ELEVENLABS_VOICE_ID). */
   vozPorDefecto: "syjZiIvIUSwKREBfMpKZ",
-  ajustes: { stability: 0.5, similarity_boost: 0.75, style: 0.15, use_speaker_boost: true },
+  ajustes: { stability: 0.5, similarity_boost: 0.75, style: 0.15, use_speaker_boost: true, speed: 1.12 },
+  /** Las pausas entre frases más largas que esto (s) se recortan a este valor. */
+  pausaMaxima: 0.35,
   pronunciacion: {
     "1870": "mil ochocientos setenta",
     "20": "veinte",

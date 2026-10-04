@@ -13,7 +13,9 @@
  *   src/lalinea/locucion-tiempos.json
  */
 import { execFileSync } from "node:child_process";
-import { writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { ELEVENLABS, ESCENAS } from "../src/lalinea/config.ts";
 
 type Alineacion = {
@@ -45,7 +47,7 @@ type Rango = { desde: number; hasta: number };
 const rangos: Record<string, { frase: Rango; palabras: Rango[] }[]> = {};
 let texto = "";
 for (const escena of ESCENAS) {
-  if (texto.length > 0) texto += "\n\n";
+  if (texto.length > 0) texto += " ";
   rangos[escena.id] = [];
   escena.frases.forEach((f, k) => {
     if (k > 0) texto += " ";
@@ -122,7 +124,9 @@ const medir = ({ desde, hasta }: Rango) => {
   return { inicio: ini[a] ?? 0, fin: fin[b] ?? 0 };
 };
 
-const tiempos: Record<string, unknown[]> = {};
+type Medida = { inicio: number; fin: number };
+type FraseMedida = Medida & { palabras: Medida[] };
+const tiempos: Record<string, FraseMedida[]> = {};
 for (const [id, frases] of Object.entries(rangos)) {
   tiempos[id] = frases.map(({ frase, palabras }) => ({
     ...medir(frase),
@@ -130,12 +134,66 @@ for (const [id, frases] of Object.entries(rangos)) {
   }));
 }
 
-writeFileSync("public/locucion.mp3", Buffer.from(datos.audio_base64, "base64"));
+/**
+ * Recorta las pausas largas entre frases (con el ffmpeg que incluye Remotion)
+ * y desplaza todos los tiempos en consecuencia.
+ */
+const todas = Object.values(tiempos).flat();
+const tramos: Medida[] = [];
+let desde = 0;
+for (let i = 0; i + 1 < todas.length; i++) {
+  const hueco = todas[i + 1].inicio - todas[i].fin;
+  if (hueco > ELEVENLABS.pausaMaxima) {
+    const corte = todas[i].fin + ELEVENLABS.pausaMaxima / 2;
+    tramos.push({ inicio: desde, fin: corte });
+    desde = todas[i + 1].inicio - ELEVENLABS.pausaMaxima / 2;
+  }
+}
+const finAudio = todas[todas.length - 1].fin + 0.3;
+tramos.push({ inicio: desde, fin: finAudio });
+
+const desplazar = (t: number) => {
+  let acumulado = 0;
+  for (const tramo of tramos) {
+    if (t <= tramo.fin) return acumulado + Math.max(0, t - tramo.inicio);
+    acumulado += tramo.fin - tramo.inicio;
+  }
+  return acumulado;
+};
+for (const frase of todas) {
+  frase.inicio = desplazar(frase.inicio);
+  frase.fin = desplazar(frase.fin);
+  for (const p of frase.palabras) {
+    p.inicio = desplazar(p.inicio);
+    p.fin = desplazar(p.fin);
+  }
+}
+
+const tmp = mkdtempSync(join(tmpdir(), "locucion-"));
+const original = join(tmp, "original.mp3");
+writeFileSync(original, Buffer.from(datos.audio_base64, "base64"));
+const filtro =
+  tramos
+    .map((t, i) => `[0:a]atrim=start=${t.inicio.toFixed(3)}:end=${t.fin.toFixed(3)},asetpts=PTS-STARTPTS[a${i}]`)
+    .join(";") +
+  ";" +
+  tramos.map((_, i) => `[a${i}]`).join("") +
+  `concat=n=${tramos.length}:v=0:a=1[out]`;
+const recortado = join(tmp, "recortado.mp3");
+execFileSync(
+  "npx",
+  ["remotion", "ffmpeg", "-y", "-loglevel", "error", "-i", original, "-filter_complex", filtro, "-map", "[out]", "-b:a", "192k", recortado],
+  { stdio: "inherit" },
+);
+
+writeFileSync("public/locucion.mp3", readFileSync(recortado));
 writeFileSync(
   "src/lalinea/locucion-tiempos.json",
   JSON.stringify({ voz, frases: tiempos }, null, 2) + "\n",
 );
 
-const duracion = fin[fin.length - 1] + ELEVENLABS.colaFinal;
+const duracionVoz = tramos.reduce((a, t) => a + t.fin - t.inicio, 0);
+console.log(`Pausas recortadas: ${tramos.length - 1}`);
+const duracion = duracionVoz + ELEVENLABS.colaFinal;
 console.log(`Listo: public/locucion.mp3 (${duracion.toFixed(1)} s con la cola final)`);
 console.log("Tiempos guardados en src/lalinea/locucion-tiempos.json");
