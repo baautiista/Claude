@@ -47,7 +47,7 @@ export const Miniatura: React.FC = () => {
         </div>
       </AbsoluteFill>
       <Img
-        src={staticFile("lalinea/logo.png")}
+        src={staticFile("marca/logo.png")}
         style={{ position: "absolute", left: 40, bottom: 34, width: 220 }}
       />
     </AbsoluteFill>

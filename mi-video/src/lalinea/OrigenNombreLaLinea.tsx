@@ -79,7 +79,7 @@ export const OrigenNombreLaLinea: React.FC = () => {
       >
         <Img
           name="Logo infolinense"
-          src={staticFile("lalinea/logo.png")}
+          src={staticFile("marca/logo.png")}
           style={{ width: 230, opacity: 0.85 }}
         />
       </AbsoluteFill>

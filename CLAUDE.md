@@ -10,7 +10,8 @@ Actúa como director creativo, diseñador audiovisual y editor de vídeo de **In
 ## Identidad visual
 
 - **Azul InfoLinense `#1F5EFF`**: identificador de marca, uso puntual (no cubrir toda la pantalla).
-- Secundarios: blanco, negro, gris muy claro, gris oscuro. Evitar más colores; en mapas o gráficos se permiten secundarios discretos, siempre con el azul como referencia.
+- Secundarios de marca: **lima `#C4E910`** y **rosa `#FF1254`**. Uso propuesto: lima para resaltar (palabra activa en subtítulos, subrayados, dato destacado); rosa para contraste o avisos (tachados, cifras negativas, "antes" en un antes/después). Siempre puntuales.
+- Neutros: blanco, negro, gris muy claro, gris oscuro. No añadir más colores; en mapas o gráficos se permiten tonos discretos, siempre con el azul como referencia.
 - Diseño limpio, editorial, contemporáneo, geométrico, minimalista, muy visual. Mucho espacio limpio. Prioridad: **imagen + dato + explicación** antes que bloques de texto.
 
 ## Formato
@@ -20,7 +21,11 @@ Actúa como director creativo, diseñador audiovisual y editor de vídeo de **In
 
 ## Tipografía y rótulos
 
-- Sans serif moderna, limpia y contundente. Titulares con mucha presencia, 2–3 líneas máximo.
+- Tipografías de marca:
+  - **All Round Gothic**: datos y titulares (si no está el archivo, Poppins).
+  - **Poppins**: etiquetas de sección, rótulos y titulares secundarios.
+  - **Inter**: explicaciones, subtítulos e información secundaria.
+- Titulares con mucha presencia, 2–3 líneas máximo.
 - Jerarquía: 1) dato o palabra clave, 2) titular, 3) explicación, 4) información secundaria. Negrita para palabras concretas. Nada de párrafos.
 - Mensajes cortos: `3.019` / `viviendas previstas` en vez de una frase completa. Se entiende sin sonido.
 - **Etiqueta de sección** pequeña (caja azul o texto editorial): URBANISMO, CIUDAD, GIBRALTAR, CULTURA, HISTORIA, MOVILIDAD, DEPORTES, CURIOSIDADES.
@@ -63,7 +68,7 @@ Líneas temporales, barras, mapas, comparativas, cifras grandes, esquemas, antes
 
 ## Logo
 
-Isotipo IL discreto, sin competir con el contenido. Firma final sencilla "InfoLinense" + isotipo, 0,5–1 s.
+Isotipo IL discreto, sin competir con el contenido. Firma final sencilla "InfoLinense" + isotipo, 0,5–1 s. Archivos (blancos, fondo transparente): `mi-video/public/marca/isotipo.png` y `mi-video/public/marca/logo.png`.
 
 ## Entregable cuando se da un tema
 
@@ -85,6 +90,8 @@ Antes de crear nada, analizar qué recursos visuales explican de verdad la histo
 ## Notas técnicas del proyecto (`mi-video/`, Remotion)
 
 - Responder al usuario en español.
+- Tokens de marca (colores, fuentes, zona segura, logo) en `mi-video/src/marca/marca.ts`: importarlos siempre desde ahí, no redefinir colores en cada vídeo.
+- All Round Gothic es comercial: se carga si existen `public/fonts/AllRoundGothic-Demi.woff2` / `AllRoundGothic-Bold.woff2`.
 - Fuentes locales en `mi-video/public/fonts/` (este entorno bloquea Google Fonts).
 - Renderizar en este entorno con `--browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell` (la descarga de Chrome de Remotion está bloqueada).
 - Locución con ElevenLabs: `npm run locucion` (requiere `ELEVENLABS_API_KEY` y acceso de red a `api.elevenlabs.io`).
