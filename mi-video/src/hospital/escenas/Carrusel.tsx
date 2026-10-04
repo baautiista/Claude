@@ -10,7 +10,7 @@ import { frameEnEscena } from "../tiempos";
 export const Carrusel: React.FC = () => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const inicios = RENDERS.map((r) => frameEnEscena({ escena: "carrusel", frase: r.frase, palabra: r.palabra, mas: -0.15 }));
+  const inicios = RENDERS.map((_, i) => frameEnEscena({ escena: "carrusel", frase: i, mas: -0.1 }));
 
   return (
     <Escena fondo="azul">
@@ -61,8 +61,13 @@ export const Carrusel: React.FC = () => {
               >
                 {i + 1}
               </div>
-              <div style={{ fontFamily: FUENTE.display, fontWeight: 800, fontSize: 70, lineHeight: 1.0, letterSpacing: -2, color: COLOR.blanco }}>
-                {r.nombre}
+              <div>
+                <div style={{ fontFamily: FUENTE.display, fontWeight: 800, fontSize: 66, lineHeight: 1.0, letterSpacing: -2, color: COLOR.blanco }}>
+                  {r.nombre}
+                </div>
+                <div style={{ marginTop: 12, fontFamily: FUENTE.texto, fontWeight: 600, fontSize: 34, color: COLOR.lima, opacity: suave(frame, desde + 12, 10) }}>
+                  {r.detalle}
+                </div>
               </div>
             </div>
           </Tramo>

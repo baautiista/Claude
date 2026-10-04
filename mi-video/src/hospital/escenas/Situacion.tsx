@@ -7,7 +7,7 @@ import { DATOS, MOMENTOS } from "../config";
 import { Candado, IconoAyuntamiento, IconoJunta, IconoSeguridadSocial } from "../graficos";
 import { frameEnEscena } from "../tiempos";
 
-const CENTRO = { x: 540, y: 900 };
+const CENTRO = { x: 540, y: 880 };
 
 const Institucion: React.FC<{ readonly x: number; readonly y: number; readonly nombre: string; readonly icono: React.ReactNode; readonly desde: number }> = ({
   x,
@@ -72,6 +72,23 @@ export const Situacion: React.FC = () => {
       ))}
       <div style={{ position: "absolute", left: CENTRO.x - 80, top: CENTRO.y - 110, translate: `${vibra}px 0px`, scale: 0.6 + entrada(frame, 6, 14) * 0.4 }}>
         <Candado size={160} apertura={intento} />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: CENTRO.y + 70,
+          left: CENTRO.x - 160,
+          width: 320,
+          textAlign: "center",
+          fontFamily: FUENTE.texto,
+          fontWeight: 700,
+          fontSize: 30,
+          lineHeight: 1.15,
+          color: COLOR.blanco,
+          opacity: suave(frame, 10, 10),
+        }}
+      >
+        Situación administrativa pendiente
       </div>
       <div
         style={{

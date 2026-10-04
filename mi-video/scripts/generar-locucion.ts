@@ -29,7 +29,10 @@ if (!proyecto || !existsSync(`src/${proyecto}/config.ts`)) {
 const config = (await import(`../src/${proyecto}/config.ts`)) as {
   ESCENAS: readonly { id: string; frases: readonly (string | { texto: string })[] }[];
   PRONUNCIACION?: Record<string, string>;
+  /** Pausa (s) que se deja entre frases de una misma escena (p. ej. un carrusel). */
+  PAUSAS_ENTRE_FRASES?: Record<string, number>;
 };
+const PAUSAS = config.PAUSAS_ENTRE_FRASES ?? {};
 const ESCENAS = config.ESCENAS;
 const PRONUNCIACION = config.PRONUNCIACION ?? {};
 
@@ -153,28 +156,43 @@ for (const [id, frases] of Object.entries(rangos)) {
 }
 
 /**
- * Recorta las pausas largas entre frases (con el ffmpeg que incluye Remotion)
- * y desplaza todos los tiempos en consecuencia.
+ * Ajusta las pausas entre frases (con el ffmpeg que incluye Remotion):
+ * - las largas se recortan a `pausaMaxima`;
+ * - en las escenas de PAUSAS_ENTRE_FRASES se deja (o se añade) esa pausa.
+ * Después desplaza todos los tiempos en consecuencia.
  */
-const todas = Object.values(tiempos).flat();
-const tramos: Medida[] = [];
-let desde = 0;
-for (let i = 0; i + 1 < todas.length; i++) {
-  const hueco = todas[i + 1].inicio - todas[i].fin;
-  if (hueco > ELEVENLABS.pausaMaxima) {
-    const corte = todas[i].fin + ELEVENLABS.pausaMaxima / 2;
-    tramos.push({ inicio: desde, fin: corte });
-    desde = todas[i + 1].inicio - ELEVENLABS.pausaMaxima / 2;
+type Segmento = { tipo: "audio"; inicio: number; fin: number } | { tipo: "silencio"; dur: number };
+const conEscena = Object.entries(tiempos).flatMap(([id, fs]) => fs.map((f) => ({ id, f })));
+const todas = conEscena.map((x) => x.f);
+const segmentos: Segmento[] = [];
+let cursor = 0;
+for (let i = 0; i + 1 < conEscena.length; i++) {
+  const a = conEscena[i];
+  const b = conEscena[i + 1];
+  const objetivo = a.id === b.id && PAUSAS[a.id] ? PAUSAS[a.id] : ELEVENLABS.pausaMaxima;
+  const hueco = b.f.inicio - a.f.fin;
+  if (hueco > objetivo) {
+    segmentos.push({ tipo: "audio", inicio: cursor, fin: a.f.fin + objetivo / 2 });
+    cursor = b.f.inicio - objetivo / 2;
+  } else if (hueco < objetivo - 0.02) {
+    const medio = (a.f.fin + b.f.inicio) / 2;
+    segmentos.push({ tipo: "audio", inicio: cursor, fin: medio });
+    segmentos.push({ tipo: "silencio", dur: objetivo - hueco });
+    cursor = medio;
   }
 }
 const finAudio = todas[todas.length - 1].fin + 0.3;
-tramos.push({ inicio: desde, fin: finAudio });
+segmentos.push({ tipo: "audio", inicio: cursor, fin: finAudio });
 
 const desplazar = (t: number) => {
   let acumulado = 0;
-  for (const tramo of tramos) {
-    if (t <= tramo.fin) return acumulado + Math.max(0, t - tramo.inicio);
-    acumulado += tramo.fin - tramo.inicio;
+  for (const seg of segmentos) {
+    if (seg.tipo === "silencio") {
+      acumulado += seg.dur;
+      continue;
+    }
+    if (t <= seg.fin) return acumulado + Math.max(0, t - seg.inicio);
+    acumulado += seg.fin - seg.inicio;
   }
   return acumulado;
 };
@@ -191,16 +209,20 @@ const tmp = mkdtempSync(join(tmpdir(), "locucion-"));
 const original = join(tmp, "original.mp3");
 writeFileSync(original, Buffer.from(datos.audio_base64, "base64"));
 const filtro =
-  tramos
-    .map((t, i) => `[0:a]atrim=start=${t.inicio.toFixed(3)}:end=${t.fin.toFixed(3)},asetpts=PTS-STARTPTS[a${i}]`)
+  segmentos
+    .map((t, i) =>
+      t.tipo === "audio"
+        ? `[0:a]atrim=start=${t.inicio.toFixed(3)}:end=${t.fin.toFixed(3)},asetpts=PTS-STARTPTS[a${i}]`
+        : `[1:a]atrim=duration=${t.dur.toFixed(3)},asetpts=PTS-STARTPTS[a${i}]`,
+    )
     .join(";") +
   ";" +
-  tramos.map((_, i) => `[a${i}]`).join("") +
-  `concat=n=${tramos.length}:v=0:a=1[out]`;
+  segmentos.map((_, i) => `[a${i}]`).join("") +
+  `concat=n=${segmentos.length}:v=0:a=1[out]`;
 const recortado = join(tmp, "recortado.mp3");
 execFileSync(
   "npx",
-  ["remotion", "ffmpeg", "-y", "-loglevel", "error", "-i", original, "-filter_complex", filtro, "-map", "[out]", "-b:a", "192k", recortado],
+  ["remotion", "ffmpeg", "-y", "-loglevel", "error", "-i", original, "-f", "lavfi", "-t", "30", "-i", "anullsrc=r=44100:cl=mono", "-filter_complex", filtro, "-map", "[out]", "-b:a", "192k", recortado],
   { stdio: "inherit" },
 );
 
@@ -211,8 +233,8 @@ writeFileSync(
   JSON.stringify({ voz, frases: tiempos }, null, 2) + "\n",
 );
 
-const duracionVoz = tramos.reduce((a, t) => a + t.fin - t.inicio, 0);
-console.log(`Pausas recortadas: ${tramos.length - 1}`);
+const duracionVoz = segmentos.reduce((a, t) => a + (t.tipo === "audio" ? t.fin - t.inicio : t.dur), 0);
+console.log(`Pausas ajustadas: ${segmentos.length - 1}`);
 const duracion = duracionVoz + ELEVENLABS.colaFinal;
 console.log(`Listo: public/${proyecto}/locucion.mp3 (${duracion.toFixed(1)} s con la cola final)`);
 console.log(`Tiempos guardados en src/${proyecto}/locucion-tiempos.json`);

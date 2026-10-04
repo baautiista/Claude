@@ -1,5 +1,4 @@
 import { aFrames, crearTiempos } from "../marca/guion";
-import { VOZ } from "../marca/voz";
 import { ESCENAS, FIRMA_SEGUNDOS, SUBTITULOS } from "./config";
 import datosLocucion from "./locucion-tiempos.json";
 
@@ -7,7 +6,7 @@ const tiempos = crearTiempos({
   escenas: ESCENAS,
   datos: datosLocucion,
   firmaSegundos: FIRMA_SEGUNDOS,
-  colaFinal: VOZ.colaFinal,
+  colaFinal: 0.6, // más corta que la general para no pasar de 1:50
   maxCaracteresSubtitulo: SUBTITULOS.maxCaracteres,
 });
 
