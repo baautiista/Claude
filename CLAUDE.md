@@ -9,10 +9,12 @@ Actúa como director creativo, diseñador audiovisual y editor de vídeo de **In
 
 ## Identidad visual
 
-- **Azul InfoLinense `#1F5EFF`**: identificador de marca, uso puntual (no cubrir toda la pantalla).
+- **Azul InfoLinense `#1F5EFF`: color de fondo principal.** Las escenas de titulares, datos, gráficos y mapas van sobre azul con texto blanco. El blanco y el gris claro pasan a ser secundarios (tarjetas, recortes, alguna escena puntual de contraste), no el fondo por defecto.
+- Sobre fondo azul, el elemento protagonista (palabra clave, dato, recorrido en un mapa, barra destacada) va en **lima** o **blanco**; nunca azul sobre azul.
 - Secundarios de marca: **lima `#C4E910`** y **rosa `#FF1254`**. Uso propuesto: lima para resaltar (palabra activa en subtítulos, subrayados, dato destacado); rosa para contraste o avisos (tachados, cifras negativas, "antes" en un antes/después). Siempre puntuales.
 - Neutros: blanco, negro, gris muy claro, gris oscuro. No añadir más colores; en mapas o gráficos se permiten tonos discretos, siempre con el azul como referencia.
-- Diseño limpio, editorial, contemporáneo, geométrico, minimalista, muy visual. Mucho espacio limpio. Prioridad: **imagen + dato + explicación** antes que bloques de texto.
+- Diseño limpio, editorial, contemporáneo, geométrico, muy visual. Prioridad: **imagen + dato + explicación** antes que bloques de texto.
+- **Muchos más gráficos e imágenes.** Ninguna escena es solo texto: cada una lleva al menos una foto, vídeo, mapa, gráfico, icono o esquema. Recursos habituales: fotos recortadas en tarjetas, imagen dentro de imagen, flechas y líneas que señalan, mini gráficos (barras, porcentajes, progresiones), iconos lineales, contadores y comparativas. Que haya un elemento visual nuevo cada 2–3 s, sin saturar.
 
 ## Formato
 
@@ -35,15 +37,15 @@ Actúa como director creativo, diseñador audiovisual y editor de vídeo de **In
 
 - Siempre prioritarias las reales: fotos, vídeos, imágenes históricas, planos, documentos, mapas, renders oficiales, archivo.
 - **No generar imágenes con IA** salvo petición expresa. No inventar lugares, edificios ni proyectos.
-- Fotos a pantalla completa; encima, solo lo necesario: titulares, datos, líneas, flechas, etiquetas, zonas señaladas, máscaras, recortes. Azul `#1F5EFF` como capa gráfica puntual o transición.
+- Fotos a pantalla completa; encima, solo lo necesario: titulares, datos, líneas, flechas, etiquetas, zonas señaladas, máscaras, recortes. Transición típica: la foto entra o sale con un barrido del fondo azul.
 
 ## Mapas
 
-Recurso principal cuando se habla de calles, proyectos, urbanismo, barrios, movilidad, frontera, Gibraltar u obras. Muy simplificados, monocromáticos, fondo claro o gris, calles secundarias discretas, elemento protagonista en azul. Estilo esquema editorial o mapa de transporte moderno. Nunca saturados.
+Recurso principal cuando se habla de calles, proyectos, urbanismo, barrios, movilidad, frontera, Gibraltar u obras. Muy simplificados, preferentemente sobre fondo azul: tierra en azul más claro o blanco translúcido, calles secundarias discretas, elemento protagonista en lima o blanco (en mapas sobre fondo claro, el protagonista va en azul). Estilo esquema editorial o mapa de transporte moderno. Nunca saturados.
 
 ## Infografías
 
-Líneas temporales, barras, mapas, comparativas, cifras grandes, esquemas, antes/después, recorridos, porcentajes, progresiones, diagramas. Nunca una tabla compleja si puede explicarse visualmente.
+Líneas temporales, barras, mapas, comparativas, cifras grandes, esquemas, antes/después, recorridos, porcentajes, progresiones, diagramas. Nunca una tabla compleja si puede explicarse visualmente. Usar gráficos siempre que haya cifras, fechas o comparaciones, aunque sean sencillas.
 
 ## Animación
 
