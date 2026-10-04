@@ -61,3 +61,6 @@ export const MARCA = {
   logo: staticFile("marca/logo.png"),
   isotipo: staticFile("marca/isotipo.png"),
 } as const;
+
+/** ¿Existe este archivo en public/? (para fotos y audios opcionales) */
+export const existe = (archivo: string) => getStaticFiles().some((f) => f.name === archivo);

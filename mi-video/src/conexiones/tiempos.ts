@@ -12,14 +12,5 @@ const tiempos = crearTiempos({
 });
 
 export { aFrames };
-export const {
-  getEscena,
-  finDeEscenas,
-  duracionTotal,
-  beatsDeEscena,
-  segundoDe,
-  frameEnEscena,
-  frasesTemporizadas,
-  hayTiemposDeLocucion,
-} = tiempos;
+export const { getEscena, finDeEscenas, duracionTotal, beatsDeEscena, frameEnEscena } = tiempos;
 export const subtitulosDesdeGuion = tiempos.subtitulos;

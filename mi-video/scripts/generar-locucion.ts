@@ -1,7 +1,10 @@
 /**
  * Genera la locución con ElevenLabs y guarda los tiempos exactos de cada frase.
  *
- *   npm run locucion
+ *   npm run locucion -- <vídeo>      (p. ej. npm run locucion -- conexiones)
+ *
+ * <vídeo> es la carpeta del vídeo en src/ (lalinea, conexiones…). Su config.ts
+ * debe exportar ESCENAS y, opcionalmente, PRONUNCIACION.
  *
  * Necesita la variable ELEVENLABS_API_KEY (puedes ponerla en mi-video/.env).
  * Opcional: ELEVENLABS_VOICE_ID para elegir la voz.
@@ -9,14 +12,26 @@
  * (útil detrás de proxies que solo dejan pasar a curl).
  *
  * Escribe:
- *   public/locucion.mp3
- *   src/lalinea/locucion-tiempos.json
+ *   public/<vídeo>/locucion.mp3
+ *   src/<vídeo>/locucion-tiempos.json
  */
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { ELEVENLABS, ESCENAS } from "../src/lalinea/config.ts";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { VOZ as ELEVENLABS } from "../src/marca/voz.ts";
+
+const proyecto = process.argv[2];
+if (!proyecto || !existsSync(`src/${proyecto}/config.ts`)) {
+  console.error("Indica el vídeo: npm run locucion -- <carpeta en src/>  (p. ej. conexiones)");
+  process.exit(1);
+}
+const config = (await import(`../src/${proyecto}/config.ts`)) as {
+  ESCENAS: readonly { id: string; frases: readonly (string | { texto: string })[] }[];
+  PRONUNCIACION?: Record<string, string>;
+};
+const ESCENAS = config.ESCENAS;
+const PRONUNCIACION = config.PRONUNCIACION ?? {};
 
 type Alineacion = {
   characters: string[];
@@ -38,7 +53,7 @@ const paraLeer = (palabra: string) => {
   const m = palabra.match(/^([«"'(]*)(.*?)([»"'),.:;…?!]*)$/);
   if (!m) return palabra;
   const [, antes, nucleo, despues] = m;
-  const sustituta = ELEVENLABS.pronunciacion[nucleo];
+  const sustituta = PRONUNCIACION[nucleo];
   return sustituta ? `${antes}${sustituta}${despues}` : palabra;
 };
 
@@ -77,20 +92,23 @@ const cuerpo = JSON.stringify({
   voice_settings: ELEVENLABS.ajustes,
 });
 
-const pedir = async (): Promise<string> => {
-  if (process.env.LOCUCION_CURL) {
-    return execFileSync(
+const conCurl = () =>
+  execFileSync(
       "curl",
       ["-sS", "--fail-with-body", "-X", "POST", url, "-H", `xi-api-key: ${apiKey}`, "-H", "Content-Type: application/json", "--data-binary", "@-"],
-      { input: cuerpo, maxBuffer: 200 * 1024 * 1024, encoding: "utf8" },
-    );
-  }
+    { input: cuerpo, maxBuffer: 200 * 1024 * 1024, encoding: "utf8" },
+  );
+
+const pedir = async (): Promise<string> => {
+  if (process.env.LOCUCION_CURL) return conCurl();
   const respuesta = await fetch(url, {
     method: "POST",
     headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
     body: cuerpo,
   });
   const textoRespuesta = await respuesta.text();
+  // Algunos proxies solo dejan pasar a curl: en ese caso, reintenta con curl.
+  if (respuesta.status === 403 && textoRespuesta.includes("allowlist")) return conCurl();
   if (!respuesta.ok) {
     throw new Error(`ElevenLabs respondió ${respuesta.status}: ${textoRespuesta}`);
   }
@@ -186,14 +204,15 @@ execFileSync(
   { stdio: "inherit" },
 );
 
-writeFileSync("public/locucion.mp3", readFileSync(recortado));
+mkdirSync(`public/${proyecto}`, { recursive: true });
+writeFileSync(`public/${proyecto}/locucion.mp3`, readFileSync(recortado));
 writeFileSync(
-  "src/lalinea/locucion-tiempos.json",
+  `src/${proyecto}/locucion-tiempos.json`,
   JSON.stringify({ voz, frases: tiempos }, null, 2) + "\n",
 );
 
 const duracionVoz = tramos.reduce((a, t) => a + t.fin - t.inicio, 0);
 console.log(`Pausas recortadas: ${tramos.length - 1}`);
 const duracion = duracionVoz + ELEVENLABS.colaFinal;
-console.log(`Listo: public/locucion.mp3 (${duracion.toFixed(1)} s con la cola final)`);
-console.log("Tiempos guardados en src/lalinea/locucion-tiempos.json");
+console.log(`Listo: public/${proyecto}/locucion.mp3 (${duracion.toFixed(1)} s con la cola final)`);
+console.log(`Tiempos guardados en src/${proyecto}/locucion-tiempos.json`);

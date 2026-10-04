@@ -1,8 +1,11 @@
 import { Composition, Folder, Still } from "remotion";
 import { duracionTotal } from "./lalinea/tiempos";
-import { FPS } from "./lalinea/config";
+import { FPS } from "./marca/guion";
 import { Miniatura } from "./lalinea/Miniatura";
 import { OrigenNombreLaLinea } from "./lalinea/OrigenNombreLaLinea";
+import { ConexionesViariasLaLinea } from "./conexiones/ConexionesViariasLaLinea";
+import { MiniaturaConexiones } from "./conexiones/Miniatura";
+import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
@@ -11,6 +14,17 @@ import { TitleScene } from "./TitleScene";
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Folder name="Urbanismo">
+        <Composition
+          id="ConexionesViariasLaLinea"
+          component={ConexionesViariasLaLinea}
+          durationInFrames={duracionConexiones()}
+          fps={FPS}
+          width={1080}
+          height={1920}
+        />
+        <Still id="Miniatura" component={MiniaturaConexiones} width={1280} height={720} />
+      </Folder>
       <Folder name="La-Linea">
         <Composition
           id="OrigenNombreLaLinea"
@@ -21,7 +35,7 @@ export const RemotionRoot: React.FC = () => {
           height={1920}
         />
         <Still
-          id="Miniatura"
+          id="MiniaturaOrigenNombreLaLinea"
           component={Miniatura}
           width={1280}
           height={720}

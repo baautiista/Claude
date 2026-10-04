@@ -17,17 +17,7 @@
  * La duración total del vídeo es el `fin` de la última escena.
  */
 
-export const FPS = 30;
-
-export type Frase = string | { readonly texto: string; readonly inicio: number };
-
-export type Escena = {
-  readonly id: EscenaId;
-  readonly nombre: string;
-  readonly inicio: number;
-  readonly fin: number;
-  readonly frases: readonly Frase[];
-};
+import type { EscenaGuion, Momento as MomentoGuion } from "../marca/guion";
 
 export type EscenaId =
   | "gancho"
@@ -37,7 +27,9 @@ export type EscenaId =
   | "curiosidad"
   | "cierre";
 
-export const ESCENAS: readonly Escena[] = [
+export type Momento = MomentoGuion<EscenaId>;
+
+export const ESCENAS: readonly EscenaGuion<EscenaId>[] = [
   {
     id: "gancho",
     nombre: "1. Gancho",
@@ -105,20 +97,9 @@ export const ESCENAS: readonly Escena[] = [
 ];
 
 /**
- * Un "momento" se ancla a una palabra del guion, así se mantiene sincronizado
- * aunque cambien los tiempos de la locución.
- *  - escena / frase: qué frase (la primera frase es 0).
- *  - palabra: palabra de esa frase (sin importar mayúsculas ni signos).
- *    Si no se indica, se usa el inicio de la frase.
- *  - mas: segundos a sumar (o restar, si es negativo).
+ * Los "momentos" (efectos e hitos) se anclan a una palabra del guion:
+ * escena, frase (0 = primera), palabra y, opcionalmente, segundos a sumar (mas).
  */
-export type Momento = {
-  readonly escena: EscenaId;
-  readonly frase: number;
-  readonly palabra?: string;
-  readonly mas?: number;
-};
-
 /** Línea de tiempo inferior (visible durante las escenas 2–4). */
 export const LINEA_DE_TIEMPO: {
   readonly desde: EscenaId;
@@ -152,30 +133,17 @@ export const MOMENTOS: Record<
   impactoVictoria: { escena: "curiosidad", frase: 1, palabra: "Victoria", mas: -0.1 },
 };
 
-/**
- * Locución generada con ElevenLabs (npm run locucion).
- * Las palabras que deben leerse de otra forma se sustituyen solo en el audio.
- */
-export const ELEVENLABS = {
-  modelo: "eleven_multilingual_v2",
-  /** Cambia por el ID de la voz que elijas en ElevenLabs (o usa ELEVENLABS_VOICE_ID). */
-  vozPorDefecto: "syjZiIvIUSwKREBfMpKZ",
-  ajustes: { stability: 0.5, similarity_boost: 0.75, style: 0.15, use_speaker_boost: true, speed: 1.12 },
-  /** Las pausas entre frases más largas que esto (s) se recortan a este valor. */
-  pausaMaxima: 0.35,
-  pronunciacion: {
-    "1870": "mil ochocientos setenta",
-    "20": "veinte",
-    "30": "treinta",
-  } as Record<string, string>,
-  /** Silencio (s) que se deja al final del vídeo tras la última frase. */
-  colaFinal: 1.2,
-} as const;
+/** Palabras que deben leerse de otra forma en la locución (solo afecta al audio). */
+export const PRONUNCIACION: Record<string, string> = {
+  "1870": "mil ochocientos setenta",
+  "20": "veinte",
+  "30": "treinta",
+};
 
 /** Audio. Los archivos son opcionales: si no existen, el vídeo funciona sin ellos. */
 export const AUDIO = {
-  locucion: "locucion.mp3",
-  musica: "musica.mp3",
+  locucion: "lalinea/locucion.mp3",
+  musica: "lalinea/musica.mp3",
   /** Volumen de la música (0–1) cuando hay locución. */
   volumenMusicaConVoz: 0.08,
   /** Volumen de la música (0–1) cuando no hay locución. */
