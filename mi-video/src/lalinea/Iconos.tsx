@@ -1,58 +1,42 @@
-/** Icono de fortificación: torre almenada con muralla. viewBox 0 0 200 200. */
-export const IconoFortificacion: React.FC<{
-  readonly color: string;
-  readonly size: number;
-}> = ({ color, size }) => {
-  return (
-    <svg width={size} height={size} viewBox="0 0 200 200">
-      {/* Muralla */}
-      <path
-        d="M10 190 L10 130 L22 130 L22 118 L38 118 L38 130 L52 130 L52 118 L60 118 L60 190 Z"
-        fill={color}
-      />
-      <path
-        d="M140 190 L140 118 L148 118 L148 130 L162 130 L162 118 L178 118 L178 130 L190 130 L190 190 Z"
-        fill={color}
-      />
-      {/* Torre */}
-      <path
-        d="M56 190 L56 70 L68 70 L68 50 L86 50 L86 70 L92 70 L92 50 L108 50 L108 70 L114 70 L114 50 L132 50 L132 70 L144 70 L144 190 Z"
-        fill={color}
-      />
-      {/* Puerta */}
-      <path d="M86 190 L86 150 Q100 132 114 150 L114 190 Z" fill="rgba(0,0,0,0.55)" />
-      {/* Saeteras */}
-      <rect x="95" y="90" width="10" height="26" rx="5" fill="rgba(0,0,0,0.55)" />
-    </svg>
-  );
-};
+/** Iconos lineales del sistema InfoLinense (trazo grueso, puntas redondeadas). */
 
-/**
- * Icono sencillo y original de la Inmaculada: figura con manto,
- * corona de doce estrellas y media luna a los pies. viewBox 0 0 200 200.
- */
-export const IconoInmaculada: React.FC<{
-  readonly manto: string;
-  readonly detalle: string;
-  readonly size: number;
-}> = ({ manto, detalle, size }) => {
+export const IconoFortificacion: React.FC<{ readonly color: string; readonly size: number }> = ({
+  color,
+  size,
+}) => (
+  <svg width={size} height={size} viewBox="0 0 120 120" fill="none">
+    <path
+      d="M14 104 V64 H24 V56 H34 V64 H40 V104 M80 104 V64 H86 V56 H96 V64 H106 V104 M40 104 V34 H48 V24 H58 V34 H62 V24 H72 V34 H80 V104 M8 104 H112 M52 104 V86 A8 8 0 0 1 68 86 V104"
+      stroke={color}
+      strokeWidth={6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+/** Icono sencillo y original de la Inmaculada: corona de 12 estrellas, figura y media luna. */
+export const IconoInmaculada: React.FC<{ readonly color: string; readonly size: number }> = ({
+  color,
+  size,
+}) => {
   const estrellas = Array.from({ length: 12 }, (_, i) => {
-    const angulo = Math.PI * (1.08 + (i / 11) * 0.84);
-    return { x: 100 + Math.cos(angulo) * 42, y: 52 + Math.sin(angulo) * 42 };
+    const a = Math.PI * (1.1 + (i / 11) * 0.8);
+    return { x: 60 + Math.cos(a) * 30, y: 36 + Math.sin(a) * 30 };
   });
   return (
-    <svg width={size} height={size} viewBox="0 0 200 200">
+    <svg width={size} height={size} viewBox="0 0 120 120" fill="none">
       {estrellas.map((e, i) => (
-        <circle key={i} cx={e.x} cy={e.y} r={3.6} fill={detalle} />
+        <circle key={i} cx={e.x} cy={e.y} r={2.6} fill={color} />
       ))}
-      {/* Cabeza */}
-      <circle cx="100" cy="46" r="14" fill={detalle} />
-      {/* Manto */}
-      <path d="M100 58 C74 66 66 112 62 168 L138 168 C134 112 126 66 100 58 Z" fill={manto} />
-      {/* Manos juntas */}
-      <path d="M100 86 L92 106 L108 106 Z" fill={detalle} />
-      {/* Media luna */}
-      <path d="M52 170 Q100 200 148 170 Q100 186 52 170 Z" fill={detalle} />
+      <circle cx="60" cy="32" r="9" stroke={color} strokeWidth={6} />
+      <path
+        d="M60 44 C46 50 42 74 40 98 H80 C78 74 74 50 60 44 Z"
+        stroke={color}
+        strokeWidth={6}
+        strokeLinejoin="round"
+      />
+      <path d="M30 104 Q60 118 90 104" stroke={color} strokeWidth={6} strokeLinecap="round" />
     </svg>
   );
 };

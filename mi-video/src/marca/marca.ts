@@ -43,7 +43,7 @@ const cargar = (family: string, archivo: string, weight: string) =>
 for (const w of ["400", "500", "600", "700", "800", "900"]) {
   cargar("Poppins", `Poppins-${w}.woff2`, w);
 }
-for (const w of ["400", "700", "900"]) {
+for (const w of ["400", "500", "600", "700", "800", "900"]) {
   cargar("Inter", `Inter-${w}.woff2`, w);
 }
 if (hayAllRoundGothic) {

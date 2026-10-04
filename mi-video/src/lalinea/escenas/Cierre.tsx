@@ -1,7 +1,7 @@
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { COLORES, FUENTES, ZONA_SEGURA } from "../estilo";
-import { Capitulo, EscenaBase, entrada, suave } from "../comun";
-import { Fondo } from "../Fondo";
+import { entrada, suave } from "../../marca/animacion";
+import { Escena } from "../../marca/Escena";
+import { COLOR, FUENTE, ZONA_SEGURA } from "../../marca/marca";
 import { IconoFortificacion, IconoInmaculada } from "../Iconos";
 import { beatsDeEscena } from "../tiempos";
 
@@ -11,114 +11,98 @@ const Bloque: React.FC<{
   readonly icono: React.ReactNode;
   readonly separacion: number;
   readonly aparicion: number;
-  readonly desplazamiento: number;
-}> = ({ titulo, detalle, icono, separacion, aparicion, desplazamiento }) => {
-  return (
-    <div
-      style={{
-        position: "relative",
-        width: 920,
-        height: 330,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 40,
-        padding: "0 50px",
-        boxSizing: "border-box",
-        translate: `0px ${(1 - separacion) * desplazamiento}px`,
-      }}
-    >
+}> = ({ titulo, detalle, icono, separacion, aparicion }) => (
+  <div
+    style={{
+      position: "relative",
+      width: 920,
+      padding: "36px 40px",
+      boxSizing: "border-box",
+      display: "flex",
+      alignItems: "center",
+      gap: 34,
+      borderRadius: 24,
+      backgroundColor: `rgba(255,255,255,${separacion})`,
+      boxShadow: `0 10px 30px rgba(10,10,10,${0.06 * separacion})`,
+    }}
+  >
+    <div style={{ width: 150 * aparicion, flexShrink: 0, overflow: "hidden", opacity: aparicion }}>{icono}</div>
+    <div>
       <div
         style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: 28,
-          backgroundColor: "rgba(234,220,190,0.08)",
-          border: `3px solid rgba(217,164,65,${0.8 * separacion})`,
-          opacity: separacion,
-        }}
-      />
-      <div
-        style={{
-          width: 200 * aparicion,
-          scale: aparicion,
-          overflow: "visible",
-          flexShrink: 0,
+          fontFamily: FUENTE.display,
+          fontWeight: 800,
+          fontSize: 92,
+          lineHeight: 1,
+          letterSpacing: -3,
+          color: COLOR.negro,
         }}
       >
-        {icono}
+        {titulo}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        <div
-          style={{
-            fontFamily: FUENTES.titulo,
-            fontWeight: 900,
-            fontSize: 96,
-            lineHeight: 1,
-            color: COLORES.pergamino,
-          }}
-        >
-          {titulo}
-        </div>
-        <div
-          style={{
-            fontFamily: FUENTES.texto,
-            fontWeight: 700,
-            fontSize: 40,
-            lineHeight: 1.2,
-            color: COLORES.oro,
-            opacity: aparicion,
-          }}
-        >
-          {detalle}
-        </div>
+      <div
+        style={{
+          marginTop: 12,
+          fontFamily: FUENTE.texto,
+          fontWeight: 600,
+          fontSize: 38,
+          lineHeight: 1.2,
+          color: COLOR.grisOscuro,
+          opacity: aparicion,
+          height: 46 * 2 * aparicion,
+        }}
+      >
+        {detalle}
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export const Cierre: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const [, laLinea, concepcion] = beatsDeEscena("cierre");
-
-  const separacion = entrada(frame, laLinea - 0.3 * fps, 0.9 * fps);
+  const separacion = suave(frame, laLinea - 0.2 * fps, 0.5 * fps);
 
   return (
-    <EscenaBase>
-      <Fondo tono="calido" />
-      <Capitulo>EN RESUMEN</Capitulo>
+    <Escena fondo="claro">
       <AbsoluteFill
         style={{
+          paddingTop: ZONA_SEGURA.arriba + 60,
           alignItems: "center",
-          paddingTop: ZONA_SEGURA.arriba + 250,
-          gap: interpolate(separacion, [0, 1], [0, 60]),
-          opacity: suave(frame, 0, 0.6 * fps),
+          gap: interpolate(separacion, [0, 1], [0, 36]),
         }}
       >
+        <div
+          style={{
+            alignSelf: "flex-start",
+            marginLeft: ZONA_SEGURA.lados,
+            marginBottom: 20,
+            fontFamily: FUENTE.rotulo,
+            fontWeight: 600,
+            fontSize: 34,
+            letterSpacing: 3,
+            color: COLOR.grisOscuro,
+            opacity: suave(frame, 0, 10),
+          }}
+        >
+          UN NOMBRE, DOS HISTORIAS
+        </div>
         <Bloque
           titulo="La Línea"
-          detalle="Por la línea defensiva frente a Gibraltar"
+          detalle="por la línea defensiva frente a Gibraltar"
           separacion={separacion}
-          aparicion={entrada(frame, laLinea, 0.7 * fps, 12)}
-          desplazamiento={120}
-          icono={<IconoFortificacion color={COLORES.pergamino} size={200} />}
+          aparicion={entrada(frame, laLinea, 0.5 * fps)}
+          icono={<IconoFortificacion color={COLOR.azul} size={150} />}
         />
         <Bloque
           titulo="de la Concepción"
-          detalle="Por la Inmaculada Concepción"
+          detalle="por la Inmaculada"
           separacion={separacion}
-          aparicion={entrada(frame, concepcion, 0.7 * fps, 12)}
-          desplazamiento={-120}
-          icono={
-            <IconoInmaculada
-              manto={COLORES.azulManto}
-              detalle={COLORES.oro}
-              size={200}
-            />
-          }
+          aparicion={entrada(frame, concepcion, 0.5 * fps)}
+          icono={<IconoInmaculada color={COLOR.azul} size={150} />}
         />
       </AbsoluteFill>
-    </EscenaBase>
+    </Escena>
   );
 };

@@ -5,11 +5,14 @@
  *
  * Necesita la variable ELEVENLABS_API_KEY (puedes ponerla en mi-video/.env).
  * Opcional: ELEVENLABS_VOICE_ID para elegir la voz.
+ * Opcional: LOCUCION_CURL=1 para hacer la petición con curl en vez de fetch
+ * (útil detrás de proxies que solo dejan pasar a curl).
  *
  * Escribe:
  *   public/locucion.mp3
  *   src/lalinea/locucion-tiempos.json
  */
+import { execFileSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { ELEVENLABS, ESCENAS } from "../src/lalinea/config.ts";
 
@@ -64,24 +67,42 @@ for (const escena of ESCENAS) {
 
 console.log(`Generando locución (${texto.length} caracteres) con la voz ${voz}…`);
 
-const respuesta = await fetch(
-  `https://api.elevenlabs.io/v1/text-to-speech/${voz}/with-timestamps?output_format=mp3_44100_128`,
-  {
+const url = `https://api.elevenlabs.io/v1/text-to-speech/${voz}/with-timestamps?output_format=mp3_44100_128`;
+const cuerpo = JSON.stringify({
+  text: texto,
+  model_id: ELEVENLABS.modelo,
+  language_code: "es",
+  voice_settings: ELEVENLABS.ajustes,
+});
+
+const pedir = async (): Promise<string> => {
+  if (process.env.LOCUCION_CURL) {
+    return execFileSync(
+      "curl",
+      ["-sS", "--fail-with-body", "-X", "POST", url, "-H", `xi-api-key: ${apiKey}`, "-H", "Content-Type: application/json", "--data-binary", "@-"],
+      { input: cuerpo, maxBuffer: 200 * 1024 * 1024, encoding: "utf8" },
+    );
+  }
+  const respuesta = await fetch(url, {
     method: "POST",
     headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      text: texto,
-      model_id: ELEVENLABS.modelo,
-      language_code: "es",
-      voice_settings: ELEVENLABS.ajustes,
-    }),
-  },
-);
-if (!respuesta.ok) {
-  console.error(`ElevenLabs respondió ${respuesta.status}: ${await respuesta.text()}`);
+    body: cuerpo,
+  });
+  const textoRespuesta = await respuesta.text();
+  if (!respuesta.ok) {
+    throw new Error(`ElevenLabs respondió ${respuesta.status}: ${textoRespuesta}`);
+  }
+  return textoRespuesta;
+};
+
+let bruto: string;
+try {
+  bruto = await pedir();
+} catch (e) {
+  console.error(e instanceof Error ? e.message : e);
   process.exit(1);
 }
-const datos = (await respuesta.json()) as {
+const datos = JSON.parse(bruto) as {
   audio_base64: string;
   alignment: Alineacion;
 };

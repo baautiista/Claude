@@ -159,7 +159,7 @@ export const MOMENTOS: Record<
 export const ELEVENLABS = {
   modelo: "eleven_multilingual_v2",
   /** Cambia por el ID de la voz que elijas en ElevenLabs (o usa ELEVENLABS_VOICE_ID). */
-  vozPorDefecto: "JBFqnCBsd6RMkjVDRZzb",
+  vozPorDefecto: "syjZiIvIUSwKREBfMpKZ",
   ajustes: { stability: 0.5, similarity_boost: 0.75, style: 0.15, use_speaker_boost: true },
   pronunciacion: {
     "1870": "mil ochocientos setenta",
@@ -181,6 +181,9 @@ export const AUDIO = {
   /** Segundos de fundido de entrada y salida de la música. */
   fundidoMusica: 1.5,
 } as const;
+
+/** Firma final de InfoLinense (segundos), después de la última escena. */
+export const FIRMA_SEGUNDOS = 0.9;
 
 /** Subtítulos. */
 export const SUBTITULOS = {

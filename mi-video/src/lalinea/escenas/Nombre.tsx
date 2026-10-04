@@ -1,146 +1,144 @@
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { entrada, suave } from "../../marca/animacion";
+import { Escena } from "../../marca/Escena";
+import { COLOR, FUENTE, ZONA_SEGURA } from "../../marca/marca";
 import { MOMENTOS } from "../config";
-import { COLORES, FUENTES, ZONA_SEGURA } from "../estilo";
-import { Capitulo, EscenaBase, entrada, suave } from "../comun";
-import { Fondo } from "../Fondo";
 import { beatsDeEscena, frameEnEscena } from "../tiempos";
+
+const Palabra: React.FC<{
+  readonly children: string;
+  readonly progreso: number;
+  readonly color?: string;
+}> = ({ children, progreso, color = COLOR.negro }) => (
+  <span style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", paddingBottom: 8 }}>
+    <span
+      style={{
+        display: "inline-block",
+        color,
+        translate: `0px ${(1 - progreso) * 110}%`,
+      }}
+    >
+      {children}
+    </span>
+  </span>
+);
 
 export const Nombre: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const [, aprobacion] = beatsDeEscena("nombre");
+  const [, , devocion] = beatsDeEscena("nombre");
   const escritura = frameEnEscena(MOMENTOS.escrituraNombre);
   const sello = frameEnEscena(MOMENTOS.selloAprobado);
 
-  const linea1 = suave(frame, escritura, 1.1 * fps);
-  const linea2 = suave(frame, escritura + 1.0 * fps, 1.5 * fps);
-  const golpe = entrada(frame, sello, 0.45 * fps, 14);
-  const temblor =
-    frame >= sello && frame < sello + 8 ? Math.sin(frame * 3.1) * (8 - (frame - sello)) : 0;
+  const palabra = (i: number) => suave(frame, escritura + i * 0.22 * fps, 0.45 * fps);
+  const aprobado = entrada(frame, sello, 0.5 * fps, 13);
+  const resaltar = suave(frame, devocion, 0.5 * fps);
+  const subrayado = suave(frame, devocion + 0.2 * fps, 0.6 * fps);
+  const explicacion = suave(frame, devocion + 0.5 * fps, 0.5 * fps);
 
   return (
-    <EscenaBase>
-      <Fondo tono="calido" />
-      <Capitulo>EL NOMBRE</Capitulo>
+    <Escena fondo="claro">
       <AbsoluteFill
         style={{
-          alignItems: "center",
-          paddingTop: ZONA_SEGURA.arriba + 210,
+          paddingTop: ZONA_SEGURA.arriba + 40,
+          paddingLeft: ZONA_SEGURA.lados,
+          paddingRight: ZONA_SEGURA.lados,
         }}
       >
-        {/* Acta */}
         <div
           style={{
-            position: "relative",
-            width: 920,
-            height: 760,
-            padding: "56px 60px",
-            boxSizing: "border-box",
-            background: `radial-gradient(ellipse at center, ${COLORES.pergamino} 55%, ${COLORES.pergaminoOscuro} 100%)`,
-            boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
-            rotate: "-1deg",
-            translate: `${temblor}px ${(1 - entrada(frame, 0, 0.9 * fps)) * 80}px`,
-            opacity: suave(frame, 0, 0.5 * fps),
-            color: COLORES.tinta,
+            fontFamily: FUENTE.rotulo,
+            fontWeight: 600,
+            fontSize: 34,
+            letterSpacing: 3,
+            color: COLOR.grisOscuro,
+            opacity: suave(frame, 0, 10),
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              inset: 18,
-              border: `2px solid rgba(42,29,18,0.35)`,
-            }}
-          />
-          <div
-            style={{
-              fontFamily: FUENTES.acta,
-              fontSize: 54,
-              textAlign: "center",
-              letterSpacing: 4,
-            }}
-          >
-            ACTA DE LA SESIÓN
-          </div>
-          <div
-            style={{
-              fontFamily: FUENTES.acta,
-              fontStyle: "italic",
-              fontSize: 44,
-              textAlign: "center",
-              marginTop: 6,
-            }}
-          >
-            30 de julio de 1870
-          </div>
-          <div
-            style={{
-              height: 2,
-              backgroundColor: "rgba(42,29,18,0.5)",
-              margin: "26px 80px",
-            }}
-          />
-          <div
-            style={{
-              fontFamily: FUENTES.acta,
-              fontSize: 40,
-              lineHeight: 1.3,
-              textAlign: "center",
-              opacity: suave(frame, aprobacion, 0.8 * fps),
-            }}
-          >
-            Los señores concejales acuerdan por unanimidad que el nuevo municipio
-            se denomine:
-          </div>
-          <div
-            style={{
-              marginTop: 20,
-              fontFamily: FUENTES.manuscrita,
-              fontSize: 108,
-              lineHeight: 1.05,
-              textAlign: "center",
-            }}
-          >
-            <div style={{ clipPath: `inset(0 ${100 - linea1 * 100}% 0 0)` }}>La Línea</div>
-            <div style={{ clipPath: `inset(0 ${100 - linea2 * 100}% 0 0)` }}>
-              de la Concepción
-            </div>
-          </div>
+          PLENO · 30 DE JULIO DE 1870
+        </div>
+        <div style={{ marginTop: 18, height: 4, width: 120, backgroundColor: COLOR.azul, scale: `${suave(frame, 4, 14)} 1`, transformOrigin: "0 50%" }} />
 
-          {/* Sello */}
-          <div
-            style={{
-              position: "absolute",
-              right: -50,
-              bottom: -100,
-              width: 270,
-              height: 270,
-              borderRadius: 135,
-              border: `10px solid ${COLORES.rojo}`,
-              boxShadow: `inset 0 0 0 8px ${COLORES.pergamino}, inset 0 0 0 12px ${COLORES.rojo}`,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              color: COLORES.rojo,
-              fontFamily: FUENTES.texto,
-              fontWeight: 900,
-              textAlign: "center",
-              lineHeight: 1.05,
-              rotate: "-14deg",
-              opacity: interpolate(frame, [sello, sello + 3], [0, 0.92], {
-                extrapolateLeft: "clamp",
-                extrapolateRight: "clamp",
-              }),
-              scale: interpolate(golpe, [0, 1], [2.6, 1]),
-              backgroundColor: "rgba(234,220,190,0.9)",
-            }}
-          >
-            <div style={{ fontSize: 31, letterSpacing: 1 }}>APROBADO</div>
-            <div style={{ fontSize: 24, marginTop: 6 }}>POR</div>
-            <div style={{ fontSize: 24 }}>UNANIMIDAD</div>
+        <div
+          style={{
+            marginTop: 70,
+            fontFamily: FUENTE.display,
+            fontWeight: 800,
+            fontSize: 132,
+            lineHeight: 1.0,
+            letterSpacing: -4,
+          }}
+        >
+          <div>
+            <Palabra progreso={palabra(0)}>La</Palabra> <Palabra progreso={palabra(1)}>Línea</Palabra>
+          </div>
+          <div>
+            <Palabra progreso={palabra(2)}>de</Palabra> <Palabra progreso={palabra(3)}>la</Palabra>
+          </div>
+          <div style={{ position: "relative", display: "inline-block" }}>
+            <Palabra
+              progreso={palabra(4)}
+              color={resaltar > 0.5 ? COLOR.azul : COLOR.negro}
+            >
+              Concepción
+            </Palabra>
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                bottom: -6,
+                height: 16,
+                borderRadius: 8,
+                width: `${subrayado * 100}%`,
+                backgroundColor: COLOR.lima,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Aprobado por unanimidad */}
+        <div
+          style={{
+            marginTop: 56,
+            display: "inline-flex",
+            alignSelf: "flex-start",
+            alignItems: "center",
+            gap: 18,
+            backgroundColor: COLOR.azul,
+            color: COLOR.blanco,
+            padding: "14px 28px 14px 18px",
+            borderRadius: 12,
+            opacity: interpolate(frame, [sello, sello + 3], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
+            scale: interpolate(aprobado, [0, 1], [1.25, 1]),
+            transformOrigin: "0% 50%",
+            fontFamily: FUENTE.display,
+            fontWeight: 700,
+            fontSize: 46,
+          }}
+        >
+          <svg width={52} height={52} viewBox="0 0 52 52">
+            <circle cx={26} cy={26} r={26} fill={COLOR.lima} />
+            <path d="M15 27 L23 35 L38 18" stroke={COLOR.negro} strokeWidth={6} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Aprobado por unanimidad
+        </div>
+
+        {/* Concepción = Inmaculada */}
+        <div
+          style={{
+            marginTop: 40,
+            opacity: explicacion,
+            translate: `0px ${(1 - explicacion) * 24}px`,
+          }}
+        >
+          <div style={{ fontFamily: FUENTE.display, fontWeight: 700, fontSize: 52, color: COLOR.negro }}>
+            <span style={{ color: COLOR.azul }}>→</span> por la Inmaculada Concepción
+          </div>
+          <div style={{ fontFamily: FUENTE.texto, fontWeight: 500, fontSize: 38, color: COLOR.grisOscuro, marginTop: 8 }}>
+            una devoción muy ligada al lugar
           </div>
         </div>
       </AbsoluteFill>
-    </EscenaBase>
+    </Escena>
   );
 };

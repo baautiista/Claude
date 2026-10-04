@@ -2,6 +2,7 @@ import type { Caption } from "@remotion/captions";
 import {
   ELEVENLABS,
   ESCENAS,
+  FIRMA_SEGUNDOS,
   FPS,
   SUBTITULOS,
   type EscenaId,
@@ -142,8 +143,10 @@ export const getEscena = (id: EscenaId) => {
   return escena;
 };
 
-export const duracionTotal = () =>
-  aFrames(ESCENAS_TEMPORIZADAS[ESCENAS_TEMPORIZADAS.length - 1].fin);
+/** Fin de la última escena (segundos), antes de la firma. */
+export const finDeEscenas = () => ESCENAS_TEMPORIZADAS[ESCENAS_TEMPORIZADAS.length - 1].fin;
+
+export const duracionTotal = () => aFrames(finDeEscenas() + FIRMA_SEGUNDOS);
 
 export const frasesTemporizadas = (id: EscenaId) => getEscena(id).frases;
 

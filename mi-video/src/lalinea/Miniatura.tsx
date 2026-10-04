@@ -1,12 +1,10 @@
 import { AbsoluteFill, Img, staticFile } from "remotion";
-import { COLORES, FUENTES } from "./estilo";
-import { GranoYVineta } from "./Fondo";
+import { COLOR, FUENTE, MARCA } from "../marca/marca";
 
 export const Miniatura: React.FC = () => {
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORES.fondo }}>
+    <AbsoluteFill style={{ backgroundColor: COLOR.negro }}>
       <Img
-        name="Peñón"
         src={staticFile("lalinea/penon-foto.jpg")}
         style={{
           position: "absolute",
@@ -14,42 +12,47 @@ export const Miniatura: React.FC = () => {
           height: "100%",
           objectFit: "cover",
           objectPosition: "20% 50%",
-          filter: "sepia(0.6) contrast(1.1) brightness(0.8)",
+          filter: "grayscale(0.4) contrast(1.05)",
         }}
       />
       <AbsoluteFill
         style={{
           background:
-            "linear-gradient(90deg, rgba(18,14,10,0) 20%, rgba(18,14,10,0.75) 52%, rgba(18,14,10,0.95) 100%)",
+            "linear-gradient(90deg, rgba(10,10,10,0) 25%, rgba(10,10,10,0.78) 55%, rgba(10,10,10,0.94) 100%)",
         }}
       />
-      <GranoYVineta />
       <AbsoluteFill
         style={{
           alignItems: "flex-end",
           justifyContent: "center",
-          paddingRight: 64,
+          paddingRight: 60,
           textAlign: "right",
-          fontFamily: FUENTES.titulo,
-          fontWeight: 900,
-          lineHeight: 1,
-          textShadow: "0 6px 24px rgba(0,0,0,0.7)",
+          fontFamily: FUENTE.display,
+          fontWeight: 800,
+          lineHeight: 0.98,
+          color: COLOR.blanco,
+          letterSpacing: -2,
         }}
       >
-        <div style={{ fontSize: 66, fontWeight: 700, color: COLORES.pergamino }}>
-          ¿Pudo llamarse
+        <div
+          style={{
+            fontFamily: FUENTE.rotulo,
+            fontWeight: 700,
+            fontSize: 24,
+            letterSpacing: 3,
+            backgroundColor: COLOR.azul,
+            padding: "6px 14px",
+            borderRadius: 5,
+            marginBottom: 22,
+          }}
+        >
+          HISTORIA
         </div>
-        <div style={{ fontSize: 86, color: COLORES.pergamino, marginTop: 18 }}>
-          LA LÍNEA DE LA
-        </div>
-        <div style={{ fontSize: 150, color: COLORES.victoria, marginTop: 6 }}>
-          VICTORIA?
-        </div>
+        <div style={{ fontSize: 58, fontWeight: 600 }}>¿Pudo llamarse</div>
+        <div style={{ fontSize: 80, marginTop: 10 }}>LA LÍNEA DE LA</div>
+        <div style={{ fontSize: 138, color: COLOR.lima }}>VICTORIA?</div>
       </AbsoluteFill>
-      <Img
-        src={staticFile("marca/logo.png")}
-        style={{ position: "absolute", left: 40, bottom: 34, width: 220 }}
-      />
+      <Img src={MARCA.isotipo} style={{ position: "absolute", left: 40, bottom: 34, height: 70 }} />
     </AbsoluteFill>
   );
 };
