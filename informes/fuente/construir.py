@@ -11,6 +11,8 @@ import re
 import sys
 from pathlib import Path
 
+import ilustraciones
+
 FUENTE = Path(__file__).resolve().parent
 INFORMES = FUENTE.parent
 RAIZ = INFORMES.parent
@@ -44,6 +46,7 @@ def main() -> None:
         fuente = (FUENTE / f"{nombre}.html").read_text(encoding="utf-8")
         titulo = re.search(r"<title>(.*?)</title>", fuente).group(1)
         cuerpo = re.sub(r"<title>.*?</title>\s*", "", fuente, count=1).replace("{{ISOTIPO}}", isotipo)
+        cuerpo = re.sub(r"\{\{ILUS:([A-Z]\d)\}\}", lambda m: ilustraciones.svg(m.group(1)), cuerpo)
         completo = (
             '<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'

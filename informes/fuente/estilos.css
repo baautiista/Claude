@@ -197,7 +197,10 @@ figure { margin: 0; }
 @media (max-width: 640px) { .dafo { grid-template-columns: 1fr; } }
 
 /* ---------- Proyectos ---------- */
-.proyecto { background: var(--blanco); border: 1px solid var(--gris-linea); display: grid; grid-template-rows: auto auto 1fr auto; grid-template-columns: minmax(0, 1fr); }
+.proyecto { background: var(--blanco); border: 1px solid var(--gris-linea); display: grid; grid-template-rows: auto auto auto 1fr auto; grid-template-columns: minmax(0, 1fr); }
+.proyecto .ilus { margin-top: 14px; aspect-ratio: 3 / 2; max-width: 100%; overflow: hidden; background: var(--azul); }
+.proyecto .ilus svg { display: block; width: 100%; height: 100%; }
+.proyecto.estrella .ilus { margin-top: 0; }
 .proyecto .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 20px 0; }
 .proyecto .codigo { font-family: var(--display); font-weight: 800; font-size: 13px; color: var(--azul); letter-spacing: .08em; }
 .proyecto h3 { padding: 10px 20px 0; font-size: 21px; }
