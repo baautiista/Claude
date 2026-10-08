@@ -8,6 +8,8 @@ import { MiniaturaConexiones } from "./conexiones/Miniatura";
 import { AntiguoHospitalLaLinea } from "./hospital/AntiguoHospitalLaLinea";
 import { MiniaturaHospital } from "./hospital/Miniatura";
 import { NuevaPaginaFacebook } from "./facebook/NuevaPaginaFacebook";
+import { AnuncioWeb } from "./web/AnuncioWeb";
+import { duracionTotal as duracionWeb } from "./web/tiempos";
 import { CostaLaLinea } from "./costa/CostaLaLinea";
 import { duracionTotal as duracionCosta } from "./costa/tiempos";
 import { duracionTotal as duracionFacebook } from "./facebook/tiempos";
@@ -32,6 +34,14 @@ export const RemotionRoot: React.FC = () => {
         />
       </Folder>
       <Folder name="Marca">
+        <Composition
+          id="AnuncioWeb"
+          component={AnuncioWeb}
+          durationInFrames={duracionWeb()}
+          fps={FPS}
+          width={1080}
+          height={1920}
+        />
         <Composition
           id="NuevaPaginaFacebook"
           component={NuevaPaginaFacebook}
