@@ -36,3 +36,7 @@ Logotipos trazados con Schibsted Grotesk (A), Syne (B) y Bricolage Grotesque (C)
 ## Ronda 5 — un gesto, una palabra (con referencias)
 
 `ronda-5.html`: «linense» en minúscula dibujada a medida con trazo grueso continuo, tomando como nivel de atrevimiento las referencias aportadas (unión líquida, letra en bucle, palabra que dibuja un lugar). Seis direcciones y tres desarrolladas: **A · Perfil** (la altura de cada letra sigue el perfil del Peñón visto desde poniente), **B · Istmo** («line» y «nse» unidos por un puente líquido) y **C · Bucle** (la l es una línea que sube en pendiente, se enrosca y cae cruzándose). Los SVG y los iconos derivados están en `ronda-5/`. Regenerar con `node r5page.js ronda-5.html ronda-5/` (necesita `r2page.js` y `r4page.js` al lado).
+
+## Trama variable (identidad elegida)
+
+`trama-variable.html`: tablero completo de la identidad **Trama variable**, que es una S de cuatro módulos geométricos (esquina redondeada, cuadrado, medio disco, cuarto de disco, arco) separados siempre por la misma línea fina. Incluye logo principal (S en tres filas + STUDIO LINENSE), símbolo, sistema modular con 8 variaciones y botón para reordenar, submarcas (Ads, Media, Web, Shop), paleta (#0B0B0B, #0057FF, #D7FF00, #F6F6F6), tipografía (Montserrat Light/Bold espaciada, trazada), versiones y aplicaciones. Los SVG están en `trama-variable/`. Regenerar con `node r6page.js trama-variable.html trama-variable/` (necesita `@fontsource/montserrat` y `opentype.js`).
