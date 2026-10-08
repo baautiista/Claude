@@ -1,7 +1,8 @@
 import { Video } from "@remotion/media";
-import { Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { Easing, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { entrada, suave } from "../marca/animacion";
 import { Linea, Plano } from "../marca/Anuncio";
+import { Brillo, Golpe, Ondas } from "../marca/Efectos";
 import { COLOR, FUENTE, MARCA, ZONA_SEGURA, existe } from "../marca/marca";
 import { Movil } from "../marca/Movil";
 import { Placeholder } from "../marca/Placeholder";
@@ -33,6 +34,8 @@ const BarraURL: React.FC<{ readonly desde: number; readonly ancho: number }> = (
   const frame = useCurrentFrame();
   const n = Math.max(0, Math.min(URL_WEB.length, Math.floor((frame - desde) / 1.4)));
   const cursor = Math.floor(frame / 8) % 2 === 0;
+  const enter = desde + Math.ceil(URL_WEB.length * 1.4) + 3;
+  const pulso = interpolate(frame, [enter, enter + 3, enter + 9], [1, 0.94, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <div
       style={{
@@ -44,9 +47,12 @@ const BarraURL: React.FC<{ readonly desde: number; readonly ancho: number }> = (
         borderRadius: 999,
         padding: "22px 34px",
         boxShadow: "0 20px 50px rgba(0,0,0,0.35)",
-        scale: entrada(frame, desde - 8, 12, 13),
+        scale: entrada(frame, desde - 8, 12, 13) * pulso,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      <Brillo desde={enter} duracion={14} />
       <svg width={44} height={44} viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="11" width="14" height="10" rx="2" />
         <path d="M8 11V7a4 4 0 0 1 8 0v4" />
@@ -64,23 +70,30 @@ const BarraURL: React.FC<{ readonly desde: number; readonly ancho: number }> = (
 export const Salto: React.FC = () => {
   const frame = useCurrentFrame();
   const web = frameEnEscena(MOMENTOS.web);
-  const saltoY = interpolate(frame, [0, 10, 18], [0, -60, 0], { extrapolateRight: "clamp" });
+  const saltoY = interpolate(frame, [14, 24, 34], [0, -70, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <Plano>
-      <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 30, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados }}>
+      <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 30, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados, translate: `0px ${-frame * 0.5}px` }}>
         <Linea desde={0} tamano={140}>INFOLINENSE</Linea>
         <Linea desde={3} tamano={120}>
           DA EL SALTO
         </Linea>
-        <Linea desde={web - 6} tamano={150} fondo={COLOR.lima} color={COLOR.negro}>
-          A LA WEB
-        </Linea>
+        <div style={{ position: "relative", display: "inline-block", overflow: "hidden" }}>
+          <Linea desde={web - 6} tamano={150} fondo={COLOR.lima} color={COLOR.negro}>
+            A LA WEB
+          </Linea>
+          <Brillo desde={web + 4} />
+        </div>
       </div>
       {/* Logo que "salta" de las redes a la web */}
-      <div style={{ position: "absolute", top: 1000, left: 0, right: 0, display: "flex", justifyContent: "center", translate: `0px ${saltoY}px` }}>
-        <div style={{ width: 360, height: 360, borderRadius: 180, backgroundColor: COLOR.azul, border: "10px solid white", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 30px 60px rgba(0,0,0,0.4)", scale: entrada(frame, 2, 14, 11) }}>
-          <Img src={MARCA.logo} style={{ width: 300 }} />
-        </div>
+      <Ondas x={540} y={1180} desde={24} />
+      <div style={{ position: "absolute", top: 1000, left: 0, right: 0, display: "flex", justifyContent: "center", translate: `0px ${saltoY + frame * 0.4}px` }}>
+        <Golpe desde={2}>
+          <div style={{ width: 360, height: 360, borderRadius: 180, backgroundColor: COLOR.azul, border: "10px solid white", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 30px 60px rgba(0,0,0,0.4)", position: "relative", overflow: "hidden" }}>
+            <Img src={MARCA.logo} style={{ width: 300 }} />
+            <Brillo desde={16} duracion={16} />
+          </div>
+        </Golpe>
       </div>
       <svg viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
         <path d="M300 1420 C 420 1560, 660 1560, 780 1420" stroke="white" strokeWidth={12} fill="none" strokeLinecap="round" strokeDasharray="1" pathLength={1} strokeDashoffset={1 - suave(frame, 8, 16)} />
@@ -93,21 +106,30 @@ export const Salto: React.FC = () => {
 
 export const Direccion: React.FC = () => {
   const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
   const movil = entrada(frame, 18, 16);
+  const zoom = interpolate(frame, [durationInFrames - 16, durationInFrames], [1, 5], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.7, 0, 0.9, 0.4),
+  });
   return (
     <Plano>
+      <div style={{ position: "absolute", inset: 0, scale: zoom, transformOrigin: "540px 1150px" }}>
       <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 30, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados }}>
         <Linea desde={0} tamano={78}>
           Ya puedes leernos en
         </Linea>
       </div>
       <div style={{ position: "absolute", top: 420, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-        <BarraURL desde={6} ancho={900} />
+        <BarraURL desde={6} ancho={860} />
       </div>
-      <div style={{ position: "absolute", top: 620, left: 300, translate: `0px ${(1 - movil) * 1100}px` }}>
+      <Ondas x={540} y={485} desde={36} color={COLOR.blanco} />
+      <div style={{ position: "absolute", top: 620, left: 300, translate: `0px ${(1 - movil) * 1100}px`, transform: `perspective(1800px) rotateX(${(1 - movil) * 28}deg)` }}>
         <Movil ancho={480}>
           <Pantalla archivo={CAPTURAS.movilPortada} nombre="Portada de infolinense.com (móvil)" desde={24} recorrido={12} />
         </Movil>
+      </div>
       </div>
     </Plano>
   );
@@ -133,7 +155,15 @@ export const Contenido: React.FC = () => {
           en un solo sitio
         </Linea>
       </div>
-      <div style={{ position: "absolute", top: 640, left: 300 }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 640,
+          left: 300,
+          scale: interpolate(frame, [0, 16], [2.6, 1], { extrapolateRight: "clamp", easing: Easing.bezier(0.16, 1, 0.3, 1) }),
+          transform: `perspective(2000px) rotateY(${Math.sin(frame / 28) * 6}deg)`,
+        }}
+      >
         <Movil ancho={480}>
           {hayVideo ? (
             <Video src={staticFile(CAPTURAS.grabacion)} muted objectFit="cover" style={{ width: "100%", height: "100%" }} />
@@ -162,6 +192,7 @@ export const Contenido: React.FC = () => {
               borderRadius: 10,
               boxShadow: "0 12px 28px rgba(0,0,0,0.3)",
               opacity: p,
+              filter: p < 0.95 ? `blur(${(1 - p) * 10}px)` : undefined,
               translate: `${(1 - p) * (izquierda ? -160 : 160)}px ${Math.sin((frame + i * 15) / 12) * 6}px`,
             }}
           >
@@ -190,12 +221,21 @@ export const Dispositivos: React.FC = () => {
           …o en el ordenador
         </Linea>
       </div>
-      <div style={{ position: "absolute", top: 680, left: 30, translate: `${(1 - pc) * 1100}px 0px` }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 680,
+          left: 30,
+          translate: `${(1 - pc) * 1100 - frame * 0.6}px 0px`,
+          transform: `perspective(2200px) rotateY(${-6 - (1 - pc) * 20 + frame * 0.06}deg)`,
+        }}
+      >
         <Portatil ancho={900} url={URL_WEB}>
           <Pantalla archivo={CAPTURAS.escritorio} nombre="Portada de infolinense.com (ordenador)" desde={ordenador} recorrido={30} />
+          <Brillo desde={Math.min(ordenador - 10, 8) + 18} duracion={20} />
         </Portatil>
       </div>
-      <div style={{ position: "absolute", top: 900, left: 680, translate: `0px ${(1 - mv) * 900}px`, rotate: "4deg" }}>
+      <div style={{ position: "absolute", top: 900, left: 680, translate: `${frame * 0.9}px ${(1 - mv) * 900 - frame * 0.8}px`, rotate: "4deg" }}>
         <Movil ancho={300}>
           <Pantalla archivo={CAPTURAS.movilNoticia} nombre="Noticia (móvil)" desde={0} recorrido={20} />
         </Movil>
@@ -211,16 +251,19 @@ export const Cierre: React.FC = () => {
   const cta = entrada(frame, 22, 12, 12);
   return (
     <Plano>
-      <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 40, left: 0, right: 0, display: "flex", justifyContent: "center", opacity: suave(frame, 0, 8) }}>
-        <Img src={MARCA.logo} style={{ width: 520 }} />
+      <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 40, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
+        <Golpe desde={0}>
+          <Img src={MARCA.logo} style={{ width: 520 }} />
+        </Golpe>
       </div>
+      <Ondas x={540} y={1130} desde={26} />
       <div style={{ position: "absolute", top: 620, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados }}>
         <Linea desde={2} tamano={110}>
           ENTRA YA EN
         </Linea>
       </div>
       <div style={{ position: "absolute", top: 800, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-        <BarraURL desde={8} ancho={940} />
+        <BarraURL desde={8} ancho={860} />
       </div>
       <div
         style={{
@@ -244,9 +287,14 @@ export const Cierre: React.FC = () => {
             fontSize: 60,
             padding: "16px 40px",
             borderRadius: 999,
-            scale: cta,
+            scale: cta * (1 + Math.max(0, Math.sin((frame - 40) / 9)) * 0.04 * (frame > 40 ? 1 : 0)),
+            position: "relative",
+            overflow: "hidden",
+            boxShadow: `0 0 ${40 + Math.sin(frame / 9) * 20}px rgba(196,233,16,0.55)`,
           }}
         >
+          <Brillo desde={34} duracion={16} />
+          <Brillo desde={80} duracion={16} />
           LEER AHORA
           <svg width={56} height={56} viewBox="0 0 24 24" fill="none" stroke={COLOR.negro} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
             <path d="M4 12h16M14 6l6 6-6 6" />
