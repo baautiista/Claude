@@ -1,0 +1,1052 @@
+<title>Coplea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Figtree:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: libro de marca en scroll vertical; navegación por capítulos fija arriba; pantallas en rejilla de móviles; lección jugable al final. */
+:root{
+  --bg:#F2F6F9; --surface:#FFFFFF; --sunk:#E7EEF3; --ink:#13283A; --muted:#566B7D; --line:#D5E0E8;
+  --blue:#0F6FA8; --teal:#178A98; --green:#12A07E; --red:#E0442E; --sun:#FFC531; --pink:#EA8984;
+  --on-accent:#FFFFFF;
+  --font-d:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --font-b:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-m:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r-s:10px; --r-m:18px; --r-l:28px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A1622; --surface:#112233; --sunk:#0E1C2A; --ink:#E9F1F7; --muted:#98ABBC; --line:#22384C;
+  --blue:#4EA6DE; --teal:#3BB4C2; --green:#2FC79C; --red:#FF6B57; --sun:#FFD15A; --pink:#F4A19C;
+  --on-accent:#0A1622; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A1622; --surface:#112233; --sunk:#0E1C2A; --ink:#E9F1F7; --muted:#98ABBC; --line:#22384C;
+  --blue:#4EA6DE; --teal:#3BB4C2; --green:#2FC79C; --red:#FF6B57; --sun:#FFD15A; --pink:#F4A19C;
+  --on-accent:#0A1622; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:16px;line-height:1.55;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--font-d);font-weight:400;font-size:clamp(2rem,4.4vw,3rem);line-height:1.05;letter-spacing:.005em}
+h3{font-size:1.2rem;font-weight:800;line-height:1.25}
+p{margin:0}
+.eyebrow{font-weight:800;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.lead{font-size:1.12rem;color:var(--muted);max-width:66ch}
+.muted{color:var(--muted)}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:6px}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.nav a{flex:none;text-decoration:none;color:var(--ink);font-weight:700;font-size:.86rem;padding:6px 12px;border-radius:99px;background:var(--surface);border:1px solid var(--line)}
+.nav a:hover{border-color:var(--teal);color:var(--teal)}
+.nav .logo{font-family:var(--font-d);font-weight:400;font-size:1.05rem;color:var(--blue);background:none;border:none;padding-left:0}
+
+/* hero */
+.hero{padding-block:56px 40px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+.wordmark{font-family:var(--font-d);font-weight:400;font-size:clamp(4.2rem,13vw,9rem);line-height:.88;color:var(--blue);letter-spacing:-.01em}
+.wordmark span{color:var(--red)}
+.hero .tag{font-size:clamp(1.25rem,2.6vw,1.6rem);font-weight:800;margin-top:18px;max-width:22ch;line-height:1.25}
+.hero .lead{margin-top:14px}
+.hero-art{position:relative;aspect-ratio:1/0.9;max-width:100%}
+.hero-art .big{position:absolute;inset:0 8% 10% 0}
+.hero-art .small{position:absolute;width:44%;right:0;bottom:0}
+.hero-art .bubble{position:absolute;left:4%;top:-2%;background:var(--surface);border:2px solid var(--ink);border-radius:18px 18px 18px 4px;padding:8px 14px;font-weight:800;font-size:.95rem;box-shadow:4px 4px 0 var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{font-size:.8rem;font-weight:700;padding:5px 11px;border-radius:99px;background:var(--sunk);color:var(--ink)}
+.serpentina{height:14px;background:repeating-linear-gradient(-45deg,var(--sun) 0 14px,var(--red) 14px 28px,var(--teal) 28px 42px,var(--blue) 42px 56px,var(--pink) 56px 70px);opacity:.9}
+
+section.sec{padding-block:64px;border-bottom:1px solid var(--line)}
+.sec-head{display:grid;gap:10px;margin-bottom:32px}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);padding:20px;min-width:0}
+.card h3{margin-bottom:6px}
+.card p+p{margin-top:8px}
+ul.clean{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+ul.clean li{padding-left:18px;position:relative}
+ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--teal)}
+
+/* names */
+.name-card{display:grid;gap:8px;align-content:start}
+.name-card .nm{font-family:var(--font-d);font-size:2.3rem;line-height:1;color:var(--blue)}
+.name-card.pick{border:2px solid var(--blue);box-shadow:6px 6px 0 var(--blue)}
+.badge-pick{justify-self:start;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--blue);color:var(--on-accent);padding:4px 10px;border-radius:99px}
+
+/* brand statement */
+.statement{font-family:var(--font-d);font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.15;max-width:28ch}
+.statement em{font-style:normal;color:var(--red)}
+.tone{width:100%;border-collapse:collapse;font-size:.95rem}
+.tone th,.tone td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.tone th{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tone td:first-child{font-weight:700;white-space:nowrap}
+.scroll-x{overflow-x:auto}
+.do{color:var(--green);font-weight:800}
+.dont{color:var(--red);font-weight:800}
+
+/* mascots */
+.mascot{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:start}
+.mascot-hero{background:var(--sunk);border-radius:var(--r-l);padding:18px;aspect-ratio:1/0.85;display:grid;place-items:center}
+.mascot-hero svg{width:100%;height:auto}
+.ficha{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:.95rem;margin-top:14px}
+.ficha dt{font-weight:800;color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;padding-top:3px}
+.ficha dd{margin:0}
+.expr{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:22px}
+.expr figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-s);padding:8px 6px;text-align:center}
+.expr figcaption{font-size:.76rem;font-weight:700;color:var(--muted)}
+.inter{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.inter .card{padding:14px}
+.inter b{display:block;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.quote{font-weight:700}
+
+/* visual system */
+.sw{border-radius:var(--r-m);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.sw .c{height:92px}
+.sw .t{padding:12px 14px;display:grid;gap:2px}
+.sw .t b{font-size:1rem}
+.sw .t code{font-family:var(--font-m);font-size:.8rem;color:var(--muted)}
+.sw .t span{font-size:.85rem;color:var(--muted)}
+.type-spec{display:grid;gap:14px}
+.type-spec .row{display:grid;grid-template-columns:140px 1fr;gap:14px;align-items:baseline;border-bottom:1px dashed var(--line);padding-bottom:12px}
+.type-spec .row small{font-family:var(--font-m);font-size:.75rem;color:var(--muted)}
+
+/* app buttons (also used in phones & lesson) */
+.btn{font-family:var(--font-b);font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:.9rem;border:none;cursor:pointer;color:#fff;background:#0F6FA8;padding:14px 22px;border-radius:16px;box-shadow:0 5px 0 #0A4D75;position:relative;transition:transform .08s,box-shadow .08s;
+  -webkit-mask:radial-gradient(circle 7px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+          mask:radial-gradient(circle 7px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #0A4D75}
+.btn.green{background:#12A07E;box-shadow:0 5px 0 #0B6E56}
+.btn.red{background:#E0442E;box-shadow:0 5px 0 #9E2B1C}
+.btn.sun{background:#FFC531;color:#3B2A00;box-shadow:0 5px 0 #C9930E}
+.btn.ghost{background:#fff;color:#0F6FA8;box-shadow:0 5px 0 #C9D7E2;border:2px solid #C9D7E2}
+.btn[disabled]{background:#DCE4EA;color:#93A3B1;box-shadow:0 5px 0 #C3CDD5;cursor:not-allowed}
+.btn.full{width:100%}
+.btn-demo{display:flex;flex-wrap:wrap;gap:16px 14px;align-items:center;padding:22px;background:var(--sunk);border-radius:var(--r-m)}
+
+.demo-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:22px;background:var(--sunk);border-radius:var(--r-m)}
+.lcard{background:#fff;color:#13283A;border-radius:20px;border:2px solid #D7E2EA;border-bottom-width:6px;padding:14px;display:grid;gap:8px;align-content:start}
+.lcard .k{font-size:.7rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.lcard h4{margin:0;font-size:1.05rem;font-weight:900;line-height:1.2}
+.lcard .bar{height:10px;border-radius:9px;background:#E6EDF2;overflow:hidden}
+.lcard .bar i{display:block;height:100%;border-radius:9px;background:#12A07E}
+.icons-demo{display:flex;flex-wrap:wrap;gap:12px}
+.icons-demo div{display:grid;justify-items:center;gap:4px;font-size:.75rem;font-weight:700;color:var(--muted);width:68px}
+.icons-demo svg{width:40px;height:40px}
+
+/* phones */
+.phones{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:34px 22px}
+.ph-item{display:grid;gap:12px;align-content:start;justify-items:center}
+.ph-cap{width:100%;max-width:262px}
+.ph-cap h3{font-size:1.02rem}
+.ph-cap ul{margin:6px 0 0;padding-left:18px;font-size:.86rem;color:var(--muted);display:grid;gap:3px}
+.phone{width:100%;max-width:262px;aspect-ratio:9/18.6;border-radius:38px;background:#0B1520;padding:8px;box-shadow:0 18px 40px -18px rgba(5,20,35,.55)}
+.scr{--a-bg:#F4F8FB;--a-ink:#13283A;--a-mut:#6A7E8F;--a-line:#DCE5EC;
+  position:relative;height:100%;border-radius:30px;background:var(--a-bg);color:var(--a-ink);overflow:hidden;display:flex;flex-direction:column;font-size:11px;line-height:1.35;font-family:var(--font-b)}
+.sb{display:flex;justify-content:space-between;padding:9px 18px 4px;font-size:9.5px;font-weight:800}
+.stats{display:flex;justify-content:space-between;align-items:center;padding:4px 14px 8px}
+.st{display:flex;align-items:center;gap:3px;font-weight:900;font-size:11.5px}
+.st svg{width:17px;height:17px}
+.body{flex:1;padding:4px 12px;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden}
+.tabbar{display:flex;justify-content:space-around;padding:8px 6px 14px;border-top:1.5px solid var(--a-line);background:#fff}
+.tabbar svg{width:20px;height:20px;color:#A8B7C3}
+.tabbar .on{color:#0F6FA8}
+.tabbar span{display:grid;place-items:center;width:34px;height:28px;border-radius:9px}
+.tabbar span.on{background:#E3F0F9;border:1.5px solid #9CC8E6}
+.acard{background:#fff;border:1.5px solid var(--a-line);border-bottom-width:4px;border-radius:15px;padding:9px}
+.ttl{font-weight:900;font-size:13px;line-height:1.15}
+.k{font-size:8.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.mbtn{font-weight:900;letter-spacing:.05em;text-transform:uppercase;font-size:10px;text-align:center;color:#fff;background:#0F6FA8;border-radius:12px;padding:10px;box-shadow:0 4px 0 #0A4D75}
+.mbtn.green{background:#12A07E;box-shadow:0 4px 0 #0B6E56}
+.mbtn.red{background:#E0442E;box-shadow:0 4px 0 #9E2B1C}
+.mbtn.sun{background:#FFC531;color:#3B2A00;box-shadow:0 4px 0 #C9930E}
+.mbtn.off{background:#DCE4EA;color:#93A3B1;box-shadow:0 4px 0 #C3CDD5}
+.pbar{height:9px;background:#E3EAF0;border-radius:9px;overflow:hidden;flex:1}
+.pbar i{display:block;height:100%;background:#12A07E;border-radius:9px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.opt{border:1.5px solid var(--a-line);border-bottom-width:4px;border-radius:12px;background:#fff;padding:8px;font-weight:800;text-align:center}
+.opt.sel{border-color:#7DB9E0;background:#E8F3FB;color:#0F6FA8}
+.opt.good{border-color:#7FD3BC;background:#E3F7F1;color:#0B6E56}
+.wchip{display:inline-block;border:1.5px solid var(--a-line);border-bottom-width:3.5px;border-radius:10px;background:#fff;padding:5px 8px;font-weight:800;margin:2px}
+.m{display:block}
+.m svg{width:100%;height:auto;display:block}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:12px 14px 16px;display:grid;gap:8px;border-radius:18px 18px 0 0}
+.sheet.ok{background:#D9F5EC;color:#0B6E56}
+.sheet.ko{background:#FCE3DF;color:#9E2B1C}
+.row{display:flex;align-items:center;gap:8px}
+.between{justify-content:space-between}
+
+/* map nodes */
+.mapcol{display:flex;flex-direction:column;align-items:center;gap:9px;padding-top:6px;position:relative}
+.node{width:46px;height:42px;border-radius:50%;display:grid;place-items:center;position:relative}
+.node svg{width:100%;height:100%}
+
+/* exercises */
+.ex-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ex .nm{font-family:var(--font-d);font-size:1.45rem;color:var(--blue);line-height:1.1}
+.ex .tp{font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ex .eg{margin-top:10px;padding:10px 12px;background:var(--sunk);border-radius:12px;font-size:.9rem}
+.ex .eg b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+
+/* gamification */
+.ladder{display:grid;gap:6px;counter-reset:l}
+.ladder li{list-style:none;display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:var(--sunk);font-weight:700}
+.ladder .lv{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-weight:900;font-size:.85rem;color:#fff}
+.ladder small{font-family:var(--font-m);font-size:.78rem;color:var(--muted);font-weight:400}
+.ladder{margin:0;padding:0}
+.badges{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.bdg{display:grid;justify-items:center;text-align:center;gap:6px;padding:14px 10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m)}
+.bdg .hex{width:62px;height:68px;display:grid;place-items:center;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);color:#fff;font-family:var(--font-d);font-size:1.4rem}
+.bdg b{font-size:.92rem;line-height:1.2}
+.bdg span{font-size:.8rem;color:var(--muted);line-height:1.3}
+.xp-table{width:100%;border-collapse:collapse;font-size:.93rem}
+.xp-table td{padding:9px 4px;border-bottom:1px solid var(--line)}
+.xp-table td:last-child{text-align:right;font-family:var(--font-m);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.worlds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.world{border-radius:var(--r-m);padding:16px;color:#fff;display:grid;gap:4px;align-content:start;min-height:130px}
+.world .n{font-size:.72rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.world h4{margin:0;font-family:var(--font-d);font-weight:400;font-size:1.45rem;line-height:1.05}
+.world p{font-size:.86rem;opacity:.92}
+
+/* lesson */
+.lesson-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:start}
+.lesson{background:#F4F8FB;color:#13283A;border-radius:30px;border:8px solid #0B1520;min-height:640px;display:flex;flex-direction:column;position:relative;overflow:hidden;box-shadow:0 24px 50px -24px rgba(5,20,35,.6)}
+.l-top{display:flex;align-items:center;gap:10px;padding:16px 16px 8px}
+.l-top .x{background:none;border:none;color:#93A3B1;cursor:pointer;padding:4px;display:grid}
+.l-top .pbar{height:14px}
+.l-top .pbar i{transition:width .4s cubic-bezier(.3,1.4,.5,1)}
+.l-hearts{display:flex;align-items:center;gap:3px;font-weight:900;color:#E0442E}
+.l-hearts svg{width:22px;height:22px}
+.l-body{flex:1;padding:6px 18px 18px;display:flex;flex-direction:column;gap:14px}
+.l-kind{font-size:.74rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#178A98}
+.l-q{font-size:1.25rem;font-weight:900;line-height:1.25}
+.l-guide{display:flex;align-items:flex-end;gap:8px}
+.l-guide .m{width:84px;flex:none}
+.l-say{background:#fff;border:2px solid #DCE5EC;border-radius:16px 16px 16px 4px;padding:9px 12px;font-weight:700;font-size:.95rem}
+.l-opts{display:grid;gap:10px}
+.l-opts.two{grid-template-columns:1fr 1fr}
+.l-opt{font-family:var(--font-b);font-size:1rem;font-weight:800;color:#13283A;text-align:left;background:#fff;border:2px solid #DCE5EC;border-bottom-width:5px;border-radius:16px;padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.l-opt .num{flex:none;width:24px;height:24px;border:2px solid #DCE5EC;border-radius:8px;display:grid;place-items:center;font-size:.75rem;color:#93A3B1}
+.l-opt:hover{background:#F7FAFC}
+.l-opt.sel{border-color:#7DB9E0;background:#E8F3FB;color:#0F6FA8}
+.l-opt.sel .num{border-color:#7DB9E0;color:#0F6FA8}
+.l-opt.done{border-color:#7FD3BC;background:#E3F7F1;color:#0B6E56;opacity:.55;cursor:default}
+.l-opt.bad{border-color:#F2A99E;background:#FCE3DF;color:#9E2B1C;animation:shake .3s}
+.l-opt[disabled]{cursor:default}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.l-line{min-height:96px;border-bottom:2px solid #DCE5EC;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;padding-bottom:10px;background:repeating-linear-gradient(transparent 0 46px,#DCE5EC 46px 48px)}
+.l-bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tile{font-family:var(--font-b);font-size:.95rem;font-weight:800;color:#13283A;background:#fff;border:2px solid #DCE5EC;border-bottom-width:5px;border-radius:13px;padding:9px 12px;cursor:pointer}
+.tile.ghosted{visibility:hidden}
+.l-sent{font-size:1.15rem;font-weight:700;line-height:1.9}
+.blank{display:inline-block;min-width:110px;border-bottom:3px solid #13283A;text-align:center;color:#0F6FA8;font-weight:900}
+.audio-box{display:flex;align-items:center;gap:14px;background:#13283A;color:#fff;border-radius:18px;padding:14px}
+.playb{flex:none;width:58px;height:58px;border-radius:50%;border:none;background:#FFC531;color:#3B2A00;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 0 #C9930E}
+.playb svg{width:26px;height:26px}
+.wave{display:flex;align-items:center;gap:3px;height:44px;flex:1}
+.wave i{flex:1;background:#4EA6DE;border-radius:3px;height:20%;transition:height .12s}
+.l-foot{padding:14px 16px 18px;border-top:2px solid #E3EAF0}
+.l-sheet{position:absolute;left:0;right:0;bottom:0;padding:16px 16px 18px;display:grid;gap:12px;transform:translateY(105%);transition:transform .28s cubic-bezier(.2,1.2,.4,1)}
+.l-sheet.show{transform:none}
+.l-sheet.ok{background:#D9F5EC;color:#0B6E56}
+.l-sheet.ko{background:#FCE3DF;color:#9E2B1C}
+.l-sheet .row{align-items:flex-start;gap:12px}
+.l-sheet .m{width:74px;flex:none}
+.l-sheet h4{margin:0;font-size:1.2rem;font-weight:900}
+.l-sheet p{font-size:.95rem;font-weight:600}
+.l-end{flex:1;display:grid;place-items:center;text-align:center;padding:24px;gap:14px;align-content:center}
+.l-end .m{width:190px;margin:0 auto}
+.l-end h3{font-family:var(--font-d);font-weight:400;font-size:2rem;color:#0F6FA8}
+.l-end .res{display:flex;gap:10px;justify-content:center}
+.l-end .res div{border:2px solid;border-radius:14px;padding:8px 12px;font-weight:900;min-width:92px}
+.l-end .res small{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:10px;align-content:start}
+.match .l-opt{font-size:.9rem;padding:11px 10px;justify-content:center;text-align:center}
+
+/* prompts */
+.prompt{position:relative;background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-m);padding:16px 16px 14px}
+.prompt h3{font-size:1rem;margin-bottom:8px;padding-right:80px}
+.prompt pre{margin:0;white-space:pre-wrap;font-family:var(--font-m);font-size:.8rem;line-height:1.55;color:var(--ink)}
+.copy{position:absolute;top:12px;right:12px;font-family:var(--font-b);font-weight:800;font-size:.75rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer}
+code.inline{font-family:var(--font-m);font-size:.85em;background:var(--sunk);padding:1px 6px;border-radius:6px}
+pre.code{background:var(--sunk);border:1px solid var(--line);border-radius:var(--r-m);padding:16px;font-family:var(--font-m);font-size:.8rem;line-height:1.5;overflow-x:auto;margin:0}
+footer{padding-block:40px 60px;color:var(--muted);font-size:.9rem}
+
+@media (max-width:960px){
+  .hero .wrap,.mascot,.lesson-wrap{grid-template-columns:1fr}
+  .g4,.badges,.inter{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3,.ex-grid,.worlds,.demo-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .expr{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-art{max-width:460px}
+}
+@media (max-width:600px){
+  .g2,.g3,.ex-grid,.worlds,.demo-cards{grid-template-columns:1fr}
+  .type-spec .row{grid-template-columns:1fr}
+  section.sec{padding-block:44px}
+  .wrap{padding-inline:16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-racha" viewBox="0 0 24 24"><path d="M12 1.5c.8 4 5.8 6.3 5.8 11.8a5.8 5.8 0 0 1-11.6 0c0-3.4 2-4.6 2.3-7.6 1.2 1 2.1 2.4 2.2 4.3 1.3-2.2 1.6-5.1 1.3-8.5z" fill="#FF9F1C"/><path d="M12 11c.4 2 2.8 3 2.8 5.6a2.8 2.8 0 0 1-5.6 0c0-1.6 1-2.3 1.2-3.7.6.5 1 1.1 1.1 2 .6-1 .7-2.3.5-3.9z" fill="#FFD84A"/></symbol>
+    <symbol id="i-vida" viewBox="0 0 24 24"><path d="M12 21.3S3.8 16.2 2.3 11.2A5.4 5.4 0 0 1 12 6.4a5.4 5.4 0 0 1 9.7 4.8C20.2 16.2 12 21.3 12 21.3z" fill="#E0442E"/><path d="M6.2 11.2c1-.9 2.6-.9 3.6 0M14.2 11.2c1-.9 2.6-.9 3.6 0" stroke="#7A1F2B" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M5 8.6a3 3 0 0 1 2.6-1.4" stroke="#fff" stroke-opacity=".6" stroke-width="1.6" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-duro" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FFC531"/><circle cx="12" cy="12" r="7" fill="none" stroke="#C9930E" stroke-width="1.6"/><path d="M12 8v8M9.8 10.2h4.4" stroke="#8A6200" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-xp" viewBox="0 0 24 24"><path d="M12 2.2l2.9 6.2 6.8.8-5 4.6 1.4 6.8L12 17.2l-6.1 3.4 1.4-6.8-5-4.6 6.8-.8z" fill="#FFC531" stroke="#C9930E" stroke-width="1.2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9.5a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z" fill="currentColor"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor"/><circle cx="12" cy="12" r="6" fill="#fff" fill-opacity=".85"/><g fill="currentColor"><circle cx="12" cy="3.8" r="1"/><circle cx="12" cy="20.2" r="1"/><circle cx="3.8" cy="12" r="1"/><circle cx="20.2" cy="12" r="1"/></g></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 3h10v2h3.5v2.5A4.5 4.5 0 0 1 16 12h-.4A5 5 0 0 1 13 14.6V18h3v3H8v-3h3v-3.4A5 5 0 0 1 8.4 12H8a4.5 4.5 0 0 1-4.5-4.5V5H7zm0 4H5.5v.5A2.5 2.5 0 0 0 7 9.8zm10 0v2.8a2.5 2.5 0 0 0 1.5-2.3V7z" fill="currentColor"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5" fill="currentColor"/><path d="M3.5 21a8.5 8.5 0 0 1 17 0z" fill="currentColor"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><path d="M3 9h18v4H3zM4.5 13h15v8h-15z" fill="currentColor"/><path d="M11 9h2v12h-2z" fill="#fff" fill-opacity=".7"/><path d="M12 9C9 9 6.8 7.3 8.3 5.6S12 6 12 9c0-3 2.2-5.1 3.7-3.4S15 9 12 9z" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 4.5l12 7.5-12 7.5z" fill="currentColor"/></symbol>
+    <symbol id="i-duelo" viewBox="0 0 24 24"><path d="M4 4l9 9M20 4l-9 9M6.5 15.5l-3 3M17.5 15.5l3 3M7.5 13.5l3 3M16.5 13.5l-3 3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-concha" viewBox="0 0 24 24"><path d="M12 3c5 0 9 4 9 9 0 4-4 7-9 7s-9-3-9-7c0-5 4-9 9-9z" fill="currentColor"/><path d="M12 4v14M7.5 5.5L9 17.8M16.5 5.5L15 17.8M4.5 9l3 8.6M19.5 9l-3 8.6" stroke="#fff" stroke-opacity=".5" stroke-width="1.2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="2.4" fill="none"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M9 17.5V5l11-2v12.5" stroke="currentColor" stroke-width="2.2" fill="none"/><circle cx="6.5" cy="17.5" r="3" fill="currentColor"/><circle cx="17.5" cy="15.5" r="3" fill="currentColor"/></symbol>
+    <symbol id="i-bombo" viewBox="0 0 48 44"><ellipse cx="24" cy="24" rx="22" ry="19" fill="#0A4D75"/><ellipse cx="24" cy="20" rx="22" ry="19" fill="currentColor"/><ellipse cx="24" cy="20" rx="15.5" ry="13" fill="#fff" fill-opacity=".9"/><g fill="#fff" fill-opacity=".9"><circle cx="24" cy="3.6" r="1.6"/><circle cx="24" cy="36.4" r="1.6"/><circle cx="4.6" cy="20" r="1.6"/><circle cx="43.4" cy="20" r="1.6"/><circle cx="10" cy="8.5" r="1.6"/><circle cx="38" cy="8.5" r="1.6"/><circle cx="10" cy="31.5" r="1.6"/><circle cx="38" cy="31.5" r="1.6"/></g></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" aria-label="Capítulos">
+  <div class="wrap">
+    <a class="logo" href="#top">Coplea</a>
+    <a href="#nombre">Nombre</a><a href="#marca">Marca</a><a href="#mascotas">Mascotas</a><a href="#sistema">Sistema visual</a><a href="#pantallas">Pantallas</a><a href="#ejercicios">Ejercicios</a><a href="#juego">Gamificación</a><a href="#leccion">Lección jugable</a><a href="#prompts">Prompts</a><a href="#app">De concepto a app</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Concepto de producto · App de aprendizaje gamificada</p>
+      <h1 class="wordmark">Cople<span>a</span></h1>
+      <p class="tag">Aprende el Carnaval de Cádiz y de la comarca a golpe de copla.</p>
+      <p class="lead">Cinco minutos al día para distinguir una chirigota de una comparsa, saberse el repertorio del Falla, conocer a los autores y entender cada guiño de la calle. Con Quillo, la caballa, y Fina, la concha fina, como guías.</p>
+      <div class="chips"><span class="chip">Modalidades</span><span class="chip">Historia</span><span class="chip">Autores</span><span class="chip">Repertorios</span><span class="chip">Letras</span><span class="chip">Expresiones</span><span class="chip">Concurso</span><span class="chip">Comarca</span></div>
+    </div>
+    <div class="hero-art">
+      <div class="big m" data-m="caballa" data-e="canta"></div>
+      <div class="small m" data-m="concha" data-e="guino"></div>
+      <div class="bubble">¡Ojú, qué compás!</div>
+    </div>
+  </div>
+</header>
+<div class="serpentina" aria-hidden="true"></div>
+
+<main>
+<!-- 1 NOMBRE -->
+<section class="sec" id="nombre"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">1 · Nombre</p><h2>Seis nombres, uno recomendado</h2><p class="lead">Buscamos algo corto, que se diga en voz alta sin explicarlo y que funcione como verbo, icono y hashtag. Antes de cerrarlo conviene comprobar registro de marca (OEPM/EUIPO), dominios y nombres en las tiendas de apps.</p></div>
+  <div class="grid g3">
+    <article class="card name-card pick"><span class="badge-pick">Recomendado</span><div class="nm">Coplea</div><p><b>Verbo inventado: coplear.</b> Suena a acción y a juego ("¿has copleado hoy?"). Cabe en un icono, no depende de una sola modalidad y crece bien: <i>Coplea Comarca</i>, <i>Coplea Duelos</i>, <i>Coplea Kids</i>.</p></article>
+    <article class="card name-card"><div class="nm">Caballa</div><p>A los gaditanos les llaman <i>caballas</i>. Mascota y nombre son lo mismo, así que el reconocimiento es inmediato. Fuera de Cádiz necesita algo de contexto, y la versión comarcal encaja peor.</p></article>
+    <article class="card name-card"><div class="nm">Pito y Caja</div><p>El sonido de una comparsa o una chirigota en tres palabras. Muy carnavalero y muy sonoro. Como marca es algo más largo, y el coro y el cuarteto no se sienten incluidos.</p></article>
+    <article class="card name-card"><div class="nm">Tipazo</div><p>Juega con el <i>tipo</i> (el disfraz de la agrupación) y con el piropo. Tiene mucho potencial para compartir ("menudo tipazo de racha"), aunque para quien no conoce el carnaval no habla de aprender.</p></article>
+    <article class="card name-card"><div class="nm">¡Quillo!</div><p>El saludo de la calle convertido en app, con el nombre de la mascota. Muy cercano y muy viral. Corre el riesgo de quedarse solo en lo gracioso y de chocar con otras marcas andaluzas.</p></article>
+    <article class="card name-card"><div class="nm">Afinao</div><p>Sale del elogio que se le dice a una agrupación que suena bien. Encaja con el progreso ("cada día más afinao"). Funciona mejor como lema que como nombre.</p></article>
+  </div>
+  <p class="muted" style="margin-top:18px">Sistema propuesto: <b>Coplea</b> como marca madre · <b>Quillo</b> (caballa) como mascota principal · <b>Fina</b> (concha fina) como mascota de <b>Coplea Comarca</b> · lema: <b>"Cada día más afinao."</b></p>
+</div></section>
+
+<!-- 2 MARCA -->
+<section class="sec" id="marca"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">2 · Concepto de marca</p><h2>El carnaval se aprende como se aprende una copla: <span style="color:var(--red)">repitiendo y riéndose</span></h2></div>
+  <div class="grid g2">
+    <div class="card"><h3>Idea central</h3><p>Coplea convierte el saber carnavalero, que hasta ahora se pasaba de abuelos a nietos, de peña en peña y de ensayo en ensayo, en un juego diario. No es una enciclopedia: es el amigo que te explica en el Falla por qué ese pasodoble ha puesto a todo el teatro de pie.</p><p>Para quien ya es aficionado, es un reto y un orgullo. Para quien llega nuevo (estudiantes, gente de fuera, niños, visitantes), es la puerta de entrada más divertida.</p></div>
+    <div class="card"><h3>Personalidad</h3><ul class="clean"><li><b>Pícara, nunca hiriente.</b> Hace la broma, pero no a costa de quien falla.</li><li><b>Sabia sin pedantería.</b> Cuenta la historia como una anécdota de bar, sin datos de manual.</li><li><b>Gaditana de alma, abierta de puertas.</b> Usa el habla de aquí, pero siempre se entiende.</li><li><b>Festiva y con escenario.</b> Cada logro se celebra como un primer premio.</li></ul></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>Tono de voz en la práctica</h3>
+    <p class="muted" style="margin-bottom:10px">Regla de oro: una sola palabra local por frase y nunca en la información importante. "Afinao" sí; una frase entera en jerga que no entiende alguien de Valladolid, no.</p>
+    <div class="scroll-x"><table class="tone">
+      <thead><tr><th>Momento</th><th><span class="do">Sí</span></th><th><span class="dont">No</span></th></tr></thead>
+      <tbody>
+        <tr><td>Acierto</td><td>"¡Afinao! Eso suena a primer premio."</td><td>"Correcto. +10 XP."</td></tr>
+        <tr><td>Error</td><td>"Casi. Esa era la chirigota; el tango es cosa del coro."</td><td>"Incorrecto. Vuelve a intentarlo."</td></tr>
+        <tr><td>Racha en peligro</td><td>"Quillo te espera en la batea. Cinco minutos y la racha sigue viva."</td><td>"¡¡NO PIERDAS TU RACHA!!"</td></tr>
+        <tr><td>Abandono de lección</td><td>"¿Te vas en mitad del popurrí? Te guardo el sitio."</td><td>"Perderás todo tu progreso."</td></tr>
+        <tr><td>Subir de liga</td><td>"¡Pasas a semifinales! El Falla ya sabe tu nombre."</td><td>"Has sido promocionado a la liga 4."</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div></section>
+
+<!-- 3 MASCOTAS -->
+<section class="sec" id="mascotas"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">3 · Mascotas</p><h2>Quillo y Fina, la pareja del Atlántico y el Estrecho</h2><p class="lead">Mismo lenguaje gráfico: contorno de tinta de grosor constante, formas de huevo sin esquinas, ojos grandes con brillo doble, mofletes rosados y un único accesorio que es su firma. Si se ponen juntas, parecen de la misma familia sin ser iguales.</p></div>
+
+  <article class="mascot">
+    <div class="mascot-hero m" data-m="caballa" data-e="feliz"></div>
+    <div>
+      <p class="eyebrow">Mascota principal</p>
+      <h3 style="font-family:var(--font-d);font-weight:400;font-size:2.4rem;color:var(--blue)">Quillo, la caballa</h3>
+      <dl class="ficha">
+        <dt>Quién es</dt><dd>Una caballa de La Caleta que lleva viendo el concurso desde la orilla toda la vida. Se sabe todos los estribillos, aunque desafina un poquito y lo sabe.</dd>
+        <dt>Personalidad</dt><dd>Pícaro, rápido, cariñoso. Siempre tiene una coletilla preparada. Nunca se ríe de ti, se ríe contigo.</dd>
+        <dt>Aspecto</dt><dd>Cuerpo de huevo regordete. Lomo verde azulado con las rayas onduladas típicas de la caballa, convertidas en tres trazos limpios. Barriga plateada, cola en V y aleta dorsal pequeña que se mueve cuando está nervioso.</dd>
+        <dt>Firma</dt><dd><b>Antifaz rojo Falla</b> que nunca se quita. Es lo que lo hace reconocible incluso en un icono de 48 px.</dd>
+        <dt>Accesorios puntuales</dt><dd>Gorrito de fiesta en celebraciones, pito de caña al cantar, el bombo en la pantalla de audio. Nunca más de uno a la vez.</dd>
+        <dt>Muletillas</dt><dd>"¡Afinao!" · "Eso es, quillo" · "Otra vuelta, que el Falla no se gana a la primera" · "¡Ojú, qué compás!"</dd>
+      </dl>
+    </div>
+  </article>
+  <div class="expr" data-sheet="caballa"></div>
+
+  <div class="inter">
+    <div class="card"><b>Felicita</b><p class="quote">"¡Afinao! Eso suena a primer premio."</p><p class="muted">Guiño y salto. La aleta dorsal vibra.</p></div>
+    <div class="card"><b>Corrige</b><p class="quote">"Casi. El tango es del coro; la comparsa va de pasodoble."</p><p class="muted">Ojos tiernos, nunca enfadado. Siempre explica el porqué.</p></div>
+    <div class="card"><b>Anima</b><p class="quote">"Te queda una lección para salvar la racha. Vamos, que es un cuplé."</p><p class="muted">Asoma por el borde de la pantalla con el pito.</p></div>
+    <div class="card"><b>Celebra</b><p class="quote">"¡A la final! Ya te veo en el cartel."</p><p class="muted">Gorrito, confeti y voltereta. Ojos en arco.</p></div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3>Poses clave para el kit de ilustración</h3><p class="muted">1 · Saludo con aleta levantada (onboarding). 2 · Cantando con la boca en "O" y notas (pantalla de audio). 3 · Asomándose por una esquina (avisos y notificaciones). 4 · Voltereta con confeti (subir de liga). 5 · Sentado en el borde de una batea, columpiando la cola (pantalla vacía). 6 · Con el bombo colgado (retos de ritmo). 7 · Pensativo con una aleta en la barbilla (pista). 8 · Dormido con el antifaz caído (racha perdida, para reactivar).</p></div>
+
+  <article class="mascot" style="margin-top:48px">
+    <div class="mascot-hero m" data-m="concha" data-e="feliz"></div>
+    <div>
+      <p class="eyebrow" style="color:var(--pink)">Mascota de Coplea Comarca</p>
+      <h3 style="font-family:var(--font-d);font-weight:400;font-size:2.4rem;color:var(--pink)">Fina, la concha fina</h3>
+      <dl class="ficha">
+        <dt>Quién es</dt><dd>Prima de Quillo, de la orilla del Estrecho. Ha recorrido los carnavales de La Línea, Algeciras, San Roque, Los Barrios, Tarifa y los pueblos de la sierra, y quiere que se conozcan tanto como el de Cádiz.</dd>
+        <dt>Personalidad</dt><dd>Elegante, cálida y con retranca. Más pausada que Quillo y más observadora. Es la que te recuerda que el carnaval tiene muchas casas.</dd>
+        <dt>Aspecto</dt><dd>Concha ovalada y brillante en degradado de coral a rosa, con rayos finos que salen del vértice superior. El labio inferior es de nácar claro y se abre un poco cuando habla, como si cantara con la concha.</dd>
+        <dt>Firma</dt><dd><b>Clavel rojo</b> sobre la concha y un <b>lunar</b> junto a la boca. En fiesta se pone un antifaz turquesa, el color complementario del de Quillo.</dd>
+        <dt>Accesorios puntuales</dt><dd>Abanico, pandereta y farolillo para las fiestas locales.</dd>
+        <dt>Muletillas</dt><dd>"¡Qué arte!" · "Eso, con dos conchas" · "Aquí también se canta, y se canta bien".</dd>
+      </dl>
+    </div>
+  </article>
+  <div class="expr" data-sheet="concha"></div>
+
+  <div class="inter">
+    <div class="card"><b>Felicita</b><p class="quote">"¡Qué arte! Eso, con dos conchas."</p><p class="muted">Se abre y cierra dos veces, como un aplauso.</p></div>
+    <div class="card"><b>Corrige</b><p class="quote">"Ese no era, pero te lo cuento: aquí la final se canta en otro escenario."</p><p class="muted">Inclina la concha y sonríe de lado.</p></div>
+    <div class="card"><b>Anima</b><p class="quote">"Una lección más y te llevas el farolillo de la semana."</p><p class="muted">Abanico en mano, guiño.</p></div>
+    <div class="card"><b>Celebra</b><p class="quote">"¡Ya eres de la comarca entera!"</p><p class="muted">Se pone el antifaz turquesa y gira sobre sí misma.</p></div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3>Cómo conviven</h3><p>Quillo es la mascota de la app y aparece en el icono, la tienda y las notificaciones. Fina lleva el <b>Modo Comarca</b>: al entrar, la interfaz cambia a su paleta coral y es ella quien guía. En eventos especiales (duelos Cádiz contra comarca, el "Puente del Carnaval") salen juntos: Quillo provoca, Fina remata. Ese pique cariñoso entre primos da para mucho contenido en redes.</p></div>
+</div></section>
+
+<!-- 4 SISTEMA VISUAL -->
+<section class="sec" id="sistema"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">4 · Sistema visual</p><h2>Colores del Atlántico, ladrillo del Falla y sol de febrero</h2><p class="lead">La paleta sale de lugares reales: el agua de La Caleta, el lomo de la caballa, el ladrillo rojo neomudéjar del Gran Teatro Falla, el sol de las tardes de carnaval y el coral de la concha fina. Fondo blanco cal en lugar de crema.</p></div>
+
+  <div class="grid g4">
+    <div class="sw"><div class="c" style="background:#0F6FA8"></div><div class="t"><b>Azul Caleta</b><code>#0F6FA8</code><span>Primario, botones, marca</span></div></div>
+    <div class="sw"><div class="c" style="background:#178A98"></div><div class="t"><b>Lomo de caballa</b><code>#178A98</code><span>Secundario, Quillo, etiquetas</span></div></div>
+    <div class="sw"><div class="c" style="background:#E0442E"></div><div class="t"><b>Rojo Falla</b><code>#E0442E</code><span>Antifaz, vidas, errores, alertas</span></div></div>
+    <div class="sw"><div class="c" style="background:#FFC531"></div><div class="t"><b>Sol de febrero</b><code>#FFC531</code><span>XP, duros, premios, racha</span></div></div>
+    <div class="sw"><div class="c" style="background:#12A07E"></div><div class="t"><b>Verde acierto</b><code>#12A07E</code><span>Correcto, progreso, completado</span></div></div>
+    <div class="sw"><div class="c" style="background:#EA8984"></div><div class="t"><b>Coral concha</b><code>#EA8984</code><span>Modo Comarca, Fina</span></div></div>
+    <div class="sw"><div class="c" style="background:#13283A"></div><div class="t"><b>Tinta</b><code>#13283A</code><span>Texto, contornos de ilustración</span></div></div>
+    <div class="sw"><div class="c" style="background:#F4F8FB;border-bottom:1px solid #DCE5EC"></div><div class="t"><b>Blanco cal</b><code>#F4F8FB</code><span>Fondo de app</span></div></div>
+  </div>
+  <p class="muted" style="margin-top:10px;font-size:.9rem">Modo oscuro ("Noche de Falla"): fondo <code class="inline">#0A1622</code>, tarjetas <code class="inline">#112233</code>. Los acentos suben de luminosidad para mantener contraste AA.</p>
+
+  <div class="grid g2" style="margin-top:28px">
+    <div class="card">
+      <h3>Tipografía</h3>
+      <div class="type-spec" style="margin-top:12px">
+        <div class="row"><small>Display · Lilita One</small><div style="font-family:var(--font-d);font-size:2rem;line-height:1">¡A la final!</div></div>
+        <div class="row"><small>Interfaz · Figtree 800–900</small><div style="font-weight:900;font-size:1.2rem">¿Qué modalidad canta tangos?</div></div>
+        <div class="row"><small>Texto · Figtree 500</small><div>El coro sale en batea el domingo de carnaval, con guitarras, bandurrias y laúdes.</div></div>
+        <div class="row"><small>Datos · JetBrains Mono</small><div style="font-family:var(--font-m)">1.250 XP · 12 días · 340 duros</div></div>
+      </div>
+      <p class="muted" style="margin-top:12px;font-size:.9rem">Lilita One solo para titulares cortos, celebraciones y el logo: tiene el aire de los carteles de agrupación. Figtree carga con toda la interfaz porque es redondeada, legible a 11 px y tiene pesos muy negros para botones. Las tres son gratuitas (Google Fonts).</p>
+    </div>
+    <div class="card">
+      <h3>Iconos</h3>
+      <p class="muted">Rellenos (no de línea), de esquinas redondeadas, con un segundo tono para el brillo y sobre una rejilla de 24 px. Cada icono de juego tiene su versión carnavalera: la vida es un corazón con antifaz, la moneda es un <i>duro antiguo</i> (en homenaje al tango de 1905) y el nodo del mapa es un bombo visto de frente.</p>
+      <div class="icons-demo" style="margin-top:14px">
+        <div><svg><use href="#i-racha"/></svg>Racha</div>
+        <div><svg><use href="#i-vida"/></svg>Vida</div>
+        <div><svg><use href="#i-duro"/></svg>Duros</div>
+        <div><svg><use href="#i-xp"/></svg>XP</div>
+        <div><svg style="color:#0F6FA8;width:48px"><use href="#i-bombo"/></svg>Lección</div>
+        <div><svg style="color:var(--teal)"><use href="#i-trophy"/></svg>Liga</div>
+        <div><svg style="color:var(--pink)"><use href="#i-concha"/></svg>Comarca</div>
+        <div><svg style="color:var(--red)"><use href="#i-duelo"/></svg>Duelo</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px;margin-bottom:12px">Botones: forma de entrada del Falla</h3>
+  <div class="btn-demo">
+    <button class="btn" type="button">Continuar</button>
+    <button class="btn green" type="button">Comprobar</button>
+    <button class="btn sun" type="button">Abrir batea</button>
+    <button class="btn red" type="button">Entendido</button>
+    <button class="btn ghost" type="button">Saltar</button>
+    <button class="btn" type="button" disabled>Comprobar</button>
+  </div>
+  <p class="muted" style="margin-top:10px;font-size:.92rem">Píldora gruesa con <b>muescas laterales de entrada de teatro</b> y un canto inferior de 5 px que se hunde al pulsar, para que se sienta físico. Texto en mayúsculas de peso 900 con algo de espaciado. Altura mínima de 52 px. Este detalle de la entrada lo separa visualmente de cualquier otra app educativa.</p>
+
+  <h3 style="margin-top:32px;margin-bottom:12px">Tarjetas</h3>
+  <div class="demo-cards">
+    <div class="lcard"><span class="k" style="color:#178A98">Mundo 1 · La Caleta</span><h4>Primeros compases: las cuatro modalidades</h4><div class="bar"><i style="width:62%"></i></div><span style="font-size:.8rem;color:#6A7E8F;font-weight:700">5 de 8 lecciones</span></div>
+    <div class="lcard" style="border-color:#FFD979;background:#FFF8E1"><span class="k" style="color:#A87700">Reto diario</span><h4>Coplas rápidas: 5 preguntas en 60 s</h4><span style="font-size:.85rem;font-weight:800;color:#A87700">x2 XP · quedan 6 h</span></div>
+    <div class="lcard" style="border-color:#F5B9B5;background:#FFF1F0"><span class="k" style="color:#C2524C">Coplea Comarca</span><h4>El carnaval de La Línea, de la calle al concurso</h4><span style="font-size:.85rem;font-weight:800;color:#C2524C">Con Fina</span></div>
+  </div>
+  <p class="muted" style="margin-top:10px;font-size:.92rem">Radio de 20 px, borde de 2 px y canto inferior de 6 px (el mismo gesto físico que los botones). Cada tarjeta lleva una etiqueta de categoría en mayúsculas, un título de dos líneas como máximo y un solo dato de progreso. Sin sombras difusas: la profundidad viene del canto.</p>
+
+  <div class="grid g2" style="margin-top:28px">
+    <div class="card"><h3>Estilo de ilustración</h3><ul class="clean"><li>Contorno de tinta de 4 px a tamaño de referencia (220 px), con esquinas y uniones redondeadas.</li><li>Colores planos más un único brillo blanco al 50 %. Sin degradados salvo en el nácar de Fina.</li><li>Ojos grandes con dos brillos y pupilas que pueden mirar hacia los botones.</li><li>Atrezo carnavalero mínimo: confeti de cuatro colores de la paleta y serpentinas en diagonal.</li><li>Fondos de escena: la silueta del Falla, la batea, la Caleta al atardecer. Siempre simplificados a tres planos.</li></ul></div>
+    <div class="card"><h3>Movimiento</h3><ul class="clean"><li>Mascotas animadas en <b>Rive</b>, con máquina de estados: reposo, habla, acierto, error, fiesta y dormido.</li><li>Acierto: rebote corto (200 ms) y un compás de pito.</li><li>Error: sacudida horizontal suave, nunca roja a pantalla completa.</li><li>Subir de liga: telón rojo que se abre y lluvia de confeti.</li><li>Todo respeta el ajuste de "reducir movimiento" del sistema.</li></ul></div>
+  </div>
+</div></section>
+
+<!-- 5 PANTALLAS -->
+<section class="sec" id="pantallas"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">5 · Pantallas principales</p><h2>Once pantallas, un mismo escenario</h2><p class="lead">Estructura de cada pantalla a nivel de wireframe con estilo. Los datos son de ejemplo.</p></div>
+  <div class="phones" id="phones"></div>
+</div></section>
+
+<!-- 6 EJERCICIOS -->
+<section class="sec" id="ejercicios"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">6 · Tipos de ejercicio</p><h2>Nueve formas de coplear</h2><p class="lead">Cada tipo tiene nombre propio dentro de la app, para que el usuario los reconozca y los pida ("hoy quiero Oído de Falla").</p></div>
+  <div class="ex-grid">
+    <div class="card ex"><span class="tp">Opción múltiple</span><div class="nm">¿Tú qué dices?</div><p>Pregunta con 3 o 4 respuestas, con imagen o sin ella.</p><div class="eg"><b>Ejemplo</b>¿Qué modalidad tiene el tango como pieza estrella? Coro · Comparsa · Chirigota · Cuarteto</div></div>
+    <div class="card ex"><span class="tp">Relacionar</span><div class="nm">Pareja de baile</div><p>Dos columnas de 4 a 5 elementos que se emparejan tocando.</p><div class="eg"><b>Ejemplo</b>Modalidad ↔ rasgo: Cuarteto ↔ claves y parodia · Coro ↔ bandurrias y laúdes</div></div>
+    <div class="card ex"><span class="tp">Ordenar</span><div class="nm">Monta el repertorio</div><p>Fichas que se arrastran a una línea: orden del repertorio, versos de una estrofa o fechas.</p><div class="eg"><b>Ejemplo</b>Ordena la actuación de una comparsa: presentación, pasodobles, cuplés con estribillo, popurrí.</div></div>
+    <div class="card ex"><span class="tp">Completar letras</span><div class="nm">Afina la letra</div><p>Hueco en una letra o una frase, con banco de palabras o teclado en niveles altos.</p><div class="eg"><b>Ejemplo</b>"El domingo de carnaval los coros recorren el centro subidos en ___."</div></div>
+    <div class="card ex"><span class="tp">Reconocer audios</span><div class="nm">Oído de Falla</div><p>Fragmento de 10 a 20 s con reproducción lenta. Hay que reconocer la modalidad, la pieza o la agrupación.</p><div class="eg"><b>Ejemplo</b>Escucha y elige: ¿pasodoble de comparsa o de chirigota?</div></div>
+    <div class="card ex"><span class="tp">Identificar agrupaciones</span><div class="nm">¿Quién canta?</div><p>Foto del tipo, el cartel o un verso famoso: ¿qué agrupación es, de qué año, de qué autor?</p><div class="eg"><b>Ejemplo</b>Ilustración de un tipo y tres agrupaciones del mismo año como opciones.</div></div>
+    <div class="card ex"><span class="tp">Distinguir modalidades</span><div class="nm">Cada uno a su batea</div><p>Clasificar tarjetas en 2 a 4 cajas arrastrando, con tiempo.</p><div class="eg"><b>Ejemplo</b>¿Va a coro, comparsa, chirigota o cuarteto? "Tango", "Parodia", "Pasodoble serio", "Humor y crítica".</div></div>
+    <div class="card ex"><span class="tp">Historia</span><div class="nm">La memoria del Falla</div><p>Verdadero o falso, línea del tiempo y "¿antes o después?".</p><div class="eg"><b>Ejemplo</b>Durante el franquismo el carnaval de Cádiz se celebró con otro nombre: "Fiestas Típicas Gaditanas". ¿Verdadero o falso?</div></div>
+    <div class="card ex"><span class="tp">Reto rápido diario</span><div class="nm">Coplas rápidas</div><p>5 preguntas mezcladas en 60 s. Sin vidas en juego y con doble de XP. Mantiene viva la racha.</p><div class="eg"><b>Ejemplo</b>Una pregunta por mundo, con dificultad adaptada a tus fallos recientes.</div></div>
+  </div>
+</div></section>
+
+<!-- 7 GAMIFICACION -->
+<section class="sec" id="juego"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">7 · Gamificación</p><h2>Del ensayo al primer premio</h2><p class="lead">Todos los sistemas usan el calendario y el vocabulario del concurso, así que subir de nivel se siente como avanzar en el Falla.</p></div>
+
+  <div class="grid g3">
+    <div class="card"><h3>XP: cómo se gana</h3><table class="xp-table"><tbody>
+      <tr><td>Lección completada</td><td>+10</td></tr><tr><td>Lección sin fallos</td><td>+5</td></tr><tr><td>Reto diario (Coplas rápidas)</td><td>x2</td></tr><tr><td>Ganar un duelo</td><td>+20</td></tr><tr><td>Repaso de errores</td><td>+5</td></tr><tr><td>Hora del Falla (20:00–22:00 en temporada)</td><td>x1,5</td></tr>
+    </tbody></table></div>
+    <div class="card"><h3>Racha, vidas y duros</h3><ul class="clean">
+      <li><b>Racha:</b> días seguidos con al menos una lección. A los 7, 30, 100 y 365 días aparecen animaciones especiales de Quillo.</li>
+      <li><b>Protector de racha</b> ("Me pongo malo"): salva un día perdido. Se compra con duros.</li>
+      <li><b>Vidas:</b> 5 corazones con antifaz. Cada error cuesta uno y se recupera uno cada 4 h, o al hacer un repaso.</li>
+      <li><b>Duros:</b> la moneda de la app. Se ganan con logros y cofres (bateas) y se gastan en la tienda.</li>
+    </ul></div>
+    <div class="card"><h3>Retos semanales</h3><ul class="clean">
+      <li><b>Semana del tango:</b> 3 lecciones de coro y 1 audio.</li>
+      <li><b>Semana callejera:</b> todo sobre ilegales y romanceros.</li>
+      <li><b>Semana del autor:</b> una figura histórica cada semana, con su obra y su contexto.</li>
+      <li>Al completarlo te llevas una <b>batea sorpresa</b> (cofre) e insignias de colección.</li>
+    </ul></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><h3>Niveles (por XP acumulada)</h3>
+      <ol class="ladder" style="margin-top:10px">
+        <li><span class="lv" style="background:#9AAAB8">1</span>Aficionao<small>0</small></li>
+        <li><span class="lv" style="background:#178A98">2</span>De ensayo<small>500</small></li>
+        <li><span class="lv" style="background:#178A98">3</span>Con el tipo puesto<small>1.500</small></li>
+        <li><span class="lv" style="background:#0F6FA8">4</span>Callejero<small>3.000</small></li>
+        <li><span class="lv" style="background:#0F6FA8">5</span>Concursante<small>6.000</small></li>
+        <li><span class="lv" style="background:#E0442E">6</span>Finalista<small>12.000</small></li>
+        <li><span class="lv" style="background:#E0442E">7</span>Primer premio<small>25.000</small></li>
+        <li><span class="lv" style="background:#C9930E">8</span>Leyenda del Falla<small>50.000</small></li>
+      </ol>
+    </div>
+    <div class="card"><h3>Ligas semanales (las fases del concurso)</h3>
+      <p class="muted">Grupos de 30 personas. Los 7 primeros suben de fase y los 5 últimos bajan. Las fases son las del COAC.</p>
+      <ol class="ladder" style="margin-top:10px">
+        <li><span class="lv" style="background:#9AAAB8">P</span>Preliminares<small>entrada</small></li>
+        <li><span class="lv" style="background:#178A98">C</span>Cuartos de final<small>top 7 sube</small></li>
+        <li><span class="lv" style="background:#0F6FA8">S</span>Semifinales<small>top 7 sube</small></li>
+        <li><span class="lv" style="background:#E0442E">F</span>Gran Final<small>top 5 sube</small></li>
+        <li><span class="lv" style="background:#C9930E">1º</span>Primer Premio<small>top 3 sube</small></li>
+        <li><span class="lv" style="background:#13283A">★</span>Leyenda<small>liga de élite</small></li>
+      </ol>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;margin-bottom:12px">Insignias de colección</h3>
+  <div class="badges">
+    <div class="bdg"><div class="hex" style="background:#178A98">1</div><b>Primer pasodoble</b><span>Completa tu primera unidad.</span></div>
+    <div class="bdg"><div class="hex" style="background:#0F6FA8">♪</div><b>Oído de Falla</b><span>10 audios seguidos sin fallo.</span></div>
+    <div class="bdg"><div class="hex" style="background:#E0442E">30</div><b>Racha de Levante</b><span>30 días de racha. Ni el viento te tumba.</span></div>
+    <div class="bdg"><div class="hex" style="background:#C9930E">5</div><b>Duros antiguos</b><span>Junta 1.000 duros.</span></div>
+    <div class="bdg"><div class="hex" style="background:#12A07E">C</div><b>Callejero</b><span>Termina el mundo de las ilegales.</span></div>
+    <div class="bdg"><div class="hex" style="background:#6B4FC4">3</div><b>Ostionada</b><span>Invita a 3 amigos que completen una lección.</span></div>
+    <div class="bdg"><div class="hex" style="background:#EA8984">∞</div><b>Primos del Estrecho</b><span>Completa un pueblo en Coplea Comarca.</span></div>
+    <div class="bdg"><div class="hex" style="background:#13283A">✦</div><b>Madrugón de Carrusel</b><span>Haz el reto diario antes de las 9:00 un domingo de carnaval.</span></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><h3>Duelos: "Duelo de cuplés"</h3><ul class="clean">
+      <li>1 contra 1, en tiempo real o asíncrono. 7 preguntas de 10 s cada una.</li>
+      <li>Se apuestan duros. El ganador se lleva el bote y XP extra.</li>
+      <li><b>Mecánica viral:</b> quien pierde recibe una tarjeta para compartir con Quillo de luto ("He perdido un duelo con @ana. Me toca cantar el estribillo") preparada para stories.</li>
+      <li>Modo especial <b>Cádiz contra comarca</b> en temporada: duelos entre equipos con Quillo y Fina de capitanes.</li>
+    </ul></div>
+    <div class="card"><h3>Temporada (el gancho anual)</h3><ul class="clean">
+      <li><b>Septiembre–diciembre, Ensayos:</b> contenido base, autores e historia.</li>
+      <li><b>Enero–febrero, Concurso:</b> "Falla en directo". Preguntas cada mañana sobre la sesión de la noche anterior y quiniela de pases.</li>
+      <li><b>Semana de carnaval, Calle:</b> retos de ilegales, carrusel de coros y fiestas gastronómicas (erizada, ostionada, pestiñada).</li>
+      <li><b>Resto del año, Memoria:</b> repasos y especiales de autores.</li>
+      <li>La pantalla de inicio muestra una cuenta atrás: "Faltan 118 días para el Falla".</li>
+    </ul></div>
+  </div>
+
+  <h3 style="margin-top:28px;margin-bottom:12px">Progreso por mundos</h3>
+  <div class="worlds">
+    <div class="world" style="background:#178A98"><span class="n">Mundo 1</span><h4>La Caleta</h4><p>Primeros compases: las cuatro modalidades del concurso, instrumentos y qué es el tipo.</p></div>
+    <div class="world" style="background:#0F6FA8"><span class="n">Mundo 2</span><h4>La Viña</h4><p>Habla y calle: expresiones, ilegales, romanceros, carrusel de coros y fiestas gastronómicas.</p></div>
+    <div class="world" style="background:#E0442E"><span class="n">Mundo 3</span><h4>El Falla</h4><p>El concurso: fases, repertorio, cómo puntúa el jurado y los premios.</p></div>
+    <div class="world" style="background:#6B4FC4"><span class="n">Mundo 4</span><h4>La Memoria</h4><p>Historia: orígenes, la época de las "Fiestas Típicas", la recuperación y los grandes momentos.</p></div>
+    <div class="world" style="background:#C9930E"><span class="n">Mundo 5</span><h4>Los Maestros</h4><p>Autores y repertorios: del Tío de la Tiza y Paco Alba a los autores de hoy.</p></div>
+    <div class="world" style="background:#C2524C"><span class="n">Mundo Comarca · con Fina</span><h4>El Estrecho</h4><p>La Línea, Algeciras, San Roque, Los Barrios, Tarifa, Jimena y Castellar. Un submundo por pueblo.</p></div>
+  </div>
+</div></section>
+
+<!-- 8 LECCION -->
+<section class="sec" id="leccion"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">8 · Ejemplo de lección</p><h2>Juega una lección de verdad</h2></div>
+  <div class="lesson-wrap">
+    <div style="display:grid;gap:16px">
+      <p class="lead">Mundo 1 · La Caleta · Lección 3: <b>"Cada uno a su batea"</b>. Seis ejercicios de cinco tipos distintos. Tienes 5 vidas y cada error te quita una, pero la pregunta vuelve al final para que la aciertes.</p>
+      <div class="card"><h3>Estructura de la lección</h3><ul class="clean">
+        <li><b>1 · ¿Tú qué dices?</b> La pieza estrella del coro.</li>
+        <li><b>2 · Pareja de baile.</b> Cada modalidad con su rasgo.</li>
+        <li><b>3 · Monta el repertorio.</b> El orden de la actuación de una comparsa.</li>
+        <li><b>4 · Afina la letra.</b> El carrusel de coros.</li>
+        <li><b>5 · Oído de Falla.</b> Ritmo de bombo y caja (sintetizado en el navegador; pulsa el botón amarillo).</li>
+        <li><b>6 · La memoria del Falla.</b> El teatro del concurso.</li>
+      </ul></div>
+      <div class="card"><h3>Qué se ve en cada respuesta</h3><p>Al comprobar, sube una hoja verde o roja con Quillo reaccionando. Siempre hay una frase que explica el porqué: el error es parte de la lección. Al final, resumen de XP, precisión y racha, con Quillo de fiesta.</p></div>
+      <p class="muted" style="font-size:.88rem">En la app real, el ejercicio de audio usaría fragmentos con licencia de las agrupaciones (o grabados ex profeso para la app) y las letras citadas se acordarían con sus autores.</p>
+    </div>
+    <div class="lesson" id="lesson" aria-live="polite"></div>
+  </div>
+</div></section>
+
+<!-- 9 PROMPTS -->
+<section class="sec" id="prompts"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">9 · Propuesta para mockups</p><h2>Prompts listos para un diseñador o una IA</h2><p class="lead">Escritos en inglés, porque los generadores de imagen (Midjourney, DALL·E, Ideogram, Firefly) responden mejor así. El primer bloque es el estilo base: pégalo delante de cualquier otro.</p></div>
+  <div class="grid g2" id="prompt-list"></div>
+</div></section>
+
+<!-- 10 APP -->
+<section class="sec" id="app"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">10 · De concepto a app</p><h2>Preparado para construir</h2></div>
+  <div class="grid g3">
+    <div class="card"><h3>Tecnología sugerida</h3><ul class="clean"><li><b>Flutter</b> o <b>React Native</b> (iOS y Android con un solo código).</li><li>Mascotas en <b>Rive</b> con máquina de estados; confeti en Lottie.</li><li>Backend: Supabase o Firebase (auth, ligas, duelos en tiempo real).</li><li>CMS de contenido (Directus, Strapi o Sanity) para que el equipo editorial cree lecciones sin programar.</li></ul></div>
+    <div class="card"><h3>Contenido y derechos</h3><ul class="clean"><li>Equipo editorial con aficionados, peñas y asociaciones de autores. En la comarca, con las asociaciones de cada pueblo.</li><li>Audios: licencias con agrupaciones y entidades de gestión, o grabaciones propias.</li><li>Letras: citar fragmentos breves con permiso. Las más antiguas, como las de principios del siglo XX, pueden estar en dominio público.</li><li>Revisión histórica de cada pregunta antes de publicarla.</li></ul></div>
+    <div class="card"><h3>MVP en 3 fases</h3><ul class="clean"><li><b>Fase 1:</b> Mundos 1 a 3, 5 tipos de ejercicio, racha, XP y vidas.</li><li><b>Fase 2:</b> ligas, duelos, tienda y Oído de Falla.</li><li><b>Fase 3:</b> Coplea Comarca con Fina y el modo temporada en directo.</li><li>Lanzamiento ideal: noviembre, para llegar con usuarios al concurso de enero.</li></ul></div>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div style="min-width:0"><h3 style="margin-bottom:10px">Tokens de diseño (extracto)</h3><pre class="code">{
+  "color": {
+    "primary":   "#0F6FA8",  "secondary": "#178A98",
+    "danger":    "#E0442E",  "reward":    "#FFC531",
+    "success":   "#12A07E",  "comarca":   "#EA8984",
+    "ink":       "#13283A",  "bg":        "#F4F8FB"
+  },
+  "radius": { "button": 16, "card": 20, "chip": 12 },
+  "depth":  { "button": 5,  "card": 6 },
+  "font":   { "display": "Lilita One", "ui": "Figtree", "data": "JetBrains Mono" }
+}</pre></div>
+    <div style="min-width:0"><h3 style="margin-bottom:10px">Modelo de un ejercicio</h3><pre class="code">{
+  "id": "m1-l3-e1",
+  "world": "la-caleta", "region": "cadiz",
+  "type": "multiple_choice",
+  "prompt": "¿Qué modalidad tiene el tango como pieza estrella?",
+  "options": ["Comparsa", "Coro", "Chirigota", "Cuarteto"],
+  "answer": 1,
+  "explain": "El tango es la pieza del coro…",
+  "mascot": { "ok": "guino", "ko": "triste" },
+  "tags": ["modalidades", "coro"], "difficulty": 1
+}</pre></div>
+  </div>
+</div></section>
+</main>
+<footer><div class="wrap">Coplea: concepto de producto. Las agrupaciones, autores y datos citados se usan como contenido educativo de ejemplo y conviene revisarlos con especialistas antes de publicar.</div></footer>
+
+<script>
+(function(){
+let uid=0;
+const INK="#13283A";
+
+/* ---------- Mascots ---------- */
+function eyes(e,lx,rx,y,opt){
+  opt=opt||{};
+  const eyeOpen=(x,dx,dy)=>`<circle cx="${x}" cy="${y}" r="13" fill="#fff" stroke="${INK}" stroke-width="3"/><circle cx="${x+dx}" cy="${y+dy}" r="7.2" fill="${INK}"/><circle cx="${x+dx-2.6}" cy="${y+dy-3}" r="2.6" fill="#fff"/><circle cx="${x+dx+2.6}" cy="${y+dy+2.4}" r="1.2" fill="#fff"/>`;
+  const arc=(x)=>`<path d="M${x-11},${y+3} Q${x},${y-10} ${x+11},${y+3}" fill="none" stroke="${INK}" stroke-width="4.5" stroke-linecap="round"/>`;
+  const lash=(x,s)=>opt.lashes?`<path d="M${x+s*9},${y-11} l${s*5},-6 M${x+s*12},${y-7} l${s*6},-3" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`:"";
+  let L,R,extra="";
+  switch(e){
+    case "guino": L=eyeOpen(lx,1,1); R=arc(rx); break;
+    case "fiesta": L=arc(lx); R=arc(rx); break;
+    case "triste": L=eyeOpen(lx,0,3); R=eyeOpen(rx,0,3);
+      extra=`<path d="M${lx-12},${y-18} L${lx+8},${y-22}" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><path d="M${rx+12},${y-18} L${rx-8},${y-22}" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`; break;
+    case "sorpresa": L=eyeOpen(lx,0,0).replace('r="7.2"','r="5"'); R=eyeOpen(rx,0,0).replace('r="7.2"','r="5"'); break;
+    case "piensa": L=eyeOpen(lx,3,-4); R=eyeOpen(rx,3,-4); break;
+    default: L=eyeOpen(lx,2,1); R=eyeOpen(rx,2,1);
+  }
+  return L+lash(lx,-1)+R+lash(rx,1)+extra;
+}
+function mouth(e,x,y,fillIn){
+  const t=fillIn||"#7A1F2B";
+  switch(e){
+    case "canta": return `<ellipse cx="${x}" cy="${y+4}" rx="9" ry="11" fill="${t}" stroke="${INK}" stroke-width="3.5"/><ellipse cx="${x}" cy="${y+10}" rx="5" ry="3.5" fill="#F27A8A"/>`;
+    case "triste": return `<path d="M${x-10},${y+8} Q${x},${y-1} ${x+10},${y+8}" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+    case "sorpresa": return `<ellipse cx="${x}" cy="${y+4}" rx="6" ry="7" fill="${t}" stroke="${INK}" stroke-width="3.5"/>`;
+    case "piensa": return `<path d="M${x-8},${y+4} Q${x+2},${y+1} ${x+9},${y+5}" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+    default: return `<path d="M${x-14},${y-1} Q${x},${y+20} ${x+14},${y-1} Z" fill="${t}" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/><path d="M${x-7},${y+9} Q${x},${y+5} ${x+7},${y+9} Q${x},${y+15} ${x-7},${y+9}Z" fill="#F27A8A"/>`;
+  }
+}
+function extras(e,who){
+  let s="";
+  if(e==="fiesta"){
+    const hx=who==="caballa"?92:150, hy=who==="caballa"?30:34;
+    s+=`<path d="M${hx-16},${hy+8} L${hx+2},${hy-30} L${hx+18},${hy+6} Z" fill="#FFC531" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/><path d="M${hx-9},${hy-6} L${hx+12},${hy-8} M${hx-13},${hy+2} L${hx+15},${hy}" stroke="#E0442E" stroke-width="3.5"/><circle cx="${hx+2}" cy="${hy-32}" r="5" fill="#E0442E" stroke="${INK}" stroke-width="3"/>`;
+    const conf=[[20,30,"#E0442E"],[200,24,"#178A98"],[14,120,"#FFC531"],[206,110,"#0F6FA8"],[40,10,"#12A07E"],[180,150,"#EA8984"]];
+    conf.forEach(([x,y,c],i)=>{s+=`<rect x="${x}" y="${y}" width="9" height="5" rx="2" fill="${c}" transform="rotate(${i*37} ${x} ${y})"/>`});
+  }
+  if(e==="canta"){
+    s+=`<g fill="${INK}"><path d="M196,40 v-22 l14,-4 v20" stroke="${INK}" stroke-width="3" fill="none"/><circle cx="192" cy="40" r="5"/><circle cx="206" cy="34" r="5"/><path d="M178,12 v-14" stroke="${INK}" stroke-width="3"/><circle cx="174" cy="12" r="4.5"/></g>`;
+  }
+  if(e==="piensa"){
+    s+=`<circle cx="196" cy="22" r="14" fill="#fff" stroke="${INK}" stroke-width="3"/><text x="196" y="29" text-anchor="middle" font-family="Figtree,sans-serif" font-weight="900" font-size="20" fill="${INK}">?</text><circle cx="180" cy="44" r="4" fill="#fff" stroke="${INK}" stroke-width="2.5"/>`;
+  }
+  if(e==="triste"){
+    s+=`<path d="M${who==="caballa"?44:72},${who==="caballa"?92:100} q-4,8 0,12 q4,-4 0,-12z" fill="#7CC4F0" stroke="${INK}" stroke-width="2"/>`;
+  }
+  return s;
+}
+function caballa(e){
+  const id="cb"+(++uid);
+  const fin=e==="fiesta"?`<path d="M128,104 q12,-26 30,-30 q-2,18 -22,36 Z" fill="#178A98" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>`
+                       :`<path d="M126,112 q20,-4 26,14 q-16,6 -26,-14 Z" fill="#178A98" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>`;
+  return `<svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quillo, la caballa">
+  <defs><clipPath id="${id}"><ellipse cx="96" cy="94" rx="80" ry="60"/></clipPath></defs>
+  <path d="M160,94 C176,74 188,54 210,40 C202,72 202,116 210,148 C188,134 176,114 160,94 Z" fill="#0F5F73" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M84,38 L100,14 L118,38 Z" fill="#0F5F73" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M136,44 l10,-12 l6,16 Z" fill="#0F5F73" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+  <ellipse cx="96" cy="94" rx="80" ry="60" fill="#E8F0F4"/>
+  <g clip-path="url(#${id})">
+    <path d="M0,0 H220 V92 Q196,104 172,96 T124,100 T70,96 T0,100 Z" fill="#1A8E9C"/>
+    <path d="M128,38 q12,12 0,24 q-12,12 0,26 M150,40 q12,12 0,22 q-12,12 0,24 M170,52 q10,10 0,20 q-10,8 0,18" stroke="#0E4F63" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    <path d="M40,124 Q96,146 150,126" stroke="#C9D8E0" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="66" cy="54" rx="22" ry="8" fill="#fff" opacity=".35" transform="rotate(-18 66 54)"/>
+  </g>
+  <ellipse cx="96" cy="94" rx="80" ry="60" fill="none" stroke="${INK}" stroke-width="4"/>
+  ${fin}
+  <path d="M30,82 C30,62 54,60 72,70 C90,60 116,62 116,82 C116,98 94,102 72,92 C52,102 30,98 30,82 Z" fill="#E0442E" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+  ${eyes(e,52,92,81)}
+  <ellipse cx="36" cy="110" rx="8" ry="4.5" fill="#F59AA0" opacity=".85"/><ellipse cx="108" cy="110" rx="8" ry="4.5" fill="#F59AA0" opacity=".85"/>
+  ${mouth(e,72,108)}
+  ${extras(e,"caballa")}
+</svg>`;
+}
+function concha(e){
+  const g="cg"+(++uid), c="cc"+uid;
+  const mask=e==="fiesta"?`<path d="M60,90 C60,72 84,70 110,80 C136,70 160,72 160,90 C160,104 136,108 110,98 C84,108 60,104 60,90 Z" fill="#1FB5B0" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>`:"";
+  return `<svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fina, la concha fina">
+  <defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7BBAF"/><stop offset="1" stop-color="#DC7479"/></linearGradient>
+  <clipPath id="${c}"><path d="M110,18 C162,18 198,58 198,100 C198,132 162,152 110,152 C58,152 22,132 22,100 C22,58 58,18 110,18 Z"/></clipPath></defs>
+  <path d="M110,18 C162,18 198,58 198,100 C198,132 162,152 110,152 C58,152 22,132 22,100 C22,58 58,18 110,18 Z" fill="url(#${g})"/>
+  <g clip-path="url(#${c})" stroke-linecap="round">
+    <g stroke="#B9585F" stroke-opacity=".35" stroke-width="3" fill="none">
+      <path d="M110,16 L110,156"/><path d="M110,16 L74,156"/><path d="M110,16 L146,156"/><path d="M110,16 L40,150"/><path d="M110,16 L180,150"/><path d="M110,16 L14,120"/><path d="M110,16 L206,120"/>
+    </g>
+    <g stroke="#fff" stroke-opacity=".3" stroke-width="2.5" fill="none">
+      <path d="M44,70 Q110,30 176,70"/><path d="M30,100 Q110,52 190,100"/>
+    </g>
+    <ellipse cx="66" cy="50" rx="22" ry="9" fill="#fff" opacity=".55" transform="rotate(-32 66 50)"/>
+    <path d="M14,122 C60,150 160,150 206,122 L206,170 L14,170 Z" fill="#FCE6D9"/>
+    <path d="M14,122 C60,150 160,150 206,122" fill="none" stroke="${INK}" stroke-width="3"/>
+  </g>
+  <path d="M110,18 C162,18 198,58 198,100 C198,132 162,152 110,152 C58,152 22,132 22,100 C22,58 58,18 110,18 Z" fill="none" stroke="${INK}" stroke-width="4"/>
+  <path d="M98,22 Q110,4 122,22" fill="#F7BBAF" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+  <g transform="translate(160,38)"><g fill="#E0442E" stroke="${INK}" stroke-width="2.5"><circle cx="-8" cy="-2" r="8"/><circle cx="8" cy="-2" r="8"/><circle cx="0" cy="-10" r="8"/><circle cx="0" cy="6" r="8"/></g><circle cx="0" cy="-2" r="5" fill="#FFC531" stroke="${INK}" stroke-width="2.5"/><path d="M-14,10 q-8,8 -18,6 q6,-10 18,-6z" fill="#12A07E" stroke="${INK}" stroke-width="2.5"/></g>
+  ${mask}
+  ${eyes(e,88,132,89,{lashes:true})}
+  <ellipse cx="66" cy="112" rx="9" ry="5" fill="#E25D72" opacity=".55"/><ellipse cx="154" cy="112" rx="9" ry="5" fill="#E25D72" opacity=".55"/>
+  <circle cx="134" cy="120" r="2.6" fill="${INK}"/>
+  ${mouth(e,110,112)}
+  ${extras(e,"concha")}
+</svg>`;
+}
+const M={caballa,concha};
+function paint(root){ (root||document).querySelectorAll(".m[data-m]").forEach(el=>{ if(!el.dataset.done){el.innerHTML=M[el.dataset.m](el.dataset.e||"feliz"); el.dataset.done=1;} }); }
+window.__mascot=(w,e)=>M[w](e);
+
+/* expression sheets */
+const EX=[["feliz","Feliz"],["guino","Guiño (acierto)"],["canta","Canta"],["piensa","Piensa (pista)"],["triste","Triste (error)"],["fiesta","Fiesta (logro)"]];
+document.querySelectorAll("[data-sheet]").forEach(s=>{
+  s.innerHTML=EX.map(([e,l])=>`<figure><div class="m" data-m="${s.dataset.sheet}" data-e="${e}"></div><figcaption>${l}</figcaption></figure>`).join("");
+});
+
+/* ---------- Phones ---------- */
+const ic=(id,style)=>`<svg ${style?`style="${style}"`:""}><use href="#${id}"/></svg>`;
+const sb=`<div class="sb"><span>9:41</span><span>●●● ▮</span></div>`;
+const stats=(r=12,d=340,v=5)=>`<div class="stats"><span class="st">${ic("i-racha")}${r}</span><span class="st">${ic("i-duro")}${d}</span><span class="st">${ic("i-vida")}${v}</span></div>`;
+const tab=(on)=>`<div class="tabbar">${["i-home","i-map","i-trophy","i-gift","i-user"].map((i,n)=>`<span class="${n===on?"on":""}"><svg class="${n===on?"on":""}"><use href="#${i}"/></svg></span>`).join("")}</div>`;
+const mm=(w,e,st)=>`<div class="m" data-m="${w}" data-e="${e}" style="${st||""}"></div>`;
+
+const nodesCadiz=(color,lockC)=>{
+  const off=[0,38,54,26,-24,-50,-22];
+  const st=["done","done","done","cur","lock","chest","falla"];
+  return off.map((o,i)=>{
+    const s=st[i]; let inner;
+    if(s==="chest") inner=`<div style="width:44px;height:38px;border-radius:12px;background:#FFC531;border:2.5px solid #C9930E;border-bottom-width:6px;display:grid;place-items:center;color:#8A6200">${ic("i-gift","width:22px;height:22px")}</div>`;
+    else if(s==="falla") inner=`<div style="width:50px;height:46px;border-radius:50%;background:#DCE4EA;display:grid;place-items:center;color:#93A3B1">${ic("i-trophy","width:24px;height:24px")}</div>`;
+    else inner=`<svg style="width:${s==="cur"?56:46}px;height:${s==="cur"?52:42}px;color:${s==="done"?"#12A07E":s==="cur"?color:lockC}"><use href="#i-bombo"/></svg>`;
+    const ring=s==="cur"?`<div style="position:absolute;inset:-7px -6px -3px;border:3px solid ${color};border-radius:50%;opacity:.35"></div>`:"";
+    const label=s==="cur"?`<div style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);background:#fff;border:1.5px solid #DCE5EC;border-radius:8px;padding:1px 7px;font-weight:900;font-size:9px;color:${color};white-space:nowrap">EMPEZAR</div>`:"";
+    return `<div class="node" style="transform:translateX(${o}px);width:auto;height:auto;${s==="cur"?"margin-top:14px":""}">${label}${ring}${inner}</div>`;
+  }).join("");
+};
+
+const P=[
+{t:"Inicio",b:["Barra de estado de juego: racha, duros y vidas","Saludo de Quillo con la propuesta del día","Botón grande de Continuar (lección actual)","Reto diario, posición en la liga y cuenta atrás al Falla"],
+ h:`${sb}${stats()}<div class="body">
+  <div class="row" style="align-items:flex-end">${mm("caballa","feliz","width:84px;flex:none")}<div class="acard" style="border-radius:12px 12px 12px 3px;font-weight:800">¡Buenas, Marta! Hoy toca pasodoble.</div></div>
+  <div class="acard" style="background:#0F6FA8;color:#fff;border-color:#0A4D75"><div class="k" style="opacity:.8">Mundo 1 · La Caleta</div><div class="ttl" style="margin:3px 0 8px">Lección 4: Cada uno a su batea</div><div class="mbtn sun">Continuar</div></div>
+  <div class="acard" style="background:#FFF8E1;border-color:#FFD979"><div class="row between"><div><div class="k" style="color:#A87700">Reto diario</div><div style="font-weight:900">Coplas rápidas · x2 XP</div></div>${ic("i-xp","width:26px;height:26px")}</div></div>
+  <div class="row" style="gap:6px"><div class="acard" style="flex:1"><div class="k" style="color:#178A98">Liga</div><div style="font-weight:900">Semifinales · 4º</div></div><div class="acard" style="flex:1"><div class="k" style="color:#E0442E">Falla</div><div style="font-weight:900">Faltan 118 días</div></div></div>
+ </div>${tab(0)}`},
+{t:"Mapa de progreso (pasacalles)",b:["Cabecera del mundo con color propio y botón de guía","Camino serpenteante de bombos: hechos (verde), actual (pulsa) y bloqueados","Batea sorpresa (cofre) a mitad de camino","El Falla como examen final del mundo"],
+ h:`${sb}${stats()}<div class="body" style="padding-top:0">
+  <div class="acard" style="background:#178A98;color:#fff;border-color:#0E5F69"><div class="row between"><div><div class="k" style="opacity:.85">Mundo 1</div><div class="ttl">La Caleta: primeros compases</div></div><div style="border:1.5px solid rgba(255,255,255,.6);border-radius:9px;padding:5px 6px;font-weight:900;font-size:9px">GUÍA</div></div></div>
+  <div class="mapcol">${nodesCadiz("#0F6FA8","#C3CDD5")}<div style="position:absolute;right:-4px;top:110px;width:70px">${mm("caballa","guino")}</div></div>
+ </div>${tab(1)}`},
+{t:"Lección",b:["Cerrar, barra de progreso y vidas","Tipo de ejercicio en etiqueta (Afina la letra)","Quillo da contexto en su bocadillo","Frase con hueco y banco de palabras","Comprobar, desactivado hasta elegir"],
+ h:`${sb}<div class="row" style="padding:6px 12px">${ic("i-x","width:16px;height:16px;color:#A8B7C3")}<div class="pbar"><i style="width:45%"></i></div><span class="st" style="color:#E0442E">${ic("i-vida")}4</span></div>
+ <div class="body"><div class="k" style="color:#178A98">Afina la letra</div><div class="ttl" style="font-size:14px">Completa la frase</div>
+ <div class="row" style="align-items:flex-end">${mm("caballa","piensa","width:70px;flex:none")}<div class="acard" style="border-radius:12px 12px 12px 3px;font-weight:700">Piensa en el domingo de carnaval…</div></div>
+ <div style="font-weight:700;font-size:12.5px;line-height:1.9">Los coros recorren el centro subidos en <span style="border-bottom:2.5px solid #13283A;padding:0 14px;color:#0F6FA8;font-weight:900">bateas</span> tocando tangos.</div>
+ <div style="text-align:center;margin-top:auto"><span class="wchip" style="visibility:hidden">bateas</span><span class="wchip">carrozas</span><span class="wchip">tablaos</span><span class="wchip">barcas</span></div></div>
+ <div style="padding:10px 12px 16px;border-top:1.5px solid #E3EAF0"><div class="mbtn green">Comprobar</div></div>`},
+{t:"Acierto",b:["La opción elegida se pone en verde","Sube una hoja verde con Quillo guiñando","Frase con gracia más el dato que lo explica","XP ganada visible y botón Continuar"],
+ h:`${sb}<div class="row" style="padding:6px 12px">${ic("i-x","width:16px;height:16px;color:#A8B7C3")}<div class="pbar"><i style="width:62%"></i></div><span class="st" style="color:#E0442E">${ic("i-vida")}4</span></div>
+ <div class="body"><div class="k" style="color:#178A98">¿Tú qué dices?</div><div class="ttl" style="font-size:14px">¿Qué modalidad tiene el tango como pieza estrella?</div>
+ <div style="display:grid;gap:6px"><div class="opt">Comparsa</div><div class="opt good">Coro</div><div class="opt">Chirigota</div><div class="opt">Cuarteto</div></div></div>
+ <div class="sheet ok"><div class="row">${mm("caballa","guino","width:60px;flex:none")}<div><div style="font-weight:900;font-size:14px">¡Afinao!</div><div style="font-weight:600">El tango es la pieza del coro, en la batea con su orquesta de pulso y púa.</div></div></div><div class="row between"><span class="st" style="color:#0B6E56">${ic("i-xp")}+10 XP</span></div><div class="mbtn green">Continuar</div></div>`},
+{t:"Error",b:["Hoja coral, nunca roja agresiva","Quillo triste pero cariñoso","Respuesta correcta en negrita y explicación breve","El ejercicio vuelve al final de la lección"],
+ h:`${sb}<div class="row" style="padding:6px 12px">${ic("i-x","width:16px;height:16px;color:#A8B7C3")}<div class="pbar"><i style="width:62%"></i></div><span class="st" style="color:#E0442E">${ic("i-vida")}3</span></div>
+ <div class="body"><div class="k" style="color:#178A98">¿Tú qué dices?</div><div class="ttl" style="font-size:14px">¿Qué modalidad canta un tango en la batea?</div>
+ <div style="display:grid;gap:6px"><div class="opt" style="border-color:#F2A99E;background:#FCE3DF;color:#9E2B1C">Chirigota</div><div class="opt">Coro</div><div class="opt">Cuarteto</div></div></div>
+ <div class="sheet ko"><div class="row">${mm("caballa","triste","width:60px;flex:none")}<div><div style="font-weight:900;font-size:14px">Casi, casi…</div><div style="font-weight:600">La respuesta era <b>Coro</b>. La chirigota va de humor; el tango es del coro.</div></div></div><div class="mbtn red">Entendido</div></div>`},
+{t:"Perfil",b:["Avatar con marco de antifaz y nivel","Tu modalidad, sacada de tus aciertos (comparte bien en redes)","Estadísticas en cuadrícula de 2x2","Vitrina de insignias y amigos"],
+ h:`${sb}<div class="body" style="padding-top:8px">
+ <div style="display:grid;justify-items:center;gap:4px"><div style="width:74px;height:74px;border-radius:50%;background:#E3F0F9;border:4px solid #0F6FA8;display:grid;place-items:center;overflow:hidden">${mm("caballa","feliz","width:70px")}</div><div class="ttl">Marta R.</div><div style="color:#6A7E8F;font-weight:700">Nivel 5 · Concursante</div><div style="background:#E0442E;color:#fff;border-radius:99px;padding:2px 9px;font-weight:900;font-size:9px">TU MODALIDAD: COMPARSISTA</div></div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+  <div class="acard"><span class="st">${ic("i-racha")}12</span><div style="color:#6A7E8F;font-size:9.5px;font-weight:700">días de racha</div></div>
+  <div class="acard"><span class="st">${ic("i-xp")}6.420</span><div style="color:#6A7E8F;font-size:9.5px;font-weight:700">XP total</div></div>
+  <div class="acard"><span class="st" style="color:#0F6FA8">${ic("i-trophy")}Semis</span><div style="color:#6A7E8F;font-size:9.5px;font-weight:700">liga actual</div></div>
+  <div class="acard"><span class="st" style="color:#178A98">${ic("i-concha")}14</span><div style="color:#6A7E8F;font-size:9.5px;font-weight:700">insignias</div></div></div>
+ <div class="k" style="color:#6A7E8F">Insignias</div><div class="row" style="gap:5px">${["#178A98","#0F6FA8","#E0442E","#C9930E","#EA8984"].map(c=>`<div style="width:34px;height:37px;background:${c};clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)"></div>`).join("")}</div>
+ </div>${tab(4)}`},
+{t:"Clasificación (liga)",b:["Fase actual con su icono y tiempo restante","Zona de ascenso (verde) y de descenso (coral)","Tu fila resaltada","Toca a un usuario para retarle a un duelo"],
+ h:`${sb}<div class="body" style="padding-top:6px">
+ <div style="text-align:center"><div style="width:48px;height:48px;margin:0 auto;border-radius:14px;background:#0F6FA8;color:#FFC531;display:grid;place-items:center">${ic("i-trophy","width:28px;height:28px")}</div><div class="ttl" style="margin-top:4px">Liga Semifinales</div><div style="color:#6A7E8F;font-weight:700">Suben los 7 primeros · quedan 2 días</div></div>
+ <div style="display:grid;gap:3px">${[["Lola","1.240"],["Curro","1.105"],["Rocío","990"],["Marta (tú)","920"],["Javi","870"],["Nerea","860"],["Antonio","700"]].map(([n,x],i)=>`<div class="row between" style="padding:5px 7px;border-radius:9px;${n.includes("tú")?"background:#E3F0F9;border:1.5px solid #9CC8E6;":""}"><span class="row" style="gap:6px"><b style="width:12px;color:${i<3?"#C9930E":"#12A07E"}">${i+1}</b><span style="width:20px;height:20px;border-radius:50%;background:${["#FFC531","#178A98","#EA8984","#0F6FA8","#12A07E","#6B4FC4","#E0442E"][i]}"></span><b>${n}</b></span><span style="font-family:var(--font-m);font-weight:600">${x} XP</span></div>`).join("")}
+ <div style="border-top:2px dashed #12A07E;margin:2px 0;position:relative"><span style="position:absolute;right:0;top:-8px;background:#F4F8FB;color:#12A07E;font-weight:900;font-size:8px;padding:0 3px">ZONA DE ASCENSO</span></div>
+ <div class="row between" style="padding:5px 7px"><span class="row" style="gap:6px"><b style="width:12px;color:#93A3B1">8</b><span style="width:20px;height:20px;border-radius:50%;background:#DCE4EA"></span><b>Pepe</b></span><span style="font-family:var(--font-m);font-weight:600">640 XP</span></div></div>
+ </div>${tab(2)}`},
+{t:"Reto diario",b:["Formato fijo: 5 preguntas en 60 s, sin vidas en juego","Recompensa clara (x2 XP)","Calendario semanal de racha","Un solo botón grande"],
+ h:`${sb}${stats()}<div class="body" style="align-items:center;text-align:center">
+ <div class="k" style="color:#A87700">Reto diario</div><div class="ttl" style="font-size:17px;font-family:var(--font-d);font-weight:400">Coplas rápidas</div>
+ <div style="position:relative;width:118px;height:118px;border-radius:50%;background:conic-gradient(#FFC531 0 75%,#F0E3B8 0);display:grid;place-items:center"><div style="width:94px;height:94px;border-radius:50%;background:#F4F8FB;display:grid;place-items:center">${mm("caballa","sorpresa","width:80px")}</div></div>
+ <div style="font-weight:800">5 preguntas · 60 segundos</div><div style="background:#FFF8E1;border:1.5px solid #FFD979;border-radius:99px;padding:3px 10px;font-weight:900;color:#A87700">x2 XP · no gasta vidas</div>
+ <div class="row" style="gap:4px;margin-top:4px">${["L","M","X","J","V","S","D"].map((d,i)=>`<div style="display:grid;gap:2px;justify-items:center"><span style="font-weight:800;color:#6A7E8F;font-size:9px">${d}</span><span style="width:24px;height:24px;border-radius:50%;display:grid;place-items:center;${i<4?"background:#FF9F1C;color:#fff":"background:#E3EAF0;color:#A8B7C3"}">${i<4?ic("i-check","width:14px;height:14px"):""}</span></div>`).join("")}</div>
+ <div class="mbtn sun" style="width:100%;margin-top:auto">¡Al lío!</div>
+ </div>${tab(0)}`},
+{t:"Recompensas y tienda",b:["Saldo de duros arriba","Batea sorpresa (cofre) con cuenta atrás","Tipos (disfraces) para Quillo: personalización y motivo para gastar","Potenciadores: protector de racha, vida extra, doble XP"],
+ h:`${sb}${stats()}<div class="body" style="padding-top:0">
+ <div class="acard" style="background:#FFC531;border-color:#C9930E;color:#3B2A00"><div class="row between"><div><div class="k">Batea sorpresa</div><div class="ttl">Se abre en 2 lecciones</div></div>${ic("i-gift","width:34px;height:34px")}</div></div>
+ <div class="k" style="color:#6A7E8F">Tipos para Quillo</div>
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${[["fiesta","Fiesta","150"],["canta","Coro","200"],["guino","Pirata","250"]].map(([e,n,p])=>`<div class="acard" style="padding:5px;text-align:center">${mm("caballa",e,"width:100%")}<div style="font-weight:800;font-size:9.5px">${n}</div><div class="st" style="justify-content:center;font-size:10px">${ic("i-duro","width:12px;height:12px")}${p}</div></div>`).join("")}</div>
+ <div class="k" style="color:#6A7E8F">Potenciadores</div>
+ ${[["i-racha","Me pongo malo (protector de racha)","200"],["i-vida","Vidas llenas","350"],["i-xp","Doble XP · 15 min","100"]].map(([i,n,p])=>`<div class="acard row between" style="padding:7px 9px"><span class="row" style="gap:6px">${ic(i,"width:20px;height:20px")}<b style="font-size:10px">${n}</b></span><span class="st" style="font-size:10px">${ic("i-duro","width:13px;height:13px")}${p}</span></div>`).join("")}
+ </div>${tab(3)}`},
+{t:"Modo Comarca (con Fina)",b:["La interfaz pasa a la paleta coral","Selector de pueblo en chips","Mapa de conchas en lugar de bombos","Reto semanal de la comarca y duelos Cádiz contra comarca"],
+ h:`<div class="sb" style="background:#FFF1F0"><span>9:41</span><span>●●● ▮</span></div><div style="background:#FFF1F0;padding:0 12px 10px;border-bottom:1.5px solid #F5C9C5">
+ <div class="row">${mm("concha","feliz","width:58px;flex:none")}<div><div class="k" style="color:#C2524C">Coplea Comarca</div><div class="ttl">¡Qué arte, Marta! ¿Dónde cantamos hoy?</div></div></div>
+ <div class="row" style="gap:4px;flex-wrap:wrap;margin-top:6px">${["La Línea","Algeciras","San Roque","Los Barrios","Tarifa"].map((n,i)=>`<span style="padding:3px 8px;border-radius:99px;font-weight:800;font-size:9px;${i===0?"background:#C2524C;color:#fff":"background:#fff;color:#C2524C;border:1.5px solid #F5C9C5"}">${n}</span>`).join("")}</div></div>
+ <div class="body" style="background:#FFFAF9"><div class="mapcol" style="gap:10px">${[0,36,48,10,-30].map((o,i)=>`<div style="transform:translateX(${o}px);color:${i<2?"#12A07E":i===2?"#C2524C":"#E6C9C6"}">${ic("i-concha",`width:${i===2?52:42}px;height:${i===2?52:42}px`)}</div>`).join("")}</div>
+ <div class="acard" style="border-color:#F5C9C5;margin-top:auto"><div class="k" style="color:#C2524C">Esta semana</div><div style="font-weight:900">Del concurso a la calle: el carnaval de La Línea</div></div></div>
+ <div class="tabbar">${["i-home","i-concha","i-trophy","i-duelo","i-user"].map((i,n)=>`<span style="${n===1?"background:#FFE6E3;border:1.5px solid #F5B9B5":""}"><svg style="color:${n===1?"#C2524C":"#A8B7C3"}"><use href="#${i}"/></svg></span>`).join("")}</div>`},
+{t:"Oído de Falla (audios)",b:["Escenario oscuro con telón: modo concentración","Botón de reproducir grande y onda animada","Velocidad lenta x0,75 y repetir","Respuestas con icono de cada modalidad"],
+ h:`<div class="scr" style="background:linear-gradient(#5E1414,#1A0B10 38%,#0E1620);color:#fff;border-radius:30px">
+ <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+ <div style="display:flex;justify-content:space-between;padding:0 10px"><div style="width:30px;height:66px;background:repeating-linear-gradient(90deg,#B3261E 0 6px,#8E1C16 6px 10px);border-radius:0 0 14px 0"></div><div style="text-align:center;padding-top:6px"><div class="k" style="color:#FFC531">Oído de Falla</div><div class="ttl" style="color:#fff">¿Qué estás escuchando?</div></div><div style="width:30px;height:66px;background:repeating-linear-gradient(90deg,#8E1C16 0 4px,#B3261E 4px 10px);border-radius:0 0 0 14px"></div></div>
+ <div class="body" style="align-items:center">
+ <div style="width:80px">${mm("caballa","canta")}</div>
+ <div class="row" style="width:100%;gap:10px;background:rgba(255,255,255,.08);border-radius:14px;padding:8px"><div style="width:42px;height:42px;border-radius:50%;background:#FFC531;color:#3B2A00;display:grid;place-items:center;flex:none">${ic("i-play","width:20px;height:20px")}</div><div class="row" style="gap:2px;flex:1;height:32px">${[30,60,45,90,70,40,80,55,95,35,65,50,85,40,60,30].map(h=>`<i style="flex:1;height:${h}%;background:#4EA6DE;border-radius:2px"></i>`).join("")}</div></div>
+ <div class="row" style="gap:6px;font-weight:800;font-size:9.5px;color:#FFC531"><span>x0,75</span><span>·</span><span>Repetir</span></div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin-top:auto;padding-bottom:12px">${["Coro","Comparsa","Chirigota","Cuarteto"].map((n,i)=>`<div style="background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.18);border-bottom-width:4px;border-radius:12px;padding:9px 4px;text-align:center;font-weight:900;${i===1?"border-color:#4EA6DE;background:rgba(78,166,222,.2)":""}">${n}</div>`).join("")}</div>
+ </div></div>`}
+];
+document.getElementById("phones").innerHTML=P.map(p=>`<div class="ph-item"><div class="phone">${p.h.startsWith('<div class="scr"')?p.h:`<div class="scr">${p.h}</div>`}</div><div class="ph-cap"><h3>${p.t}</h3><ul>${p.b.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>`).join("");
+
+/* ---------- Prompts ---------- */
+const PR=[
+["Estilo base (pegar siempre delante)",`Premium mobile learning app UI, gamified, playful but polished, Andalusian carnival spirit from Cádiz, Spain. Clean flat vector illustration with thick rounded dark-navy outlines (#13283A), flat colors with a single white highlight, no gradients except subtle nacre. Palette: Caleta blue #0F6FA8, mackerel teal #178A98, Falla theatre brick red #E0442E, February sun yellow #FFC531, success green #12A07E, shell coral #EA8984, whitewash background #F4F8FB. Rounded shapes, chunky 3D buttons with a 5px bottom edge and small ticket notches on the sides, cards with 20px radius and a 6px bottom edge, bold rounded sans-serif UI type (Figtree), poster display type (Lilita One). Generous spacing, clear hierarchy, iPhone 15 frame, high detail, Dribbble-quality.`],
+["Quillo, la caballa (mascota)",`Character design sheet of "Quillo", a cute chubby Atlantic mackerel mascot, egg-shaped round body, teal-green back with three clean wavy dark stripes, silver-white belly, small V tail, tiny dorsal fin, huge expressive eyes with double highlights, rosy cheeks, wearing a small red carnival eye mask (Venetian-style domino mask) as signature accessory. Mischievous, witty, warm, energetic personality. Professional cartoon style like modern app mascots, thick rounded navy outline, flat colors. Turnaround plus 8 expressions: happy, wink, singing with open mouth and music notes, thinking, sad but kind, surprised, celebrating with tiny party hat and confetti, sleeping. White background, no text.`],
+["Fina, la concha fina (mascota hermana)",`Character design sheet of "Fina", a cute smooth glossy clam shell mascot (Callista chione, "concha fina"), oval shell with coral-to-pink gradient and fine radial rays from the top hinge, pearly cream lower lip that opens slightly when she talks, big expressive eyes with small eyelashes, rosy cheeks, a tiny beauty mark, a red carnation flower on top of the shell as signature accessory. Elegant, warm, witty, observant personality. Same visual language as a sister to a chubby mackerel mascot: thick rounded navy outline, flat colors, single highlight. 8 expressions incl. wink, singing, laughing, celebrating with a turquoise carnival mask. White background, no text.`],
+["Icono de app",`App icon, rounded square, Caleta blue #0F6FA8 background with subtle diagonal streamers in yellow, red and teal at one corner, centered close-up of a cute chubby mackerel face wearing a small red carnival eye mask, winking, thick navy outline, flat vector, bold and readable at 48px, no text.`],
+["Pantalla de inicio",`Mobile app home screen for "Coplea", a carnival learning app. Top bar with streak flame 12, gold coins 340 and hearts 5. Mascot mackerel with red eye mask greeting from a speech bubble "¡Buenas, Marta! Hoy toca pasodoble". Big blue card "Mundo 1 · La Caleta — Lección 4" with yellow chunky ticket-shaped button "CONTINUAR". Yellow daily challenge card "Coplas rápidas x2 XP", two small cards "Liga Semifinales 4º" and "Faltan 118 días para el Falla". Bottom tab bar with 5 filled rounded icons. Spanish UI text.`],
+["Mapa de progreso",`Mobile app learning path screen: vertical winding route of lesson nodes drawn as front-view bass drums (bombos) with white drumheads and tension dots; completed nodes green, current node blue and glowing with "EMPEZAR" label, locked nodes grey; a yellow treasure chest shaped like a small carnival float cart; final node a trophy representing the Gran Teatro Falla. Teal world header card "Mundo 1 · La Caleta". Cute mackerel mascot peeking beside the current node. Light whitewash background with faint confetti.`],
+["Lección y feedback",`Two mobile screens side by side. Left: quiz question "¿Qué modalidad tiene el tango como pieza estrella?" with 4 chunky answer cards (Comparsa, Coro, Chirigota, Cuarteto), progress bar and hearts top. Right: same screen with a mint green bottom sheet sliding up, mascot mackerel winking, title "¡Afinao!", short explanation and green button "CONTINUAR", "+10 XP" with star. Friendly, premium, Spanish UI.`],
+["Celebración / subir de liga",`Mobile celebration screen: red theatre curtains opening, confetti in brand colors, the mackerel mascot doing a flip with a tiny party hat, big poster-style headline "¡A LA FINAL!", trophy badge, "+50 XP" and yellow ticket-shaped button "COMPARTIR". Joyful, festive, polished, vertical 9:19.`],
+["Prompt negativo (para evitar)",`Avoid: copying Duolingo's owl or its green brand, realistic fish, scary or slimy look, too many accessories at once, childish crayon style, 3D clay render, gradients everywhere, clutter, tiny text, stock photos, flamenco clichés overload, misspelled Spanish text.`]
+];
+document.getElementById("prompt-list").innerHTML=PR.map(([t,p],i)=>`<div class="prompt" style="${i===0?"grid-column:1/-1;border-color:var(--blue)":""}"><h3>${t}</h3><button class="copy" type="button" data-i="${i}">Copiar</button><pre id="pr${i}">${p}</pre></div>`).join("");
+document.getElementById("prompt-list").addEventListener("click",e=>{
+  const b=e.target.closest(".copy"); if(!b) return;
+  const txt=PR[b.dataset.i][1];
+  const done=()=>{b.textContent="Copiado"; setTimeout(()=>b.textContent="Copiar",1500)};
+  try{ navigator.clipboard.writeText(txt).then(done,()=>sel(b)); }catch(_){ sel(b); }
+  function sel(btn){const pre=document.getElementById("pr"+btn.dataset.i);const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent="Seleccionado";setTimeout(()=>btn.textContent="Copiar",1500)}
+});
+
+/* ---------- Lesson engine ---------- */
+const Q=[
+ {kind:"¿Tú qué dices?",type:"mc",q:"¿Qué modalidad tiene el tango como pieza estrella?",say:"Esta te la sabes, ¡seguro!",opts:["Comparsa","Coro","Chirigota","Cuarteto"],a:1,why:"El tango es la pieza del coro, cantado con guitarras, bandurrias y laúdes."},
+ {kind:"Pareja de baile",type:"match",q:"Une cada modalidad con su rasgo",say:"Toca una de cada lado.",pairs:[["Coro","Bandurrias y laúdes"],["Comparsa","Pasodoble serio y poético"],["Chirigota","Humor y crítica"],["Cuarteto","Parodia y claves"]],why:"Cada modalidad tiene su sello, y ya lo distingues."},
+ {kind:"Monta el repertorio",type:"order",q:"Ordena la actuación de una comparsa en el concurso",say:"De la entrada a la despedida.",tiles:["Presentación","Pasodobles","Cuplés y estribillo","Popurrí"],why:"Presentación, dos pasodobles, dos cuplés con su estribillo y el popurrí para despedirse."},
+ {kind:"Afina la letra",type:"fill",q:"Completa la frase",say:"Piensa en el domingo de carnaval…",before:"El domingo de carnaval los coros recorren el centro subidos en",after:", cantando tangos.",opts:["carrozas","bateas","tablaos","barcas"],a:1,why:"Es el Carrusel de coros: cada coro canta subido en su batea, en las calles del centro."},
+ {kind:"Oído de Falla",type:"audio",q:"Escucha el bombo y la caja. ¿Qué modalidad NO suele llevarlos?",say:"Dale al botón amarillo y escucha.",opts:["Comparsa","Chirigota","Coro"],a:2,why:"El coro suena con su orquesta de pulso y púa. Bombo y caja son de comparsas y chirigotas."},
+ {kind:"La memoria del Falla",type:"mc",q:"¿En qué teatro se celebra el Concurso Oficial de Agrupaciones (COAC)?",say:"El que tiene la fachada de ladrillo rojo.",opts:["Teatro Villamarta","Gran Teatro Falla","Teatro Romano","Teatro de la Maestranza"],a:1,why:"El Gran Teatro Falla, el templo del carnaval desde hace décadas."}
+];
+const OK=["¡Afinao!","¡Eso es, quillo!","¡Ole tu compás!","¡Tipazo de respuesta!","¡Directo a la final!"];
+const KO=["Casi, casi…","Uy, eso desafina un poquito","No pasa ná, otra vuelta"];
+const L=document.getElementById("lesson");
+let queue,pos,hearts,xp,errors,total,state,sel,actx;
+
+function start(){queue=Q.map((_,i)=>i);pos=0;hearts=5;xp=0;errors=0;total=Q.length;render();}
+function pct(){return Math.round((Math.min(pos,total)/total)*100)}
+function top(){return `<div class="l-top"><button class="x" type="button" aria-label="Reiniciar lección" data-act="restart">${ic("i-x","width:22px;height:22px")}</button><div class="pbar"><i style="width:${pct()}%"></i></div><span class="l-hearts">${ic("i-vida")}${hearts}</span></div>`}
+function guide(q,e){return `<div class="l-guide">${mm("caballa",e||"feliz")}<div class="l-say">${q.say}</div></div>`}
+
+function render(){
+  if(pos>=queue.length) return end();
+  if(hearts<=0) return gameover();
+  const q=Q[queue[pos]]; sel=null; state={};
+  let body="";
+  if(q.type==="mc"||q.type==="audio"){
+    if(q.type==="audio") body+=`<div class="audio-box"><button class="playb" type="button" data-act="play" aria-label="Reproducir ritmo">${ic("i-play")}</button><div class="wave">${Array.from({length:22},()=>"<i></i>").join("")}</div></div>`;
+    body+=`<div class="l-opts">${q.opts.map((o,i)=>`<button class="l-opt" type="button" data-opt="${i}"><span class="num">${i+1}</span>${o}</button>`).join("")}</div>`;
+  } else if(q.type==="match"){
+    const right=q.pairs.map((p,i)=>i).sort(()=>Math.random()-.5);
+    body+=`<div class="match"><div class="col">${q.pairs.map((p,i)=>`<button class="l-opt" type="button" data-l="${i}">${p[0]}</button>`).join("")}</div><div class="col">${right.map(i=>`<button class="l-opt" type="button" data-r="${i}">${q.pairs[i][1]}</button>`).join("")}</div></div>`;
+    state={left:null,done:0,miss:0};
+  } else if(q.type==="order"){
+    const shuffled=q.tiles.map((t,i)=>i).sort(()=>Math.random()-.5);
+    if(shuffled.every((v,i)=>v===i)) shuffled.reverse();
+    body+=`<div class="l-line" id="line"></div><div class="l-bank">${shuffled.map(i=>`<button class="tile" type="button" data-t="${i}">${q.tiles[i]}</button>`).join("")}</div>`;
+    state={picked:[]};
+  } else if(q.type==="fill"){
+    body+=`<p class="l-sent">${q.before} <span class="blank" id="blank">&nbsp;</span>${q.after}</p><div class="l-bank">${q.opts.map((o,i)=>`<button class="tile" type="button" data-f="${i}">${o}</button>`).join("")}</div>`;
+  }
+  const needsCheck=q.type!=="match";
+  L.innerHTML=`${top()}<div class="l-body"><div class="l-kind">${q.kind}</div><div class="l-q">${q.q}</div>${guide(q,q.type==="audio"?"canta":"piensa")}${body}</div>
+   <div class="l-foot">${needsCheck?`<button class="btn green full" type="button" data-act="check" disabled>Comprobar</button>`:`<button class="btn ghost full" type="button" disabled>Empareja las 4</button>`}</div>
+   <div class="l-sheet" id="sheet"></div>`;
+  paint(L);
+}
+function setCheck(on){const b=L.querySelector('[data-act="check"]'); if(b) b.disabled=!on;}
+
+function feedback(ok,q,correctLabel){
+  const sh=L.querySelector("#sheet");
+  if(ok){xp+=10}else{hearts--;errors++;queue.push(queue[pos])}
+  const title=ok?OK[Math.floor(Math.random()*OK.length)]:KO[Math.floor(Math.random()*KO.length)];
+  const body=ok?q.why:`${correctLabel?`La respuesta era <b>${correctLabel}</b>. `:""}${q.why}`;
+  sh.className="l-sheet "+(ok?"ok":"ko");
+  sh.innerHTML=`<div class="row">${mm("caballa",ok?"guino":"triste")}<div><h4>${title}</h4><p>${body}</p>${ok?`<p style="font-weight:900;margin-top:4px">+10 XP</p>`:""}</div></div><button class="btn ${ok?"green":"red"} full" type="button" data-act="next">${ok?"Continuar":"Entendido"}</button>`;
+  paint(sh);
+  L.querySelector(".l-top .l-hearts").innerHTML=`${ic("i-vida")}${hearts}`;
+  L.querySelector(".l-foot").style.visibility="hidden";
+  L.querySelectorAll(".l-body button").forEach(b=>b.disabled=true);
+  requestAnimationFrame(()=>sh.classList.add("show"));
+  sh.querySelector("button").focus({preventScroll:true});
+}
+
+function check(){
+  const q=Q[queue[pos]];
+  if(q.type==="mc"||q.type==="audio"||q.type==="fill"){
+    const ok=sel===q.a;
+    if(q.type!=="fill"){const btn=L.querySelector(`[data-opt="${sel}"]`); btn.classList.remove("sel"); btn.classList.add(ok?"done":"bad"); if(ok) btn.style.opacity=1;}
+    feedback(ok,q,q.opts[q.a]);
+  } else if(q.type==="order"){
+    const ok=state.picked.every((v,i)=>v===i)&&state.picked.length===q.tiles.length;
+    feedback(ok,q,q.tiles.join(" → "));
+  }
+}
+
+L.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b||b.disabled) return;
+  const q=Q[queue[pos]]||{};
+  const act=b.dataset.act;
+  if(act==="restart"){stopAudio();return start();}
+  if(act==="check") return check();
+  if(act==="next"){pos++;stopAudio();return render();}
+  if(act==="again") return start();
+  if(act==="play") return playRhythm();
+  if(b.dataset.opt!=null){L.querySelectorAll("[data-opt]").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");sel=+b.dataset.opt;setCheck(true);return;}
+  if(b.dataset.f!=null){sel=+b.dataset.f;L.querySelector("#blank").textContent=q.opts[sel];L.querySelectorAll("[data-f]").forEach(x=>x.classList.toggle("sel",x===b));setCheck(true);return;}
+  if(b.dataset.t!=null){
+    const i=+b.dataset.t, line=L.querySelector("#line");
+    if(b.parentElement.id==="line"){state.picked=state.picked.filter(v=>v!==i);b.remove();L.querySelector(`.l-bank [data-t="${i}"]`).classList.remove("ghosted");}
+    else{state.picked.push(i);b.classList.add("ghosted");const c=document.createElement("button");c.type="button";c.className="tile";c.dataset.t=i;c.textContent=q.tiles[i];line.appendChild(c);}
+    setCheck(state.picked.length===q.tiles.length);return;
+  }
+  if(b.dataset.l!=null){L.querySelectorAll("[data-l]").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");state.left=+b.dataset.l;return;}
+  if(b.dataset.r!=null){
+    if(state.left==null){b.classList.add("bad");setTimeout(()=>b.classList.remove("bad"),350);return;}
+    const lb=L.querySelector(`[data-l="${state.left}"]`);
+    if(+b.dataset.r===state.left){[lb,b].forEach(x=>{x.classList.remove("sel");x.classList.add("done");x.disabled=true});state.left=null;state.done++;
+      if(state.done===q.pairs.length){ if(state.miss>1){ /* too many slips counts as error */ feedback(false,q,null);} else feedback(true,q);}
+    } else {state.miss++;[lb,b].forEach(x=>x.classList.add("bad"));setTimeout(()=>{[lb,b].forEach(x=>x.classList.remove("bad","sel"))},350);state.left=null;}
+  }
+});
+
+function end(){
+  const acc=Math.round((total/(total+errors))*100);
+  L.innerHTML=`<div class="l-end">${mm("caballa","fiesta")}<h3>¡Lección afinada!</h3><p style="font-weight:700;color:#566B7D">Quillo dice: "Así se empieza a ganar un Falla."</p>
+  <div class="res"><div style="border-color:#FFC531;color:#A87700"><small>XP total</small>${xp}</div><div style="border-color:#12A07E;color:#0B6E56"><small>Precisión</small>${acc}%</div><div style="border-color:#FF9F1C;color:#B86200"><small>Racha</small>13 días</div></div>
+  <button class="btn full" type="button" data-act="again" style="margin-top:8px">Repetir lección</button></div>`;
+  paint(L);
+}
+function gameover(){
+  L.innerHTML=`<div class="l-end">${mm("caballa","triste")}<h3>Sin vidas</h3><p style="font-weight:700;color:#566B7D">"Hasta las mejores comparsas ensayan cien veces. Otra vuelta y lo clavas."</p><button class="btn full" type="button" data-act="again">Volver a empezar</button></div>`;
+  paint(L);
+}
+
+/* simple bombo + caja rhythm (pasodoble 2/4) */
+let timers=[];
+function stopAudio(){timers.forEach(clearTimeout);timers=[];}
+function playRhythm(){
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==="suspended") actx.resume();
+    stopAudio();
+    const t0=actx.currentTime+.05, step=60/112/2;
+    const pat="B.C.B.CCB.C.BCC.B.C.B.CCB.CCBB..";
+    const bars=[...L.querySelectorAll(".wave i")];
+    [...pat].forEach((ch,i)=>{
+      const t=t0+i*step;
+      if(ch==="B") bombo(t); if(ch==="C") caja(t);
+      if(ch!=="."&&bars.length) timers.push(setTimeout(()=>{bars.forEach(b=>b.style.height=(ch==="B"?40+Math.random()*60:20+Math.random()*45)+"%");},(t-actx.currentTime)*1000));
+    });
+    timers.push(setTimeout(()=>bars.forEach(b=>b.style.height="20%"),pat.length*step*1000+200));
+  }catch(_){}
+}
+function bombo(t){const o=actx.createOscillator(),g=actx.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(45,t+.22);g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+.32);}
+function caja(t){const n=actx.sampleRate*.14,buf=actx.createBuffer(1,n,actx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;const s=actx.createBufferSource();s.buffer=buf;const f=actx.createBiquadFilter();f.type="highpass";f.frequency.value=1600;const g=actx.createGain();g.gain.setValueAtTime(.45,t);g.gain.exponentialRampToValueAtTime(.001,t+.13);s.connect(f).connect(g).connect(actx.destination);s.start(t);s.stop(t+.15);}
+
+start();
+paint();
+})();
+</script>
