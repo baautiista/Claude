@@ -7,6 +7,8 @@ import { ConexionesViariasLaLinea } from "./conexiones/ConexionesViariasLaLinea"
 import { MiniaturaConexiones } from "./conexiones/Miniatura";
 import { AntiguoHospitalLaLinea } from "./hospital/AntiguoHospitalLaLinea";
 import { MiniaturaHospital } from "./hospital/Miniatura";
+import { NuevaPaginaFacebook } from "./facebook/NuevaPaginaFacebook";
+import { duracionTotal as duracionFacebook } from "./facebook/tiempos";
 import { duracionTotal as duracionHospital } from "./hospital/tiempos";
 import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
@@ -17,6 +19,16 @@ import { TitleScene } from "./TitleScene";
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Folder name="Marca">
+        <Composition
+          id="NuevaPaginaFacebook"
+          component={NuevaPaginaFacebook}
+          durationInFrames={duracionFacebook()}
+          fps={FPS}
+          width={1080}
+          height={1920}
+        />
+      </Folder>
       <Folder name="Ciudad">
         <Composition
           id="AntiguoHospitalLaLinea"

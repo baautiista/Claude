@@ -8,6 +8,8 @@ import { getStaticFiles, staticFile } from "remotion";
 export const COLOR = {
   /** Azul InfoLinense: identificador de marca, uso puntual. */
   azul: "#1F5EFF",
+  /** Azul oscuro para fondos de campañas y anuncios. */
+  azulOscuro: "#0A1B4F",
   /** Secundario lima: resaltar (palabra activa, subrayados, dato destacado). */
   lima: "#C4E910",
   /** Secundario rosa: contraste y avisos (tachados, negativo, "antes"). */
