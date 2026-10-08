@@ -1,0 +1,192 @@
+/* Informe impreso InfoLinense · A4 a color. Portada y contraportada a sangre, cuerpo sobre blanco. */
+:root {
+  --azul: #1F5EFF; --oscuro: #061E5C; --tinte: #E8EEFF; --lima: #C4E910; --rosa: #FF1254;
+  --gris: #F2F3F5; --linea: #D5DAE6; --medio: #626A7C; --texto: #1A1C22;
+  --display: "Poppins", sans-serif; --cuerpo: "Inter", sans-serif;
+}
+@page {
+  size: A4;
+  margin: 20mm 18mm 20mm 18mm;
+  @top-left { content: "La Línea con memoria"; font: 600 7.5pt Poppins, sans-serif; color: #626A7C; letter-spacing: .08em; text-transform: uppercase; }
+  @top-right { content: "InfoLinense"; font: 800 8pt Poppins, sans-serif; color: #1F5EFF; }
+  @bottom-left { content: "Informe de propuestas · Octubre de 2026"; font: 400 7.5pt Inter, sans-serif; color: #626A7C; }
+  @bottom-right { content: counter(page); font: 800 9pt Poppins, sans-serif; color: #1F5EFF; }
+}
+@page sangre { margin: 0; @top-left { content: none; } @top-right { content: none; } @bottom-left { content: none; } @bottom-right { content: none; } }
+@page limpia { @top-left { content: none; } @top-right { content: none; } }
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--cuerpo); font-size: 9.6pt; line-height: 1.55; color: var(--texto); background: #fff; }
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1.15; text-wrap: balance; }
+p { margin: 0 0 3mm; text-align: justify; hyphens: auto; }
+a { color: inherit; text-decoration: none; }
+b, strong { font-weight: 600; }
+svg { max-width: 100%; }
+
+/* ---------- Portada ---------- */
+.portada { page: sangre; width: 210mm; height: 296.5mm; background: var(--azul); color: #fff; padding: 20mm 20mm 18mm; display: flex; flex-direction: column; position: relative; overflow: hidden; break-after: page; }
+.portada::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 6mm; background: var(--lima); }
+.portada-top { display: flex; justify-content: space-between; align-items: center; font: 600 8.5pt var(--display); letter-spacing: .06em; opacity: .95; }
+.portada .logo { height: 13mm; width: auto; }
+.portada-centro { margin-top: 38mm; }
+.eti-portada { display: inline-block; background: #fff; color: var(--azul); font: 800 8.5pt var(--display); letter-spacing: .16em; text-transform: uppercase; padding: 2mm 3.5mm; }
+.portada h1 { margin-top: 9mm; font-size: 64pt; font-weight: 800; line-height: .98; letter-spacing: -.02em; }
+.portada h1 em { font-style: normal; color: var(--lima); }
+.subtitulo { margin-top: 9mm; max-width: 140mm; font-size: 13pt; line-height: 1.45; text-align: left; }
+.portada-cifras { margin-top: auto; display: grid; grid-template-columns: repeat(4, 1fr); border-top: .4mm solid rgba(255,255,255,.4); }
+.portada-cifras div { padding-top: 5mm; }
+.portada-cifras b { display: block; font: 800 25pt/1 var(--display); color: var(--lima); }
+.portada-cifras span { display: block; margin-top: 2mm; font-size: 8.5pt; line-height: 1.3; max-width: 36mm; }
+.portada-pie { margin-top: 12mm; margin-bottom: 4mm; display: grid; grid-template-columns: 1.2fr 1fr; gap: 10mm; font-size: 9pt; line-height: 1.45; }
+.portada-pie .k { display: block; font: 800 7.5pt var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--lima); margin-bottom: 1.5mm; }
+
+/* ---------- Carta ---------- */
+.carta { page: limpia; break-after: page; padding-top: 4mm; font-size: 10.5pt; line-height: 1.6; }
+.carta p { margin-bottom: 4mm; }
+.membrete { display: flex; align-items: center; gap: 3mm; font: 800 14pt var(--display); color: var(--azul); padding-bottom: 5mm; border-bottom: .6mm solid var(--azul); margin-bottom: 10mm; }
+.membrete img { height: 10mm; }
+.fecha { text-align: right; color: var(--medio); }
+.destinatario { margin-top: 6mm; font-weight: 600; text-align: left; }
+.asunto { margin: 6mm 0 7mm; text-align: left; }
+.firma-carta { margin-top: 20mm; display: grid; gap: .8mm; font-size: 10pt; }
+.linea-firma { width: 65mm; border-top: .3mm solid var(--texto); margin-bottom: 2mm; }
+.firma-carta span { color: var(--medio); }
+.firma-carta .contacto { margin-top: 6mm; font-size: 9pt; }
+
+/* ---------- Índice ---------- */
+.indice-doc { break-after: page; }
+.sin-num, .capitulo > h2 { font-size: 22pt; font-weight: 800; color: var(--oscuro); margin-bottom: 7mm; letter-spacing: -.01em; }
+.capitulo > h2::before { content: ""; display: block; width: 18mm; height: 2mm; background: var(--lima); margin-bottom: 5mm; }
+.indice-doc h2::before { content: ""; display: block; width: 18mm; height: 2mm; background: var(--lima); margin-bottom: 5mm; }
+.toc { list-style: none; margin: 0; padding: 0; }
+.toc li { display: flex; align-items: baseline; gap: 3mm; padding: 3.2mm 0; border-bottom: .3mm solid var(--linea); font: 600 11pt var(--display); }
+.toc li a { flex: 1; }
+.toc li span { font-weight: 800; color: var(--azul); font-variant-numeric: tabular-nums; }
+.nota-indice { margin-top: 12mm; background: var(--tinte); padding: 5mm 6mm; font-size: 9pt; line-height: 1.5; border-left: 1.5mm solid var(--azul); }
+
+/* ---------- Capítulos ---------- */
+.capitulo { break-before: page; }
+.entrada { font-size: 11.5pt; line-height: 1.5; color: var(--oscuro); margin-bottom: 6mm; text-align: left; }
+h3.sub { font-size: 12pt; font-weight: 700; color: var(--azul); margin: 7mm 0 3mm; break-after: avoid; }
+.lista { margin: 0 0 4mm; padding-left: 5mm; display: grid; gap: 1.5mm; }
+.lista li::marker { color: var(--azul); font-weight: 700; }
+.nota { font-size: 8pt; color: var(--medio); margin-top: 2mm; text-align: left; }
+.dos-print { display: grid; grid-template-columns: 1.15fr 1fr; gap: 8mm; align-items: start; }
+
+/* Portadilla de eje */
+.eje-portada .banda { background: var(--azul); color: #fff; margin: 0 0 6mm; padding: 9mm 9mm 8mm; position: relative; }
+.eje-portada .banda::after { content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 2mm; background: var(--lima); }
+.banda span { font: 800 8pt var(--display); letter-spacing: .16em; text-transform: uppercase; background: #fff; color: var(--azul); padding: 1.2mm 2.5mm; }
+.banda h2 { margin-top: 5mm; font-size: 28pt; font-weight: 800; letter-spacing: -.015em; }
+.banda p { margin: 2mm 0 0; font-size: 11pt; opacity: .92; text-align: left; }
+
+/* Resumen */
+.tres-ejes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-bottom: 4mm; }
+.eje { background: var(--azul); color: #fff; padding: 5mm; break-inside: avoid; }
+.eje-n { font: 800 7.5pt var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--lima); }
+.eje h3 { margin: 2mm 0 2mm; font-size: 12.5pt; }
+.eje p { font-size: 8.6pt; line-height: 1.45; margin: 0; text-align: left; }
+.peticion-print { margin-top: 6mm; border: .5mm solid var(--azul); padding: 5mm 6mm; break-inside: avoid; }
+.peticion-print h3 { font-size: 11pt; color: var(--azul); margin-bottom: 2mm; }
+.peticion-print ol { margin: 0; padding-left: 5mm; display: grid; gap: 1.2mm; }
+.criterios { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+.criterios div { background: var(--gris); padding: 4mm; break-inside: avoid; }
+.criterios b { display: block; font-family: var(--display); color: var(--azul); margin-bottom: 1mm; }
+.criterios span { font-size: 8.8pt; }
+
+/* Figuras */
+.fig { margin: 0 0 5mm; break-inside: avoid; }
+.fig svg { display: block; width: 100%; height: auto; }
+.fig figcaption { font-size: 7.8pt; color: var(--medio); margin-top: 2mm; line-height: 1.4; }
+.fig.ancha { margin-top: 3mm; border: .3mm solid var(--linea); padding: 3mm; }
+
+/* Tablas */
+.tabla { width: 100%; border-collapse: collapse; font-size: 8.6pt; margin-bottom: 3mm; }
+.tabla th { background: var(--oscuro); color: #fff; font: 600 7.5pt var(--display); letter-spacing: .06em; text-transform: uppercase; text-align: left; padding: 2.2mm 2.5mm; }
+.tabla td { padding: 2mm 2.5mm; border-bottom: .3mm solid var(--linea); vertical-align: top; }
+.tabla tbody tr:nth-child(even) td { background: var(--gris); }
+.tabla tr { break-inside: avoid; }
+.tabla .num { font-family: var(--display); font-weight: 600; white-space: nowrap; }
+.tabla .cod { font-family: var(--display); font-weight: 800; color: var(--azul); }
+.tabla tr.total td { background: var(--tinte); border-top: .5mm solid var(--azul); }
+
+/* DAFO */
+.dafo-print { display: grid; grid-template-columns: 1fr 1fr; border: .3mm solid var(--linea); break-inside: avoid; }
+.dafo-print div { padding: 3.5mm 4mm; font-size: 8.6pt; line-height: 1.45; border: .15mm solid var(--linea); }
+.dafo-print b { display: block; font: 800 7.5pt var(--display); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1mm; }
+.dafo-print div:nth-child(1) b { color: var(--azul); }
+.dafo-print div:nth-child(2) b { color: #6E8400; }
+.dafo-print div:nth-child(3) b { color: var(--medio); }
+.dafo-print div:nth-child(4) b { color: var(--rosa); }
+
+/* Fichas de proyecto */
+.proyectos { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.ficha-p { border: .3mm solid var(--linea); break-inside: avoid; display: flex; flex-direction: column; }
+.ficha-p.bandera { border: .6mm solid var(--azul); }
+.ficha-p .ilus { aspect-ratio: 3 / 2; overflow: hidden; background: var(--azul); }
+.ficha-p .ilus svg { display: block; width: 100%; height: 100%; }
+.ficha-p .cuerpo { padding: 3.5mm 4mm 3mm; flex: 1; }
+.ficha-p .cod { display: flex; justify-content: space-between; align-items: center; font: 800 7.5pt var(--display); letter-spacing: .1em; color: var(--azul); }
+.ficha-p .cod em { font-style: normal; background: var(--lima); color: #0A0A0A; padding: .6mm 2mm; letter-spacing: .08em; }
+.ficha-p h3 { font-size: 11.5pt; margin: 1.5mm 0 1.5mm; color: var(--oscuro); }
+.ficha-p p, .ficha-p li { font-size: 8.4pt; line-height: 1.42; text-align: left; margin: 0 0 1.2mm; }
+.ficha-p ul { margin: 0; padding-left: 4mm; }
+.ficha-p dl { margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: .3mm solid var(--linea); }
+.ficha-p dl div { padding: 2mm 3mm 2.2mm 4mm; border-right: .3mm solid var(--linea); }
+.ficha-p dl div:last-child { border-right: 0; }
+.ficha-p dt { font: 600 6.5pt var(--display); letter-spacing: .1em; text-transform: uppercase; color: var(--medio); }
+.ficha-p dd { margin: .5mm 0 0; font: 700 8.5pt var(--display); }
+
+/* Ideas innovadoras */
+.ideas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; }
+.idea { border: .3mm solid var(--linea); padding: 4mm; break-inside: avoid; }
+.idea.destacada { background: var(--azul); color: #fff; border-color: var(--azul); }
+.idea .ic { font: 800 6.8pt var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--azul); }
+.idea.destacada .ic { color: var(--lima); }
+.idea h3 { font-size: 10.5pt; margin: 1.5mm 0; }
+.idea p { font-size: 8.2pt; line-height: 1.42; margin: 0; text-align: left; }
+
+/* Fases */
+.fases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.fases div { background: var(--gris); padding: 4mm; border-top: 1.5mm solid var(--azul); break-inside: avoid; }
+.fases div:nth-child(2) { border-top-color: var(--lima); }
+.fases div:nth-child(3) { border-top-color: var(--rosa); }
+.fases span { font: 800 7.2pt var(--display); letter-spacing: .1em; text-transform: uppercase; color: var(--medio); }
+.fases h3 { font-size: 11pt; margin: 1.5mm 0; color: var(--oscuro); }
+.fases p { font-size: 8.4pt; line-height: 1.42; margin: 0; text-align: left; }
+
+/* Conclusiones y bibliografía */
+.conclusiones { gap: 2.5mm; font-size: 10pt; }
+.cierre-print { margin-top: 14mm; display: flex; gap: 5mm; align-items: center; border-top: .4mm solid var(--azul); padding-top: 6mm; }
+.cierre-print img { height: 14mm; }
+.cierre-print p { margin: 0; font-size: 9pt; text-align: left; }
+.biblio { list-style: none; margin: 0 0 3mm; padding: 0; }
+.biblio li { padding-left: 8mm; text-indent: -8mm; margin-bottom: 2.2mm; font-size: 8.8pt; line-height: 1.45; }
+
+/* Contraportada */
+.contraportada { page: sangre; break-before: page; width: 210mm; height: 296.5mm; overflow: hidden; background: var(--oscuro); color: #fff; padding: 30mm 20mm; display: flex; flex-direction: column; justify-content: flex-end; gap: 6mm; }
+.contraportada .logo { height: 16mm; width: auto; align-self: flex-start; }
+.contraportada p { font: 600 12pt/1.45 var(--display); text-align: left; max-width: 130mm; margin: 0; }
+.contraportada .pequeno { font: 400 8.5pt/1.5 var(--cuerpo); opacity: .75; }
+
+/* Ajustes de encaje */
+#resumen .entrada { margin-bottom: 4mm; }
+#resumen .tabla td { padding: 1.4mm 2.5mm; }
+#resumen h3.sub { margin-top: 5mm; }
+#resumen .peticion-print { margin-top: 4mm; padding: 4mm 5mm; }
+#resumen .peticion-print li { font-size: 8.8pt; }
+.ideas { gap: 3mm; }
+.idea { padding: 3mm 3.2mm; }
+.idea p { font-size: 7.8pt; line-height: 1.38; }
+.biblio li { margin-bottom: 1.4mm; font-size: 8.5pt; }
+#bibliografia h3.sub { margin-top: 5mm; }
+#resumen > h2 { margin-bottom: 5mm; }
+#resumen .entrada { font-size: 10.5pt; }
+#resumen .eje { padding: 4mm; }
+#resumen .eje p { font-size: 8pt; line-height: 1.4; }
+#resumen .tabla { font-size: 8.1pt; }
+#resumen .tabla th { padding: 1.6mm 2.5mm; }
+#resumen .tabla td { padding: 1.1mm 2.5mm; }
+#resumen .peticion-print ol { gap: .6mm; }
+#resumen .peticion-print li { font-size: 8.4pt; line-height: 1.4; }

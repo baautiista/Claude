@@ -1,0 +1,400 @@
+<!-- Plantilla del informe impreso. Se compila con construir_pdf.py (no abrir directamente). -->
+<section class="portada">
+  <div class="portada-top">
+    <img class="logo" src="{{LOGO}}" alt="InfoLinense">
+    <span>Informe de propuestas · Octubre de 2026</span>
+  </div>
+  <div class="portada-centro">
+    <span class="eti-portada">Patrimonio cultural, histórico y arquitectónico</span>
+    <h1>La Línea<br><em>con memoria</em></h1>
+    <p class="subtitulo">Propuestas para la investigación, protección y puesta en valor turística de los cines y teatros, los patios de vecinos y el patrimonio defensivo de La Línea de la Concepción</p>
+  </div>
+  <div class="portada-cifras">
+    <div><b>3</b><span>ejes patrimoniales</span></div>
+    <div><b>33</b><span>proyectos con coste, plazo y prioridad</span></div>
+    <div><b>15</b><span>propuestas innovadoras</span></div>
+    <div><b>2027–28</b><span>calendario de implantación</span></div>
+  </div>
+  <div class="portada-pie">
+    <div><span class="k">Dirigido a</span>Alcaldía del Excmo. Ayuntamiento de La Línea de la Concepción<br>Delegaciones de Cultura, Turismo y Urbanismo</div>
+    <div><span class="k">Autor</span>Miguel Bautista Lima<br>Estudiante del Grado en Historia, Universidad de Sevilla</div>
+  </div>
+</section>
+
+<section class="carta">
+  <div class="membrete"><img src="{{ISOTIPO_AZUL}}" alt=""><span>InfoLinense</span></div>
+  <p class="fecha">La Línea de la Concepción, octubre de 2026</p>
+  <p class="destinatario">Sr. Alcalde-Presidente<br>Excmo. Ayuntamiento de La Línea de la Concepción</p>
+  <p class="asunto"><b>Asunto:</b> presentación del informe <i>La Línea con memoria</i> y propuesta de colaboración</p>
+  <p>Señor alcalde:</p>
+  <p>Me dirijo a usted para presentarle este informe, elaborado desde InfoLinense, sobre tres partes del patrimonio de nuestra ciudad que merecen más atención de la que hoy reciben: las salas de cine y teatro que marcaron la vida cultural de varias generaciones, los patios de vecinos en los que vivió buena parte de la Línea trabajadora y el patrimonio defensivo que dio nombre a la ciudad, desde la Línea de Contravalación hasta los búnkeres del siglo XX.</p>
+  <p>El documento reúne el estado actual de los conocimientos sobre cada tema a partir de las fuentes publicadas, señala con claridad los datos que todavía deben contrastarse en el Archivo Municipal y plantea treinta y tres proyectos concretos, ordenados por prioridad y con una estimación orientativa de coste y plazo. Muchos de ellos son de bajo coste y pueden ponerse en marcha en pocos meses; otros requieren estudio técnico y financiación externa.</p>
+  <p>Como estudiante del Grado en Historia, considero que La Línea tiene una historia singular, la de una ciudad nacida de una frontera, que puede convertirse en un recurso cultural, educativo y turístico de primer orden si se investiga con rigor y se cuenta bien. InfoLinense ofrece su capacidad de difusión en la web y en redes sociales para acompañar cada proyecto que el Ayuntamiento decida impulsar.</p>
+  <p>Quedo a su disposición para presentar el informe en persona a usted y a las delegaciones que considere oportunas.</p>
+  <p>Atentamente,</p>
+  <div class="firma-carta">
+    <div class="linea-firma"></div>
+    <b>Miguel Bautista Lima</b>
+    <span>Estudiante del Grado en Historia, Universidad de Sevilla</span>
+    <span>InfoLinense</span>
+    <span class="contacto">Teléfono: ______________________ · Correo: ______________________________</span>
+  </div>
+</section>
+
+<section class="indice-doc">
+  <h2 class="sin-num">Índice</h2>
+  <ol class="toc">
+    <li><a href="#resumen">Resumen ejecutivo</a><span>{{PAG:resumen}}</span></li>
+    <li><a href="#metodologia">1. Introducción y metodología</a><span>{{PAG:metodologia}}</span></li>
+    <li><a href="#contexto">2. Contexto histórico: una ciudad nacida de una frontera</a><span>{{PAG:contexto}}</span></li>
+    <li><a href="#cines">3. Eje I · Cines y teatros</a><span>{{PAG:cines}}</span></li>
+    <li><a href="#patios">4. Eje II · Patios de vecinos</a><span>{{PAG:patios}}</span></li>
+    <li><a href="#fortificada">5. Eje III · Ciudad fortificada</a><span>{{PAG:fortificada}}</span></li>
+    <li><a href="#transversales">6. Proyectos transversales</a><span>{{PAG:transversales}}</span></li>
+    <li><a href="#innovadoras">7. Propuestas innovadoras</a><span>{{PAG:innovadoras}}</span></li>
+    <li><a href="#implantacion">8. Plan de implantación, presupuesto y financiación</a><span>{{PAG:implantacion}}</span></li>
+    <li><a href="#difusion">9. Difusión: el papel de InfoLinense</a><span>{{PAG:difusion}}</span></li>
+    <li><a href="#conclusiones">10. Conclusiones</a><span>{{PAG:conclusiones}}</span></li>
+    <li><a href="#bibliografia">Fuentes y bibliografía</a><span>{{PAG:bibliografia}}</span></li>
+    <li><a href="#anexo">Anexo · Datos pendientes de contraste</a><span>{{PAG:anexo}}</span></li>
+  </ol>
+  <div class="nota-indice">
+    <b>Cómo leer este informe.</b> Los datos históricos proceden de las fuentes citadas en la bibliografía; cuando las fuentes no coinciden, se indica en el texto y se recoge en el anexo. Los costes son estimaciones orientativas para dimensionar cada proyecto, no presupuestos. Las ilustraciones son conceptuales y no reproducen edificios reales.
+  </div>
+</section>
+
+<section class="capitulo" id="resumen">
+  <h2 class="sin-num">Resumen ejecutivo</h2>
+  <p class="entrada">La Línea de la Concepción conserva un patrimonio que explica su origen y su vida cotidiana, pero que apenas se percibe en la calle, no está inventariado de forma completa y no forma parte de la oferta turística de la ciudad. Este informe propone corregirlo con tres ejes de trabajo y un conjunto de herramientas comunes.</p>
+  <div class="tres-ejes">
+    <div class="eje"><span class="eje-n">Eje I</span><h3>Cines y teatros</h3><p>La ciudad llegó a tener catorce salas en la segunda mitad de los años cincuenta. Desde noviembre de 2007 no tiene ninguna. Siguen en pie edificios como el antiguo Imperial Cinema, incluido en la base de datos del Patrimonio Inmueble de Andalucía.</p></div>
+    <div class="eje"><span class="eje-n">Eje II</span><h3>Patios de vecinos</h3><p>Fueron la vivienda de buena parte de la población trabajadora desde 1870. Existe un inventario publicado en 2003 que no se ha actualizado desde entonces; se desconoce cuántos patios siguen en pie.</p></div>
+    <div class="eje"><span class="eje-n">Eje III</span><h3>Ciudad fortificada</h3><p>La Línea toma su nombre de la Línea de Contravalación (1730–1735). Conserva las ruinas del Fuerte de Santa Bárbara, declaradas Bien de Interés Cultural, los restos de San Felipe y decenas de búnkeres de los años cuarenta.</p></div>
+  </div>
+  <h3 class="sub">Propuestas prioritarias</h3>
+  <table class="tabla">
+    <thead><tr><th>Código</th><th>Proyecto</th><th>Coste orientativo</th><th>Plazo</th></tr></thead>
+    <tbody>
+      <tr><td class="cod">C1</td><td>Ruta "La Línea de cine": placas con QR en los emplazamientos de las antiguas salas</td><td class="num">8–15 k€</td><td>6 meses</td></tr>
+      <tr><td class="cod">C2</td><td>Salas del Palacio de Congresos con nombre de cines históricos</td><td class="num">&lt; 3 k€</td><td>3 meses</td></tr>
+      <tr><td class="cod">C3</td><td>Programación estable de cine en el Palacio de Congresos</td><td class="num">25–50 k€/año</td><td>9 meses</td></tr>
+      <tr><td class="cod">P1</td><td>Inventario vivo de los patios de vecinos, con mapa abierto</td><td class="num">15–30 k€</td><td>12 meses</td></tr>
+      <tr><td class="cod">P2</td><td>Jornadas anuales "Patios Abiertos"</td><td class="num">15–30 k€/año</td><td>Mayo 2028</td></tr>
+      <tr><td class="cod">P3</td><td>Oficina "Patio Vivo" de asesoramiento para la rehabilitación</td><td class="num">30–45 k€/año</td><td>2027–2028</td></tr>
+      <tr><td class="cod">F1</td><td>Marcar en el pavimento el trazado de la Línea de Contravalación</td><td class="num">40–120 k€</td><td>18 meses</td></tr>
+      <tr><td class="cod">F2</td><td>Parque arqueológico de los fuertes de Santa Bárbara y San Felipe</td><td class="num">60–150 k€</td><td>2027–2028</td></tr>
+      <tr><td class="cod">F3</td><td>Ruta de los búnkeres señalizada, con un búnker musealizado</td><td class="num">30–70 k€</td><td>12 meses</td></tr>
+    </tbody>
+  </table>
+  <div class="peticion-print">
+    <h3>Qué se solicita al Ayuntamiento</h3>
+    <ol>
+      <li>Recibir el informe y designar un interlocutor en las delegaciones de Cultura, Turismo y Urbanismo.</li>
+      <li>Facilitar el acceso al Archivo Municipal para completar la investigación de los tres ejes.</li>
+      <li>Estudiar la puesta en marcha en 2027 de los proyectos de bajo coste (C2, C1, P1 y la placa común T1).</li>
+      <li>Valorar la presentación de los proyectos de mayor coste a las convocatorias de financiación autonómicas, estatales y europeas.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="capitulo" id="metodologia">
+  <h2>1. Introducción y metodología</h2>
+  <h3 class="sub">1.1. Objetivos</h3>
+  <ul class="lista">
+    <li>Reunir el conocimiento publicado sobre tres partes del patrimonio linense poco atendidas: salas de cine y teatro, patios de vecinos y patrimonio defensivo.</li>
+    <li>Identificar qué se conserva, en qué estado y con qué grado de protección.</li>
+    <li>Proponer proyectos viables de investigación, protección, divulgación y uso turístico, con una estimación de coste, plazo y prioridad.</li>
+    <li>Ofrecer un plan de difusión que acerque este patrimonio a la ciudadanía y a los visitantes.</li>
+  </ul>
+  <h3 class="sub">1.2. Fuentes y método</h3>
+  <p>El informe se basa en una revisión de fuentes secundarias publicadas: la monografía de referencia sobre los patios vecinales linenses (Cobos Romero, 2003), fichas de catálogos patrimoniales (Lista Roja de Hispania Nostra, base de datos del Patrimonio Inmueble de Andalucía a través de catálogos especializados), documentación institucional (Ayuntamiento, Junta de Andalucía, Diputación de Cádiz, red Forte Cultura) y prensa local digital (8Directo, Diario Área, Andalucía Información, Europa Sur).</p>
+  <p>Cada dato se ha contrastado, cuando ha sido posible, con al menos dos fuentes. Cuando las fuentes ofrecen versiones distintas (por ejemplo, la fecha de construcción del Imperial Cinema o el año de declaración como BIC del Fuerte de Santa Bárbara) se recogen ambas y se señalan en el anexo como pendientes de verificación documental.</p>
+  <h3 class="sub">1.3. Limitaciones</h3>
+  <p>Esta primera versión no incorpora todavía investigación en el Archivo Municipal de La Línea, en el Archivo Histórico Provincial de Cádiz ni en hemerotecas impresas, y tampoco trabajo de campo sistemático. Por ello, el informe debe entenderse como un <b>estado de la cuestión y una propuesta de trabajo</b>: varias de las acciones planteadas (inventarios, archivo oral, archivo ciudadano) están pensadas precisamente para completar estas lagunas.</p>
+  <h3 class="sub">1.4. Criterios de las propuestas</h3>
+  <div class="criterios">
+    <div><b>Rigor</b><span>Nada se inventa: cada placa, ruta o reconstrucción se apoya en documentación verificada.</span></div>
+    <div><b>Participación</b><span>Los vecinos son fuente y protagonistas, sobre todo en los patios habitados.</span></div>
+    <div><b>Escalabilidad</b><span>Primero acciones baratas y visibles; después las que requieren obra o financiación externa.</span></div>
+    <div><b>Herramientas comunes</b><span>Una sola placa, un solo mapa y una sola aplicación para todo el patrimonio de la ciudad.</span></div>
+  </div>
+</section>
+
+<section class="capitulo" id="contexto">
+  <h2>2. Contexto histórico: una ciudad nacida de una frontera</h2>
+  <p class="entrada">Pocas ciudades llevan su origen escrito en el nombre. La Línea de la Concepción lo hace: su nombre procede de una fortificación y de la advocación de la patrona de la zona.</p>
+  <div class="dos-print">
+    <div>
+      <p>Tras la toma angloholandesa de Gibraltar en 1704 y el asedio de 1727, la Corona española levantó frente al Peñón una línea defensiva que cerraba el istmo de la bahía de Algeciras al Mediterráneo. La llamada <b>Línea de Contravalación</b> se completó con sus baluartes en 1735, con el Fuerte de San Felipe en su extremo occidental y el de Santa Bárbara en el oriental. A su sombra se formó el primer núcleo de población, que tomó el nombre de la Concepción.</p>
+      <p>En 1810, durante la Guerra de la Independencia, la línea fue volada para impedir su uso por las tropas francesas. Los civiles que llegaron después, atraídos por el trabajo en Gibraltar, levantaron sus casas junto a las ruinas. El 17 de enero de 1870 aquel caserío se segregó de San Roque y se constituyó como municipio.</p>
+      <p>El crecimiento rápido de una población trabajadora explica dos de los patrimonios que estudia este informe: los <b>patios de vecinos</b>, respuesta a la necesidad de vivienda barata cerca de la frontera, y una intensa vida de ocio popular que se expresó en <b>teatros y cines</b>. En la década de 1940 el istmo volvió a fortificarse con el sistema de búnkeres del Estrecho.</p>
+    </div>
+    <figure class="fig">{{FIG:istmo-t}}<figcaption>Figura 1. Esquema del istmo con la Línea de Contravalación. No a escala.</figcaption></figure>
+  </div>
+</section>
+
+<section class="capitulo eje-portada" id="cines">
+  <div class="banda"><span>Eje I</span><h2>3. Cines y teatros</h2><p>Catorce salas en su mejor época, ninguna hoy</p></div>
+  <h3 class="sub">3.1. Estado de la cuestión</h3>
+  <p>La vida cinematográfica linense alcanzó su apogeo en la segunda mitad de los años cincuenta, cuando la ciudad llegó a contar con catorce instalaciones. Aquellas salas no solo proyectaban películas: acogían teatro, flamenco, zarzuela y encuentros vecinales. La más antigua documentada es el <b>Teatro del Parque</b>, inaugurado en 1896 en la calle Carboneros, veintiséis años después de la constitución del municipio. La última sala comercial, la de la galería Gran Sur, cerró en noviembre de 2007.</p>
+  <p>De las catorce salas se han podido identificar seis en las fuentes consultadas. Dos edificios siguen en pie: el <b>Imperial Cinema</b>, en la calle Clavel, que conserva su fachada y figura en la base de datos del Patrimonio Inmueble de Andalucía, y el <b>Trimope</b>, en la calle Jardines, levantado por el empresario Trino Cruz Herrera, cuyo nombre une las iniciales de sus tres hijos. El Ayuntamiento llegó a estudiar dar nombres de cines y teatros históricos a las salas del Palacio de Congresos, inaugurado en 2005.</p>
+  <figure class="fig ancha">{{FIG:crono-t}}<figcaption>Figura 2. Cronología de las salas de cine y teatro, 1896–2026. *La construcción del Imperial se fecha entre 1938 y 1949 en un catálogo y en 1939–1940 en otro.</figcaption></figure>
+  <h3 class="sub">3.2. Inventario</h3>
+  <table class="tabla">
+    <thead><tr><th>Sala</th><th>Ubicación</th><th>Cronología</th><th>Estado actual</th></tr></thead>
+    <tbody>
+      <tr><td><b>Teatro del Parque</b></td><td>C/ Carboneros</td><td>Desde 1896</td><td>Desaparecido</td></tr>
+      <tr><td><b>Imperial Cinema</b></td><td>C/ Clavel</td><td>1938–1949*</td><td>En pie, uso residencial; fachada conservada; Patrimonio Inmueble de Andalucía</td></tr>
+      <tr><td><b>Trimope</b></td><td>C/ Jardines, 68 (El Castillo)</td><td>Años 40 – 1968</td><td>En pie, uso residencial</td></tr>
+      <tr><td><b>Salón Pascualini</b></td><td>C/ Clavel</td><td>Por documentar</td><td>Desaparecido</td></tr>
+      <tr><td><b>Salón Victoria</b></td><td>Por documentar</td><td>Por documentar</td><td>Desaparecido</td></tr>
+      <tr><td><b>Miramar Cinema</b></td><td>Por documentar</td><td>Por documentar</td><td>Desaparecido</td></tr>
+      <tr><td><b>Gran Sur</b></td><td>Galería Gran Sur</td><td>Hasta noviembre de 2007</td><td>Cerrado; última sala comercial</td></tr>
+      <tr><td><b>Palacio de Congresos</b></td><td>Av. Príncipe de Asturias</td><td>Desde el 2 de octubre de 2005</td><td>En uso: auditorio (≈ 1.044) y Sala Cádiz (≈ 292)</td></tr>
+    </tbody>
+  </table>
+  <h3 class="sub">3.3. Diagnóstico</h3>
+  <div class="dafo-print">
+    <div><b>Fortalezas</b>Dos edificios de sala en pie; memoria viva de los vecinos; Palacio de Congresos equipado; historias muy narrables.</div>
+    <div><b>Oportunidades</b>Propuesta municipal de nombres ya planteada; público bilingüe a 500 m de la frontera; aplicación municipal de realidad aumentada.</div>
+    <div><b>Debilidades</b>Documentación dispersa; edificios privados; ninguna programación estable de cine desde 2007.</div>
+    <div><b>Amenazas</b>Pérdida de testimonios; reformas de fachadas no protegidas; dispersión de fotos y programas en manos privadas.</div>
+  </div>
+  <h3 class="sub">3.4. Proyectos propuestos</h3>
+  <figure class="fig ancha">{{FIG:ruta-t}}<figcaption>Figura 3. Esquema de la ruta "La Línea de cine". No a escala; el orden de paradas se fijará sobre plano.</figcaption></figure>
+  {{PROY:cines-y-teatros}}
+</section>
+
+<section class="capitulo eje-portada" id="patios">
+  <div class="banda"><span>Eje II</span><h2>4. Patios de vecinos</h2><p>La casa de la Línea trabajadora</p></div>
+  <h3 class="sub">4.1. Estado de la cuestión</h3>
+  <p>La obra de referencia es <i>Los patios vecinales linenses. La Línea de la Concepción 1870–2002</i>, de Joaquín Cobos Romero, publicada en 2003 por el Colegio Oficial de Aparejadores y Arquitectos Técnicos de Cádiz. El estudio parte de la situación fronteriza de la ciudad y de su segregación de San Roque en 1870; relaciona la tipología con las <i>insulae</i> romanas; explica que los patios linenses surgieron tanto en edificios antiguos reaprovechados (grandes casas o conventos) como en obras de nueva planta; analiza sus tipologías arquitectónicas por periodos, la regulación jurídica de las relaciones vecinales a finales del siglo XIX y principios del XX, y cierra con una relación de los patios existentes en cada calle.</p>
+  <p>Han pasado más de veinte años desde aquel inventario. No consta una actualización ni un catálogo de protección específico para la tipología, por lo que se desconoce cuántos patios se conservan, cuántos siguen habitados y en qué estado.</p>
+  <div class="dos-print">
+    <div>
+      <h3 class="sub">4.2. La tipología</h3>
+      <p>Un patio de vecinos es un edificio de una o dos plantas con viviendas de una o dos piezas organizadas alrededor de un espacio abierto común. El <b>zaguán</b> comunica con la calle; en el <b>patio</b> se sitúan la pila o lavadero, las macetas y los tendederos; los <b>servicios</b> (aseos y, a menudo, cocinas) eran compartidos; y un <b>reglamento</b> ordenaba los turnos de limpieza, de pila y de tendido.</p>
+      <p>Más allá de su valor arquitectónico, el patio tiene un valor <b>etnológico</b>: fue un espacio de sociabilidad, de economía doméstica compartida y de transmisión de costumbres, por el que pasaban también los vendedores ambulantes.</p>
+    </div>
+    <figure class="fig">{{FIG:planta-t}}<figcaption>Figura 4. Esquema tipo de un patio de vecinos. No corresponde a un patio concreto.</figcaption></figure>
+  </div>
+  <figure class="fig ancha">{{FIG:hist-t}}<figcaption>Figura 5. Periodo cubierto por el estudio de referencia (1870–2002) y tiempo transcurrido sin actualización.</figcaption></figure>
+  <h3 class="sub">4.3. Diagnóstico</h3>
+  <div class="dafo-print">
+    <div><b>Fortalezas</b>Estudio publicado con inventario por calles; patios aún habitados; asociaciones activas como Protección Histórica Linense.</div>
+    <div><b>Oportunidades</b>Modelo de la Fiesta de los Patios de Córdoba (UNESCO, 2012); ayudas de rehabilitación; plan municipal "Recuperar nuestras plazas" (2026).</div>
+    <div><b>Debilidades</b>Sin catálogo de protección específico; propiedad privada fragmentada; problemas de accesibilidad y humedad.</div>
+    <div><b>Amenazas</b>Derribos y sustitución; abandono de patios vacíos; riesgo de turistificación sin participación vecinal.</div>
+  </div>
+  <h3 class="sub">4.4. Proyectos propuestos</h3>
+  {{PROY:patios-de-vecinos}}
+</section>
+
+<section class="capitulo eje-portada" id="fortificada">
+  <div class="banda"><span>Eje III</span><h2>5. Ciudad fortificada</h2><p>De la Línea de Contravalación a los búnkeres</p></div>
+  <h3 class="sub">5.1. Estado de la cuestión</h3>
+  <p>De la Línea de Contravalación se conservan restos de sus dos fuertes. Las ruinas del <b>Fuerte de Santa Bárbara</b>, en el extremo oriental, fueron recuperadas en 1979 por el comandante Barceló y soldados voluntarios del Grupo Hawk, y están declaradas Bien de Interés Cultural (1985 según la Lista Roja de Hispania Nostra; otras fuentes indican 1994). Los restos del <b>Fuerte de San Felipe</b> se han trasladado, con autorización de la Delegación de Cultura de la Junta en Cádiz, a una parcela municipal junto a Santa Bárbara, donde se proyecta un pequeño parque arqueológico al aire libre.</p>
+  <p>El sistema de defensa del Campo de Gibraltar de los años cuarenta comprende más de 500 búnkeres en unos 90 km de costa; entre 70 y 80 de ellos se encuentran en el término de La Línea, según las fuentes. En el Parque Princesa Sofía se conservan cuatro nidos de ametralladora con tres cúpulas cada uno. La Asociación Cultural Ruta de los Búnkers guió a más de 1.500 personas en 2024. La aplicación municipal de realidad aumentada ya incluye una reconstrucción 3D de San Felipe, y en 2026 la ciudad acoge el congreso de la red europea Forte Cultura.</p>
+  <figure class="fig ancha">{{FIG:crono3-t}}<figcaption>Figura 6. Cronología del patrimonio defensivo, 1704–2026. *Fecha de declaración BIC pendiente de contraste.</figcaption></figure>
+  <h3 class="sub">5.2. Inventario</h3>
+  <table class="tabla">
+    <thead><tr><th>Bien</th><th>Época</th><th>Protección / gestión</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td><b>Fuerte de Santa Bárbara</b></td><td>S. XVIII</td><td>Bien de Interés Cultural</td><td>Ruinas visitables; maqueta en el Museo del Istmo</td></tr>
+      <tr><td><b>Fuerte de San Felipe</b></td><td>S. XVIII</td><td>Traslado autorizado por la Junta</td><td>Restos reubicados junto a Santa Bárbara</td></tr>
+      <tr><td><b>Línea de Contravalación</b></td><td>1730–1810</td><td>—</td><td>Desaparecida; sin señalización del trazado</td></tr>
+      <tr><td><b>Búnkeres del Parque Princesa Sofía</b></td><td>Años 40</td><td>Rutas de la Asociación Cultural Ruta de los Búnkers</td><td>4 nidos de ametralladora, 3 cúpulas cada uno</td></tr>
+      <tr><td><b>Búnkeres de costa</b></td><td>Años 40</td><td>Sin inventario completo</td><td>≈ 70–80 en el término; estado variable</td></tr>
+      <tr><td><b>Museo del Istmo</b></td><td>—</td><td>Municipal</td><td>Antigua Comandancia Militar; fondos arqueológicos y documentales</td></tr>
+      <tr><td><b>Torre vigía costera</b></td><td>S. XVI–XVII</td><td>Por verificar</td><td>Por verificar</td></tr>
+    </tbody>
+  </table>
+  <h3 class="sub">5.3. Diagnóstico</h3>
+  <div class="dafo-print">
+    <div><b>Fortalezas</b>La ciudad lleva el nombre de su fortificación; un BIC visitable; rutas de búnkeres con público; reconstrucción 3D disponible.</div>
+    <div><b>Oportunidades</b>Red europea Forte Cultura; visitantes de Gibraltar; el mismo asedio contado desde los dos lados de la frontera.</div>
+    <div><b>Debilidades</b>El trazado de la línea no se percibe; búnkeres sin señalizar; poca información en inglés.</div>
+    <div><b>Amenazas</b>Vandalismo y erosión costera; obras sobre restos no catalogados; visitas sin control en estructuras inestables.</div>
+  </div>
+  <h3 class="sub">5.4. Proyectos propuestos</h3>
+  {{PROY:ciudad-fortificada}}
+</section>
+
+<section class="capitulo" id="transversales">
+  <h2>6. Proyectos transversales</h2>
+  <p class="entrada">Los tres ejes comparten herramientas. Diseñadas una sola vez, sirven para cualquier tema futuro: casas burguesas, plaza de toros (1883), Museo Cruz Herrera, la Verja o el comercio de la calle Real.</p>
+  {{PROY:index}}
+</section>
+
+<section class="capitulo" id="innovadoras">
+  <h2>7. Propuestas innovadoras</h2>
+  <p class="entrada">Ideas de bajo coste y gran capacidad de comunicación, pensadas para ensayarse como pilotos y escalar si funcionan.</p>
+  <div class="ideas">
+    <div class="idea destacada"><span class="ic">Cine</span><h3>La butaca del Imperial</h3><p>Butacas de cine reales, adaptadas como mobiliario urbano, en la calle Clavel y el centro, con una placa sobre la sala que hubo cerca. Banco, punto fotográfico y relato a la vez.</p></div>
+    <div class="idea"><span class="ic">Cine</span><h3>Taquilla del tiempo</h3><p>Una taquilla antigua restaurada en la calle: al escanear su código se "compra" una sesión de los años cincuenta y aparece el cartel de esa semana con el audio de un vecino que asistió.</p></div>
+    <div class="idea"><span class="ic">Cine</span><h3>El último pase</h3><p>Encargo anual a cineastas jóvenes de la comarca de cortos de tres minutos rodados ante las antiguas salas, estrenados en una sesión especial en el Palacio de Congresos.</p></div>
+    <div class="idea"><span class="ic">Patios</span><h3>Recetario de patio</h3><p>Recetas recogidas patio a patio con el nombre de quien las cocinaba: libro, vídeos y una comida compartida durante Patios Abiertos.</p></div>
+    <div class="idea"><span class="ic">Patios</span><h3>El sonido del patio</h3><p>Grabaciones de patios vivos (pila, radio, conversaciones) para un mapa sonoro de la ciudad, escuchable en el centro de interpretación y en la web.</p></div>
+    <div class="idea"><span class="ic">Patios</span><h3>Patio en miniatura</h3><p>Maquetas a escala de patios reales construidas por alumnado de Formación Profesional y artesanos, para un museo itinerante por colegios y centros de mayores.</p></div>
+    <div class="idea destacada"><span class="ic">Fortificación</span><h3>La Línea se ilumina</h3><p>Una noche al año, el trazado de 1735 se marca con luces de mar a mar con participación ciudadana. Una imagen aérea de gran impacto que puede convertirse en una fecha propia de la ciudad.</p></div>
+    <div class="idea"><span class="ic">Fortificación</span><h3>Carrera de la Contravalación</h3><p>Prueba popular a pie o en bicicleta que sigue el trazado de la antigua línea de un fuerte al otro. Deporte e historia, fácil de patrocinar.</p></div>
+    <div class="idea"><span class="ic">Fortificación</span><h3>Escape room en un búnker</h3><p>Un juego ambientado en los años cuarenta dentro de un búnker acondicionado y seguro, dirigido a un público joven que no suele visitar museos.</p></div>
+    <div class="idea"><span class="ic">Fortificación</span><h3>Búnker de las estrellas</h3><p>Observación astronómica nocturna desde las playas de los búnkeres con una asociación de astronomía, con la explicación histórica a oscuras.</p></div>
+    <div class="idea destacada"><span class="ic">Tecnología</span><h3>Antes y después en la calle</h3><p>Marcos fijos en puntos exactos de la ciudad con la fotografía antigua tomada desde ese mismo lugar, para alinearla con la vista actual. Muy compartible en redes.</p></div>
+    <div class="idea"><span class="ic">Tecnología</span><h3>"Habla con la historia"</h3><p>Un asistente digital que responde preguntas sobre la ciudad usando solo fuentes verificadas del Archivo Municipal y que indica cuándo no tiene la respuesta.</p></div>
+    <div class="idea"><span class="ic">Tecnología</span><h3>Pasaporte linense</h3><p>Cartilla física y digital que se sella en cada parada de las rutas y se canjea por ventajas en comercios locales, uniendo turismo y comercio de proximidad.</p></div>
+    <div class="idea"><span class="ic">Comunidad</span><h3>Banco de recuerdos en la feria</h3><p>Una caseta en la feria donde los vecinos digitalizan sus fotos y graban un testimonio de un minuto para el archivo ciudadano.</p></div>
+    <div class="idea"><span class="ic">Comunidad</span><h3>Embajadores del barrio</h3><p>Personas mayores formadas como guías ocasionales de su propio barrio, con una compensación simbólica. La ruta más auténtica posible.</p></div>
+  </div>
+</section>
+
+<section class="capitulo" id="implantacion">
+  <h2>8. Plan de implantación, presupuesto y financiación</h2>
+  <h3 class="sub">8.1. Fases</h3>
+  <div class="fases">
+    <div><span>Fase 1 · 2027 S1</span><h3>Gestos visibles</h3><p>Nombres de las salas del Palacio (C2), diseño de la placa común (T1), inicio del inventario de patios (P1), archivo oral y ciudadano (C4, C5, P4, T3), adhesión a Forte Cultura (F6).</p></div>
+    <div><span>Fase 2 · 2027 S2</span><h3>Rutas y programación</h3><p>Ruta "La Línea de cine" (C1), cine estable en el Palacio (C3), cine de verano (C6), ruta de búnkeres (F3), oficina Patio Vivo (P3), mapa de la memoria (T2).</p></div>
+    <div><span>Fase 3 · 2028</span><h3>Grandes proyectos</h3><p>Parque arqueológico (F2), la línea en el pavimento (F1), realidad aumentada (C7, F4, P7), Patios Abiertos (P2), sala de fortificaciones (F5), producto transfronterizo (F7).</p></div>
+  </div>
+  <h3 class="sub">8.2. Presupuesto orientativo agregado</h3>
+  <table class="tabla">
+    <thead><tr><th>Eje</th><th>Inversión puntual</th><th>Gasto anual recurrente</th><th>Proyectos incluidos</th></tr></thead>
+    <tbody>
+      <tr><td><b>I · Cines y teatros</b></td><td class="num">58–118 k€</td><td class="num">55–115 k€</td><td>C1–C9</td></tr>
+      <tr><td><b>II · Patios de vecinos</b></td><td class="num">33–69 k€</td><td class="num">55–95 k€</td><td>P1–P9 (excepto P5, según edificio)</td></tr>
+      <tr><td><b>III · Ciudad fortificada</b></td><td class="num">205–515 k€</td><td class="num">13–35 k€</td><td>F1–F9 (F6 de coste bajo)</td></tr>
+      <tr><td><b>Transversales</b></td><td class="num">16–34 k€</td><td class="num">8–15 k€</td><td>T2, T3, T5, T6 (placas T1 incluidas en cada ruta)</td></tr>
+      <tr class="total"><td><b>Total</b></td><td class="num"><b>312–736 k€</b></td><td class="num"><b>131–260 k€</b></td><td>En dos años, con cofinanciación externa</td></tr>
+    </tbody>
+  </table>
+  <p class="nota">Estimaciones orientativas a partir de precios de mercado habituales para actuaciones comparables. Deben sustituirse por presupuestos técnicos antes de cualquier tramitación. En torno a un tercio de la inversión puntual corresponde a dos actuaciones de obra (F1 y F2), que pueden ejecutarse por fases.</p>
+  <h3 class="sub">8.3. Vías de financiación</h3>
+  <table class="tabla">
+    <thead><tr><th>Fuente</th><th>Proyectos a los que se adecúa</th></tr></thead>
+    <tbody>
+      <tr><td><b>Junta de Andalucía · Consejería de Cultura</b></td><td>Conservación de BIC e intervención arqueológica (F2), patrimonio etnológico (P1, P4), archivos (C4, T3)</td></tr>
+      <tr><td><b>Ministerio de Cultura · ICAA</b></td><td>Exhibición cinematográfica y cine escolar (C3, C6)</td></tr>
+      <tr><td><b>Programas de rehabilitación residencial</b></td><td>Rehabilitación, accesibilidad y eficiencia de patios (P3)</td></tr>
+      <tr><td><b>Planes de Sostenibilidad Turística en Destinos</b></td><td>Señalética, digitalización y producto turístico (C1, F3, F4, T1, T2)</td></tr>
+      <tr><td><b>Fondos europeos y red Forte Cultura</b></td><td>Cooperación en red, interpretación del patrimonio defensivo (F5, F6, F7)</td></tr>
+      <tr><td><b>Diputación de Cádiz</b></td><td>Programación cultural, turismo y promoción</td></tr>
+      <tr><td><b>Patrocinio y mecenazgo local</b></td><td>Patios Abiertos, cine de verano, pasaporte linense</td></tr>
+    </tbody>
+  </table>
+  <p class="nota">Las convocatorias cambian cada año: deben revisarse bases y plazos vigentes antes de presentar cada proyecto.</p>
+  <h3 class="sub">8.4. Gobernanza e indicadores</h3>
+  <p>Se propone una <b>comisión de seguimiento</b> con representantes de las delegaciones de Cultura, Turismo y Urbanismo, del Archivo Municipal, de asociaciones patrimoniales (Protección Histórica Linense, Asociación Cultural Ruta de los Búnkers), de la universidad y de InfoLinense, que se reúna cada trimestre y publique un balance anual.</p>
+  <table class="tabla">
+    <thead><tr><th>Indicador</th><th>Objetivo a dos años</th></tr></thead>
+    <tbody>
+      <tr><td>Placas instaladas en las tres rutas</td><td class="num">≥ 25</td></tr>
+      <tr><td>Patios del inventario de 2003 revisados</td><td class="num">100 %</td></tr>
+      <tr><td>Búnkeres inventariados con coordenadas y estado</td><td class="num">100 %</td></tr>
+      <tr><td>Documentos digitalizados en el archivo ciudadano</td><td class="num">≥ 1.000</td></tr>
+      <tr><td>Testimonios orales grabados</td><td class="num">≥ 70</td></tr>
+      <tr><td>Visitantes anuales en rutas guiadas</td><td class="num">≥ 3.000</td></tr>
+      <tr><td>Sesiones de cine al año en el Palacio de Congresos</td><td class="num">≥ 20</td></tr>
+      <tr><td>Centros educativos participantes</td><td class="num">≥ 12</td></tr>
+    </tbody>
+  </table>
+  <p class="nota">Objetivos propuestos para acordar con el Ayuntamiento, no resultados.</p>
+</section>
+
+<section class="capitulo" id="difusion">
+  <h2>9. Difusión: el papel de InfoLinense</h2>
+  <p class="entrada">InfoLinense, medio digital local de La Línea, propone acompañar cada proyecto con contenidos periodísticos y divulgativos que lleguen a la población joven y a los visitantes.</p>
+  <div class="tres-ejes">
+    <div class="eje"><span class="eje-n">6 vídeos</span><h3>La Línea de cine</h3><p>De "14 cines y ninguno" a la llamada al archivo ciudadano de fotografías y programas de mano.</p></div>
+    <div class="eje"><span class="eje-n">5 vídeos</span><h3>Crecí en un patio</h3><p>El protagonista es siempre un patio real y su gente. Cierra presentando el inventario vivo.</p></div>
+    <div class="eje"><span class="eje-n">5 vídeos</span><h3>La Línea de la Línea</h3><p>Mapas animados del istmo y del trazado de 1735 sobre el plano actual de calles.</p></div>
+  </div>
+  <ul class="lista">
+    <li><b>Formato:</b> vídeos verticales de 45–60 segundos para TikTok, Instagram y YouTube, con subtítulos en español e inglés.</li>
+    <li><b>Web:</b> un reportaje largo por eje, con mapa interactivo, galería del archivo ciudadano y formulario para aportar recuerdos.</li>
+    <li><b>Calendario:</b> una pieza semanal, alternando ejes, coordinada con los hitos municipales (inauguraciones, jornadas, rutas).</li>
+    <li><b>Rigor:</b> solo imágenes reales o ilustraciones identificadas como tales; ninguna recreación presentada como documento.</li>
+  </ul>
+</section>
+
+<section class="capitulo" id="conclusiones">
+  <h2>10. Conclusiones</h2>
+  <ol class="lista conclusiones">
+    <li>La Línea de la Concepción posee un patrimonio cultural, histórico y arquitectónico propio y explicativo de su identidad, ligado a su condición de ciudad de frontera.</li>
+    <li>Ese patrimonio está hoy disperso, incompletamente documentado y escasamente visible, tanto para la ciudadanía como para el visitante.</li>
+    <li>La primera necesidad es de conocimiento: actualizar inventarios, investigar en el Archivo Municipal y recoger la memoria oral antes de que se pierda.</li>
+    <li>Existen acciones de bajo coste e impacto inmediato, como los nombres de las salas del Palacio, la placa común o la ruta de cine, que pueden ejecutarse en 2027.</li>
+    <li>Las actuaciones de mayor coste, como el parque arqueológico o la línea en el pavimento, son candidatas idóneas a financiación autonómica, estatal y europea.</li>
+    <li>Un sistema común de placas, mapa y aplicación permitirá ampliar el proyecto a otros temas sin multiplicar costes.</li>
+    <li>La colaboración entre Ayuntamiento, asociaciones, universidad, centros educativos y medios locales es la condición para que el proyecto sea sostenible.</li>
+  </ol>
+  <div class="cierre-print">
+    <img src="{{ISOTIPO_AZUL}}" alt="">
+    <p><b>Miguel Bautista Lima</b><br>Estudiante del Grado en Historia, Universidad de Sevilla · InfoLinense<br>La Línea de la Concepción, octubre de 2026</p>
+  </div>
+</section>
+
+<section class="capitulo" id="bibliografia">
+  <h2 class="sin-num">Fuentes y bibliografía</h2>
+  <h3 class="sub">Bibliografía</h3>
+  <ul class="biblio">
+    <li>COBOS ROMERO, Joaquín (2003). <i>Los patios vecinales linenses. La Línea de la Concepción 1870–2002</i>. Cádiz: Colegio Oficial de Aparejadores y Arquitectos Técnicos de Cádiz, 177 pp.</li>
+  </ul>
+  <h3 class="sub">Fuentes institucionales y catálogos</h3>
+  <ul class="biblio">
+    <li>AYUNTAMIENTO DE LA LÍNEA DE LA CONCEPCIÓN. "El Ayuntamiento estudia otorgar denominaciones de históricos teatros y cines linenses a las salas del Palacio de Congresos". lalinea.es.</li>
+    <li>DIPUTACIÓN DE CÁDIZ. "La Línea de la Concepción". cadizturismo.com.</li>
+    <li>FORTE CULTURA. "La Línea de la Concepción (ES)". forte-cultura.com.</li>
+    <li>HISPANIA NOSTRA. "Fuerte de Santa Bárbara". Lista Roja del Patrimonio. listaroja.hispanianostra.org.</li>
+    <li>JUNTA DE ANDALUCÍA. Agenda Cultural de Andalucía: "Palacio de Congresos y Exposiciones, La Línea (Cádiz)". juntadeandalucia.es.</li>
+    <li>JUNTA DE ANDALUCÍA. <i>Guía práctica de la ciudad: La Línea de la Concepción</i>. andalucia.org.</li>
+    <li>TURISMO CAMPO DE GIBRALTAR. "Ruta por los búnkers". turismocampodegibraltar.com.</li>
+    <li>UNESCO (2012). Lista Representativa del Patrimonio Cultural Inmaterial: Fiesta de los patios de Córdoba.</li>
+    <li>PROSPECTOS DE CINE. Fichas "La Línea de la Concepción – Imperial Cinema" y "Cine Trimope". prospectosdecine.com.</li>
+  </ul>
+  <h3 class="sub">Prensa y divulgación</h3>
+  <ul class="biblio">
+    <li>8DIRECTO. "La Línea, casi dos décadas sin cine: una espera que aún no ve el final". 8directo.com.</li>
+    <li>8DIRECTO. "La Línea traslada los restos del Fuerte de San Felipe a una parcela municipal junto a Santa Bárbara". 8directo.com.</li>
+    <li>8DIRECTO. "Un recorrido por el patrimonio de La Línea". 8directo.com.</li>
+    <li>ANDALUCÍA INFORMACIÓN (2026). "La Línea da los primeros pasos del plan 'Recuperar nuestras plazas'". andaluciainformacion.es, julio de 2026.</li>
+    <li>DIARIO ÁREA. "Tesoros de la II Guerra Mundial que guarda La Línea: los búnkeres, un patrimonio desconocido en España". diarioarea.com.</li>
+    <li>DIARIO ÁREA (2024). "Los búnkeres, el Fuerte San Felipe o el Museo Cruz Herrera en 3D: toda una experiencia inmersiva". diarioarea.com.</li>
+    <li>DIARIO ÁREA (2026). "El Congreso Forte Cultura 2026 aterriza en La Línea y resalta el valor patrimonial de sus fortificaciones". diarioarea.com.</li>
+    <li>GÓMEZ DE AVELLANEDA, Carlos. "Un par de horas en… La Línea de Contravalación". 8directo.com.</li>
+    <li>LA CALLE REAL (2018). "¿Qué tienen en común el Cine Imperial y las Puertas de Tierra de Cádiz?". callereal.8directo.com.</li>
+    <li>LA LÍNEA EN BLANCO Y NEGRO. Blog de fotografía histórica local. lalineaenblancoynegro.blogspot.com.</li>
+  </ul>
+  <h3 class="sub">Fuentes pendientes de consulta</h3>
+  <ul class="biblio">
+    <li>Archivo Municipal de La Línea de la Concepción: expedientes de obra y licencias de las salas de espectáculos; padrones; fotografía histórica.</li>
+    <li>Archivo Histórico Provincial de Cádiz.</li>
+    <li>Hemerotecas de prensa local y provincial (<i>Europa Sur</i>, <i>Diario de Cádiz</i>, <i>Área</i>).</li>
+    <li>Cartografía histórica del Campo de Gibraltar (Centro Geográfico del Ejército, Archivo General de Simancas).</li>
+    <li>Testimonios orales de vecinos y colecciones familiares.</li>
+  </ul>
+</section>
+
+<section class="capitulo" id="anexo">
+  <h2 class="sin-num">Anexo · Datos pendientes de contraste</h2>
+  <table class="tabla">
+    <thead><tr><th>Dato</th><th>Versiones encontradas</th><th>Dónde verificarlo</th></tr></thead>
+    <tbody>
+      <tr><td>Fecha de construcción del Imperial Cinema</td><td>1938–1949 / 1939–1940</td><td>Expediente de obra (Archivo Municipal); ficha del Patrimonio Inmueble de Andalucía</td></tr>
+      <tr><td>Año de declaración BIC del Fuerte de Santa Bárbara</td><td>1985 / 1994</td><td>BOE y BOJA; Catálogo General del Patrimonio Histórico Andaluz</td></tr>
+      <tr><td>Número de búnkeres en el término municipal</td><td>≈ 70 / ≈ 80</td><td>Inventario de campo (proyecto F3)</td></tr>
+      <tr><td>Aforo del Palacio de Congresos</td><td>Hasta 2.000 / ≈ 1.044 + ≈ 292</td><td>Ficha técnica municipal</td></tr>
+      <tr><td>Ubicación y fechas del Salón Victoria y del Miramar Cinema</td><td>Sin datos</td><td>Archivo Municipal; hemeroteca; testimonios</td></tr>
+      <tr><td>Relación completa de las catorce salas</td><td>Seis identificadas</td><td>Archivo Municipal; archivo ciudadano (C4)</td></tr>
+      <tr><td>Aprobación de los nombres de salas del Palacio</td><td>Propuesta estudiada; resolución no localizada</td><td>Delegación de Promoción Sociocultural</td></tr>
+      <tr><td>Patios del inventario de 2003 que se conservan</td><td>Sin datos</td><td>Trabajo de campo (proyecto P1)</td></tr>
+      <tr><td>Estado del traslado de San Felipe y del parque arqueológico</td><td>En curso</td><td>Delegación de Cultura; Junta de Andalucía</td></tr>
+      <tr><td>Denominación y ubicación de la torre vigía</td><td>Siglos XVI–XVII</td><td>Catálogo de patrimonio; planeamiento municipal</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="contraportada">
+  <img class="logo" src="{{LOGO}}" alt="InfoLinense">
+  <p>La Línea con memoria<br>Informe de propuestas para el patrimonio cultural, histórico y arquitectónico de La Línea de la Concepción</p>
+  <p class="pequeno">Autor: Miguel Bautista Lima · Octubre de 2026<br>Ilustraciones conceptuales de InfoLinense. Las imágenes no reproducen edificios reales.</p>
+</section>
