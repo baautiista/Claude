@@ -24,3 +24,7 @@ node alt.js <salida>/piezas.json alternativas.html <salida>/alternativas
 `ronda-2.html` presenta 6 direcciones en blanco y negro y desarrolla 3: **A · Desfase** (LINE/NSE, una línea que se parte y baja su propio grosor), **B · Ensamble** (dos bloques unidos por colas de milano opuestas) y **C · Istmo** (dos masas unidas por una línea). En `ronda-2/` están el símbolo, la versión horizontal y la apilada en negro, la horizontal sobre claro y sobre oscuro, y el perfil de cada una, además de los bocetos descartados.
 
 Logotipos trazados con Schibsted Grotesk (A), Syne (B) y Bricolage Grotesque (C). Para regenerar: `node r2page.js ronda-2.html ronda-2/` desde una carpeta con `@fontsource/{schibsted-grotesk,syne,bricolage-grotesque}` y `opentype.js` instalados (las rutas de fuentes son relativas a `r2lib.js`).
+
+## Ronda 3 — la línea y el Peñón
+
+`ronda-3.html`: 6 ideas en blanco y negro construidas sobre la idea de línea (trazo, frontera, horizonte, conexión, La Línea) con el Peñón como referencia abstracta, y 3 desarrolladas: **A · Renglones** (líneas de texto cuyos finales dibujan el perfil del Peñón; la última es el horizonte), **B · Trazo** (una línea que sube por el Peñón, cae por la cara norte y sigue recta como La Línea) y **C · Dos orillas** (ciudad baja, Peñón en cuña y la Verja como hueco). Los SVG están en `ronda-3/`. Logotipos trazados con Familjen Grotesk (A), Schibsted Grotesk (B) y Syne (C). Regenerar con `node r3page.js ronda-3.html ronda-3/` (necesita `r2page.js` al lado, porque reutiliza su hoja de estilos).
