@@ -1,0 +1,631 @@
+<title>Studio Linense</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Maqueta: tablero de marca por bandas a sangre que alternan noche / gris / azul; contenido en retícula de 12 columnas, módulo de separación 16 px como en el símbolo. Un solo mundo visual (sin tema oscuro alternativo). */
+:root {
+  --noche: #061E5C;
+  --azul: #1F5EFF;
+  --blanco: #FFFFFF;
+  --gris: #F4F6FA;
+  --negro: #111318;
+  --lima: #C7FF3D;
+  --tinta-suave: #4A5578;
+  --linea: #D9DFEC;
+  --f-display: "Space Grotesk", "Manrope", system-ui, sans-serif;
+  --f-texto: "Inter", system-ui, -apple-system, sans-serif;
+  --g: 16px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--gris); color: var(--negro); font: 400 16px/1.55 var(--f-texto); }
+.banda { padding-block: clamp(56px, 9vw, 120px); padding-inline: max(16px, 4vw); }
+.in { max-width: 1180px; margin-inline: auto; }
+.noche { background: var(--noche); color: var(--blanco); }
+.azul { background: var(--azul); color: var(--blanco); }
+.blanco { background: var(--blanco); }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.02; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(34px, 5.2vw, 64px); }
+h3 { font-size: 20px; letter-spacing: -0.01em; line-height: 1.2; }
+p { margin: 0; max-width: 62ch; }
+.eti { font: 500 12px/1 var(--f-display); letter-spacing: 0.22em; text-transform: uppercase; display: inline-flex; gap: 10px; align-items: center; }
+.eti::before { content: ""; width: 10px; height: 10px; background: currentColor; }
+.noche .eti, .azul .eti { color: var(--lima); }
+.blanco .eti, .gris .eti { color: var(--azul); }
+.cab { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px var(--g); margin-bottom: clamp(40px, 6vw, 72px); }
+.cab .eti { grid-column: 1 / -1; }
+.cab h2 { grid-column: 1 / span 7; }
+.cab p { grid-column: 8 / -1; align-self: end; color: var(--tinta-suave); }
+.noche .cab p, .azul .cab p { color: rgba(255,255,255,.78); }
+@media (max-width: 820px) { .cab h2, .cab p { grid-column: 1 / -1; } }
+.sym { display: block; width: 100%; height: auto; }
+.hor, .ver, .word { display: block; width: 100%; height: auto; }
+.chip { font: 500 11px/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; }
+.muted { color: var(--tinta-suave); }
+.noche .muted, .azul .muted { color: rgba(255,255,255,.7); }
+
+/* HERO */
+.hero { padding-block: clamp(40px, 7vw, 96px) 0; overflow: hidden; }
+.hero-top { display: flex; justify-content: space-between; gap: var(--g); flex-wrap: wrap; font: 500 12px/1.4 var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.65); }
+.hero-logo { margin-block: clamp(56px, 10vw, 120px) clamp(40px, 7vw, 88px); max-width: 860px; }
+.hero-pie { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--g); align-items: end; border-top: 1px solid rgba(255,255,255,.18); padding-block: 28px 40px; }
+.hero-pie .lema { grid-column: 1 / span 7; font: 700 clamp(28px, 4.4vw, 52px)/1 var(--f-display); letter-spacing: -.02em; }
+.hero-pie .lema em { font-style: normal; color: var(--lima); }
+.hero-pie p { grid-column: 8 / -1; color: rgba(255,255,255,.75); font-size: 15px; }
+@media (max-width: 820px) { .hero-pie .lema, .hero-pie p { grid-column: 1 / -1; } }
+
+/* CONCEPTO */
+.concepto { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+@media (max-width: 900px) { .concepto { grid-template-columns: 1fr; } }
+.lamina { background: var(--blanco); border: 1px solid var(--linea); padding: clamp(20px, 4vw, 44px); }
+.lamina svg { display: block; width: 100%; height: auto; }
+.lecturas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px var(--g); margin-top: 8px; }
+@media (max-width: 520px) { .lecturas { grid-template-columns: 1fr; } }
+.lectura { border-top: 2px solid var(--noche); padding-top: 14px; display: grid; gap: 6px; }
+.lectura .n { font: 700 13px/1 var(--f-display); color: var(--azul); letter-spacing: .08em; }
+.lectura p { font-size: 15px; color: var(--tinta-suave); }
+.concepto-txt { display: grid; gap: 28px; }
+.concepto-txt > p { font-size: 18px; }
+.concepto-txt > p strong { font-weight: 600; color: var(--noche); }
+.lockup-regla { margin-top: clamp(40px, 6vw, 64px); }
+
+/* VERSIONES */
+.versiones { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--g); }
+.v { padding: clamp(28px, 5vw, 56px); display: flex; flex-direction: column; justify-content: space-between; gap: 32px; min-height: 260px; }
+.v .chip { opacity: .75; }
+.v-principal { grid-column: span 8; background: var(--noche); color: var(--blanco); }
+.v-principal .hor { max-width: 520px; }
+.v-vert { grid-column: span 4; grid-row: span 2; background: var(--azul); color: var(--blanco); }
+.v-vert .ver { max-width: 240px; }
+.v-claro { grid-column: span 5; background: var(--blanco); color: var(--noche); border: 1px solid var(--linea); }
+.v-claro .hor { max-width: 360px; }
+.v-sim { grid-column: span 3; background: var(--lima); color: var(--noche); }
+.v-sim .sym { width: 96px; height: 96px; }
+.v-mono { grid-column: span 6; background: var(--blanco); border: 1px solid var(--linea); color: var(--negro); }
+.v-mono2 { grid-column: span 6; background: var(--negro); color: var(--blanco); }
+.v-mono .hor, .v-mono2 .hor { max-width: 300px; }
+@media (max-width: 900px) {
+  .v-principal, .v-vert, .v-claro, .v-sim, .v-mono, .v-mono2 { grid-column: 1 / -1; grid-row: auto; }
+}
+.reglas { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--g); margin-top: clamp(40px, 6vw, 64px); }
+@media (max-width: 820px) { .reglas { grid-template-columns: 1fr; } }
+.regla { background: var(--blanco); border: 1px solid var(--linea); padding: 24px; display: grid; gap: 16px; align-content: start; }
+.regla p { font-size: 14px; color: var(--tinta-suave); }
+.regla .fig { background: var(--gris); min-height: 150px; display: grid; place-items: center; padding: 16px; }
+.tamanos { display: flex; align-items: flex-end; gap: 20px; }
+.tamanos div { display: grid; gap: 6px; justify-items: center; font: 500 11px/1 var(--f-display); color: var(--tinta-suave); }
+
+/* PALETA */
+.prop { display: flex; height: 64px; margin-bottom: var(--g); }
+.prop div { display: flex; align-items: flex-end; padding: 8px 10px; font: 500 11px/1 var(--f-display); letter-spacing: .08em; }
+.colores { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--g); }
+@media (max-width: 900px) { .colores { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 520px) { .colores { grid-template-columns: repeat(2, 1fr); } }
+.col { display: grid; grid-template-rows: 150px auto; border: 1px solid rgba(255,255,255,.14); }
+.col .m { display: flex; align-items: flex-end; padding: 12px; font: 700 28px/1 var(--f-display); }
+.col .d { padding: 14px 12px 16px; display: grid; gap: 4px; background: rgba(255,255,255,.05); }
+.col .d b { font: 700 15px/1.2 var(--f-display); }
+.col .d code { font: 500 12px/1.2 var(--f-display); letter-spacing: .06em; color: rgba(255,255,255,.7); }
+.col .d span { font-size: 13px; color: rgba(255,255,255,.72); line-height: 1.4; }
+.pares { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--g); margin-top: clamp(32px, 5vw, 56px); }
+@media (max-width: 820px) { .pares { grid-template-columns: repeat(2, 1fr); } }
+.par { padding: 22px; display: grid; gap: 18px; min-height: 160px; align-content: space-between; }
+.par .t { font: 700 30px/1 var(--f-display); letter-spacing: -.02em; }
+.par .s { font: 500 11px/1.3 var(--f-display); letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+
+/* TIPOGRAFÍA */
+.tipos { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--g); }
+@media (max-width: 900px) { .tipos { grid-template-columns: 1fr; } }
+.tipo { background: var(--blanco); border: 1px solid var(--linea); padding: clamp(24px, 4vw, 40px); display: grid; gap: 22px; align-content: start; }
+.tipo .muestra { font-family: var(--f-display); font-weight: 700; font-size: clamp(72px, 12vw, 152px); line-height: .85; letter-spacing: -.04em; color: var(--noche); }
+.tipo .muestra span { color: var(--azul); }
+.tipo .abc { font: 500 20px/1.35 var(--f-display); color: var(--tinta-suave); overflow-wrap: anywhere; }
+.tipo-inter .muestra { font-family: var(--f-texto); font-weight: 600; font-size: clamp(60px, 9vw, 112px); letter-spacing: -.03em; }
+.tipo-inter .abc { font-family: var(--f-texto); font-weight: 400; }
+.escala { display: grid; gap: 0; margin-top: var(--g); background: var(--blanco); border: 1px solid var(--linea); }
+.esc { display: grid; grid-template-columns: 170px 1fr; gap: var(--g); padding: 18px clamp(16px, 3vw, 32px); border-top: 1px solid var(--linea); align-items: baseline; }
+.esc:first-child { border-top: 0; }
+.esc .k { font: 500 11px/1.4 var(--f-display); letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-suave); }
+.esc > div:last-child { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 600px) { .esc { grid-template-columns: 1fr; gap: 6px; } }
+.alt { margin-top: 20px; font-size: 14px; color: var(--tinta-suave); }
+
+/* ESTILO VISUAL */
+.lenguaje { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--g); }
+@media (max-width: 900px) { .lenguaje { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .lenguaje { grid-template-columns: 1fr; } }
+.rec { display: grid; gap: 14px; }
+.rec .fig { aspect-ratio: 1; max-width: 100%; position: relative; overflow: hidden; }
+.rec p { font-size: 14px; color: rgba(255,255,255,.75); }
+.rec h3 { color: var(--blanco); }
+.sino { display: grid; grid-template-columns: 1fr 1fr; gap: var(--g); margin-top: clamp(40px, 6vw, 64px); }
+@media (max-width: 720px) { .sino { grid-template-columns: 1fr; } }
+.sino > div { border-top: 2px solid; padding-top: 16px; display: grid; gap: 10px; }
+.sino ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 15px; color: rgba(255,255,255,.82); }
+.sino li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; }
+.sino .si { border-color: var(--lima); }
+.sino .no { border-color: rgba(255,255,255,.35); }
+.sino .si li::before { content: "+"; color: var(--lima); font-weight: 700; }
+.sino .no li::before { content: "–"; color: rgba(255,255,255,.5); }
+
+/* APLICACIONES */
+.apps { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--g); }
+.app { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.app .pie { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--linea); padding-top: 10px; }
+.app .pie b { font: 700 14px/1.3 var(--f-display); }
+.app .pie span { font-size: 13px; color: var(--tinta-suave); text-align: right; }
+.a-web { grid-column: span 8; }
+.a-story { grid-column: span 4; grid-row: span 2; }
+.a-perfil { grid-column: span 4; }
+.a-fav { grid-column: span 4; }
+.a-dossier { grid-column: span 5; }
+.a-video { grid-column: span 7; }
+@media (max-width: 900px) {
+  .a-web, .a-video, .a-dossier { grid-column: 1 / -1; }
+  .a-story, .a-perfil, .a-fav { grid-column: span 6; grid-row: auto; }
+}
+@media (max-width: 560px) { .a-story, .a-perfil, .a-fav { grid-column: 1 / -1; } }
+.lienzo { background: var(--blanco); border: 1px solid var(--linea); overflow: hidden; position: relative; }
+
+/* web */
+.web .barra { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--gris); border-bottom: 1px solid var(--linea); }
+.web .barra i { width: 9px; height: 9px; border-radius: 50%; background: var(--linea); }
+.web .barra .tab { margin-left: 10px; display: flex; align-items: center; gap: 8px; background: var(--blanco); padding: 6px 12px; font: 500 12px/1 var(--f-texto); color: var(--negro); }
+.web .barra .tab svg { width: 14px; height: 14px; }
+.web .nav { display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 3vw, 32px); gap: 16px; }
+.web .nav .hor { width: 150px; }
+.web .nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; font: 500 13px/1 var(--f-texto); }
+@media (max-width: 600px) { .web .nav ul { display: none; } }
+.web .heroW { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--g); padding: clamp(16px, 3vw, 32px); padding-top: 8px; }
+@media (max-width: 600px) { .web .heroW { grid-template-columns: 1fr; } }
+.web .heroW h4 { margin: 0; font: 700 clamp(30px, 4.4vw, 54px)/.95 var(--f-display); letter-spacing: -.03em; color: var(--noche); }
+.web .heroW h4 span { background: var(--lima); padding: 0 .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.web .heroW p { font-size: 14px; color: var(--tinta-suave); margin-top: 16px; }
+.web .btn { display: inline-block; margin-top: 20px; background: var(--azul); color: var(--blanco); font: 500 13px/1 var(--f-display); letter-spacing: .04em; padding: 14px 18px; }
+.web .mod { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 8px; min-height: 220px; }
+.web .mod div { padding: 12px; font: 500 11px/1.2 var(--f-display); letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: flex-end; }
+.web .mod .m1 { background: var(--noche); color: var(--blanco); grid-row: span 2; }
+.web .mod .m2 { background: var(--lima); color: var(--noche); }
+.web .mod .m3 { background: var(--azul); color: var(--blanco); }
+
+/* story */
+.story { aspect-ratio: 9 / 16; max-width: 100%; background: var(--azul); color: var(--blanco); padding: 9% 9% 14%; display: grid; grid-template-rows: auto 1fr auto; border: 0; }
+.story .sup { display: flex; justify-content: space-between; align-items: center; }
+.story .sup .sym { width: 30px; height: 30px; }
+.story .sup span { font: 500 10px/1 var(--f-display); letter-spacing: .2em; }
+.story .marco { align-self: center; border: 2px solid var(--blanco); border-right: 0; border-top: 0; padding: 0 0 16px 16px; position: relative; }
+.story .marco::after { content: ""; position: absolute; right: 0; top: -36px; width: 28px; height: 28px; background: var(--lima); }
+.story .marco b { display: block; font: 700 clamp(34px, 4.4vw, 50px)/.92 var(--f-display); letter-spacing: -.03em; }
+.story .marco small { display: block; margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.8); }
+.story .cta { background: var(--lima); color: var(--noche); font: 700 13px/1 var(--f-display); padding: 14px 16px; display: flex; justify-content: space-between; }
+
+/* perfil */
+.perfil { background: var(--gris); display: grid; place-items: center; padding: 28px; aspect-ratio: 1.15; max-width: 100%; }
+.perfil .circ { width: min(64%, 210px); aspect-ratio: 1; border-radius: 50%; background: var(--azul); display: grid; place-items: center; }
+.perfil .circ .sym { width: 40%; height: 40%; }
+.perfil .handle { display: flex; align-items: center; gap: 10px; margin-top: 14px; font: 600 14px/1.2 var(--f-texto); }
+.perfil .mini { width: 28px; height: 28px; border-radius: 50%; background: var(--noche); display: grid; place-items: center; }
+.perfil .mini .sym { width: 12px; height: 12px; }
+
+/* favicon */
+.fav { background: var(--gris); aspect-ratio: 1.15; max-width: 100%; display: grid; align-content: center; justify-items: center; gap: 22px; padding: 24px; }
+.fav .fila { display: flex; align-items: flex-end; gap: 18px; }
+.fav .ico { display: grid; place-items: center; background: var(--noche); }
+.fav .ico .sym { width: 56%; height: 56%; }
+.fav .t { display: grid; justify-items: center; gap: 6px; font: 500 10px/1 var(--f-display); color: var(--tinta-suave); }
+
+/* dossier */
+.dossier { background: var(--gris); padding: 28px; display: flex; justify-content: center; gap: 14px; }
+.hoja { width: 46%; max-width: 230px; aspect-ratio: 210 / 297; background: var(--noche); color: var(--blanco); padding: 9%; display: grid; grid-template-rows: auto 1fr auto; box-shadow: 0 18px 40px rgba(6,30,92,.22); position: relative; overflow: hidden; }
+.hoja .sym { width: 22px; height: 22px; }
+.hoja b { align-self: end; font: 700 clamp(18px, 2.3vw, 26px)/.95 var(--f-display); letter-spacing: -.02em; }
+.hoja b span { color: var(--lima); }
+.hoja small { font: 500 8px/1.3 var(--f-display); letter-spacing: .16em; text-transform: uppercase; opacity: .7; margin-top: 12px; }
+.hoja.b { background: var(--blanco); color: var(--noche); }
+.hoja.b .bloque { position: absolute; right: 0; top: 0; width: 42%; height: 34%; background: var(--azul); }
+.hoja.b .bloque::after { content: ""; position: absolute; left: -22%; bottom: -14%; width: 30%; aspect-ratio: 1; background: var(--lima); }
+.hoja.b .linea { height: 2px; background: var(--linea); margin-block: 5px; }
+.hoja.b .linea:nth-of-type(odd) { width: 70%; }
+
+/* vídeo */
+.video { aspect-ratio: 16 / 9; max-width: 100%; background: linear-gradient(160deg, #3C4A6B 0%, #1B2440 55%, #0E1428 100%); position: relative; border: 0; color: var(--blanco); }
+.video .esc-foto { position: absolute; inset: 0; background:
+  linear-gradient(0deg, rgba(6,30,92,.7), transparent 55%),
+  repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 2px, transparent 2px 90px); }
+.video .rot { position: absolute; left: 5%; bottom: 10%; display: grid; gap: 8px; }
+.video .rot .e { background: var(--lima); color: var(--noche); font: 700 10px/1 var(--f-display); letter-spacing: .16em; padding: 6px 8px; justify-self: start; }
+.video .rot b { font: 700 clamp(18px, 3vw, 34px)/1 var(--f-display); letter-spacing: -.02em; }
+.video .agua { position: absolute; right: 4%; top: 6%; display: flex; align-items: center; gap: 8px; opacity: .85; }
+.video .agua .sym { width: 22px; height: 22px; }
+.video .agua span { font: 500 9px/1 var(--f-display); letter-spacing: .2em; }
+.video .tc { position: absolute; left: 5%; top: 6%; font: 500 10px/1 var(--f-display); letter-spacing: .14em; opacity: .7; }
+
+/* ECOSISTEMA */
+.eco { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+@media (max-width: 900px) { .eco { grid-template-columns: 1fr; } }
+.arbol { display: grid; gap: var(--g); }
+.raiz { background: var(--noche); padding: 28px; }
+.raiz .hor { max-width: 300px; }
+.ramas { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+.rama { background: var(--blanco); border: 1px solid var(--linea); padding: 16px; display: grid; gap: 18px; }
+.rama b { font: 700 18px/1 var(--f-display); letter-spacing: -.01em; color: var(--noche); }
+.rama .firma { display: flex; align-items: center; gap: 6px; font: 500 9px/1 var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-suave); }
+.rama .firma .sym { width: 11px; height: 11px; }
+
+/* TONO */
+.frases { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--g); }
+.frase { padding: clamp(22px, 3vw, 34px); min-height: 200px; display: grid; align-content: space-between; gap: 24px; font: 700 clamp(26px, 3.2vw, 40px)/1 var(--f-display); letter-spacing: -.025em; }
+.frase .sym { width: 26px; height: 26px; }
+.f1 { grid-column: span 7; background: var(--lima); color: var(--noche); }
+.f2 { grid-column: span 5; background: var(--blanco); color: var(--noche); }
+.f3 { grid-column: span 4; background: var(--noche); color: var(--blanco); border: 1px solid rgba(255,255,255,.2); }
+.f4 { grid-column: span 4; background: transparent; color: var(--blanco); border: 1px solid rgba(255,255,255,.5); }
+.f5 { grid-column: span 4; background: var(--blanco); color: var(--azul); }
+@media (max-width: 820px) { .f1, .f2, .f3, .f4, .f5 { grid-column: 1 / -1; } }
+.voz { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--g); margin-top: clamp(40px, 6vw, 64px); }
+@media (max-width: 720px) { .voz { grid-template-columns: 1fr; } }
+.voz div { border-top: 1px solid rgba(255,255,255,.4); padding-top: 14px; display: grid; gap: 6px; }
+.voz b { font: 700 18px/1.2 var(--f-display); }
+.voz p { font-size: 14px; color: rgba(255,255,255,.8); }
+
+footer { padding-block: 32px; padding-inline: max(16px, 4vw); background: var(--negro); color: rgba(255,255,255,.6); font: 500 12px/1.4 var(--f-display); letter-spacing: .08em; }
+footer .in { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+footer .sym { width: 18px; height: 18px; }
+
+:focus-visible { outline: 2px solid var(--lima); outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-logo .hor rect:last-of-type { animation: entra .9s cubic-bezier(.2,.8,.2,1) both .2s; transform-box: fill-box; transform-origin: 0 100%; }
+  @keyframes entra { from { transform: translate(-40%, 40%) scale(.4); } to { transform: none; } }
+}
+</style>
+
+<!-- HERO -->
+<header class="banda noche hero">
+  <div class="in">
+    <div class="hero-top"><span>Propuesta de identidad visual</span><span>La Línea de la Concepción · 2026</span></div>
+    <div class="hero-logo"><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/><path transform="translate(116 48)" fill="#C7FF3D" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#FFFFFF" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div>
+    <div class="hero-pie">
+      <div class="lema">Creatividad <em>hecha aquí.</em></div>
+      <p>Estudio creativo y comercial de La Línea: publicidad, webs, identidad, campañas, redes y productos propios. Marca paraguas de una red de medios locales.</p>
+    </div>
+  </div>
+</header>
+
+<!-- CONCEPTO -->
+<section class="banda gris" id="concepto">
+  <div class="in">
+    <div class="cab">
+      <span class="eti">01 · Concepto</span>
+      <h2>Una esquina que deja sitio a la idea.</h2>
+      <p>El símbolo es una L construida con dos trazos gruesos. En el hueco que deja la esquina se coloca un módulo: el proyecto, el negocio, la idea. Juntos casi cierran un cuadrado, pero no del todo: el aire entre ellos es parte de la marca.</p>
+    </div>
+    <div class="concepto">
+      <div class="lamina">
+        <svg viewBox="-34 -22 168 152" role="img" aria-label="Construcción del símbolo sobre una retícula de 100 unidades">
+          <defs><pattern id="ret" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M4 0H0V4" fill="none" stroke="#E6EAF3" stroke-width=".3"/></pattern></defs>
+          <rect x="0" y="0" width="100" height="100" fill="url(#ret)"/>
+          <rect x="0" y="0" width="100" height="100" fill="none" stroke="#B8C2DA" stroke-width=".35" stroke-dasharray="1.5 1.5"/>
+          <g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g>
+          <rect x="52" width="48" height="48" fill="#1F5EFF"/>
+          <g fill="#C7FF3D" opacity=".85"><rect x="36" y="0" width="16" height="64"/><rect x="36" y="48" width="64" height="16"/></g>
+          <g font-family="Space Grotesk, sans-serif" font-size="4.6" font-weight="500" fill="#4A5578" letter-spacing=".3">
+            <path d="M0 -8H36M0 -10V-6M36 -10V-6" stroke="#4A5578" stroke-width=".35"/><text x="18" y="-11" text-anchor="middle">36</text>
+            <path d="M36 -8H52M52 -10V-6" stroke="#4A5578" stroke-width=".35"/><text x="44" y="-11" text-anchor="middle">16</text>
+            <path d="M52 -8H100M100 -10V-6" stroke="#4A5578" stroke-width=".35"/><text x="76" y="-11" text-anchor="middle">48</text>
+            <path d="M108 0V48M106 0H110M106 48H110" stroke="#4A5578" stroke-width=".35"/><text x="112" y="26">48</text>
+            <path d="M108 48V64M106 64H110" stroke="#4A5578" stroke-width=".35"/><text x="112" y="58">16</text>
+            <path d="M108 64V100M106 100H110" stroke="#4A5578" stroke-width=".35"/><text x="112" y="84">36</text>
+            <text x="-6" y="52" text-anchor="end">100</text>
+            <text x="50" y="114" text-anchor="middle" fill="#061E5C">Retícula de 100 u · separación modular 16 u</text>
+          </g>
+        </svg>
+      </div>
+      <div class="concepto-txt">
+        <p>Todo sale de una sola medida: <strong>16 unidades</strong> de separación. La misma distancia separa la L del módulo, el símbolo del nombre y los bloques de cualquier composición de la marca.</p>
+        <div class="lecturas">
+          <div class="lectura"><span class="n">L</span><h3>La Línea</h3><p>La inicial de la ciudad, sólida y de trazo grueso. Funciona sola como marca de agua o favicon.</p></div>
+          <div class="lectura"><span class="n">Esquina</span><h3>Un marco</h3><p>La L es la esquina de un encuadre: lo que hace el estudio con cada negocio, enmarcarlo y darle forma.</p></div>
+          <div class="lectura"><span class="n">Módulo</span><h3>Una ventana digital</h3><p>El cuadrado es un píxel, una pantalla, un bloque de contenido. En lima, es el acento atrevido.</p></div>
+          <div class="lectura"><span class="n">S + L</span><h3>Una lectura escondida</h3><p>El hueco en lima del esquema dibuja un trazo quebrado que baja y gira: el recorrido de una S entre bloques.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="lamina lockup-regla">
+      <svg viewBox="-10 -16 330 132" role="img" aria-label="Alineación del nombre con el símbolo" style="max-width:820px">
+        <g stroke="#1F5EFF" stroke-width=".3" stroke-dasharray="1.2 1.2" fill="none">
+          <path d="M-10 0H400M-10 48H400M-10 64H400M-10 100H400M116 -16V116"/>
+        </g>
+        <g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g>
+        <rect x="52" width="48" height="48" fill="#1F5EFF"/>
+        <path transform="translate(116 48)" fill="#1F5EFF" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#061E5C" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/>
+        <g font-family="Space Grotesk, sans-serif" font-size="3.8" font-weight="500" fill="#1F5EFF" letter-spacing=".25">
+          <text x="100" y="-5" text-anchor="end">16 u</text>
+        </g>
+      </svg>
+      <p class="muted" style="margin-top:16px;font-size:14px">LINENSE ocupa exactamente la banda del pie de la L: su altura de mayúsculas es el grosor del trazo, así que el nombre se lee como la continuación del símbolo. STUDIO apoya su línea base en la base del módulo, más pequeño y espaciado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VERSIONES -->
+<section class="banda blanco" id="versiones">
+  <div class="in">
+    <div class="cab">
+      <span class="eti">02 · Versiones</span>
+      <h2>Un logo, cuatro formatos.</h2>
+      <p>La horizontal es la principal. La vertical, para espacios cuadrados o altos. El símbolo solo, cuando la marca ya está presente o el tamaño es pequeño.</p>
+    </div>
+    <div class="versiones">
+      <div class="v v-principal"><span class="chip">Principal · horizontal sobre azul noche</span><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/><path transform="translate(116 48)" fill="#C7FF3D" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#FFFFFF" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div>
+      <div class="v v-vert"><span class="chip">Vertical · apilada</span><svg class="ver" viewBox="0 0 190.39 193" role="img" aria-label="Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/><path transform="translate(0 145)" fill="#FFFFFF" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(0 193)" fill="#FFFFFF" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div>
+      <div class="v v-claro"><span class="chip">Horizontal · fondo claro</span><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/><path transform="translate(116 48)" fill="#1F5EFF" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#061E5C" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div>
+      <div class="v v-sim"><span class="chip">Símbolo</span><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg></div>
+      <div class="v v-mono"><span class="chip">Monocolor negro</span><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#111318"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#111318"/><path transform="translate(116 48)" fill="#111318" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#111318" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div>
+      <div class="v v-mono2"><span class="chip">Monocolor blanco</span><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#FFFFFF"/><path transform="translate(116 48)" fill="#FFFFFF" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#FFFFFF" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div>
+    </div>
+    <div class="reglas">
+      <div class="regla">
+        <div class="fig">
+          <svg viewBox="-24 -24 148 148" style="width:150px" aria-label="Área de respeto">
+            <rect x="-16" y="-16" width="132" height="132" fill="none" stroke="#1F5EFF" stroke-width=".8" stroke-dasharray="3 3"/>
+            <g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/>
+            <rect x="52" y="-16" width="16" height="16" fill="#C7FF3D"/>
+          </svg>
+        </div>
+        <h3>Área de respeto</h3>
+        <p>Alrededor del logo, como mínimo, un módulo de separación (16 u): el hueco entre la L y el cuadrado.</p>
+      </div>
+      <div class="regla">
+        <div class="fig">
+          <div class="tamanos">
+            <div><div style="width:16px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg></div><span>16 px</span></div>
+            <div style="width:96px"><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/><path transform="translate(116 48)" fill="#1F5EFF" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#061E5C" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg><span>96 px</span></div>
+          </div>
+        </div>
+        <h3>Tamaño mínimo</h3>
+        <p>Símbolo: 16 px en pantalla, 5 mm impreso. Horizontal: 96 px de ancho; por debajo, usar solo el símbolo.</p>
+      </div>
+      <div class="regla">
+        <div class="fig" style="gap:10px;grid-template-columns:repeat(3,1fr)">
+          <div style="background:#061E5C;padding:14px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></div>
+          <div style="background:#1F5EFF;padding:14px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></div>
+          <div style="background:#fff;padding:14px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg></div>
+        </div>
+        <h3>Color según fondo</h3>
+        <p>Sobre azul, la L en blanco y el módulo en lima. Sobre claro, L en azul noche y módulo en azul eléctrico: el lima no se usa sobre blanco.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PALETA -->
+<section class="banda noche" id="paleta">
+  <div class="in">
+    <div class="cab">
+      <span class="eti">03 · Color</span>
+      <h2>Base azul, acento lima.</h2>
+      <p>El azul noche da la seriedad y es el fondo principal. El azul eléctrico aporta lo digital. El lima es el golpe atrevido: poco, pero siempre que haya que señalar algo.</p>
+    </div>
+    <div class="prop" aria-label="Proporción de uso">
+      <div style="flex:38;background:#061E5C;border:1px solid rgba(255,255,255,.25);color:#fff">38%</div>
+      <div style="flex:22;background:#1F5EFF;color:#fff">22%</div>
+      <div style="flex:18;background:#fff;color:#061E5C">18%</div>
+      <div style="flex:12;background:#F4F6FA;color:#061E5C">12%</div>
+      <div style="flex:5;background:#111318;color:#fff;border:1px solid rgba(255,255,255,.25)">5</div>
+      <div style="flex:5;background:#C7FF3D;color:#061E5C">5</div>
+    </div>
+    <div class="colores">
+      <div class="col"><div class="m" style="background:#061E5C;color:#C7FF3D">Aa</div><div class="d"><b>Azul noche</b><code>#061E5C</code><span>Fondo principal, textos sobre claro.</span></div></div>
+      <div class="col"><div class="m" style="background:#1F5EFF;color:#fff">Aa</div><div class="d"><b>Azul eléctrico</b><code>#1F5EFF</code><span>Fondos de campaña, botones, enlaces.</span></div></div>
+      <div class="col"><div class="m" style="background:#fff;color:#061E5C">Aa</div><div class="d"><b>Blanco</b><code>#FFFFFF</code><span>Texto sobre azul, documentos.</span></div></div>
+      <div class="col"><div class="m" style="background:#F4F6FA;color:#1F5EFF">Aa</div><div class="d"><b>Gris claro</b><code>#F4F6FA</code><span>Fondos de web y dossier.</span></div></div>
+      <div class="col"><div class="m" style="background:#111318;color:#fff">Aa</div><div class="d"><b>Negro suave</b><code>#111318</code><span>Texto largo, versión mono.</span></div></div>
+      <div class="col"><div class="m" style="background:#C7FF3D;color:#061E5C">Aa</div><div class="d"><b>Lima</b><code>#C7FF3D</code><span>Acento: módulo, subrayado, dato clave.</span></div></div>
+    </div>
+    <div class="pares">
+      <div class="par" style="background:#061E5C;border:1px solid rgba(255,255,255,.2);color:#fff"><span class="t">Ideas<br><span style="color:#C7FF3D">que se ven</span></span><span class="s">Blanco + lima sobre noche</span></div>
+      <div class="par" style="background:#1F5EFF;color:#fff"><span class="t">Tu negocio,<br>mejor contado</span><span class="s">Blanco sobre eléctrico</span></div>
+      <div class="par" style="background:#C7FF3D;color:#061E5C"><span class="t">Hecho<br>aquí</span><span class="s">Noche sobre lima</span></div>
+      <div class="par" style="background:#fff;color:#061E5C"><span class="t">Diseño con<br><span style="color:#1F5EFF">identidad</span></span><span class="s">Noche + eléctrico sobre blanco</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPOGRAFÍA -->
+<section class="banda gris" id="tipografia">
+  <div class="in">
+    <div class="cab">
+      <span class="eti">04 · Tipografía</span>
+      <h2>Una grotesca con carácter y una de lectura.</h2>
+      <p>Space Grotesk para el logo, titulares y etiquetas: geométrica, con detalles propios en la G, la R y la S. Inter para todo lo que se lee de corrido. Las dos son libres y funcionan en web.</p>
+    </div>
+    <div class="tipos">
+      <div class="tipo">
+        <span class="chip muted">Space Grotesk · Bold 700 / Medium 500</span>
+        <div class="muestra">Aa<span>Gg</span></div>
+        <div class="abc">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz<br>0123456789 € % &amp; ¿?</div>
+      </div>
+      <div class="tipo tipo-inter">
+        <span class="chip muted">Inter · Regular 400 / SemiBold 600</span>
+        <div class="muestra">Aa</div>
+        <div class="abc">Textos de web, dossier, propuestas, pies de foto y subtítulos. Legible en pequeño y en pantalla.</div>
+      </div>
+    </div>
+    <div class="escala">
+      <div class="esc"><span class="k">Titular · SG Bold<br>−2% tracking</span><div style="font:700 clamp(30px,5vw,56px)/1 var(--f-display);letter-spacing:-.025em;color:var(--noche)">Tu negocio. Nuestra audiencia.</div></div>
+      <div class="esc"><span class="k">Subtítulo · SG Medium</span><div style="font:500 22px/1.25 var(--f-display);color:var(--noche)">Campañas, webs y contenido para negocios de La Línea</div></div>
+      <div class="esc"><span class="k">Etiqueta · SG Medium<br>mayúsculas +20%</span><div><span class="eti" style="color:var(--azul)">Publicidad local</span></div></div>
+      <div class="esc"><span class="k">Texto · Inter Regular</span><div style="font-size:16px;color:var(--tinta-suave);max-width:60ch">Preparamos la identidad, la web y la campaña de lanzamiento, y la movemos en los medios de la red para que llegue a quien vive en la ciudad.</div></div>
+      <div class="esc"><span class="k">Dato · SG Bold</span><div style="font:700 48px/1 var(--f-display);letter-spacing:-.03em;color:var(--azul)">5 <span style="font-size:22px;letter-spacing:0;color:var(--noche)">medios locales</span></div></div>
+    </div>
+    <p class="alt">Alternativas si se quiere más personalidad: <b>Clash Grotesk</b> o <b>Satoshi</b> (Indian Type Foundry / Fontshare, gratuitas para uso comercial) para titulares, y <b>Manrope</b> como texto. El logo ya va trazado en Space Grotesk y no depende de la fuente instalada.</p>
+  </div>
+</section>
+
+<!-- ESTILO VISUAL -->
+<section class="banda azul" id="estilo">
+  <div class="in">
+    <div class="cab">
+      <span class="eti">05 · Estilo visual</span>
+      <h2>Marcos, módulos y mucho aire.</h2>
+      <p>La marca no se apoya en ilustraciones ni en iconos de agencia: compone con las mismas piezas del símbolo. Esquinas que encuadran fotos, bloques de color que sostienen un dato, composiciones descentradas.</p>
+    </div>
+    <div class="lenguaje">
+      <div class="rec">
+        <div class="fig" style="background:#061E5C">
+          <div style="position:absolute;left:14%;bottom:14%;width:60%;height:60%;border-left:12px solid #fff;border-bottom:12px solid #fff"></div>
+          <div style="position:absolute;right:14%;top:14%;width:22%;height:22%;background:#C7FF3D"></div>
+        </div>
+        <h3>Esquina</h3><p>Una L blanca encuadra la foto o el titular, siempre abajo a la izquierda.</p>
+      </div>
+      <div class="rec">
+        <div class="fig" style="background:#F4F6FA;display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:8px;padding:8px">
+          <div style="grid-row:span 2;background:#061E5C"></div><div style="background:#C7FF3D"></div><div style="background:#1F5EFF;border:1px solid rgba(255,255,255,.4)"></div>
+        </div>
+        <h3>Módulos</h3><p>Retícula de bloques con la separación de 16 u. Cada bloque, un contenido.</p>
+      </div>
+      <div class="rec">
+        <div class="fig" style="background:#fff;padding:12%;display:grid;align-content:end;gap:8px">
+          <span style="font:700 clamp(38px,5vw,60px)/.9 var(--f-display);letter-spacing:-.04em;color:#061E5C">+42%</span>
+          <span style="height:10px;width:64%;background:#C7FF3D"></span>
+          <span style="font:500 11px/1.3 var(--f-display);letter-spacing:.12em;color:#4A5578">ALCANCE LOCAL</span>
+        </div>
+        <h3>Dato en bloque</h3><p>Cifra grande, una barra lima y una etiqueta. Nada de párrafos.</p>
+      </div>
+      <div class="rec">
+        <div class="fig" style="background:#1F5EFF;border:1px solid rgba(255,255,255,.45)">
+          <div style="position:absolute;left:10%;top:10%;right:10%;height:1px;background:rgba(255,255,255,.5)"></div>
+          <div style="position:absolute;left:10%;top:10%;bottom:10%;width:1px;background:rgba(255,255,255,.5)"></div>
+          <div style="position:absolute;left:10%;top:42%;width:58%;padding:10px 12px;background:#fff;font:700 clamp(14px,1.6vw,18px)/1.05 var(--f-display);color:#061E5C;letter-spacing:-.01em">Diseño con identidad</div>
+          <div style="position:absolute;right:10%;bottom:10%;width:14%;aspect-ratio:1;background:#C7FF3D"></div>
+        </div>
+        <h3>Asimetría</h3><p>Composiciones descentradas con líneas finas de guía y el acento en un extremo.</p>
+      </div>
+    </div>
+    <div class="sino">
+      <div class="si"><h3>Sí</h3><ul><li>Fotos reales de La Línea, de negocios y de gente de aquí.</li><li>Bloques de color plano, sin degradados.</li><li>Un único acento lima por pieza.</li><li>Ángulos rectos; las esquinas no se redondean.</li></ul></div>
+      <div class="no"><h3>No</h3><ul><li>Lápices, pinceles, bombillas, cursores ni megáfonos.</li><li>Sombras, biseles, efectos 3D o brillos sobre el logo.</li><li>Girar, deformar o cambiar los colores del símbolo.</li><li>Lima sobre blanco o como color de texto largo.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- APLICACIONES -->
+<section class="banda blanco" id="aplicaciones">
+  <div class="in">
+    <div class="cab">
+      <span class="eti">06 · Aplicaciones</span>
+      <h2>De un favicon de 16 px a una campaña.</h2>
+      <p>El sistema se reduce al símbolo cuando hay poco espacio y crece con marcos y módulos cuando hay sitio para contar algo.</p>
+    </div>
+    <div class="apps">
+      <div class="app a-web">
+        <div class="lienzo web">
+          <div class="barra"><i></i><i></i><i></i><span class="tab"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg> Studio Linense</span></div>
+          <div class="nav"><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/><path transform="translate(116 48)" fill="#1F5EFF" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#061E5C" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg><ul><li>Servicios</li><li>Proyectos</li><li>Medios</li><li>Contacto</li></ul></div>
+          <div class="heroW">
+            <div><h4>Tu negocio, <span>mejor contado.</span></h4><p>Identidad, web, campañas y contenido para negocios de La Línea, con la audiencia de cinco medios locales.</p><span class="btn">Cuéntanos tu proyecto →</span></div>
+            <div class="mod"><div class="m1">Webs</div><div class="m2">Campañas</div><div class="m3">Redes</div></div>
+          </div>
+        </div>
+        <div class="pie"><b>Web</b><span>Cabecera con logo horizontal, módulos de servicios</span></div>
+      </div>
+
+      <div class="app a-story">
+        <div class="lienzo story">
+          <div class="sup"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg><span>STUDIO LINENSE</span></div>
+          <div class="marco"><b>Creatividad hecha aquí.</b><small>Campañas para negocios de La Línea</small></div>
+          <div class="cta"><span>Pide tu propuesta</span><span>→</span></div>
+        </div>
+        <div class="pie"><b>Stories</b><span>1080 × 1920, esquina + módulo</span></div>
+      </div>
+
+      <div class="app a-perfil">
+        <div class="lienzo perfil">
+          <div style="display:grid;justify-items:center">
+            <div class="circ"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></div>
+            <div class="handle"><span class="mini"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></span>@studiolinense</div>
+          </div>
+        </div>
+        <div class="pie"><b>Foto de perfil</b><span>Símbolo sobre azul eléctrico</span></div>
+      </div>
+
+      <div class="app a-fav">
+        <div class="lienzo fav">
+          <div class="fila">
+            <div class="t"><div class="ico" style="width:16px;height:16px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></div>16</div>
+            <div class="t"><div class="ico" style="width:32px;height:32px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></div>32</div>
+            <div class="t"><div class="ico" style="width:64px;height:64px;border-radius:14px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></div>64</div>
+            <div class="t"><div class="ico" style="width:96px;height:96px;border-radius:22px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg></div>App</div>
+          </div>
+        </div>
+        <div class="pie"><b>Favicon e icono</b><span>Símbolo con margen, sobre noche</span></div>
+      </div>
+
+      <div class="app a-dossier">
+        <div class="lienzo dossier">
+          <div class="hoja"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg><b>Dossier comercial <span>2026</span></b><small>Studio Linense · La Línea</small></div>
+          <div class="hoja b"><span class="bloque"></span><div style="width:60%"><svg class="word" viewBox="0 33 190.39 69" role="img" aria-label="Studio Linense"><path transform="translate(0 48)" fill="#1F5EFF" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(0 100)" fill="#061E5C" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div><div style="align-self:end"><div class="linea"></div><div class="linea"></div><div class="linea"></div><div class="linea"></div></div><small style="color:#4A5578">Tarifas · Audiencia</small></div>
+        </div>
+        <div class="pie"><b>Dossier</b><span>Portada noche, interiores blancos</span></div>
+      </div>
+
+      <div class="app a-video">
+        <div class="lienzo video">
+          <div class="esc-foto"></div>
+          <span class="tc">00:12</span>
+          <div class="agua"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#FFFFFF"/></svg><span>STUDIO LINENSE</span></div>
+          <div class="rot"><span class="e">CAMPAÑA</span><b>Ideas que se ven</b></div>
+        </div>
+        <div class="pie"><b>Vídeo y marca de agua</b><span>Símbolo blanco al 85%, esquina superior derecha</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSISTEMA -->
+<section class="banda gris" id="ecosistema">
+  <div class="in">
+    <div class="eco">
+      <div class="cab" style="display:grid;grid-template-columns:1fr;margin:0">
+        <span class="eti">07 · Marca paraguas</span>
+        <h2 style="grid-column:1/-1">Un estudio detrás de la red.</h2>
+        <p style="grid-column:1/-1">Cada medio conserva su propia identidad. Studio Linense aparece como firma discreta, con el símbolo pequeño y el texto «un medio de Studio Linense», en pies de web, dossiers y créditos.</p>
+      </div>
+      <div class="arbol">
+        <div class="raiz"><svg class="hor" viewBox="0 0 306.39 100" role="img" aria-label="Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/><path transform="translate(116 48)" fill="#C7FF3D" d="M5.02 0.26Q3.55 0.26 2.42-0.26Q1.28-0.78 0.64-1.79Q0-2.80 0-4.25L0-4.72L1.99-4.72L1.99-4.25Q1.99-2.88 2.81-2.19Q3.64-1.50 5.02-1.50Q6.41-1.50 7.11-2.09Q7.82-2.67 7.82-3.60Q7.82-4.21 7.49-4.60Q7.15-4.99 6.54-5.23Q5.93-5.46 5.07-5.66L4.38-5.83Q3.14-6.13 2.22-6.56Q1.30-7 0.80-7.72Q0.30-8.45 0.30-9.58Q0.30-10.73 0.86-11.55Q1.43-12.37 2.43-12.81Q3.44-13.26 4.79-13.26Q6.15-13.26 7.22-12.79Q8.28-12.33 8.90-11.42Q9.51-10.51 9.51-9.14L9.51-8.47L7.52-8.47L7.52-9.14Q7.52-9.97 7.18-10.49Q6.84-11.01 6.22-11.25Q5.61-11.49 4.79-11.49Q3.60-11.49 2.94-11Q2.29-10.51 2.29-9.64Q2.29-9.04 2.57-8.66Q2.86-8.28 3.42-8.04Q3.98-7.80 4.81-7.61L5.50-7.45Q6.76-7.17 7.73-6.73Q8.69-6.29 9.25-5.55Q9.81-4.81 9.81-3.64Q9.81-2.47 9.22-1.60Q8.64-0.72 7.56-0.23Q6.48 0.26 5.02 0.26M21.36 0L19.35 0L19.35-11.18L15.36-11.18L15.36-13L25.35-13L25.35-11.18L21.36-11.18M36.87 0.26Q35.32 0.26 34.22-0.30Q33.11-0.85 32.51-1.90Q31.91-2.95 31.91-4.46L31.91-13L33.93-13L33.93-4.40Q33.93-3.03 34.69-2.28Q35.45-1.54 36.87-1.54Q38.28-1.54 39.04-2.28Q39.80-3.03 39.80-4.40L39.80-13L41.81-13L41.81-4.46Q41.81-2.95 41.21-1.90Q40.62-0.85 39.50-0.30Q38.39 0.26 36.87 0.26M53.97 0L48.77 0L48.77-1.78L50.52-1.78L50.52-11.22L48.77-11.22L48.77-13L53.97-13Q56.57-13 57.95-11.68Q59.34-10.36 59.34-7.71L59.34-5.27Q59.34-2.62 57.95-1.31Q56.57 0 53.97 0M52.54-11.16L52.54-1.82L53.99-1.82Q55.68-1.82 56.50-2.67Q57.31-3.53 57.31-5.22L57.31-7.78Q57.31-9.49 56.50-10.32Q55.68-11.16 53.99-11.16M68.44 0L66.43 0L66.43-13L68.44-13M80.86 0.26Q78.47 0.26 77.05-1.09Q75.64-2.43 75.64-4.98L75.64-8.02Q75.64-10.57 77.05-11.91Q78.47-13.26 80.86-13.26Q83.26-13.26 84.68-11.91Q86.10-10.57 86.10-8.02L86.10-4.98Q86.10-2.43 84.68-1.09Q83.26 0.26 80.86 0.26M80.86-1.54Q82.40-1.54 83.24-2.44Q84.07-3.34 84.07-4.90L84.07-8.10Q84.07-9.66 83.24-10.56Q82.40-11.46 80.86-11.46Q79.36-11.46 78.50-10.56Q77.65-9.66 77.65-8.10L77.65-4.90Q77.65-3.34 78.50-2.44Q79.36-1.54 80.86-1.54"/><path transform="translate(116 100)" fill="#FFFFFF" d="M23.25 0L0 0L0-36L6.79-36L6.79-6.17L23.25-6.17M34.15 0L27.36 0L27.36-36L34.15-36M47.11 0L40.42 0L40.42-36L53.33-36L60.48-4.63L61.41-4.63L61.41-36L68.09-36L68.09 0L55.18 0L48.04-31.37L47.11-31.37M97.82 0L74.37 0L74.37-36L97.51-36L97.51-29.83L81.16-29.83L81.16-21.24L96.07-21.24L96.07-15.07L81.16-15.07L81.16-6.17L97.82-6.17M109.03 0L102.34 0L102.34-36L115.25-36L122.40-4.63L123.33-4.63L123.33-36L130.01-36L130.01 0L117.10 0L109.96-31.37L109.03-31.37M148.78 0.72Q144.62 0.72 141.43-0.77Q138.24-2.26 136.44-5.04Q134.64-7.82 134.64-11.72L134.64-13.16L141.33-13.16L141.33-11.72Q141.33-8.48 143.33-6.86Q145.34-5.24 148.78-5.24Q152.28-5.24 154-6.63Q155.73-8.02 155.73-10.18Q155.73-11.67 154.88-12.60Q154.03-13.52 152.41-14.12Q150.79-14.71 148.48-15.22L147.29-15.48Q143.59-16.30 140.94-17.56Q138.29-18.82 136.88-20.88Q135.46-22.94 135.46-26.23Q135.46-29.52 137.03-31.86Q138.60-34.20 141.46-35.46Q144.31-36.72 148.17-36.72Q152.02-36.72 155.03-35.41Q158.04-34.10 159.76-31.50Q161.49-28.90 161.49-24.99L161.49-23.45L154.80-23.45L154.80-24.99Q154.80-27.05 154-28.31Q153.21-29.57 151.72-30.16Q150.22-30.75 148.17-30.75Q145.08-30.75 143.62-29.60Q142.15-28.44 142.15-26.43Q142.15-25.10 142.84-24.17Q143.54-23.24 144.93-22.63Q146.32-22.01 148.48-21.55L149.66-21.29Q153.52-20.47 156.37-19.18Q159.22-17.90 160.82-15.79Q162.41-13.68 162.41-10.39Q162.41-7.10 160.74-4.60Q159.07-2.11 156.01-0.69Q152.95 0.72 148.78 0.72M190.39 0L166.94 0L166.94-36L190.08-36L190.08-29.83L173.73-29.83L173.73-21.24L188.64-21.24L188.64-15.07L173.73-15.07L173.73-6.17L190.39-6.17"/></svg></div>
+        <div class="ramas">
+          <div class="rama"><b>InfoLinense</b><span class="firma"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg> un medio de Studio Linense</span></div>
+          <div class="rama"><b>Carnavalinense</b><span class="firma"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg> un medio de Studio Linense</span></div>
+          <div class="rama"><b>Ferialinense</b><span class="firma"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg> un medio de Studio Linense</span></div>
+          <div class="rama"><b>El Cofrade Linense</b><span class="firma"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg> un medio de Studio Linense</span></div>
+          <div class="rama"><b>AgendaLinense</b><span class="firma"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg> un medio de Studio Linense</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TONO -->
+<section class="banda noche" id="tono">
+  <div class="in">
+    <div class="cab">
+      <span class="eti">08 · Tono</span>
+      <h2>Frases cortas, dichas como aquí.</h2>
+      <p>La marca habla en corto y en directo, con el orgullo tranquilo de quien trabaja en su ciudad. Sin tecnicismos de agencia ni promesas grandilocuentes.</p>
+    </div>
+    <div class="frases">
+      <div class="frase f1"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg>Creatividad hecha aquí.</div>
+      <div class="frase f2"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#061E5C"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#1F5EFF"/></svg>Tu negocio. Nuestra audiencia.</div>
+      <div class="frase f3"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg>Ideas que se ven.</div>
+      <div class="frase f4"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg>Diseño con identidad.</div>
+      <div class="frase f5"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#1F5EFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg>Tu negocio, mejor contado.</div>
+    </div>
+    <div class="voz">
+      <div><b>Cercana</b><p>Tuteamos y hablamos de la calle, el barrio y el negocio concreto.</p></div>
+      <div><b>Segura</b><p>Afirmaciones cortas. Si hay un dato, el dato va primero.</p></div>
+      <div><b>Útil</b><p>Cada frase dice qué hacemos o qué gana el cliente.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="in"><span style="display:flex;align-items:center;gap:10px"><svg class="sym" viewBox="0 0 100 100" role="img" aria-label="Símbolo Studio Linense"><g fill="#FFFFFF"><rect width="36" height="100"/><rect y="64" width="100" height="36"/></g><rect x="52" width="48" height="48" fill="#C7FF3D"/></svg> Studio Linense · Propuesta de identidad v1</span><span>Archivos SVG en marcas/studio-linense/</span></div></footer>
