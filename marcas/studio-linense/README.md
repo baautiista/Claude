@@ -18,3 +18,9 @@ node gen.js <salida>/logos            # SVG del logo + piezas.json
 node build.js guia.tpl.html <salida>/piezas.json guia.html
 node alt.js <salida>/piezas.json alternativas.html <salida>/alternativas
 ```
+
+## Ronda 2 — exploración de símbolo
+
+`ronda-2.html` presenta 6 direcciones en blanco y negro y desarrolla 3: **A · Desfase** (LINE/NSE, una línea que se parte y baja su propio grosor), **B · Ensamble** (dos bloques unidos por colas de milano opuestas) y **C · Istmo** (dos masas unidas por una línea). En `ronda-2/` están el símbolo, la versión horizontal y la apilada en negro, la horizontal sobre claro y sobre oscuro, y el perfil de cada una, además de los bocetos descartados.
+
+Logotipos trazados con Schibsted Grotesk (A), Syne (B) y Bricolage Grotesque (C). Para regenerar: `node r2page.js ronda-2.html ronda-2/` desde una carpeta con `@fontsource/{schibsted-grotesk,syne,bricolage-grotesque}` y `opentype.js` instalados (las rutas de fuentes son relativas a `r2lib.js`).
