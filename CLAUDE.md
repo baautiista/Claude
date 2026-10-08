@@ -100,5 +100,6 @@ Antes de crear nada, analizar qué recursos visuales explican de verdad la histo
 - Cada vídeo vive en su carpeta: `src/<vídeo>/` (config.ts con guion, tiempos y MOMENTOS anclados a palabras) y `public/<vídeo>/` (fotos, locucion.mp3, musica.mp3). Motor de tiempos compartido en `src/marca/guion.ts`; piezas reutilizables en `src/marca/` (Titular, Tramo, TarjetaDato, Contador, Foto, AntesDespues, Sello, Calendario, LineaPasos, BandaObra, Firma, Subtitulos, Placeholder para imágenes que aún faltan).
 - Ritmo: un corte o elemento nuevo anclado a palabras de la locución cada 2–3 s; las calles o datos se iluminan cuando se nombran.
 - Pausas: el script recorta las pausas largas a 0,35 s; para que un tramo respire (p. ej. un carrusel), `PAUSAS_ENTRE_FRASES` en el config.ts del vídeo deja o añade silencio entre sus frases.
+- Velocidad de voz por vídeo: `AJUSTES_VOZ` en su config.ts (p. ej. `{ speed: 1.15 }`). Para una duración exacta, calcular la cola final en el tiempos.ts del vídeo (ver `src/costa/tiempos.ts`).
 - Locución con ElevenLabs: `npm run locucion -- <vídeo>` (requiere `ELEVENLABS_API_KEY` y acceso de red a `api.elevenlabs.io`).
 - `OrigenNombreLaLinea` se hizo antes de definir este sistema (estética sepia/dorada): no usarlo como referencia de estilo.

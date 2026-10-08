@@ -31,6 +31,8 @@ const config = (await import(`../src/${proyecto}/config.ts`)) as {
   PRONUNCIACION?: Record<string, string>;
   /** Pausa (s) que se deja entre frases de una misma escena (p. ej. un carrusel). */
   PAUSAS_ENTRE_FRASES?: Record<string, number>;
+  /** Ajustes de voz propios del vídeo (p. ej. { speed: 1.0 }), sobre los de marca. */
+  AJUSTES_VOZ?: Record<string, number | boolean>;
 };
 const PAUSAS = config.PAUSAS_ENTRE_FRASES ?? {};
 const ESCENAS = config.ESCENAS;
@@ -92,7 +94,7 @@ const cuerpo = JSON.stringify({
   text: texto,
   model_id: ELEVENLABS.modelo,
   language_code: "es",
-  voice_settings: ELEVENLABS.ajustes,
+  voice_settings: { ...ELEVENLABS.ajustes, ...(config.AJUSTES_VOZ ?? {}) },
 });
 
 const conCurl = () =>
