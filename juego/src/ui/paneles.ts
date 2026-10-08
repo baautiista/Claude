@@ -81,6 +81,25 @@ export function abrirDiario(j: Juego) {
   );
 }
 
+/** Botón con confirmación en dos toques (el visor no admite confirm()). */
+function nuevaPartida() {
+  let armado = false;
+  const b = h("button", { class: "accion" });
+  const pintar = () => b.replaceChildren(h("span", {}, h("b", {}, armado ? "Toca otra vez para borrar la partida" : "Nueva partida"), h("small", {}, armado ? "Se perderá el progreso de esta partida" : "Borra la partida guardada")));
+  b.addEventListener("click", () => {
+    if (!armado) {
+      armado = true;
+      b.classList.add("historia");
+      pintar();
+      return;
+    }
+    borrar();
+    window.dispatchEvent(new Event("mi-linea:portada"));
+  });
+  pintar();
+  return b;
+}
+
 export function abrirMenu(j: Juego) {
   const boton = h("button", { class: "accion" });
   const pintarSonido = () => boton.replaceChildren(h("span", {}, h("b", {}, `Sonido: ${sonidoActivo() ? "activado" : "desactivado"}`), h("small", {}, "Efectos ligeros al tocar, cobrar y acertar")));
@@ -94,15 +113,7 @@ export function abrirMenu(j: Juego) {
     h("p", { class: "desc" }, "La partida se guarda sola en este dispositivo."),
     h("div", { class: "acciones" },
       boton,
-      h("button", {
-        class: "accion",
-        onclick: () => {
-          if (confirm("¿Empezar una partida nueva? Se borrará la actual.")) {
-            borrar();
-            location.reload();
-          }
-        },
-      }, h("span", {}, h("b", {}, "Nueva partida"), h("small", {}, "Borra la partida guardada"))),
+      nuevaPartida(),
     ),
     h("div", { class: "seccion-titulo" }, "Créditos"),
     h("p", { class: "desc" }, "Un juego de InfoLinense ambientado en La Línea de la Concepción. Personajes e historias de ficción."),

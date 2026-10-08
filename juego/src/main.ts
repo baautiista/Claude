@@ -93,4 +93,5 @@ async function jugar(e: ReturnType<typeof nuevaPartida>, nueva = false) {
   if (nueva) await intro(j);
 }
 
+window.addEventListener("mi-linea:portada", () => portada());
 portada();
