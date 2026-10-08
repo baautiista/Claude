@@ -28,3 +28,7 @@ Logotipos trazados con Schibsted Grotesk (A), Syne (B) y Bricolage Grotesque (C)
 ## Ronda 3 — la línea y el Peñón
 
 `ronda-3.html`: 6 ideas en blanco y negro construidas sobre la idea de línea (trazo, frontera, horizonte, conexión, La Línea) con el Peñón como referencia abstracta, y 3 desarrolladas: **A · Renglones** (líneas de texto cuyos finales dibujan el perfil del Peñón; la última es el horizonte), **B · Trazo** (una línea que sube por el Peñón, cae por la cara norte y sigue recta como La Línea) y **C · Dos orillas** (ciudad baja, Peñón en cuña y la Verja como hueco). Los SVG están en `ronda-3/`. Logotipos trazados con Familjen Grotesk (A), Schibsted Grotesk (B) y Syne (C). Regenerar con `node r3page.js ronda-3.html ronda-3/` (necesita `r2page.js` al lado, porque reutiliza su hoja de estilos).
+
+## Ronda 4 — lettering a medida
+
+`ronda-4.html`: 6 direcciones de wordmark y 3 desarrolladas, con las letras de LINENSE (L, I, N, E, S) dibujadas desde cero: **A · Sobre la línea** (toda la palabra se apoya en una línea que nace en el pie de la L y sigue hasta el horizonte), **B · El paso** (la I es el poste fronterizo entre la L en positivo y NENSE en negativo) y **C · Roca y mar** (la L es una cuña de roca y el resto de letras son redondas, con la S como ola). Los SVG, con iconos derivados, están en `ronda-4/`. Regenerar con `node r4page.js ronda-4.html ronda-4/` (necesita `r2page.js` al lado).
