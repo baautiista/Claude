@@ -32,3 +32,7 @@ Logotipos trazados con Schibsted Grotesk (A), Syne (B) y Bricolage Grotesque (C)
 ## Ronda 4 — lettering a medida
 
 `ronda-4.html`: 6 direcciones de wordmark y 3 desarrolladas, con las letras de LINENSE (L, I, N, E, S) dibujadas desde cero: **A · Sobre la línea** (toda la palabra se apoya en una línea que nace en el pie de la L y sigue hasta el horizonte), **B · El paso** (la I es el poste fronterizo entre la L en positivo y NENSE en negativo) y **C · Roca y mar** (la L es una cuña de roca y el resto de letras son redondas, con la S como ola). Los SVG, con iconos derivados, están en `ronda-4/`. Regenerar con `node r4page.js ronda-4.html ronda-4/` (necesita `r2page.js` al lado).
+
+## Ronda 5 — un gesto, una palabra (con referencias)
+
+`ronda-5.html`: «linense» en minúscula dibujada a medida con trazo grueso continuo, tomando como nivel de atrevimiento las referencias aportadas (unión líquida, letra en bucle, palabra que dibuja un lugar). Seis direcciones y tres desarrolladas: **A · Perfil** (la altura de cada letra sigue el perfil del Peñón visto desde poniente), **B · Istmo** («line» y «nse» unidos por un puente líquido) y **C · Bucle** (la l es una línea que sube en pendiente, se enrosca y cae cruzándose). Los SVG y los iconos derivados están en `ronda-5/`. Regenerar con `node r5page.js ronda-5.html ronda-5/` (necesita `r2page.js` y `r4page.js` al lado).
