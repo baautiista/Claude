@@ -44,7 +44,9 @@ export const CamaraEscena: React.FC<{
   readonly empuje?: number;
   /** false cuando la escena sale con su propio movimiento (p. ej. zoom a través). */
   readonly salida?: boolean;
-}> = ({ children, direccion = 1, empuje = 0.07, salida = true }) => {
+  /** Giro en perspectiva al entrar/salir (solo anuncios fuera del sistema de marca). */
+  readonly giro3d?: boolean;
+}> = ({ children, direccion = 1, empuje = 0.07, salida = true, giro3d = false }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
   const entra = interpolate(frame, [0, 9], [1, 0], { ...clamp, easing: Easing.bezier(0.16, 1, 0.3, 1) });
@@ -57,6 +59,7 @@ export const CamaraEscena: React.FC<{
         translate: `${desplaz + Math.sin(frame / 40) * 10}px ${Math.cos(frame / 50) * 8}px`,
         scale: interpolate(frame, [0, durationInFrames], [1.04, 1.04 + empuje]),
         rotate: `${interpolate(frame, [0, durationInFrames], [-0.8 * direccion, 0.6 * direccion])}deg`,
+        transform: giro3d ? `perspective(1600px) rotateY(${(entra - sale) * -35 * direccion}deg)` : undefined,
         filter: blur > 0.3 ? `blur(${blur}px)` : undefined,
         opacity: 1 - sale * 0.4,
       }}

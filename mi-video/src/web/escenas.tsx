@@ -76,7 +76,7 @@ export const Salto: React.FC = () => {
       <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 30, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados, translate: `0px ${-frame * 0.5}px` }}>
         <Linea desde={0} tamano={140}>INFOLINENSE</Linea>
         <Linea desde={3} tamano={120}>
-          DA EL SALTO
+          SE PASA
         </Linea>
         <div style={{ position: "relative", display: "inline-block", overflow: "hidden" }}>
           <Linea desde={web - 6} tamano={150} fondo={COLOR.lima} color={COLOR.negro}>
@@ -118,7 +118,7 @@ export const Direccion: React.FC = () => {
       <div style={{ position: "absolute", inset: 0, scale: zoom, transformOrigin: "540px 1150px" }}>
       <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 30, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados }}>
         <Linea desde={0} tamano={78}>
-          Ya puedes leernos en
+          Apunta bien:
         </Linea>
       </div>
       <div style={{ position: "absolute", top: 420, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
@@ -149,10 +149,10 @@ export const Contenido: React.FC = () => {
           Toda la actualidad
         </Linea>
         <Linea desde={3} tamano={80}>
-          de La Línea,
+          linense,
         </Linea>
         <Linea desde={ordenada - 4} tamano={80} color={COLOR.lima}>
-          en un solo sitio
+          a un solo clic
         </Linea>
       </div>
       <div
@@ -215,10 +215,10 @@ export const Dispositivos: React.FC = () => {
     <Plano>
       <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 30, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados }}>
         <Linea desde={0} tamano={96}>
-          En el móvil…
+          ¿En el móvil?
         </Linea>
         <Linea desde={Math.min(ordenador - 8, 10)} tamano={96} color={COLOR.lima}>
-          …o en el ordenador
+          ¿En el ordenador?
         </Linea>
       </div>
       <div
@@ -259,7 +259,7 @@ export const Cierre: React.FC = () => {
       <Ondas x={540} y={1130} desde={26} />
       <div style={{ position: "absolute", top: 620, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados }}>
         <Linea desde={2} tamano={110}>
-          ENTRA YA EN
+          ¡ENTRA YA EN
         </Linea>
       </div>
       <div style={{ position: "absolute", top: 800, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
@@ -302,7 +302,7 @@ export const Cierre: React.FC = () => {
         </div>
       </div>
       <div style={{ position: "absolute", top: 1260, left: 0, right: 0, textAlign: "center", fontFamily: FUENTE.texto, fontWeight: 600, fontSize: 40, color: COLOR.blanco, opacity: suave(frame, 30, 10) }}>
-        La actualidad de La Línea, clara, visual y útil
+        ¡Donde tú quieras, cuando quieras!
       </div>
     </Plano>
   );

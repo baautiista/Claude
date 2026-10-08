@@ -22,27 +22,27 @@ export const AnuncioWeb: React.FC = () => {
     <AbsoluteFill>
       <FondoPro />
       <Sequence name="1. El salto" {...seq("salto")} premountFor={fps}>
-        <CamaraEscena direccion={1}>
+        <CamaraEscena giro3d direccion={1}>
           <Salto />
         </CamaraEscena>
       </Sequence>
       <Sequence name="2. La dirección" {...seq("url")} premountFor={fps}>
-        <CamaraEscena direccion={-1} salida={false} empuje={0.04}>
+        <CamaraEscena giro3d direccion={-1} salida={false} empuje={0.04}>
           <Direccion />
         </CamaraEscena>
       </Sequence>
       <Sequence name="3. Contenido" {...seq("contenido")} premountFor={fps}>
-        <CamaraEscena direccion={1}>
+        <CamaraEscena giro3d direccion={1}>
           <Contenido />
         </CamaraEscena>
       </Sequence>
       <Sequence name="4. Móvil y ordenador" {...seq("dispositivos")} premountFor={fps}>
-        <CamaraEscena direccion={-1}>
+        <CamaraEscena giro3d direccion={-1}>
           <Dispositivos />
         </CamaraEscena>
       </Sequence>
       <Sequence name="5. Cierre" {...seq("cierre", true)} premountFor={fps}>
-        <CamaraEscena direccion={1} empuje={0.05}>
+        <CamaraEscena giro3d direccion={1} empuje={0.05}>
           <Cierre />
         </CamaraEscena>
       </Sequence>

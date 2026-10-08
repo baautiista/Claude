@@ -14,17 +14,17 @@ export type Momento = MomentoGuion<EscenaId>;
 export const URL_WEB = "infolinense.com";
 
 export const ESCENAS: readonly EscenaGuion<EscenaId>[] = [
-  { id: "salto", nombre: "1. El salto", inicio: 0, fin: 2.5, frases: ["InfoLinense da el salto a la web."] },
-  { id: "url", nombre: "2. La dirección", inicio: 2.5, fin: 5.5, frases: ["Ya puedes leernos en infolinense.com."] },
+  { id: "salto", nombre: "1. El salto", inicio: 0, fin: 2.5, frases: ["¡Atención, La Línea! InfoLinense se pasa a la web."] },
+  { id: "url", nombre: "2. La dirección", inicio: 2.5, fin: 5.5, frases: ["Apunta bien: infolinense.com."] },
   {
     id: "contenido",
     nombre: "3. Contenido",
     inicio: 5.5,
     fin: 10.5,
-    frases: ["Toda la actualidad de La Línea, ordenada y en un solo sitio."],
+    frases: ["Toda la actualidad linense, ordenada y a un solo clic."],
   },
-  { id: "dispositivos", nombre: "4. Móvil y ordenador", inicio: 10.5, fin: 13.5, frases: ["Desde el móvil o desde el ordenador."] },
-  { id: "cierre", nombre: "5. Cierre", inicio: 13.5, fin: 17, frases: ["Entra ya en infolinense.com."] },
+  { id: "dispositivos", nombre: "4. Móvil y ordenador", inicio: 10.5, fin: 13.5, frases: ["¿En el móvil? ¿En el ordenador? ¡Donde tú quieras!"] },
+  { id: "cierre", nombre: "5. Cierre", inicio: 13.5, fin: 17, frases: ["¡Venga, entra ya en infolinense.com!"] },
 ];
 
 const m = (escena: EscenaId, frase: number, palabra?: string, mas?: number): Momento => ({ escena, frase, palabra, mas });
@@ -32,7 +32,7 @@ const m = (escena: EscenaId, frase: number, palabra?: string, mas?: number): Mom
 export const MOMENTOS = {
   web: m("salto", 0, "web."),
   ordenada: m("contenido", 0, "ordenada"),
-  ordenador: m("dispositivos", 0, "ordenador."),
+  ordenador: m("dispositivos", 0, "ordenador?"),
 } satisfies Record<string, Momento>;
 
 export const CAPTURAS = {
@@ -48,6 +48,9 @@ export const PRONUNCIACION: Record<string, string> = {
   "InfoLinense": "Info Linense",
   "infolinense.com": "infolinense punto com",
 };
+
+/** Tono de anuncio: más expresivo y con más ritmo que la voz informativa. */
+export const AJUSTES_VOZ = { stability: 0.28, style: 0.6, speed: 1.12 };
 
 export const AUDIO = {
   locucion: "web/locucion.mp3",
