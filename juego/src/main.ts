@@ -24,7 +24,7 @@ function portada() {
       h("div", { class: "espacio" }),
       h("span", { class: "etiqueta lima", style: "align-self:flex-start" }, "TEMPORADA 1 · LA VUELTA"),
       h("h1", { style: "font-size:64px;margin-top:12px" }, "Mi Línea"),
-      h("p", { style: "margin:12px 0 28px;font-size:17px" }, "Vuelve a La Línea, hereda la casa de tu abuela y descubre la historia que guardaba en una caja de lata."),
+      h("p", { style: "margin:12px 0 28px;font-size:17px" }, "La Línea en 3D: hereda la casa de tu abuela, cultiva en El Zabal, sal a faenar desde La Atunara y descubre la historia que guardaba en una caja de lata."),
       guardada
         ? h("button", { class: "boton", onclick: () => jugar(guardada) }, `Continuar · Día ${guardada.dia}`)
         : null,

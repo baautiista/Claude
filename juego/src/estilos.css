@@ -197,3 +197,40 @@ input { font: inherit; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 .parcela .veredictos button { background: var(--blanco); color: var(--negro); }
 .mini > .etiqueta, .pantalla > .etiqueta { align-self: flex-start; }
+
+/* ── Mundo 3D: rótulos sobre los edificios ───────────────────────── */
+.capa3d { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.rotulo3d { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform; }
+.rotulo3d.lugar { pointer-events: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; background: rgba(6,30,92,0.82); color: var(--blanco); font: 700 11px var(--display); padding: 4px 9px 4px 7px; border-radius: 999px; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
+.rotulo3d.lugar.meta { background: var(--lima); color: var(--negro); }
+.rotulo3d.npc { background: var(--blanco); color: var(--negro); font: 700 10px var(--display); padding: 2px 7px; border-radius: 6px; opacity: 0.92; }
+.rotulo3d.zona { color: rgba(255,255,255,0.9); font: 800 15px var(--display); letter-spacing: 0.18em; text-shadow: 0 2px 8px rgba(6,30,92,0.7); }
+.rotulo3d.burbuja { pointer-events: auto; cursor: pointer; background: var(--blanco); color: var(--negro); font: 700 12px var(--display); padding: 6px 10px; border-radius: 12px 12px 12px 3px; box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
+.rotulo3d.burbuja.aviso { background: var(--lima); animation: latir 0.6s infinite alternate; }
+.flotante3d { position: absolute; left: 0; top: 0; pointer-events: none; font: 800 17px var(--display); color: var(--lima); text-shadow: 0 2px 0 var(--azul-oscuro), 0 0 10px rgba(6,30,92,0.8); white-space: nowrap; }
+
+/* ── Bandejas Hay Day ────────────────────────────────────────────── */
+.hoja.bandeja { max-height: 56%; padding-top: 14px; }
+.fichas { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 12px; }
+.fichas.cuatro { grid-template-columns: repeat(4, 1fr); }
+.ficha { background: #8a5a36; color: var(--blanco); border-radius: 12px; padding: 8px 2px; display: grid; justify-items: center; gap: 2px; min-height: 58px; }
+.ficha b { font: 800 15px var(--display); }
+.ficha small { font: 600 10px/1.1 var(--texto); }
+.ficha.activa { box-shadow: inset 0 0 0 3px var(--azul); }
+.ficha.lista { background: #3f7d2c; box-shadow: inset 0 0 0 3px var(--lima); }
+.fichas.cuatro .ficha { background: var(--gris-claro); color: var(--negro); }
+.ficha .bola, .semilla .bola, .fila-cola .bola { width: 26px; height: 26px; border-radius: 50%; display: block; border: 2px solid rgba(0,0,0,0.12); }
+.semillas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.semilla { background: var(--gris-claro); border-radius: 14px; padding: 10px 6px; display: grid; justify-items: center; gap: 4px; text-align: center; }
+.semilla b { font: 700 14px var(--display); }
+.semilla small { font: 600 11px/1.2 var(--texto); color: var(--gris-medio); }
+.progreso { height: 10px; border-radius: 5px; background: var(--gris-claro); overflow: hidden; margin: 6px 0 10px; }
+.progreso i { display: block; height: 100%; background: var(--lima); transition: width 0.9s linear; }
+.fila-cola { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; padding: 6px 0; }
+.fila-cola b { font: 700 14px var(--display); }
+.fila-cola small { display: block; font: 600 12px var(--texto); color: var(--gris-medio); }
+.fila-cola .progreso { margin: 4px 0 0; height: 7px; }
+.nota { margin: 10px 0 0; font: 600 12px var(--texto); color: var(--gris-medio); }
+.boton.secundario-claro { background: var(--gris-claro); color: var(--negro); margin-top: 10px; }
+.hoja .boton { margin-top: 4px; }
+.rotulo3d.calle { font: 700 10px var(--texto); color: var(--azul-oscuro); background: rgba(255,255,255,0.85); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.02em; }

@@ -78,7 +78,7 @@ export async function intro(j: Juego) {
     ["narrador", "Huele a mar y a churros. Al fondo, como siempre, **el Peñón**."],
     ["narrador", "Tu abuela Concha murió hace un mes y te ha dejado su casa en San Bernardo. Vienes a venderla… en principio."],
   );
-  j.mapa.centrarEn("casa");
+  j.mundo.centrarEn("casa");
 }
 
 export async function alLlegar(j: Juego, lugar: LugarId) {
@@ -99,6 +99,19 @@ export async function alLlegar(j: Juego, lugar: LugarId) {
     j.refrescar();
   } else if (lugar === "casa" && e.paso === 10 && !esperaAndres(e)) {
     await desenlace(j);
+  } else if (lugar === "huerta" && !e.flags.tutoZabal && e.paso >= 2) {
+    e.flags.tutoZabal = true;
+    await j.decir(
+      ["rafa", `¡Hombre, ${g(e, "el nieto", "la nieta")} de Concha! Esos seis bancales de ahí eran de tu abuela. Los he tenido regados, pero llevan meses sin sembrar.`],
+      ["rafa", "Toca un bancal y planta lo que tengas. La **lechuga** sale en hora y media; el **tomate**, en tres horas; el **pimiento**, en cinco. Con poniente, todo va más rápido."],
+      ["rafa", "Y no hace falta que te quedes mirando: la tierra trabaja sola. Vuelve cuando esté listo y cosechas."],
+    );
+  } else if (lugar === "atunara" && !e.flags.tutoBarca && e.paso >= 2) {
+    e.flags.tutoBarca = true;
+    await j.decir(
+      ["antonio", "¿Ves la barca lima del muelle? Era de tu abuelo. Tu abuela nunca quiso venderla."],
+      ["antonio", "Te dejo a uno de mis chavales de marinero. Tú dices cuándo sale: una **salida corta** es una hora y trae sardinas; una **larga**, tres horas y trae camarón y boquerón. Con suerte, hasta pulpo."],
+    );
   } else if (lugar === "paseo" && e.paso === 4) {
     await j.decir(
       ["narrador", "Es aquí. El mismo banco de piedra, el mismo Peñón al fondo, a la izquierda. Solo que las palmeras ahora son más altas."],
@@ -119,6 +132,7 @@ async function abrirCaja(j: Juego) {
     ["narrador", "**Una llave** con una etiqueta de cartón: «Puesto 14»."],
     ["narrador", "**Una carta** cerrada, con el sello puesto y sin matasellar. Dirigida a «Manuel Ríos — Gibraltar». Nunca llegó a mandarla."],
     ["yo", "¿Quién eras tú, M.?"],
+    ["narrador", "Debajo de la caja, unos papeles: la abuela tenía **seis bancales en El Zabal**, junto a la huerta de Rafa, y la **barca del abuelo** sigue amarrada en La Atunara. Ahora son tuyos."],
     ["narrador", "Para quedarte un tiempo y averiguarlo, necesitas ganarte la vida. Carmen te ha dicho que buscan gente en **La Atunara** (Antonio), en **El Zabal** (Rafa) y en la redacción de **InfoLinense** (Marta)."],
   );
   e.paso = 2;
@@ -236,7 +250,7 @@ async function escenaDeHistoria(j: Juego, p: PersonajeId): Promise<boolean> {
       await j.decir(
         ["andres", `¿${g(e, "El nieto", "La nieta")} de Concha? Siéntate, siéntate. Pero no me hagas hablar de aquellos años con el estómago vacío…`],
         ["andres", "A tu abuela le salían las mejores tortillitas de camarones de La Línea. Si me traes unas hechas por ti, te cuento lo que sé."],
-        ["narrador", "Necesitas **2 camarones** (en la lonja de La Atunara o pescando) y **1 de harina** (en el Mercado). Se cocinan en la casa."],
+        ["narrador", "Necesitas **2 camarones** (en la lonja de La Atunara o pescando) y **1 de harina** (en el Mercado). Se preparan en la cocina de casa: tardan media hora."],
       );
       e.flags.pistaTortillitas = true;
       return true;

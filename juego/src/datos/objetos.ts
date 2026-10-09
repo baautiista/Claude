@@ -41,19 +41,28 @@ export const OBJETOS: Record<ObjetoId, Objeto> = {
   espeto: { nombre: "Espeto de sardinas", plural: "espetos", tipo: "plato", venta: 9, comida: 40, animo: 8, color: "#A7B8D6" },
 };
 
+export type CultivoId = "lechuga" | "tomate" | "pimiento";
+
 export interface Cultivo {
   semilla: ObjetoId;
   da: ObjetoId;
   cantidad: number;
-  /** Horas de juego hasta la cosecha. */
-  horas: number;
+  /** Minutos de juego hasta la cosecha (1 s real = 1 min de juego). */
+  minutos: number;
 }
 
-export const CULTIVOS: Record<"tomate" | "lechuga" | "pimiento", Cultivo> = {
-  lechuga: { semilla: "semLechuga", da: "lechuga", cantidad: 2, horas: 6 },
-  tomate: { semilla: "semTomate", da: "tomate", cantidad: 3, horas: 10 },
-  pimiento: { semilla: "semPimiento", da: "pimiento", cantidad: 2, horas: 12 },
+export const CULTIVOS: Record<CultivoId, Cultivo> = {
+  lechuga: { semilla: "semLechuga", da: "lechuga", cantidad: 2, minutos: 90 },
+  tomate: { semilla: "semTomate", da: "tomate", cantidad: 3, minutos: 180 },
+  pimiento: { semilla: "semPimiento", da: "pimiento", cantidad: 2, minutos: 300 },
 };
+
+/** Salidas de la barca en La Atunara (como el barco de Hay Day). */
+export const SALIDAS = {
+  corta: { nombre: "Salida corta", minutos: 60, descripcion: "Cerca de la costa: sardinas y algún boquerón." },
+  larga: { nombre: "Salida larga", minutos: 180, descripcion: "Mar adentro: camarón, boquerón y, con suerte, pulpo." },
+} as const;
+export type SalidaId = keyof typeof SALIDAS;
 
 export interface Receta {
   da: ObjetoId;
@@ -62,11 +71,11 @@ export interface Receta {
 }
 
 export const RECETAS: readonly Receta[] = [
+  { da: "ensalada", necesita: { lechuga: 1, tomate: 1 }, minutos: 15 },
+  { da: "pipirrana", necesita: { tomate: 2, pimiento: 1, aceite: 1 }, minutos: 25 },
   { da: "tortillitas", necesita: { camaron: 2, harina: 1 }, minutos: 30 },
-  { da: "pescaito", necesita: { boqueron: 2, harina: 1, aceite: 1 }, minutos: 40 },
-  { da: "pipirrana", necesita: { tomate: 2, pimiento: 1, aceite: 1 }, minutos: 20 },
-  { da: "ensalada", necesita: { lechuga: 1, tomate: 1 }, minutos: 10 },
-  { da: "espeto", necesita: { sardina: 3 }, minutos: 30 },
+  { da: "espeto", necesita: { sardina: 3 }, minutos: 35 },
+  { da: "pescaito", necesita: { boqueron: 2, harina: 1, aceite: 1 }, minutos: 45 },
 ];
 
 /** Tiendas: qué se compra y dónde. */

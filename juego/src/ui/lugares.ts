@@ -1,8 +1,8 @@
 import type { LugarId } from "../datos/mapa";
-import { CULTIVOS, OBJETOS, RECETAS, TIENDAS, type ObjetoId } from "../datos/objetos";
+import { CULTIVOS, OBJETOS, RECETAS, SALIDAS, TIENDAS, type CultivoId, type ObjetoId, type SalidaId } from "../datos/objetos";
 import { PERSONAJES } from "../datos/personajes";
 import {
-  amistad, cuantos, dar, horaDelDia, limitar, listo, precioVenta, quitar, reputacion, tiene,
+  amistad, cuantos, dar, horaDelDia, limitar, listo, precioPuesto, precioVenta, progresoCultivo, quitar, reputacion, tiene, zarpar,
 } from "../estado";
 import type { ICONOS } from "../iconos";
 import type { Juego } from "../juego";
@@ -63,8 +63,7 @@ export function accionesLugar(j: Juego, lugar: LugarId): Accion[] {
   switch (lugar) {
     case "casa":
       return e.paso < 1 ? [] : [
-        { icono: "brote", titulo: "El patio: huerto", sub: "Planta, espera y cosecha", fn: () => huerto(j) },
-        { icono: "bar", titulo: "La cocina", sub: "Prepara platos con lo que tengas", fn: () => cocina(j) },
+        { icono: "bar", titulo: "La cocina de la abuela", sub: e.cocinaListos.length ? `${e.cocinaListos.length} listos para recoger` : e.cocina.length ? `Cocinando: ${e.cocina.length} en cola` : "Prepara platos con lo que tengas", fn: () => abrirCocina(j) },
         horaDelDia(e) >= 18 || horaDelDia(e) < 2
           ? { icono: "casa", titulo: "Dormir", sub: "Hasta mañana a las 8:00", fn: async () => { j.cerrar(); await j.dormir(); } }
           : { icono: "casa", titulo: "Echar una siesta", sub: "2 horas · +35 energía", desactivada: horaDelDia(e) < 14 ? "La siesta, después de comer (a partir de las 14:00)." : false, fn: async () => { e.energia = limitar(e.energia + 35); j.cerrar(); await j.pasar(120); j.aviso("Siesta de las buenas. <b>+35 energía</b>"); } },
@@ -74,7 +73,8 @@ export function accionesLugar(j: Juego, lugar: LugarId): Accion[] {
     case "mercado":
       return [
         ...tienda(j, "mercado", TIENDAS.mercado, cerrado(j, "mercado")),
-        { icono: "euro", titulo: "Vender género", sub: e.flags.puesto ? "En tu puesto 14: pagan un 30 % más" : "A los puestos del mercado", desactivada: cerrado(j, "mercado"), fn: () => vender(j) },
+        ...(e.flags.puesto ? [{ icono: "mercado" as const, titulo: "Tu puesto 14", sub: e.cajaPuesto ? `${e.cajaPuesto} € para cobrar` : "Pon género a la venta y los clientes lo compran solos", fn: () => abrirPuesto(j) }] : []),
+        { icono: "euro", titulo: "Vender a los puestos", sub: "Cobras al momento, pero pagan menos", desactivada: cerrado(j, "mercado"), fn: () => vender(j) },
       ];
     case "bar": {
       const c = cerrado(j, "bar");
@@ -86,12 +86,14 @@ export function accionesLugar(j: Juego, lugar: LugarId): Accion[] {
     }
     case "atunara":
       return [
-        ...trabajo("pescador", "Salir a faenar con Antonio", "3 horas · minijuego de pesca · −25 energía", () => faena(j)),
+        { icono: "ancla", titulo: "Tu barca", sub: e.barca && !Object.keys(e.barcaBotin).length ? "Faenando en el mar" : Object.keys(e.barcaBotin).length ? "¡Ha vuelto con captura!" : "Amarrada en el muelle: mándala a faenar", fn: () => abrirBarca(j) },
+        ...trabajo("pescador", "Echar el día con Antonio", "3 horas · minijuego de pesca · −25 energía", () => faena(j)),
         ...tienda(j, "atunara", TIENDAS.atunara, cerrado(j, "atunara"), "En la lonja"),
       ];
     case "huerta":
       return [
-        ...trabajo("hortelano", "Jornada en la huerta", "3 horas · minijuego de plagas · −25 energía", () => jornadaHuerta(j)),
+        { icono: "brote", titulo: "Tus bancales", sub: "Los seis de la abuela: planta y cosecha", fn: () => abrirBancal(j, 0) },
+        ...trabajo("hortelano", "Jornada con Rafa", "3 horas · minijuego de plagas · −25 energía", () => jornadaHuerta(j)),
         ...tienda(j, "huerta", TIENDAS.huerta, cerrado(j, "huerta"), "Rafa te lo vende"),
       ];
     case "redaccion":
@@ -182,77 +184,243 @@ async function comer(j: Juego, precio: number, comida: number, energia: number, 
   j.aviso(texto);
 }
 
-function huerto(j: Juego) {
+/* ── Hay Day: bancales, cocina, barca y puesto ──────────────────────── */
+
+const mins = (m: number) => {
+  const r = Math.max(0, Math.ceil(m));
+  return r >= 60 ? `${Math.floor(r / 60)} h ${String(r % 60).padStart(2, "0")} min` : `${r} min`;
+};
+
+const barraProgreso = (p: number) => h("div", { class: "progreso" }, h("i", { style: `width:${Math.round(p * 100)}%` }));
+
+function cosechar(j: Juego, i: number) {
   const e = j.e;
-  const parcelas = e.huerto.map((p, i) => {
-    if (!p.cultivo) {
-      const semillas = (Object.keys(CULTIVOS) as (keyof typeof CULTIVOS)[]).filter((c) => cuantos(e, CULTIVOS[c].semilla) > 0);
-      return h(
-        "div", { class: "parcela" },
-        h("b", {}, `Bancal ${i + 1} · libre`),
-        semillas.length
-          ? h("div", { class: "veredictos" }, ...semillas.map((c) =>
-              h("button", {
-                onclick: async () => {
-                  quitar(e, CULTIVOS[c].semilla);
-                  e.huerto[i] = { cultivo: c, desde: e.minuto, horas: 0 };
-                  sonido("toque");
-                  await j.pasar(15, 2);
-                  huerto(j);
-                },
-              }, `Plantar ${OBJETOS[CULTIVOS[c].da].nombre.toLowerCase()}`),
-            ))
-          : h("small", {}, "Sin semillas. Cómpralas en el Mercado o en el Zabal."),
-      );
-    }
-    const cult = CULTIVOS[p.cultivo];
-    const prog = Math.min(1, p.horas / cult.horas);
-    if (listo(p)) {
-      return h(
-        "button", {
-          class: "parcela lista",
-          onclick: async () => {
-            dar(e, cult.da, cult.cantidad);
-            e.huerto[i] = { cultivo: null, desde: 0, horas: 0 };
-            sonido("bien");
-            await j.pasar(10, 2);
-            j.aviso(`Cosechas <b>${cult.cantidad} ${OBJETOS[cult.da].plural}</b>`);
-            huerto(j);
-          },
-        },
-        h("b", {}, `${OBJETOS[cult.da].nombre}: ¡listo!`), h("small", {}, "Toca para cosechar"),
-      );
-    }
-    const faltan = Math.ceil(cult.horas - p.horas);
-    return h(
-      "div", { class: "parcela" },
-      h("b", {}, OBJETOS[cult.da].nombre), h("small", {}, `Faltan unas ${faltan} h`),
-      h("div", { class: "prog" }, h("i", { style: `width:${prog * 100}%` })),
-    );
-  });
-  j.hoja("TU CASA", "El patio", h("p", { class: "desc" }, "Cuatro bancales junto a la higuera. Con poniente, todo crece un 25 % más rápido."), h("div", { class: "huerto" }, ...parcelas));
+  const b = e.bancales[i];
+  if (!b.cultivo || !listo(b)) return;
+  const c = CULTIVOS[b.cultivo];
+  dar(e, c.da, c.cantidad);
+  e.bancales[i] = { cultivo: null, crecido: 0 };
+  e.energia = limitar(e.energia - 1, true);
+  j.mundo.flotante(`+${c.cantidad} ${OBJETOS[c.da].plural}`, j.mundo.posBancal(i));
+  sonido("bien");
 }
 
-function cocina(j: Juego) {
+function plantar(j: Juego, i: number, cultivo: CultivoId) {
   const e = j.e;
-  j.hoja(
-    "TU CASA", "La cocina",
-    h("p", { class: "desc" }, "Los cacharros de la abuela, el aceite en la alacena y una radio que solo coge una emisora."),
-    h("div", { class: "acciones" }, ...RECETAS.map((r) =>
-      j.boton({
-        icono: bola(r.da), titulo: OBJETOS[r.da].nombre, sub: `${lista(r.necesita)} · ${r.minutos} min`,
-        desactivada: tiene(e, r.necesita) ? false : `Necesitas ${lista(r.necesita)}.`,
-        fn: async () => {
-          for (const [id, n] of Object.entries(r.necesita) as [ObjetoId, number][]) quitar(e, id, n);
-          dar(e, r.da);
-          sonido("bien");
-          await j.pasar(r.minutos, 3);
-          j.aviso(`Has preparado <b>${OBJETOS[r.da].nombre.toLowerCase()}</b>`);
-          cocina(j);
+  if (e.bancales[i].cultivo || !quitar(e, CULTIVOS[cultivo].semilla)) return false;
+  e.bancales[i] = { cultivo, crecido: 0 };
+  e.energia = limitar(e.energia - 1, true);
+  j.mundo.flotante(OBJETOS[CULTIVOS[cultivo].da].nombre, j.mundo.posBancal(i));
+  sonido("toque");
+  return true;
+}
+
+/** Bandeja de los bancales: toca un bancal en el mundo y elige qué plantar. */
+export function abrirBancal(j: Juego, inicial: number) {
+  const e = j.e;
+  let sel = inicial;
+  j.mundo.enfocar(j.mundo.posBancal(1).add(j.mundo.posBancal(4)).multiplyScalar(0.5), 230);
+  j.bandeja("EL ZABAL", "Bancales de la abuela", () => {
+    const b = e.bancales[sel];
+    const libres = e.bancales.filter((x) => !x.cultivo).length;
+    const maduros = e.bancales.filter(listo).length;
+    const fichas = h("div", { class: "fichas" }, ...e.bancales.map((x, i) =>
+      h("button", {
+        class: `ficha${i === sel ? " activa" : ""}${listo(x) ? " lista" : ""}`,
+        onclick: () => {
+          sel = i;
+          if (listo(e.bancales[i])) cosechar(j, i);
+          j.vivo?.();
         },
-      }),
-    )),
-  );
+      }, h("b", {}, `${i + 1}`), h("small", {}, x.cultivo ? (listo(x) ? "¡Listo!" : OBJETOS[CULTIVOS[x.cultivo].da].nombre) : "Libre")),
+    ));
+    const semillas = (Object.keys(CULTIVOS) as CultivoId[]).map((c) => {
+      const cu = CULTIVOS[c];
+      const n = cuantos(e, cu.semilla);
+      return h("button", {
+        class: "semilla", disabled: n === 0,
+        onclick: () => {
+          if (!plantar(j, sel, c)) return;
+          const sig = e.bancales.findIndex((x) => !x.cultivo);
+          if (sig >= 0) sel = sig;
+          j.vivo?.();
+        },
+      }, h("span", { class: "bola", style: `background:${OBJETOS[cu.da].color}` }), h("b", {}, OBJETOS[cu.da].nombre), h("small", {}, `${n} semillas · ${mins(cu.minutos)}`));
+    });
+    let detalle: Node;
+    if (!b.cultivo) {
+      detalle = h("div", {},
+        h("p", { class: "desc" }, `Bancal ${sel + 1} libre. Elige qué plantar${e.viento === "poniente" ? " (con poniente crece un 25 % más rápido)" : ""}:`),
+        h("div", { class: "semillas" }, ...semillas),
+        semillas.every((s) => (s as HTMLButtonElement).disabled) ? h("p", { class: "vacio" }, "No te quedan semillas. Rafa las vende aquí mismo y también hay en el Mercado.") : null,
+      );
+    } else if (listo(b)) {
+      detalle = h("div", {}, h("p", { class: "desc" }, `${OBJETOS[CULTIVOS[b.cultivo].da].nombre}: listo para cosechar.`), h("button", { class: "boton", onclick: () => { cosechar(j, sel); j.vivo?.(); } }, "Cosechar"));
+    } else {
+      const c = CULTIVOS[b.cultivo];
+      const bonus = e.viento === "poniente" ? 1.25 : 1;
+      detalle = h("div", {}, h("p", { class: "desc" }, `${OBJETOS[c.da].nombre} creciendo · faltan ${mins((c.minutos - b.crecido) / bonus)}`), barraProgreso(progresoCultivo(b)));
+    }
+    return [
+      fichas,
+      detalle,
+      maduros > 1 ? h("button", { class: "boton secundario-claro", onclick: () => { e.bancales.forEach((_, i) => cosechar(j, i)); j.vivo?.(); } }, `Cosechar todo (${maduros})`) : null,
+      libres > 1 && !b.cultivo ? h("p", { class: "nota" }, "Truco: al plantar, salta solo al siguiente bancal libre.") : null,
+    ];
+  });
+}
+
+/** La cocina de la abuela: cola de hasta 3 platos, como la panadería de Hay Day. */
+export function abrirCocina(j: Juego) {
+  const e = j.e;
+  j.mundo.enfocar(j.mundo.posDe("cocina"), 260);
+  j.bandeja("TU CASA", "La cocina de la abuela", () => {
+    const cola = e.cocina.map((f, i) =>
+      h("div", { class: "fila-cola" },
+        h("span", { class: "bola", style: `background:${OBJETOS[f.receta].color}` }),
+        h("div", {}, h("b", {}, OBJETOS[f.receta].nombre), h("small", {}, i === 0 ? `Faltan ${mins(f.faltan)}` : "En espera"), i === 0 ? barraProgreso(1 - f.faltan / f.total) : null),
+      ),
+    );
+    const listos = e.cocinaListos.length
+      ? h("button", {
+          class: "boton",
+          onclick: () => {
+            const n = e.cocinaListos.length;
+            for (const id of e.cocinaListos) dar(e, id);
+            e.cocinaListos = [];
+            j.mundo.flotante(`+${n} ${n === 1 ? "plato" : "platos"}`, j.mundo.posDe("cocina"));
+            sonido("bien");
+            j.vivo?.();
+          },
+        }, `Recoger ${e.cocinaListos.length} ${e.cocinaListos.length === 1 ? "plato" : "platos"}: ${e.cocinaListos.map((x) => OBJETOS[x].nombre.toLowerCase()).join(", ")}`)
+      : null;
+    const llena = e.cocina.length >= 3;
+    return [
+      listos,
+      e.cocina.length ? h("div", { class: "seccion-titulo" }, `Al fuego (${e.cocina.length}/3)`) : null,
+      ...cola,
+      h("div", { class: "seccion-titulo" }, "Recetas"),
+      h("div", { class: "acciones" }, ...RECETAS.map((r) =>
+        j.boton({
+          icono: bola(r.da), titulo: OBJETOS[r.da].nombre, sub: `${lista(r.necesita)} · ${mins(r.minutos)}`,
+          desactivada: llena ? "La cola está llena (3 platos)." : tiene(e, r.necesita) ? false : `Necesitas ${lista(r.necesita)}.`,
+          fn: () => {
+            for (const [id, n] of Object.entries(r.necesita) as [ObjetoId, number][]) quitar(e, id, n);
+            e.cocina.push({ receta: r.da, faltan: r.minutos, total: r.minutos });
+            sonido("toque");
+            j.vivo?.();
+          },
+        }),
+      )),
+    ];
+  });
+}
+
+/** Tu barca en La Atunara: sale a faenar y vuelve con la captura. */
+export function abrirBarca(j: Juego) {
+  const e = j.e;
+  j.mundo.enfocar(j.e.barca && !Object.keys(j.e.barcaBotin).length ? j.mundo.posBarca() : j.mundo.posDe("barca"), 300);
+  j.bandeja("LA ATUNARA", "La barca del abuelo", () => {
+    if (Object.keys(e.barcaBotin).length) {
+      return [
+        h("p", { class: "desc" }, `Ha vuelto con: ${lista(e.barcaBotin)}.`),
+        h("button", {
+          class: "boton",
+          onclick: () => {
+            for (const [id, n] of Object.entries(e.barcaBotin) as [ObjetoId, number][]) dar(e, id, n);
+            j.mundo.flotante(`+${lista(e.barcaBotin)}`, j.mundo.posDe("barca"));
+            e.barcaBotin = {};
+            e.barca = null;
+            reputacion(e, "atunara", 1);
+            sonido("bien");
+            j.vivo?.();
+          },
+        }, "Descargar la captura"),
+      ];
+    }
+    if (e.barca) {
+      const s = SALIDAS[e.barca.salida];
+      return [
+        h("p", { class: "desc" }, `${s.nombre} en curso. Vuelve en ${mins(e.barca.vuelta - e.minuto)}.`),
+        barraProgreso(1 - (e.barca.vuelta - e.minuto) / s.minutos),
+      ];
+    }
+    const levante = e.viento === "levanteFuerte";
+    return [
+      h("p", { class: "desc" }, levante ? "Con levante fuerte no sale ni el más valiente. Hoy la barca se queda amarrada." : "Amarrada en el muelle. Antonio te presta un marinero para que salga."),
+      h("div", { class: "acciones" }, ...(Object.keys(SALIDAS) as SalidaId[]).map((id) =>
+        j.boton({
+          icono: "ancla", titulo: SALIDAS[id].nombre, sub: `${SALIDAS[id].descripcion} · ${mins(SALIDAS[id].minutos)}`,
+          desactivada: levante ? "Hoy no se sale: levante fuerte." : false,
+          fn: () => {
+            zarpar(e, id);
+            sonido("toque");
+            j.aviso("¡La barca sale a faenar!");
+            j.vivo?.();
+          },
+        }),
+      )),
+    ];
+  });
+}
+
+/** Puesto 14: pones cajas a la venta y los clientes compran mientras juegas. */
+export function abrirPuesto(j: Juego) {
+  const e = j.e;
+  let eligiendo: number | null = null;
+  j.mundo.enfocar(j.mundo.posDe("puesto"), 230);
+  j.bandeja("MERCADO", "Puesto 14", () => {
+    if (!e.flags.puesto) return [h("p", { class: "desc" }, "El puesto de la abuela sigue cerrado con su candado.")];
+    if (eligiendo !== null) {
+      const hueco = eligiendo;
+      const vendibles = (Object.keys(e.mochila) as ObjetoId[]).filter((id) => OBJETOS[id].venta > 0 && OBJETOS[id].tipo !== "semilla");
+      return [
+        h("p", { class: "desc" }, "¿Qué pones en esta caja? (hasta 5 unidades)"),
+        vendibles.length
+          ? h("div", { class: "acciones" }, ...vendibles.map((id) =>
+              j.boton({
+                icono: bola(id), titulo: OBJETOS[id].nombre, sub: `Tienes ${cuantos(e, id)} · a ${precioPuesto(id)} € la unidad`,
+                fn: () => {
+                  const n = Math.min(5, cuantos(e, id));
+                  quitar(e, id, n);
+                  e.puesto[hueco] = { id, n, precio: precioPuesto(id) };
+                  eligiendo = null;
+                  sonido("toque");
+                  j.vivo?.();
+                },
+              }),
+            ))
+          : h("p", { class: "vacio" }, "No tienes nada que vender. Cosecha, pesca o cocina primero."),
+        h("button", { class: "boton secundario-claro", onclick: () => { eligiendo = null; j.vivo?.(); } }, "Volver"),
+      ];
+    }
+    return [
+      h("p", { class: "desc" }, "Los clientes pasan y compran solos, aunque estés en otra parte. Pagan más que los puestos de al lado."),
+      h("div", { class: "fichas cuatro" }, ...e.puesto.map((c, i) =>
+        h("button", {
+          class: `ficha${c ? " llena" : ""}`,
+          onclick: () => {
+            if (c) return;
+            eligiendo = i;
+            j.vivo?.();
+          },
+        }, c ? h("span", { class: "bola", style: `background:${OBJETOS[c.id].color}` }) : h("b", {}, "+"), h("small", {}, c ? `${c.n} × ${c.precio} €` : "Vacía")),
+      )),
+      e.cajaPuesto > 0
+        ? h("button", {
+            class: "boton",
+            onclick: () => {
+              e.dinero += e.cajaPuesto;
+              j.mundo.flotante(`+${e.cajaPuesto} €`, j.mundo.posDe("puesto"));
+              e.cajaPuesto = 0;
+              sonido("moneda");
+              j.refrescar();
+              j.vivo?.();
+            },
+          }, `Cobrar ${e.cajaPuesto} €`)
+        : h("p", { class: "nota" }, "La caja está vacía por ahora."),
+    ];
+  });
 }
 
 function vender(j: Juego) {

@@ -6,17 +6,19 @@ Juego narrativo para móvil ambientado en La Línea de la Concepción. Mezcla la
 
 ## Qué hay en el prototipo
 
+**Un mundo 3D con estilo Hay Day** (Three.js): césped, casas encaladas con persianas, macetas y teja, árboles frondosos, farolas que se encienden de noche, agua turquesa, avión que aterriza en Gibraltar y la nube del levante sobre el Peñón.
+
 | Sistema | Contenido |
 |---|---|
-| Mapa | Istmo con la bahía, el Mediterráneo, la Verja, la pista y el Peñón. 13 lugares en 6 barrios. Se toca un lugar y el personaje va andando por las calles. |
-| Historia | Capítulo 1 completo, 11 pasos y 3 finales (publicar en InfoLinense, buscar con discreción o guardar la carta). Incluye la historia del cierre de la Verja (1969–1982). |
-| Oficios | Pescador/a en La Atunara (pesca por tiempo), hortelano/a en El Zabal (plagas) y periodista en InfoLinense (contrastar fuentes y elegir titular, sin sensacionalismo). |
-| Producción | Huerto en el patio (tomate, lechuga, pimiento), cocina con 5 recetas locales (tortillitas, pescaíto, pipirrana…), tiendas, venta en el Mercado y puesto 14 propio. |
-| Vida | Energía, comida, ánimo y gente. Siesta y sueño, bar de Lola, paseos, baño, Balona. |
-| Vecinos | 7 personajes con horarios, charlas diarias y nivel de amistad. Reputación por barrio. |
-| Viento | Poniente, levante, levante fuerte o calma cada día, con previsión. Cambia la pesca, la huerta, la playa y los precios. |
-| InfoLinense | El móvil del personaje es la web de InfoLinense: portada con las noticias de la ciudad del juego (incluidas las que publicas tú), el tiempo, encargos y, opcionalmente, el feed real. |
-| Encargos | Tablón de la Plaza de la Iglesia con 3 pedidos diarios de vecinos. |
+| Mapa | Costas y barrios calcados del ortofoto; **calles del plano turístico del Ayuntamiento** con su nombre: Avenida de España, Príncipe de Asturias, Paseo del Mediterráneo, Banqueta, Ejército, Calle Real, Gibraltar, Menéndez Pelayo, etc. La red por la que se anda se genera sola desde las calles. |
+| Lugares | Plaza de la Iglesia (como en la foto: espadaña, reloj, monumento con seto), Mercado con el puesto 14, Calle Real, Paseo de Poniente, playa de Levante, Estadio y Ciudad Deportiva, fuerte de Santa Bárbara, La Verja, Parque Princesa Sofía. |
+| La Atunara | Dársena con escollera, muelle con barcas como las reales (blancas, borda azul, franja roja y amarilla, pórtico), casetas de pescadores, lonja y fábrica de hielo. |
+| El Zabal | Huertos cercados con muro de bloque, casetas, piscinas, caminos de tierra y pinares; polígono industrial. |
+| Hay Day | Compras semillas → vas andando al Zabal → plantas en tus bancales → **ves crecer** las plantas → cosechas. La barca **sale al mar** y vuelve con la captura. La cocina tiene cola de 3 platos con humo en la chimenea. El puesto 14 **vende solo** a los clientes. Tablón de encargos en la plaza. Todo en tiempo real (1 s = 1 min de juego). |
+| Historia | Capítulo 1 «La caja de la abuela» con 3 finales. |
+| Oficios | Pescador/a, hortelano/a o periodista, con su minijuego de jornada. |
+| Vida | Energía, comida, ánimo y gente; día y noche; viento diario. |
+| InfoLinense | El móvil del personaje es la web de InfoLinense (noticias de la ciudad del juego y, opcionalmente, el feed real). |
 
 La partida se guarda sola en el dispositivo.
 
@@ -28,7 +30,7 @@ npm run dev      # servidor local (abre en el móvil con la IP que muestra)
 npm run build    # dist/index.html: un único archivo autocontenido
 ```
 
-Código en TypeScript sin framework: un canvas para el mapa y HTML para la interfaz.
+Código en TypeScript: Three.js para el mundo 3D (modelos y texturas generados por código, sin archivos externos) y HTML para la interfaz.
 
 ```
 src/
@@ -38,23 +40,23 @@ src/
   estado.ts             partida, reloj, viento, necesidades, encargos y guardado
   historia.ts           capítulo 1: objetivos, escenas y decisiones
   juego.ts              bucle principal: HUD, diálogos, desplazamientos
-  mapa/render.ts        dibujo del mapa, cámara, gestos
+  mundo/mundo.ts        mundo 3D: terreno, ciudad, cámara, gestos, sincronización
+  mundo/modelos.ts      modelos low-poly estilo Hay Day (iglesia, barcas, huertos…)
+  mundo/texturas.ts     texturas pintadas con canvas (césped, adoquín, teja, fachadas)
   mapa/rutas.ts         camino más corto por las calles
   ui/                   lugares, minijuegos, móvil InfoLinense, paneles
   config.ts             conexión con el feed real de InfoLinense
 scripts/mapa-osm.mjs    importador del trazado real (OpenStreetMap)
 ```
 
-## El mapa real
+## El mapa
 
-El trazado actual es un **esquema provisional** dibujado a mano: respeta la geografía general (la bahía al oeste, el Mediterráneo al este, la Verja al sur, La Atunara al noreste, El Zabal al norte), pero no las calles reales. Para pasar al callejero real:
+`src/datos/mapa.ts` combina dos referencias reales:
 
-1. Ejecuta `npm run mapa` con acceso de red a `overpass-api.de`. Genera `src/datos/mapa-real.json` con el contorno del término municipal y las calles de OpenStreetMap, y saca por pantalla la posición real de los lugares clave.
-2. El render usa ese archivo automáticamente como fondo.
-3. Recoloca `NODOS` en `src/datos/mapa.ts` con esas posiciones (y revisa `GIBRALTAR`, `PENON`, `PISTA` y la línea de la Verja).
-4. **Valida barrios y lugares con la redacción.** En un juego de InfoLinense, un error de calle se nota.
+- **Ortofoto** para costas, El Zabal, La Atunara, la Verja, el aeropuerto y el Peñón.
+- **Plano turístico del Ayuntamiento** para el callejero del centro: cada calle es una polilínea en píxeles del plano, convertida al mundo con `P(u, v)` (calibrado con la Aduana, el Estadio y la Marina).
 
-Licencia de los datos: © colaboradores de OpenStreetMap (ODbL). Ya se cita en los créditos del menú.
+Para añadir o corregir una calle basta con editar la lista `PLANO`; los cruces y la red caminable se recalculan solos. `npm run mapa` (con red hacia OpenStreetMap) puede servir para afinar más.
 
 ## Noticias reales de InfoLinense
 

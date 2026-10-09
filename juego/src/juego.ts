@@ -1,14 +1,14 @@
 import { LUGARES, type LugarId } from "./datos/mapa";
 import { PERSONAJES, type PersonajeId } from "./datos/personajes";
 import {
-  dormir, esMadrugada, g, guardar, hora, horaDelDia, pasarTiempo, sinLeer, VIENTOS, type Estado,
+  dormir, esMadrugada, g, guardar, hora, pasarTiempo, sinLeer, VIENTOS, type Estado,
 } from "./estado";
 import * as historia from "./historia";
 import { iconoSvg } from "./iconos";
-import { Mapa } from "./mapa/render";
-import { minutosAndando, ruta } from "./mapa/rutas";
+import { ruta } from "./mapa/rutas";
+import { Mundo, type Tocable } from "./mundo/mundo";
 import { h, html, esc } from "./ui/dom";
-import { accionesLugar, type Accion } from "./ui/lugares";
+import { abrirBancal, abrirBarca, abrirCocina, abrirPuesto, accionesLugar, tablon, type Accion } from "./ui/lugares";
 import { abrirMovil } from "./ui/movil";
 import { abrirDiario, abrirMenu, abrirMochila } from "./ui/paneles";
 import { retrato, retratoNarrador } from "./ui/retrato";
@@ -21,36 +21,98 @@ export type Linea = readonly [Quien, string];
 const formato = (t: string) => esc(t).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 
 export class Juego {
-  readonly mapa: Mapa;
+  readonly mundo: Mundo;
   private hud: HTMLElement;
   private objetivoEl: HTMLButtonElement;
   private capa: HTMLElement;
   private botonMovil!: HTMLButtonElement;
   /** Hay una hoja, diálogo o pantalla abierta: el mapa no responde a toques. */
   ocupado = false;
+  /** Diálogo, minijuego o pantalla completa: el reloj se para. */
+  private pausa = false;
+  /** Panel abierto que se repinta cada segundo (bancales, cocina, barca…). */
+  vivo: (() => void) | null = null;
+  private revisando = false;
 
   constructor(public e: Estado, private raiz: HTMLElement) {
     raiz.innerHTML = "";
-    const canvas = h("canvas", { id: "mapa", "aria-label": "Mapa de La Línea" });
+    const canvas = h("canvas", { id: "mapa", "aria-label": "La Línea en 3D" });
+    const rotulos = h("div", { class: "capa3d" });
     this.hud = h("div", { class: "hud" });
     this.objetivoEl = h("button", { class: "objetivo", onclick: () => this.irAlObjetivo() });
     this.capa = h("div");
-    raiz.append(canvas, this.hud, this.objetivoEl, this.barra(), this.capa);
-    this.mapa = new Mapa(canvas);
-    this.mapa.colocar(e.nodo);
-    this.mapa.ropa = e.ropa;
-    this.mapa.onTapLugar = (id) => {
-      if (!this.ocupado) this.ir(id);
+    raiz.append(canvas, rotulos, this.hud, this.objetivoEl, this.barra(), this.capa);
+    this.mundo = new Mundo(canvas, rotulos);
+    this.mundo.colocar(e.nodo);
+    this.mundo.ropa = e.ropa;
+    this.mundo.piel = e.piel;
+    this.mundo.onTocar = (t) => {
+      if (!this.ocupado || this.vivo) this.tocar(t);
     };
+    this.mundo.sincronizar(e);
+    this.arrancarReloj();
     this.refrescar();
     if (import.meta.env.DEV) (window as unknown as { __mi: Juego }).__mi = this;
+  }
+
+  /* ── Reloj continuo: 1 s real = 1 min de juego ─────────────────────── */
+
+  private arrancarReloj() {
+    let previo = performance.now();
+    let acumulado = 0;
+    let guardado = 0;
+    const tic = () => {
+      const ahora = performance.now();
+      const seg = Math.min(2, (ahora - previo) / 1000);
+      previo = ahora;
+      if (!this.pausa && !document.hidden) {
+        pasarTiempo(this.e, seg);
+        acumulado += seg;
+        guardado += seg;
+        this.mundo.sincronizar(this.e);
+        if (acumulado >= 1) {
+          acumulado = 0;
+          this.refrescarHud();
+          this.vivo?.();
+          if (esMadrugada(this.e)) void this.revisarHora();
+        }
+        if (guardado >= 5) {
+          guardado = 0;
+          guardar(this.e);
+        }
+      }
+    };
+    setInterval(tic, 200);
+  }
+
+  /** Toque en el mundo: si estás lejos, vas andando y luego actúas. */
+  tocar(t: Tocable) {
+    const alli = (l: LugarId, fn: () => void) => {
+      if (LUGARES[l].nodo === this.e.nodo && !this.mundo.andando) fn();
+      else this.ir(l, fn);
+    };
+    switch (t.tipo) {
+      case "lugar": return this.ir(t.id);
+      case "bancal": return alli("huerta", () => abrirBancal(this, t.i));
+      case "npc": return alli(PERSONAJES[t.id].lugar, () => this.hablarCon(t.id));
+      case "cocina": return alli("casa", () => abrirCocina(this));
+      case "barca": return alli("atunara", () => abrirBarca(this));
+      case "puesto": return alli("mercado", () => abrirPuesto(this));
+      case "tablon": return alli("plaza", () => tablon(this));
+    }
+  }
+
+  async hablarCon(p: PersonajeId) {
+    await historia.hablar(this, p);
+    const lugar = PERSONAJES[p].lugar;
+    if (!this.ocupado && this.lugarActual === lugar) this.abrirLugar(lugar);
   }
 
   /* ── HUD ──────────────────────────────────────────────────────────── */
 
   private barra() {
     const boton = (icono: Parameters<typeof iconoSvg>[0], texto: string, fn: () => void) =>
-      h("button", { onclick: () => !this.mapa.andando && fn(), "aria-label": texto }, html(iconoSvg(icono, 24)), texto);
+      h("button", { onclick: () => !this.mundo.andando && fn(), "aria-label": texto }, html(iconoSvg(icono, 24)), texto);
     this.botonMovil = boton("movil", "InfoLinense", () => abrirMovil(this));
     return h(
       "nav", { class: "navegacion" },
@@ -63,8 +125,25 @@ export class Juego {
 
   refrescar() {
     const e = this.e;
+    this.refrescarHud();
+    const obj = historia.objetivo(e);
+    this.objetivoEl.replaceChildren(
+      h("span", { class: "icono" }, html(iconoSvg("objetivo", 20))),
+      h("div", {}, h("small", {}, obj.titulo.toUpperCase()), h("span", {}, obj.texto)),
+    );
+    this.objetivoEl.style.display = this.ocupado ? "none" : "";
+    this.mundo.objetivo = obj.lugar ?? null;
+    this.mundo.sincronizar(e);
+    const n = sinLeer(e);
+    this.botonMovil.querySelector(".punto")?.remove();
+    if (n > 0) this.botonMovil.append(h("span", { class: "punto" }, n));
+    guardar(e);
+  }
+
+  private refrescarHud() {
+    const e = this.e;
     const necesidad = (nombre: string, v: number) =>
-      h("div", { class: `necesidad${v < 25 ? " baja" : ""}` }, nombre, h("div", { class: "nivel" }, h("i", { style: `width:${v}%` })));
+      h("div", { class: `necesidad${v < 25 ? " baja" : ""}` }, nombre, h("div", { class: "nivel" }, h("i", { style: `width:${Math.round(v)}%` })));
     this.hud.replaceChildren(
       h(
         "div", { class: "hud-fila" },
@@ -78,19 +157,6 @@ export class Juego {
         necesidad("Energía", e.energia), necesidad("Comida", e.comida), necesidad("Ánimo", e.animo), necesidad("Gente", e.social),
       ),
     );
-    const obj = historia.objetivo(e);
-    this.objetivoEl.replaceChildren(
-      h("span", { class: "icono" }, html(iconoSvg("objetivo", 20))),
-      h("div", {}, h("small", {}, obj.titulo.toUpperCase()), h("span", {}, obj.texto)),
-    );
-    this.objetivoEl.style.display = this.ocupado ? "none" : "";
-    this.mapa.objetivo = obj.lugar ?? null;
-    this.mapa.hora = horaDelDia(e);
-    this.mapa.ropa = e.ropa;
-    const n = sinLeer(e);
-    this.botonMovil.querySelector(".punto")?.remove();
-    if (n > 0) this.botonMovil.append(h("span", { class: "punto" }, n));
-    guardar(e);
   }
 
   private verTiempo() {
@@ -105,11 +171,11 @@ export class Juego {
         "OBJETIVO", "¿A dónde vas?",
         h("p", { class: "desc" }, obj.texto),
         h("div", { class: "acciones" }, ...obj.opciones.map((l) =>
-          this.boton({ icono: LUGARES[l].icono, titulo: LUGARES[l].nombre, sub: LUGARES[l].descripcion, fn: () => { this.cerrar(); this.mapa.centrarEn(l); this.ir(l); } }),
+          this.boton({ icono: LUGARES[l].icono, titulo: LUGARES[l].nombre, sub: LUGARES[l].descripcion, fn: () => { this.cerrar(); this.mundo.centrarEn(l); this.ir(l); } }),
         )),
       );
     } else if (obj.lugar) {
-      this.mapa.centrarEn(obj.lugar);
+      this.mundo.centrarEn(obj.lugar);
       this.ir(obj.lugar);
     }
   }
@@ -119,13 +185,40 @@ export class Juego {
   private abrirCapa(contenido: HTMLElement, velo = true) {
     this.capa.replaceChildren(...(velo ? [h("div", { class: "velo", onclick: () => this.cerrar() })] : []), contenido);
     this.ocupado = true;
+    this.vivo = null;
     this.objetivoEl.style.display = "none";
   }
 
   cerrar() {
+    this.mundo.soltarFoco();
     this.capa.replaceChildren();
     this.ocupado = false;
+    this.pausa = false;
+    this.vivo = null;
     this.refrescar();
+  }
+
+  /**
+   * Panel pequeño y sin velo (bancales, cocina, barca, puesto): el mundo sigue
+   * vivo detrás y se puede tocar otro bancal sin cerrarlo. `pintar` se vuelve a
+   * llamar cada segundo para que se vean los progresos.
+   */
+  bandeja(seccion: string, titulo: string, pintar: () => (Node | null)[]) {
+    const cuerpo = h("div");
+    const hoja = h(
+      "section", { class: "hoja bandeja", role: "dialog", "aria-label": titulo },
+      h(
+        "div", { class: "hoja-cabeza" },
+        h("div", {}, h("span", { class: "etiqueta" }, seccion), h("h2", {}, titulo)),
+        h("button", { class: "cerrar", "aria-label": "Cerrar", onclick: () => this.cerrar() }, html(iconoSvg("cerrar", 18))),
+      ),
+      cuerpo,
+    );
+    const repintar = () => cuerpo.replaceChildren(...pintar().filter((c): c is Node => c !== null));
+    repintar();
+    this.abrirCapa(hoja, false);
+    this.vivo = repintar;
+    return repintar;
   }
 
   hoja(seccion: string, titulo: string, ...cuerpo: (Node | null)[]) {
@@ -144,6 +237,7 @@ export class Juego {
 
   pantalla(el: HTMLElement) {
     this.abrirCapa(el, false);
+    this.pausa = true;
   }
 
   aviso(texto: string) {
@@ -181,6 +275,8 @@ export class Juego {
         const dialogo = h("div", { class: "dialogo", role: "dialog" }, caja);
         this.capa.replaceChildren(h("div", { class: "velo" }), dialogo);
         this.ocupado = true;
+        this.pausa = true;
+        this.vivo = null;
         this.objetivoEl.style.display = "none";
       };
       const siguiente = () => {
@@ -209,24 +305,24 @@ export class Juego {
     return (Object.keys(LUGARES) as LugarId[]).find((id) => LUGARES[id].nodo === this.e.nodo) ?? null;
   }
 
-  ir(lugar: LugarId) {
-    if (this.mapa.andando) return;
+  /** Va andando a un lugar; al llegar, abre su ficha o hace `despues`. */
+  ir(lugar: LugarId, despues?: () => void) {
+    if (this.mundo.andando) return;
     const destino = LUGARES[lugar].nodo;
     if (destino === this.e.nodo) {
-      this.abrirLugar(lugar);
+      (despues ?? (() => this.abrirLugar(lugar)))();
       return;
     }
+    if (this.ocupado) this.cerrar();
     const r = ruta(this.e.nodo, destino);
-    const min = minutosAndando(r.largo);
     this.objetivoEl.style.display = "none";
     sonido("paso");
-    this.mapa.andar(r.nodos, async () => {
+    this.mundo.andar(r.nodos, async () => {
       this.e.nodo = destino;
-      pasarTiempo(this.e, min, min / 15);
       this.refrescar();
-      if (await this.revisarHora()) return;
       await historia.alLlegar(this, lugar);
-      this.abrirLugar(lugar);
+      if (this.ocupado) return;
+      (despues ?? (() => this.abrirLugar(lugar)))();
     });
   }
 
@@ -246,10 +342,7 @@ export class Juego {
                 icono: html(retrato(PERSONAJES[p])),
                 titulo: `Hablar con ${PERSONAJES[p].nombre}`,
                 sub: historia.presente(this.e, p) ? PERSONAJES[p].rol : `No está ahora · suele estar de ${historia.HORAS[p][0]}:00 a ${historia.HORAS[p][1]}:00`,
-                fn: async () => {
-                  await historia.hablar(this, p);
-                  if (!this.ocupado && this.lugarActual === lugar) this.abrirLugar(lugar);
-                },
+                fn: () => this.hablarCon(p),
               }),
             ),
           )
@@ -287,16 +380,18 @@ export class Juego {
 
   /** Si es de madrugada, el personaje vuelve a casa y duerme. */
   private async revisarHora() {
-    if (!esMadrugada(this.e)) return false;
+    if (!esMadrugada(this.e) || this.revisando) return false;
+    this.revisando = true;
     await this.decir(["narrador", `Se te ha hecho tardísimo. Vuelves a casa arrastrando los pies y te quedas ${g(this.e, "dormido", "dormida")} en cuanto tocas la cama de la abuela.`]);
     this.e.animo = Math.max(0, this.e.animo - 10);
     await this.dormir();
+    this.revisando = false;
     return true;
   }
 
   async dormir() {
     dormir(this.e);
-    this.mapa.colocar(this.e.nodo);
+    this.mundo.colocar(this.e.nodo);
     this.refrescar();
     const v = VIENTOS[this.e.viento];
     const ultima = this.e.noticias[this.e.noticias.length - 1];

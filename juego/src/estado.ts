@@ -1,6 +1,6 @@
 import type { BarrioId, LugarId } from "./datos/mapa";
-import { NODOS } from "./datos/mapa";
-import { CULTIVOS, OBJETOS, type ObjetoId } from "./datos/objetos";
+import { LUGARES, NODOS } from "./datos/mapa";
+import { CULTIVOS, OBJETOS, SALIDAS, type CultivoId, type ObjetoId, type SalidaId } from "./datos/objetos";
 import { PERSONAJES, type PersonajeId } from "./datos/personajes";
 
 /** Estado de la partida, reloj, viento, necesidades y guardado. */
@@ -26,15 +26,26 @@ export interface Pedido {
 }
 
 export interface Parcela {
-  cultivo: keyof typeof CULTIVOS | null;
-  /** Minuto absoluto de juego en que se plantó. */
-  desde: number;
-  /** Horas de crecimiento ya acumuladas (con bonus de viento). */
-  horas: number;
+  cultivo: CultivoId | null;
+  /** Minutos de crecimiento acumulados (con el bonus del viento). */
+  crecido: number;
+}
+
+export interface Fogon {
+  receta: ObjetoId;
+  /** Minutos que faltan; solo avanza el primero de la cola. */
+  faltan: number;
+  total: number;
+}
+
+export interface Caja {
+  id: ObjetoId;
+  n: number;
+  precio: number;
 }
 
 export interface Estado {
-  version: 1;
+  version: 2;
   nombre: string;
   trato: Trato;
   piel: string;
@@ -56,7 +67,17 @@ export interface Estado {
   amistad: Record<PersonajeId, number>;
   charlaHoy: Partial<Record<PersonajeId, number>>;
   reputacion: Record<BarrioId, number>;
-  huerto: Parcela[];
+  /** Bancales de la abuela en El Zabal. */
+  bancales: Parcela[];
+  /** Cola de la cocina (máx. 3) y platos listos para recoger. */
+  cocina: Fogon[];
+  cocinaListos: ObjetoId[];
+  /** La barca de La Atunara: fuera hasta `vuelta` (minuto absoluto). */
+  barca: { salida: SalidaId; vuelta: number } | null;
+  barcaBotin: Partial<Record<ObjetoId, number>>;
+  /** Puesto 14 del Mercado: cajas a la venta y dinero cobrado. */
+  puesto: (Caja | null)[];
+  cajaPuesto: number;
   pedidos: Pedido[];
   siguientePedido: number;
   noticias: Noticia[];
@@ -67,14 +88,14 @@ export interface Estado {
   turnoDia: number;
 }
 
-const CLAVE = "mi-linea-v1";
+const CLAVE = "mi-linea-v3";
 
 export const HORA_DESPERTAR = 8;
 
 export function nuevaPartida(nombre: string, trato: Trato, piel: string, ropa: string): Estado {
   const amistad = Object.fromEntries(Object.keys(PERSONAJES).map((k) => [k, 0])) as Record<PersonajeId, number>;
   const e: Estado = {
-    version: 1,
+    version: 2,
     nombre, trato, piel, ropa,
     minuto: 24 * 60 + 11 * 60, // día 1, 11:00
     dia: 1,
@@ -85,14 +106,20 @@ export function nuevaPartida(nombre: string, trato: Trato, piel: string, ropa: s
     comida: 60,
     animo: 60,
     social: 30,
-    nodo: "estacion",
-    mochila: { semTomate: 2, semLechuga: 2 },
+    nodo: LUGARES.estacion.nodo,
+    mochila: { semTomate: 3, semLechuga: 3 },
     oficio: null,
     turnos: 0,
     amistad,
     charlaHoy: {},
     reputacion: { sanBernardo: 10, centro: 0, atunara: 0, zabal: 0, poniente: 0, levante: 0 },
-    huerto: Array.from({ length: 4 }, () => ({ cultivo: null, desde: 0, horas: 0 })),
+    bancales: Array.from({ length: 6 }, () => ({ cultivo: null, crecido: 0 })),
+    cocina: [],
+    cocinaListos: [],
+    barca: null,
+    barcaBotin: {},
+    puesto: [null, null, null, null],
+    cajaPuesto: 0,
     pedidos: [],
     siguientePedido: 1,
     noticias: [],
@@ -123,7 +150,7 @@ export function cargar(): Estado | null {
     const raw = localStorage.getItem(CLAVE);
     if (!raw) return null;
     const e = JSON.parse(raw) as Estado;
-    return e.version === 1 && e.nodo in NODOS ? e : null;
+    return e.version === 2 && e.nodo in NODOS ? e : null;
   } catch {
     return null;
   }
@@ -143,7 +170,7 @@ export function borrar() {
 export const g = (e: Estado, o: string, a: string) => (e.trato === "a" ? a : o);
 
 export const hora = (e: Estado) => {
-  const m = e.minuto % (24 * 60);
+  const m = Math.floor(e.minuto) % (24 * 60);
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 };
 
@@ -183,27 +210,73 @@ export function quitar(e: Estado, id: ObjetoId, n = 1): boolean {
 export const tiene = (e: Estado, lista: Partial<Record<ObjetoId, number>>) =>
   (Object.entries(lista) as [ObjetoId, number][]).every(([id, n]) => cuantos(e, id) >= n);
 
-export const precioVenta = (e: Estado, id: ObjetoId) => {
-  const base = OBJETOS[id].venta * (e.flags.puesto ? 1.3 : 1) * (e.viento === "calma" ? 1.1 : 1);
-  return Math.max(1, Math.round(base));
-};
+/** Lo que pagan los puestos del Mercado al momento. */
+export const precioVenta = (e: Estado, id: ObjetoId) => Math.max(1, Math.round(OBJETOS[id].venta * (e.viento === "calma" ? 1.1 : 1)));
+
+/** Precio sugerido en tu puesto 14: los clientes pagan más, pero hay que esperar. */
+export const precioPuesto = (id: ObjetoId) => Math.max(2, Math.round(OBJETOS[id].venta * 1.6));
 
 /* ── Necesidades y reloj ────────────────────────────────────────────── */
 
-export const limitar = (v: number) => Math.max(0, Math.min(100, Math.round(v)));
+/** Limita a 0–100. `fino` conserva decimales para el reloj continuo. */
+export const limitar = (v: number, fino = false) => Math.max(0, Math.min(100, fino ? v : Math.round(v)));
 
+/** Avanza el reloj: necesidades, cultivos, cocina, barca y clientes del puesto. */
 export function pasarTiempo(e: Estado, minutos: number, esfuerzo = 0) {
   const horas = minutos / 60;
   e.minuto += minutos;
-  e.comida = limitar(e.comida - horas * 4);
-  e.energia = limitar(e.energia - horas * 2 - esfuerzo);
-  e.social = limitar(e.social - horas * 1.5);
-  if (e.comida < 20 || e.social < 15) e.animo = limitar(e.animo - horas * 3);
-  const bonus = e.viento === "poniente" ? 1.25 : 1;
-  for (const p of e.huerto) if (p.cultivo) p.horas += horas * bonus;
+  e.comida = limitar(e.comida - horas * 4, true);
+  e.energia = limitar(e.energia - horas * 2 - esfuerzo, true);
+  e.social = limitar(e.social - horas * 1.5, true);
+  if (e.comida < 20 || e.social < 15) e.animo = limitar(e.animo - horas * 3, true);
+  producir(e, minutos);
 }
 
-export const listo = (p: Parcela) => p.cultivo !== null && p.horas >= CULTIVOS[p.cultivo].horas;
+/** Producción en segundo plano, como en Hay Day: todo sigue aunque no mires. */
+export function producir(e: Estado, minutos: number) {
+  const bonus = e.viento === "poniente" ? 1.25 : 1;
+  for (const p of e.bancales) if (p.cultivo) p.crecido += minutos * bonus;
+  let resto = minutos;
+  while (resto > 0 && e.cocina.length && e.cocinaListos.length < 6) {
+    const f = e.cocina[0];
+    const usa = Math.min(resto, f.faltan);
+    f.faltan -= usa;
+    resto -= usa;
+    if (f.faltan <= 0) e.cocinaListos.push(e.cocina.shift()!.receta);
+  }
+  if (e.barca && e.minuto >= e.barca.vuelta && !Object.keys(e.barcaBotin).length) e.barcaBotin = captura(e.barca.salida);
+  // Clientes del puesto 14: de media, uno cada 25 minutos.
+  if (e.flags.puesto) {
+    const prob = 1 - Math.pow(1 - 1 / 25, minutos);
+    if (Math.random() < prob) {
+      const llenas = e.puesto.map((c, i) => (c ? i : -1)).filter((i) => i >= 0);
+      if (llenas.length) {
+        const i = llenas[Math.floor(Math.random() * llenas.length)];
+        const c = e.puesto[i]!;
+        e.cajaPuesto += c.precio;
+        c.n -= 1;
+        if (c.n <= 0) e.puesto[i] = null;
+        e.flags.ventaReciente = e.minuto;
+      }
+    }
+  }
+}
+
+function captura(s: SalidaId): Partial<Record<ObjetoId, number>> {
+  const r = () => Math.random();
+  if (s === "corta") return { sardina: 3 + Math.floor(r() * 3), ...(r() < 0.5 ? { boqueron: 1 + Math.floor(r() * 2) } : {}) };
+  return { camaron: 3 + Math.floor(r() * 3), boqueron: 2 + Math.floor(r() * 2), ...(r() < 0.35 ? { pulpo: 1 } : {}) };
+}
+
+export function zarpar(e: Estado, s: SalidaId) {
+  e.barca = { salida: s, vuelta: e.minuto + SALIDAS[s].minutos };
+  e.barcaBotin = {};
+}
+
+export const barcaFuera = (e: Estado) => !!e.barca && !Object.keys(e.barcaBotin).length;
+
+export const progresoCultivo = (p: Parcela) => (p.cultivo ? Math.min(1, p.crecido / CULTIVOS[p.cultivo].minutos) : 0);
+export const listo = (p: Parcela) => p.cultivo !== null && progresoCultivo(p) >= 1;
 
 /** ¿Es tarde? A partir de las 2:00 el personaje vuelve a casa a dormir. */
 export const esMadrugada = (e: Estado) => horaDelDia(e) >= 2 && horaDelDia(e) < HORA_DESPERTAR;
@@ -211,9 +284,9 @@ export const esMadrugada = (e: Estado) => horaDelDia(e) >= 2 && horaDelDia(e) < 
 /** Duerme hasta las 8:00 del día siguiente. Devuelve las noticias nuevas. */
 export function dormir(e: Estado) {
   const despertar = (e.dia + 1) * 24 * 60 + HORA_DESPERTAR * 60;
-  const horas = (despertar - e.minuto) / 60;
-  const bonus = e.viento === "poniente" ? 1.25 : 1;
-  for (const p of e.huerto) if (p.cultivo) p.horas += horas * bonus;
+  const minutos = despertar - e.minuto;
+  // La noche no cuenta como esfuerzo, pero la producción sigue.
+  producir(e, minutos);
   e.minuto = despertar;
   e.dia += 1;
   e.energia = 100;
@@ -222,7 +295,7 @@ export function dormir(e: Estado) {
   e.viento = e.vientoManana;
   e.vientoManana = tirarViento();
   e.charlaHoy = {};
-  e.nodo = "casa";
+  e.nodo = LUGARES.casa.nodo;
   rellenarPedidos(e);
   e.noticias.push(noticiaDelDia(e));
 }
