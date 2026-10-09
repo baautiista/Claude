@@ -86,9 +86,11 @@ export interface Estado {
   flags: Record<string, boolean | number | string>;
   /** Último día en que se trabajó (un turno por día). */
   turnoDia: number;
+  /** Experiencia: sube de nivel y desbloquea zonas de la ciudad. */
+  xp: number;
 }
 
-const CLAVE = "mi-linea-v3";
+const CLAVE = "mi-linea-v4";
 
 export const HORA_DESPERTAR = 8;
 
@@ -127,6 +129,7 @@ export function nuevaPartida(nombre: string, trato: Trato, piel: string, ropa: s
     paso: 0,
     flags: {},
     turnoDia: 0,
+    xp: 0,
   };
   e.noticias.push({
     dia: 1, seccion: "CIUDAD",
@@ -298,6 +301,24 @@ export function dormir(e: Estado) {
   e.nodo = LUGARES.casa.nodo;
   rellenarPedidos(e);
   e.noticias.push(noticiaDelDia(e));
+}
+
+/* ── Experiencia y niveles ──────────────────────────────────────────── */
+
+/** Experiencia necesaria para cada nivel (el 1 empieza en 0). */
+export const NIVELES = [0, 15, 40, 80, 130, 200, 290, 400] as const;
+
+export const nivel = (e: Estado) => NIVELES.filter((x) => (e.xp ?? 0) >= x).length;
+
+/** Progreso (0–1) hacia el siguiente nivel. */
+export const progresoNivel = (e: Estado) => {
+  const n = nivel(e);
+  if (n >= NIVELES.length) return 1;
+  return ((e.xp ?? 0) - NIVELES[n - 1]) / (NIVELES[n] - NIVELES[n - 1]);
+};
+
+export function ganarXP(e: Estado, n: number) {
+  e.xp = (e.xp ?? 0) + n;
 }
 
 /* ── Amistad y reputación ───────────────────────────────────────────── */

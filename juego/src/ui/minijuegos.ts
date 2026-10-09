@@ -1,5 +1,5 @@
 import { OBJETOS, type ObjetoId } from "../datos/objetos";
-import { amistad, dar, publicar, reputacion } from "../estado";
+import { amistad, dar, ganarXP, publicar, reputacion } from "../estado";
 import * as historia from "../historia";
 import type { Juego } from "../juego";
 import { h } from "./dom";
@@ -13,6 +13,7 @@ async function terminarTurno(j: Juego, pago: number, botin: Partial<Record<Objet
   for (const [id, n] of Object.entries(botin) as [ObjetoId, number][]) if (n > 0) dar(e, id, n);
   e.turnoDia = e.dia;
   e.turnos += 1;
+  ganarXP(e, 6);
   e.social = Math.min(100, e.social + 8);
   sonido("moneda");
   const lista = (Object.entries(botin) as [ObjetoId, number][]).filter(([, n]) => n > 0).map(([id, n]) => `${n} ${n === 1 ? OBJETOS[id].nombre.toLowerCase() : OBJETOS[id].plural}`);

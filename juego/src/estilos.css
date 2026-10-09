@@ -204,7 +204,7 @@ input { font: inherit; }
 .rotulo3d.lugar { pointer-events: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; background: rgba(6,30,92,0.82); color: var(--blanco); font: 700 11px var(--display); padding: 4px 9px 4px 7px; border-radius: 999px; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
 .rotulo3d.lugar.meta { background: var(--lima); color: var(--negro); }
 .rotulo3d.npc { background: var(--blanco); color: var(--negro); font: 700 10px var(--display); padding: 2px 7px; border-radius: 6px; opacity: 0.92; }
-.rotulo3d.zona { color: rgba(255,255,255,0.9); font: 800 15px var(--display); letter-spacing: 0.18em; text-shadow: 0 2px 8px rgba(6,30,92,0.7); }
+.rotulo3d.zona-lejos { color: rgba(255,255,255,0.9); font: 800 15px var(--display); letter-spacing: 0.18em; text-shadow: 0 2px 8px rgba(6,30,92,0.7); }
 .rotulo3d.burbuja { pointer-events: auto; cursor: pointer; background: var(--blanco); color: var(--negro); font: 700 12px var(--display); padding: 6px 10px; border-radius: 12px 12px 12px 3px; box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
 .rotulo3d.burbuja.aviso { background: var(--lima); animation: latir 0.6s infinite alternate; }
 .flotante3d { position: absolute; left: 0; top: 0; pointer-events: none; font: 800 17px var(--display); color: var(--lima); text-shadow: 0 2px 0 var(--azul-oscuro), 0 0 10px rgba(6,30,92,0.8); white-space: nowrap; }
@@ -234,3 +234,8 @@ input { font: inherit; }
 .boton.secundario-claro { background: var(--gris-claro); color: var(--negro); margin-top: 10px; }
 .hoja .boton { margin-top: 4px; }
 .rotulo3d.calle { font: 700 10px var(--texto); color: var(--azul-oscuro); background: rgba(255,255,255,0.85); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.02em; }
+.chip.nivel { position: relative; overflow: hidden; background: var(--azul); padding-bottom: 8px; }
+.chip.nivel i { position: absolute; left: 8px; right: auto; bottom: 3px; height: 3px; border-radius: 2px; background: var(--lima); max-width: calc(100% - 16px); }
+.rotulo3d.candado { pointer-events: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; background: var(--azul-oscuro); color: var(--blanco); font: 800 12px var(--display); padding: 6px 11px; border-radius: 999px; box-shadow: 0 4px 14px rgba(0,0,0,0.3); border: 2px solid var(--lima); }
+.controles-mapa { position: absolute; right: 12px; top: calc(96px + var(--arriba)); display: grid; gap: 8px; }
+.controles-mapa button { width: 40px; height: 40px; border-radius: 12px; background: rgba(6,30,92,0.82); color: var(--blanco); display: grid; place-items: center; font: 800 20px var(--display); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }

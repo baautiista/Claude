@@ -1,7 +1,7 @@
-import { LUGARES, type LugarId } from "./datos/mapa";
+import { LUGARES, ZONAS, zonaDeLugar, type LugarId, type Zona } from "./datos/mapa";
 import { PERSONAJES, type PersonajeId } from "./datos/personajes";
 import {
-  dormir, esMadrugada, g, guardar, hora, pasarTiempo, sinLeer, VIENTOS, type Estado,
+  dormir, esMadrugada, g, ganarXP, guardar, hora, nivel, pasarTiempo, progresoNivel, sinLeer, VIENTOS, type Estado,
 } from "./estado";
 import * as historia from "./historia";
 import { iconoSvg } from "./iconos";
@@ -49,7 +49,15 @@ export class Juego {
     this.mundo.onTocar = (t) => {
       if (!this.ocupado || this.vivo) this.tocar(t);
     };
+    this.mundo.zonaAbierta = (z) => this.zonaAbierta(z);
     this.mundo.sincronizar(e);
+    raiz.append(h(
+      "div", { class: "controles-mapa" },
+      h("button", { "aria-label": "Girar a la izquierda", onclick: () => this.mundo.girar(-1), html: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>' }),
+      h("button", { "aria-label": "Girar a la derecha", onclick: () => this.mundo.girar(1), html: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>' }),
+      h("button", { "aria-label": "Acercar", onclick: () => this.mundo.zoom(0.75) }, "+"),
+      h("button", { "aria-label": "Alejar", onclick: () => this.mundo.zoom(1.33) }, "−"),
+    ));
     this.arrancarReloj();
     this.refrescar();
     if (import.meta.env.DEV) (window as unknown as { __mi: Juego }).__mi = this;
@@ -72,6 +80,7 @@ export class Juego {
         this.mundo.sincronizar(this.e);
         if (acumulado >= 1) {
           acumulado = 0;
+          this.revisarNivel();
           this.refrescarHud();
           this.vivo?.();
           if (esMadrugada(this.e)) void this.revisarHora();
@@ -99,7 +108,40 @@ export class Juego {
       case "barca": return alli("atunara", () => abrirBarca(this));
       case "puesto": return alli("mercado", () => abrirPuesto(this));
       case "tablon": return alli("plaza", () => tablon(this));
+      case "zona": return this.avisoZona(t.zona);
+      case "solar":
+        sonido("toque");
+        return this.aviso("<b>Solar en venta.</b> Aquí podrás levantar una churrería, una conservera o un comercio en la próxima fase.");
     }
+  }
+
+  /** Una zona está abierta por nivel, porque la historia te lleva allí o porque ya entraste. */
+  zonaAbierta(z: Zona) {
+    if (nivel(this.e) >= z.nivel || this.e.flags[`zona_${z.id}`]) return true;
+    const obj = historia.objetivo(this.e);
+    const necesarios = [obj.lugar, ...(obj.opciones ?? [])].filter((l): l is LugarId => !!l);
+    if (necesarios.some((l) => zonaDeLugar(l)?.id === z.id)) {
+      this.e.flags[`zona_${z.id}`] = true;
+      return true;
+    }
+    return false;
+  }
+
+  private avisoZona(z: Zona) {
+    sonido("mal");
+    this.aviso(`<b>${z.nombre}</b> se desbloquea en el nivel ${z.nivel}. Gana experiencia cosechando, cocinando, vendiendo y entregando encargos.`);
+  }
+
+  /** Avisa de las subidas de nivel y de las zonas que se abren. */
+  private nivelVisto = 0;
+  private revisarNivel() {
+    const n = nivel(this.e);
+    if (!this.nivelVisto) this.nivelVisto = n;
+    if (n <= this.nivelVisto) return;
+    this.nivelVisto = n;
+    const nuevas = ZONAS.filter((z) => z.nivel === n).map((z) => z.nombre);
+    sonido("bien");
+    this.aviso(`<b>¡Nivel ${n}!</b>${nuevas.length ? ` Se abre: ${nuevas.join(", ")}.` : ""}`);
   }
 
   async hablarCon(p: PersonajeId) {
@@ -125,6 +167,12 @@ export class Juego {
 
   refrescar() {
     const e = this.e;
+    const pasoXP = Number(e.flags.pasoXP ?? 0);
+    if (e.paso > pasoXP) {
+      ganarXP(e, (e.paso - pasoXP) * 6);
+      e.flags.pasoXP = e.paso;
+    }
+    this.revisarNivel();
     this.refrescarHud();
     const obj = historia.objetivo(e);
     this.objetivoEl.replaceChildren(
@@ -150,6 +198,7 @@ export class Juego {
         h("span", { class: "chip" }, `Día ${e.dia} · ${hora(e)}`),
         h("button", { class: `chip ${e.viento === "levanteFuerte" ? "rosa" : ""}`, onclick: () => this.verTiempo() }, html(iconoSvg("viento", 15)), VIENTOS[e.viento].nombre),
         h("span", { class: "espacio" }),
+        h("span", { class: "chip nivel", title: `${e.xp ?? 0} puntos de experiencia` }, `Nv ${nivel(e)}`, h("i", { style: `width:${Math.round(progresoNivel(e) * 100)}%` })),
         h("span", { class: "chip lima" }, `${e.dinero} €`),
       ),
       h(
@@ -314,10 +363,15 @@ export class Juego {
       return;
     }
     if (this.ocupado) this.cerrar();
+    const zona = zonaDeLugar(lugar);
+    if (zona && !this.zonaAbierta(zona)) {
+      this.avisoZona(zona);
+      return;
+    }
     const r = ruta(this.e.nodo, destino);
     this.objetivoEl.style.display = "none";
     sonido("paso");
-    this.mundo.andar(r.nodos, async () => {
+    this.mundo.andar(r.puntos, async () => {
       this.e.nodo = destino;
       this.refrescar();
       await historia.alLlegar(this, lugar);

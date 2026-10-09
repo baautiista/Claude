@@ -2,7 +2,7 @@ import type { LugarId } from "../datos/mapa";
 import { CULTIVOS, OBJETOS, RECETAS, SALIDAS, TIENDAS, type CultivoId, type ObjetoId, type SalidaId } from "../datos/objetos";
 import { PERSONAJES } from "../datos/personajes";
 import {
-  amistad, cuantos, dar, horaDelDia, limitar, listo, precioPuesto, precioVenta, progresoCultivo, quitar, reputacion, tiene, zarpar,
+  amistad, cuantos, dar, ganarXP, horaDelDia, limitar, listo, precioPuesto, precioVenta, progresoCultivo, quitar, reputacion, tiene, zarpar,
 } from "../estado";
 import type { ICONOS } from "../iconos";
 import type { Juego } from "../juego";
@@ -199,6 +199,7 @@ function cosechar(j: Juego, i: number) {
   if (!b.cultivo || !listo(b)) return;
   const c = CULTIVOS[b.cultivo];
   dar(e, c.da, c.cantidad);
+  ganarXP(e, c.cantidad);
   e.bancales[i] = { cultivo: null, crecido: 0 };
   e.energia = limitar(e.energia - 1, true);
   j.mundo.flotante(`+${c.cantidad} ${OBJETOS[c.da].plural}`, j.mundo.posBancal(i));
@@ -287,6 +288,7 @@ export function abrirCocina(j: Juego) {
           onclick: () => {
             const n = e.cocinaListos.length;
             for (const id of e.cocinaListos) dar(e, id);
+            ganarXP(e, n * 2);
             e.cocinaListos = [];
             j.mundo.flotante(`+${n} ${n === 1 ? "plato" : "platos"}`, j.mundo.posDe("cocina"));
             sonido("bien");
@@ -328,6 +330,7 @@ export function abrirBarca(j: Juego) {
           class: "boton",
           onclick: () => {
             for (const [id, n] of Object.entries(e.barcaBotin) as [ObjetoId, number][]) dar(e, id, n);
+            ganarXP(e, 5);
             j.mundo.flotante(`+${lista(e.barcaBotin)}`, j.mundo.posDe("barca"));
             e.barcaBotin = {};
             e.barca = null;
@@ -411,6 +414,7 @@ export function abrirPuesto(j: Juego) {
             class: "boton",
             onclick: () => {
               e.dinero += e.cajaPuesto;
+              ganarXP(e, Math.ceil(e.cajaPuesto / 4));
               j.mundo.flotante(`+${e.cajaPuesto} €`, j.mundo.posDe("puesto"));
               e.cajaPuesto = 0;
               sonido("moneda");
@@ -462,6 +466,7 @@ export function tablon(j: Juego) {
         fn: () => {
           for (const [id, n] of Object.entries(p.pide) as [ObjetoId, number][]) quitar(e, id, n);
           e.dinero += p.paga;
+          ganarXP(e, 8);
           amistad(e, p.de, 8);
           reputacion(e, quien.barrio, 4);
           e.pedidos = e.pedidos.filter((x) => x.id !== p.id);

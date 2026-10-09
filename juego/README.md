@@ -43,20 +43,49 @@ src/
   mundo/mundo.ts        mundo 3D: terreno, ciudad, cámara, gestos, sincronización
   mundo/modelos.ts      modelos low-poly estilo Hay Day (iglesia, barcas, huertos…)
   mundo/texturas.ts     texturas pintadas con canvas (césped, adoquín, teja, fachadas)
-  mapa/rutas.ts         camino más corto por las calles
+  mapa/rutas.ts         camino más corto por las calles reales (Dijkstra con montículo)
   ui/                   lugares, minijuegos, móvil InfoLinense, paneles
   config.ts             conexión con el feed real de InfoLinense
-scripts/mapa-osm.mjs    importador del trazado real (OpenStreetMap)
+scripts/geojson-a-mapa.mjs  GeoJSON de OSM → geometría del juego (linea.json)
 ```
 
-## El mapa
+## El mapa: La Línea real, en isométrico
 
-`src/datos/mapa.ts` combina dos referencias reales:
+El mapa se construye desde **datos reales de OpenStreetMap** (GeoJSON exportado con Overpass), no desde una imagen:
 
-- **Ortofoto** para costas, El Zabal, La Atunara, la Verja, el aeropuerto y el Peñón.
-- **Plano turístico del Ayuntamiento** para el callejero del centro: cada calle es una polilínea en píxeles del plano, convertida al mundo con `P(u, v)` (calibrado con la Aduana, el Estadio y la Marina).
+```bash
+# El GeoJSON original (22 MB) va en fuentes/ y no se sube al repositorio.
+node scripts/geojson-a-mapa.mjs fuentes/la-linea.geojson   # → src/datos/linea.json (1,1 MB)
+```
 
-Para añadir o corregir una calle basta con editar la lista `PLANO`; los cruces y la red caminable se recalculan solos. `npm run mapa` (con red hacia OpenStreetMap) puede servir para afinar más.
+El preprocesador:
+
+- **Reconstruye la costa.** El GeoJSON no trae línea de costa, así que se calcula por franjas de 40 m con la extensión real de playas, puerto, calles y edificios. Resultado: la silueta del istmo entre la Bahía y el Mediterráneo, hasta la Verja.
+- **Convierte las calles en caminos.** Unos 5.400 tramos de OSM pasan a ser un grafo caminable con nodos en los cruces reales (6.574) y tramos con su clase (avenida, calle, peatonal, sendero, pista), su nombre y su forma.
+- **Simplifica los edificios.** Las 10.674 huellas reales pasan a ser rectángulos orientados con tipo: casa, bloque, nave, iglesia, escuela, edificio público, ruina o caseta. El juego los dibuja con su estilo: fachadas encaladas con persianas, tejas, azoteas y bloques con balcones.
+- **Agrupa los usos del suelo** en capas de juego: residencial, parques, césped, matorral, huertos, industrial, plazas, playas, agua, piscinas, campos de fútbol y solares.
+- **Extrae los puntos de interés reales:** Plaza de la Iglesia, Santuario de la Inmaculada, Mercado de La Concepción, Lonja y Puerto Pesquero de La Atunara, Estadio, Fuerte de Santa Bárbara, Polígono del Zabal, estación, aduana…
+
+Unidades: 1 unidad = 2 m, norte arriba. Las distancias se respetan; para que se lea como un juego se exageran las alturas, los anchos de calle y los personajes.
+
+### Zonas desbloqueables
+
+| Zona | Nivel |
+|---|---|
+| Centro y San Bernardo | 1 |
+| Mercado, El Zabal | 2 |
+| La Atunara | 3 |
+| Playas (Poniente y Levante) | 4 |
+| Estadio y Santa Bárbara, El Junquillo | 5 |
+| La Verja | 6 |
+
+La experiencia se gana cosechando, cocinando, vendiendo en el puesto, entregando encargos, trabajando y avanzando en la historia. Si la historia te lleva a una zona, esa zona se abre aunque no tengas el nivel. Todo lo que tienes y construyes forma parte de un único mundo continuo y se guarda con la partida.
+
+### Fases
+
+1. **Hecho:** forma de la ciudad, costa, calles reales, edificios, usos del suelo, lugares y zonas jugables por nivel.
+2. **Construcción** en los solares reales (los terrenos en obras o sin edificar del GeoJSON, ya señalados con cartel lima): churrería, conservera, freiduría, comercios. Cada uno será una cadena de producción nueva.
+3. **Más vida:** tráfico, peatones, barcos en la bahía y eventos por barrio (Feria en el recinto ferial real, Carnaval).
 
 ## Noticias reales de InfoLinense
 
