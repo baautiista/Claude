@@ -25,3 +25,8 @@ export const html = (s: string) => {
 
 /** Escapa texto del jugador (su nombre) antes de meterlo en HTML. */
 export const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+/** replaceChildren que admite huecos (null/false) como h(). */
+export function poner(el: Element, ...hijos: Hijo[]) {
+  el.replaceChildren(...hijos.filter((c) => c !== null && c !== undefined && c !== false).map((c) => (c instanceof Node ? c : String(c))));
+}

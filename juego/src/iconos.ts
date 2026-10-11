@@ -1,7 +1,7 @@
 import type { IconoId } from "./datos/mapa";
 
 /** Iconos lineales (24 × 24, trazo) compartidos entre el mapa y la interfaz. */
-export const ICONOS: Record<IconoId | "mochila" | "movil" | "diario" | "menu" | "viento" | "euro" | "cerrar" | "objetivo" | "rayo" | "cubiertos" | "cara" | "gente" | "ajustes" | "reloj", string> = {
+export const ICONOS: Record<IconoId | "mochila" | "movil" | "diario" | "menu" | "viento" | "euro" | "cerrar" | "objetivo" | "rayo" | "cubiertos" | "cara" | "gente" | "ajustes" | "reloj" | "martillo" | "rodillo" | "salir" | "llave" | "sofa" | "lupa", string> = {
   casa: "M3 11 12 4l9 7M5 10v10h5v-6h4v6h5V10",
   iglesia: "M12 2v5M10 4h4M5 21V12l7-5 7 5v9zM10 21v-5h4v5",
   mercado: "M3 9h18l-2 11H5zM8 9l4-6 4 6M9 13v4M15 13v4",
@@ -28,6 +28,12 @@ export const ICONOS: Record<IconoId | "mochila" | "movil" | "diario" | "menu" | 
   ajustes: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
   reloj: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",
   objetivo: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 11.5v1",
+  martillo: "M14 6l4 4M10.5 9.5 4 16a2.1 2.1 0 0 0 3 3l6.5-6.5M12 4l2-2 6 6-2 2-2.5-.5L11 5z",
+  rodillo: "M4 3h13v5H4zM17 5.5h2.5V11H11v3M10 14h2v7h-2z",
+  salir: "M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5M15 16l4-4-4-4M19 12H9",
+  llave: "M8 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 11h10M18 11v3M15 11v2",
+  sofa: "M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3M2 12a2 2 0 0 1 4 0v2h12v-2a2 2 0 0 1 4 0v6H2zM5 18v2M19 18v2",
+  lupa: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-5-5",
 };
 
 export const iconoSvg = (id: keyof typeof ICONOS, tam = 20) =>

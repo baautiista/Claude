@@ -54,9 +54,20 @@ npm run pruebas      # pruebas automáticas contra un servidor real con base de 
 
 **Qué valida el servidor:** sesiones (tokens de 30 días, contraseñas con scrypt), cada cambio de saldo en una transacción con su anotación en el libro de operaciones (`operaciones`), saldo nunca negativo, transferencias atómicas, ingresos de actividades locales solo por motivos conocidos y con tope por operación y por día, mercadillo con cobro y pago en una sola transacción, experiencia que no puede saltar de golpe, ritmo máximo de peticiones y de chat, bloqueos (ni se ven ni se escriben) y denuncias.
 
-**Límite conocido:** las actividades que todavía se simulan en el cliente (cosechas, cocina, barca, puesto) solo están acotadas por topes; las de las fases siguientes (viviendas, reformas, oficios) se calculan en el servidor.
+**Límite conocido:** las actividades que todavía se simulan en el cliente (cosechas, cocina, barca, puesto) solo están acotadas por topes; las viviendas y reformas se calculan en el servidor (y los oficios lo harán en la fase 3).
 
 **Tiempo real:** WebSocket en `/ws`; cada jugador envía su posición, orientación y animación (máx. 20/s) y recibe 10 veces por segundo a los de su escena (ciudad de su sala o interior de una casa), con interpolación en el cliente. Tres salas de 40 jugadores.
+
+## Hogar Linense: viviendas, interiores y reformas
+
+- **Catálogo:** se genera a partir de los edificios reales del mapa (casas, pisos por planta y áticos), con miles de unidades virtuales, así que nunca se agota. Cada una tiene id persistente, edificio, barrio, superficie, dormitorios, plano, estado de conservación, materiales y precio. Solo se guarda en la base de datos lo que tiene dueño.
+- **Casa de la abuela:** cada jugador tiene la suya (instancia propia, `abuela:<jugador>`) y es su primera residencia.
+- **App Hogar Linense** (botón *Hogar* o el ordenador de casa): buscar y filtrar, ficha con plano e inspección, visitar por dentro, comprar, alquilar (renta semanal cobrada por el servidor), poner en venta a otros jugadores, vender al banco (el valor sube con las reformas), mudarse, llaves (conviviente: edita y reforma; ayudante: solo reforma), expulsar y encargos de reforma.
+- **Interior 3D:** paredes con puertas y ventanas, suelos con su material, techos, lámparas que se encienden de noche si hay luz, muebles funcionales (dormir, sentarse, ducharse, cocinar, guardar, ordenador, tele), navegación A* por medias celdas, cámara con corte de paredes, otros jugadores interpolados. Se carga al entrar y se libera entero al salir.
+- **Modo construcción:** catálogo de 33 muebles con vista previa, arrastrar y soltar, girar (R), rejilla de 0,5 o 1 m, colisiones (y puertas libres) comprobadas en el cliente y en el servidor, colores, deshacer/rehacer, guardar en el inventario o vender. Cada cambio se guarda al momento.
+- **10 reformas interactivas:** limpieza (frotar manchas, recoger basura y llevar la bolsa al contenedor), sacar trastos con la carretilla, grietas (masilla siguiendo la grieta y lija; cuenta la precisión), pintura (rodillo y brocha, bandeja, cobertura del 95 % y salpicones), suelos (levantar con la piqueta y colocar baldosas), electricidad y fontanería (puzles de piezas que comprueba el servidor), montaje de muebles en caja (manual y tornillos), decoración libre y jardinería (arrancar, cavar, plantar, regar, recoger).
+- **Cooperativo:** visitas por invitación, permisos por rol, bloqueo de un mueble mientras alguien lo mueve, cambios en directo para todos los que estén dentro y encargos entre jugadores con el pago en depósito que solo se libera cuando el servidor comprueba el trabajo en la casa.
+- **Recuperación:** si se cierra el juego o se cae la conexión dentro de una casa, al volver se entra otra vez en ella con todo tal como estaba.
 
 ## Desarrollo
 

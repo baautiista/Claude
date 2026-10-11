@@ -419,3 +419,119 @@ button { transition: transform 0.12s var(--rebote), filter 0.15s, box-shadow 0.1
 .error-form { min-height: 18px; margin: 8px 2px 0; font: 700 13px var(--texto); color: var(--rosa-oscuro); }
 .enlace { margin-top: 4px; font: 700 13px var(--texto); color: var(--blanco); text-decoration: underline; text-shadow: 0 1px 3px rgba(6,30,92,0.8); }
 .tarjeta-crear.acceso { margin-top: 0; }
+
+/* ── Fase 2: viviendas, construcción, reformas y Hogar Linense ───────── */
+.marco-interior { position: absolute; inset: 0; z-index: 1; }
+.lienzo-interior { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.en-interior > .dock:not(.interior-dock), .en-interior > .objetivo, .en-interior > .controles-mapa, .en-interior > .capa3d:not(.capa-interior) { display: none; }
+.en-interior .hud, .en-interior .necesidades { z-index: 3; }
+.capa-interior .rotulo-jugador { position: absolute; left: 0; top: 0; background: var(--rosa); color: var(--blanco); font: 600 11px var(--display); padding: 2px 8px; border-radius: 8px; border: 2px solid var(--blanco); white-space: nowrap; }
+.capa-interior .flotante { position: absolute; left: 0; top: 0; font: 700 18px var(--display); color: var(--lima); -webkit-text-stroke: 3px var(--marino); paint-order: stroke fill; white-space: nowrap; animation: aparecer 0.2s; }
+.ui-interior { position: absolute; inset: 0; pointer-events: none; }
+.ui-interior > * { pointer-events: auto; }
+.interior-cabeza { position: absolute; left: 10px; right: 10px; top: calc(78px + var(--arriba)); display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.94); border-radius: 18px; padding: 8px 12px; box-shadow: var(--sombra); border: 3px solid var(--blanco); max-width: 560px; }
+.interior-titulo h2 { margin: 2px 0 0; font: 600 16px/1.1 var(--display); color: var(--marino); }
+.interior-estado { display: grid; grid-template-columns: auto 80px auto; align-items: center; gap: 6px; margin-left: auto; font: 700 11px var(--texto); color: var(--gris-medio); }
+.interior-estado b { font: 600 14px var(--display); color: var(--marino); }
+.barra-estado { display: block; height: 10px; border-radius: 6px; background: var(--gris-claro); overflow: hidden; }
+.barra-estado i { display: block; height: 100%; border-radius: 6px; background: var(--lima); transition: width 0.4s; }
+.barra-estado.mini { width: 60px; height: 8px; display: inline-block; margin-left: auto; }
+.guardado { font: 700 10px var(--texto); color: var(--lima-oscuro); background: rgba(196,233,16,0.18); border-radius: 8px; padding: 3px 7px; }
+.guardado.activo { color: var(--azul); background: rgba(31,94,255,0.12); }
+.interior-controles { top: calc(150px + var(--arriba)); }
+.interior-dock { z-index: 2; }
+.interior-dock button:disabled { opacity: 0.45; }
+.interior-panel { position: absolute; left: 8px; right: 8px; bottom: calc(8px + var(--abajo)); max-height: 46%; overflow-y: auto; background: var(--crema); border-radius: 22px; padding: 0 12px 12px; border: 4px solid var(--blanco); box-shadow: 0 10px 40px rgba(6,30,92,0.5); display: none; max-width: 720px; margin: 0 auto; }
+.interior-panel.abierto { display: block; animation: emerger 0.28s var(--rebote); }
+.interior-panel .chip, .taller .chip { background: var(--blanco); color: var(--marino); border: 2px solid var(--borde); }
+.interior-panel .chip.activo, .taller .chip.activo { background: var(--azul); color: var(--blanco); border-color: var(--azul); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.pestanas { display: flex; gap: 6px; margin-bottom: 6px; }
+.pestanas button { flex: 1; padding: 8px; border-radius: 12px; background: var(--gris-claro); font: 600 13px var(--display); color: var(--marino); }
+.pestanas button.activa { background: var(--azul); color: var(--blanco); }
+.catalogo-muebles { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.tarjeta-mueble { display: grid; justify-items: center; gap: 2px; background: var(--blanco); border-radius: 14px; padding: 6px; border: 2px solid var(--borde); text-align: center; }
+.tarjeta-mueble.activa { border-color: var(--lima-oscuro); background: #f5fbd9; }
+.tarjeta-tocar { display: grid; justify-items: center; gap: 2px; width: 100%; }
+.tarjeta-mueble img { width: 72px; height: 72px; object-fit: contain; }
+.tarjeta-mueble b { font: 600 12px/1.15 var(--display); color: var(--marino); }
+.tarjeta-mueble small { font: 700 11px var(--texto); color: var(--gris-medio); }
+.enlace { color: var(--azul); font: 700 12px var(--texto); text-decoration: underline; padding: 2px; }
+.enlace.rosa { color: var(--rosa); }
+.construir-botones { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.boton-icono { width: 36px; height: 36px; border-radius: 50%; background: var(--blanco); color: var(--marino); display: grid; place-items: center; border: 2px solid var(--borde); }
+.boton-icono:disabled { opacity: 0.4; }
+.gastado { margin-left: auto; font: 700 12px var(--texto); color: var(--gris-oscuro); }
+.aviso-colocar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; padding: 8px 10px; border-radius: 12px; background: #f5fbd9; font: 700 13px var(--texto); color: var(--marino); }
+.aviso-colocar.mal { background: #ffe3ea; color: var(--rosa-oscuro); }
+.seleccion-mueble { display: flex; align-items: center; gap: 10px; }
+.seleccion-mueble img { width: 64px; height: 64px; }
+.seleccion-mueble small { display: block; font: 700 12px var(--texto); color: var(--gris-medio); }
+.colores { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.colores .color { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--blanco); box-shadow: 0 0 0 2px var(--borde); }
+.colores .color.activo { box-shadow: 0 0 0 3px var(--azul); }
+.colores.grandes .color { width: 42px; height: 42px; }
+.acciones-mueble, .fila-botones { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.acciones-mueble .boton, .fila-botones .boton, .acciones-ficha .boton { width: auto; flex: 1 1 auto; padding: 10px 12px; font-size: 15px; margin: 0; }
+.boton.rosa { background: linear-gradient(#ff4d7c, var(--rosa)); color: var(--blanco); box-shadow: 0 5px 0 var(--rosa-oscuro), 0 10px 20px rgba(6,30,92,0.3); }
+.lista-reformas { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 10px; }
+.tarjeta-reforma { display: grid; gap: 2px; text-align: left; background: var(--blanco); border: 2px solid var(--borde); border-radius: 14px; padding: 10px; }
+.tarjeta-reforma b { font: 600 15px var(--display); color: var(--marino); }
+.tarjeta-reforma small { font: 700 12px var(--texto); color: var(--rosa-oscuro); }
+.tarjeta-reforma.hecha small { color: var(--lima-oscuro); }
+.tarjeta-reforma .herramienta { font: 700 11px var(--texto); color: var(--gris-medio); }
+.progreso-reforma p { font: 600 14px/1.45 var(--texto); color: var(--gris-oscuro); margin: 4px 0 8px; }
+.exito { color: var(--lima-oscuro) !important; font-weight: 800 !important; }
+.lista-simple { display: grid; gap: 8px; }
+.lista-inventario { margin: 0; padding-left: 18px; font: 600 14px/1.6 var(--texto); }
+.taller { position: absolute; inset: calc(70px + var(--arriba)) 8px calc(8px + var(--abajo)); background: var(--crema); border-radius: 22px; border: 4px solid var(--blanco); box-shadow: 0 10px 40px rgba(6,30,92,0.55); display: flex; flex-direction: column; overflow: hidden; z-index: 4; animation: emerger 0.28s var(--rebote); max-width: 860px; margin: 0 auto; }
+.taller .hoja-cabeza { margin: 0; border-radius: 0; }
+.taller-cuerpo { flex: 1; min-height: 0; display: grid; place-items: center; padding: 8px; overflow: auto; }
+.taller-lienzo { width: 100%; max-height: 100%; height: auto; touch-action: none; border-radius: 12px; background: #fff; box-shadow: 0 2px 10px rgba(6,30,92,0.18); cursor: crosshair; }
+.taller-pie { padding: 8px 12px 12px; font: 600 14px/1.4 var(--texto); color: var(--gris-oscuro); }
+.taller-pie p { margin: 4px 0 8px; }
+.medidor { display: inline-block; width: 90px; height: 12px; border-radius: 6px; background: var(--gris-claro); overflow: hidden; border: 2px solid var(--borde); }
+.medidor i { display: block; height: 100%; }
+.montaje-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.manual { margin: 4px 0; padding-left: 0; list-style: none; font: 600 12px/1.5 var(--texto); }
+.piezas { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.pieza { background: #E9D7B8; border: 2px solid #8A5A35; border-radius: 8px; padding: 6px 8px; font: 700 12px var(--texto); color: #3E2716; }
+.pieza:disabled { opacity: 0.5; }
+.muestra { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 3px solid; vertical-align: middle; }
+.campo { display: flex; align-items: center; gap: 8px; font: 700 14px var(--texto); margin: 8px 0; }
+.campo input, .campo-precio { padding: 8px 10px; border-radius: 10px; border: 2px solid var(--borde); font: 700 15px var(--texto); width: 120px; }
+/* Hogar Linense (app) */
+.movil.hogar .hogar-cabecera { background: linear-gradient(var(--azul-claro), var(--azul)); }
+.marca-app { display: flex; align-items: center; gap: 8px; font: 600 20px var(--display); }
+.filtros { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-bottom: 10px; }
+.filtro { display: grid; gap: 2px; font: 700 11px var(--texto); color: var(--gris-medio); }
+.filtro select { padding: 7px; border-radius: 10px; border: 2px solid var(--borde); font: 700 13px var(--texto); background: var(--blanco); }
+.tarjeta-vivienda { width: 100%; text-align: left; }
+.precio-fila { display: flex; align-items: center; gap: 8px; }
+.precio { font: 600 20px var(--display); color: var(--azul); }
+.titular-ficha { font: 600 24px/1.1 var(--display); color: var(--marino); margin: 8px 0; }
+.datos-ficha { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 8px 0 12px; }
+.datos-ficha div { background: var(--blanco); border-radius: 12px; padding: 8px; display: grid; }
+.datos-ficha small { font: 700 10px var(--texto); color: var(--gris-medio); letter-spacing: 0.08em; }
+.datos-ficha b { font: 600 17px var(--display); color: var(--marino); }
+.plano-ficha { display: flex; flex-wrap: wrap; gap: 3px; background: var(--marino); padding: 3px; border-radius: 10px; position: relative; }
+.plano-ficha > div { min-width: 70px; min-height: 56px; border-radius: 6px; padding: 6px; display: grid; align-content: center; }
+.plano-ficha b { font: 600 12px var(--display); color: var(--marino); }
+.plano-ficha small { font: 700 11px var(--texto); color: var(--gris-oscuro); }
+.plano-ficha .total { position: absolute; right: 8px; bottom: -20px; color: var(--gris-medio); font: 700 11px var(--texto); }
+.app-hogar h4 { font: 600 15px var(--display); color: var(--azul); margin: 18px 0 4px; }
+.app-hogar p { font: 600 14px/1.45 var(--texto); color: var(--gris-oscuro); margin: 0 0 6px; }
+.acciones-ficha { display: grid; gap: 8px; margin-top: 12px; }
+.acciones-ficha .boton { width: 100%; }
+.llaves { margin-top: 14px; background: var(--blanco); border-radius: 14px; padding: 4px 12px 10px; }
+.fila-llave { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 6px 0; border-bottom: 1px solid var(--borde); font: 700 13px var(--texto); }
+.fila-llave span { flex: 1; }
+.aviso-edificio { font: 700 13px var(--texto); margin-bottom: 8px; }
+.rotulo3d.pin-hogar { background: var(--azul); color: var(--blanco); font: 600 11px var(--display); padding: 3px 8px; border-radius: 10px 10px 10px 2px; border: 2px solid var(--blanco); box-shadow: 0 3px 8px rgba(6,30,92,0.35); }
+.rotulo3d.pin-hogar.tuya { background: var(--lima); color: var(--negro); }
+@media (max-width: 560px) {
+  .interior-cabeza { top: calc(70px + var(--arriba)); }
+  .interior-estado { grid-template-columns: auto 50px auto; }
+  .datos-ficha { grid-template-columns: repeat(2, 1fr); }
+  .montaje-cols { grid-template-columns: 1fr; }
+}

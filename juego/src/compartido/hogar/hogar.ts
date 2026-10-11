@@ -1,5 +1,5 @@
 import { definirModulo, type Extra } from "../modulos.ts";
-import { ErrorJuego, type Contexto, type Servicio } from "../servicio.ts";
+import { ErrorJuego, nivelDe, type Contexto, type Servicio } from "../servicio.ts";
 import { CATEGORIAS, MUEBLES, PINTURAS, PLANTAS_JARDIN, precioCaja, precioReventa, PRECIO_PINTURA, SUELOS } from "./catalogo.ts";
 import { azar, hashTexto, mapa } from "./datos.ts";
 import { generarPlano, habitacionEn, pasoLibre, type Plano, type TipoVivienda } from "./plano.ts";
@@ -385,6 +385,7 @@ definirModulo((s: Servicio) => {
   const ganarXP = (jugador: string, n: number) => {
     const j = s.jugador(jugador);
     j.xp += n;
+    j.nivel = nivelDe(j.xp);
     bd.escribir("jugadores", jugador, j);
     s.avisar(jugador, { t: "xp", xp: j.xp, ganada: n });
   };
@@ -713,7 +714,11 @@ definirModulo((s: Servicio) => {
         else if (a.comprar) s.mover(jugador, -def.precio, "muebles", `${def.nombre} (colocado)`);
         else fallo("inventario", "No tienes ese mueble. Cómpralo en la tienda.");
         doc.muebles.push(m);
-        if (def.categoria === "Decoración" || def.categoria === "Iluminación" || def.categoria === "Patio") doc.hechas.decoracion = (doc.hechas.decoracion ?? 0) + 1;
+        if (def.categoria === "Decoración" || def.categoria === "Iluminación" || def.categoria === "Patio") {
+          // Decoración libre: XP por los primeros adornos de cada casa.
+          doc.hechas.decoracion = (doc.hechas.decoracion ?? 0) + 1;
+          if (doc.hechas.decoracion <= 12) ganarXP(jugador, 2);
+        }
         return `colocar:${m.uid}`;
       });
     },

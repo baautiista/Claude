@@ -13,6 +13,7 @@ import { h, html, esc } from "./ui/dom";
 import { abrirBancal, abrirBarca, abrirCocina, abrirPuesto, accionesLugar, tablon, type Accion } from "./ui/lugares";
 import { abrirMovil } from "./ui/movil";
 import { abrirVecinos } from "./ui/vecinos";
+import { entrarEnVivienda, Vivienda } from "./interior/vivienda";
 import { abrirDiario, abrirMenu, abrirMochila } from "./ui/paneles";
 import { retrato, retratoNarrador } from "./ui/retrato";
 import { sonido } from "./ui/sonido";
@@ -39,6 +40,10 @@ export class Juego {
   vivo: (() => void) | null = null;
   private revisando = false;
   private segundos = 0;
+
+  get raizJuego() {
+    return this.raiz;
+  }
 
   constructor(public e: Estado, private raiz: HTMLElement, previo?: { mundo: Mundo; canvas: HTMLElement; rotulos: HTMLElement }) {
     const canvas = previo?.canvas ?? h("canvas", { id: "mapa", "aria-label": "La Línea en 3D" });
@@ -72,6 +77,8 @@ export class Juego {
     this.arrancarReloj();
     this.refrescar();
     if (import.meta.env.DEV || location.search.includes("depurar")) Object.assign(window, { __mi: this, __con: con });
+    // Recuperación: si se cerró el juego (o se cayó la conexión) dentro de una casa, se vuelve a ella.
+    if (e.flags.dentro) setTimeout(() => void entrarEnVivienda(this, String(e.flags.dentro)).then((v) => !v && delete this.e.flags.dentro), 600);
   }
 
   /* ── Multijugador ─────────────────────────────────────────────────── */
@@ -86,7 +93,10 @@ export class Juego {
     conectarEconomia((t) => this.aviso(t), () => this.refrescarHud());
     void sincronizarSaldo(this.e);
     const on = (ev: string, fn: (m: Record<string, unknown>) => void) => this.quitarOyentes.push(con.on(ev, fn));
-    on("jugadores", () => this.mundo.vecinosConectados(con.vecinos()));
+    on("jugadores", () => {
+      if (Vivienda.actual) Vivienda.actual.escena.remotosEn(con.vecinos());
+      else this.mundo.vecinosConectados(con.vecinos());
+    });
     on("saldo", (m) => {
       this.e.dinero = Number(m.dinero);
       this.refrescarHud();
@@ -118,6 +128,11 @@ export class Juego {
     on("vendido", (m) => this.aviso(`Has vendido <b>${m.cantidad} ${esc(String(m.objeto))}</b> en el mercadillo por ${m.precio} €.`));
     on("teletransporte", (m) => {
       this.cerrar();
+      if (String(m.escena).startsWith("casa:")) {
+        void entrarEnVivienda(this, String(m.escena).slice(5)).then((v) => v && this.aviso("Has entrado en casa de tu amigo."));
+        return;
+      }
+      if (Vivienda.actual) void Vivienda.actual.salir(true);
       this.e.nodo = nodoCercano([Number(m.x), Number(m.y)]);
       this.mundo.colocarEn(Number(m.x), Number(m.y));
       this.emitirEscena?.(String(m.escena));
@@ -151,9 +166,11 @@ export class Juego {
 
   /** Envía mi posición (10 veces por segundo como mucho) y pinta el contador de vecinos. */
   refrescarVecinos() {
-    const [x, y] = this.mundo.posicionJugador;
+    const v = Vivienda.actual;
+    const [x, y] = v ? v.posicion : this.mundo.posicionJugador;
+    const anim = v ? (v.escena.andando ? "andar" : "quieto") : this.mundo.enBus ? "bus" : this.mundo.andando ? "andar" : "quieto";
     const emote = this.emote && Date.now() - this.emote.t < 4000 ? this.emote : null;
-    con.mover(x, y, this.mundo.rotJugador, this.mundo.enBus ? "bus" : this.mundo.andando ? "andar" : "quieto", { nombre: this.e.nombre, ropa: this.e.ropa, piel: this.e.piel, nivel: nivel(this.e), gesto: emote?.e, gestoT: emote?.t });
+    con.mover(x, y, v ? v.escena.rot : this.mundo.rotJugador, anim, { nombre: this.e.nombre, ropa: this.e.ropa, piel: this.e.piel, nivel: nivel(this.e), gesto: emote?.e, gestoT: emote?.t });
     this.botonVecinos.querySelector(".punto")?.remove();
     const n = this.sinLeer || con.remotos.length;
     if (n) this.botonVecinos.querySelector(".bola")!.append(h("span", { class: `punto${this.sinLeer ? " rosa" : ""}` }, n));
@@ -279,6 +296,7 @@ export class Juego {
       boton("mochila", "Mochila", () => abrirMochila(this)),
       boton("diario", "Diario", () => abrirDiario(this)),
       boton("bus", "Autobús", () => this.abrirBus(), true),
+      boton("casa", "Hogar", () => void import("./ui/hogar").then((m) => m.abrirHogar(this))),
       this.botonMovil,
       this.botonVecinos,
     );
@@ -383,6 +401,9 @@ export class Juego {
         fila(f.comercio ? "tienda" : "edificio", "Uso", f.comercio ? "Viviendas con comercio" : f.tipo),
       ),
       this.boton({ icono: html(iconoJuego("ir", 26)), titulo: "Ir hasta aquí", sub: `Andando por ${f.calle || "las calles"}`, fn: () => this.irAPunto(f.punto) }),
+      /vivienda|casa/i.test(f.tipo) || f.comercio || f.plantas > 1
+        ? this.boton({ icono: html(iconoJuego("edificio", 26)), titulo: "Viviendas en este edificio", sub: "Hogar Linense: precios, planos y visitas", fn: () => void import("./ui/hogar").then((m) => m.abrirHogar(this, { edificio: f.idx })) })
+        : null,
     ]);
     void panel;
     // Sin repintado, pero el mapa sigue respondiendo para tocar otro edificio.

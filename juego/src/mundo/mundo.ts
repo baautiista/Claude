@@ -66,6 +66,8 @@ export interface FichaEdificio {
   calle: string;
   barrio: string;
   comercio: boolean;
+  /** Índice del edificio en linea.json (para las viviendas). */
+  idx: number;
   /** Punto del mapa delante de su fachada (para ir andando). */
   punto: Punto;
 }
@@ -1821,6 +1823,16 @@ export class Mundo {
 
   /* ── Etiquetas HTML sobre el mundo ──────────────────────────────────── */
 
+  /** Chinchetas de Hogar Linense en el mapa (tus casas y las que se venden). */
+  private pinesHogar: Etiqueta[] = [];
+  pines(lista: { x: number; y: number; texto: string; clase: string }[]) {
+    for (const p of this.pinesHogar) {
+      p.el.remove();
+      this.etiquetas.splice(this.etiquetas.indexOf(p), 1);
+    }
+    this.pinesHogar = lista.map((p) => this.etiqueta(`pin-hogar ${p.clase}`, p.texto, v3(p.x, p.y, 16)));
+  }
+
   private etiqueta(clase: string, texto: string, pos: THREE.Vector3): Etiqueta {
     const el = document.createElement("div");
     el.className = `rotulo3d ${clase}`;
@@ -2257,7 +2269,7 @@ export class Mundo {
       const d = (z.rotulo[0] - b.x) ** 2 + (z.rotulo[1] - b.y) ** 2;
       if (d < dB) (dB = d), (barrio = z.nombre);
     }
-    return { tipo: NOMBRE_ESTILO[b.estilo] ?? "Edificio", plantas: b.pl, calle, barrio, comercio: b.tienda, punto };
+    return { tipo: NOMBRE_ESTILO[b.estilo] ?? "Edificio", plantas: b.pl, calle, barrio, comercio: b.tienda, punto, idx: b.idx };
   }
 
   /* ── Sincronizar con la partida ─────────────────────────────────────── */
@@ -2329,8 +2341,12 @@ export class Mundo {
 
   private msFotograma = 16;
   private ultimoDibujo = 0;
+  /** Dentro de una vivienda la ciudad no se dibuja (el interior tiene su lienzo). */
+  pausado = false;
+
   private fotograma() {
     const crudo = this.reloj.getDelta();
+    if (this.pausado) return;
     this.msFotograma = this.msFotograma * 0.9 + crudo * 1000 * 0.1;
     const dt = Math.min(0.12, crudo);
     const t = this.reloj.elapsedTime;

@@ -64,6 +64,7 @@ export function accionesLugar(j: Juego, lugar: LugarId): Accion[] {
   switch (lugar) {
     case "casa":
       return e.paso < 1 ? [] : [
+        { icono: "casa", titulo: "Entrar en casa", sub: "Tu vivienda en 3D: muebles, reformas y visitas", fn: () => void import("../interior/vivienda").then((m) => m.entrarEnCasa(j)) },
         { icono: "bar", titulo: "La cocina de la abuela", sub: e.cocinaListos.length ? `${e.cocinaListos.length} listos para recoger` : e.cocina.length ? `Cocinando: ${e.cocina.length} en cola` : "Prepara platos con lo que tengas", fn: () => abrirCocina(j) },
         horaDelDia(e) >= 18 || horaDelDia(e) < 2
           ? { icono: "casa", titulo: "Dormir", sub: "Hasta mañana a las 8:00", fn: async () => { j.cerrar(); await j.dormir(); } }
