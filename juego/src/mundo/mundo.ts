@@ -51,6 +51,18 @@ export type Tocable =
   | { tipo: "solar"; i: number }
   | { tipo: "zona"; zona: Zona };
 
+/** Dirección del sol: alto y del sureste, para que las fachadas que ve la cámara tengan luz y sombra. */
+const DIR_SOL = new THREE.Vector3(0.5, 1, 0.62).normalize();
+
+const C_DIA = new THREE.Color("#BFE0F7");
+const C_NOCHE = new THREE.Color("#14224A");
+const C_OCASO = new THREE.Color("#F4B58C");
+const C_SOL = new THREE.Color("#FFF2DE");
+const C_SOL_NOCHE = new THREE.Color("#8EA6FF");
+const C_SOL_OCASO = new THREE.Color("#FFB070");
+const C_HEMI = new THREE.Color("#DCEBFF");
+const C_HEMI_NOCHE = new THREE.Color("#3B4F8C");
+
 const CX = 1300;
 const CY = 1500;
 const SUELO = 3;
@@ -89,6 +101,20 @@ interface Etiqueta {
   el: HTMLElement;
   pos: THREE.Vector3;
 }
+
+/** Rectángulos ocupados por instalaciones deportivas (sin árboles encima): [x, y, medio ancho, medio fondo, ángulo]. */
+const OCUPADO_DEPORTE: [number, number, number, number, number][] = [
+  ...DATOS.deportes.pistas.map(([x, y, w, d, a]) => [x, y, w / 2 + 1.5, d / 2 + 1.5, a] as [number, number, number, number, number]),
+  ...(DATOS.deportes.estadio ? [[DATOS.deportes.estadio[0], DATOS.deportes.estadio[1], DATOS.deportes.estadio[2] / 2 + 3, DATOS.deportes.estadio[3] / 2 + 3, DATOS.deportes.estadio[4]] as [number, number, number, number, number]] : []),
+  [1610, 2275.5, 39, 14, 0],
+  [1471, 2326, 16, 36, 0],
+];
+const enDeporte = (p: Punto) =>
+  OCUPADO_DEPORTE.some(([x, y, hw, hd, a]) => {
+    const dx = p[0] - x;
+    const dy = p[1] - y;
+    return Math.abs(dx * Math.cos(a) + dy * Math.sin(a)) < hw && Math.abs(-dx * Math.sin(a) + dy * Math.cos(a)) < hd;
+  });
 
 function azar(semilla: number) {
   let s = semilla;
@@ -130,8 +156,8 @@ export class Mundo {
   /** Pantalla de inicio: la cámara sobrevuela la ciudad. */
   modoDemo = false;
   private demoAng = 0;
-  private sol = new THREE.DirectionalLight("#FFF1D6", 2.6);
-  private cielo = new THREE.HemisphereLight("#E3F1FF", "#7DB24A", 1.2);
+  private sol = new THREE.DirectionalLight("#FFF2DE", 2.5);
+  private cielo = new THREE.HemisphereLight("#DCEBFF", "#B9A98A", 1.05);
   private mar!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>;
   private marBase!: Float32Array;
   private objetivoCam = new THREE.Vector3();
@@ -189,9 +215,9 @@ export class Mundo {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.1;
-    this.escena.background = T.cielo();
-    this.escena.fog = new THREE.Fog("#F1E4CF", 900, 3200);
+    this.renderer.toneMappingExposure = 1;
+    this.escena.background = new THREE.Color("#BFE0F7");
+    this.escena.fog = new THREE.Fog("#BFE0F7", 900, 3200);
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.escena, this.camara));
     this.tiltH = new ShaderPass(HorizontalTiltShiftShader);
@@ -204,12 +230,12 @@ export class Mundo {
 
     this.sol.castShadow = true;
     this.sol.shadow.mapSize.set(2048, 2048);
-    this.sol.shadow.bias = -0.0005;
-    this.sol.shadow.normalBias = 0.4;
+    this.sol.shadow.bias = -0.0004;
+    this.sol.shadow.normalBias = 0.25;
     this.escena.add(this.sol, this.sol.target, this.cielo);
 
     // Lugares con modelo propio: no se dibuja el edificio real que hay debajo.
-    this.reservas.push([...CASA, 9], [...MERCADO, 18], [...POSICION.bar, 6], [...POSICION.redaccion, 7], [...ATUNARA, 12], [...POSICION.santaBarbara, 14], [...POSICION.estadio, 45], [...POSICION.estacion, 12], [...POSICION.frontera, 12]);
+    this.reservas.push([...CASA, 9], [...MERCADO, 18], [...POSICION.bar, 6], [...POSICION.redaccion, 7], [...ATUNARA, 12], [...POSICION.santaBarbara, 30], [...(DATOS.deportes.estadio ?? POSICION.estadio).slice(0, 2) as unknown as Punto, 52], [...POSICION.estacion, 12], [...POSICION.frontera, 12]);
     const santuario = DATOS.poi["Santuario de la Inmaculada Concepción"];
     this.reservas.push([...santuario, 16]);
     for (const b of BANCALES) this.reservas.push([...b, 9]);
@@ -220,6 +246,7 @@ export class Mundo {
     this.construirCalles();
     this.construirEdificios();
     this.construirVegetacion();
+    this.construirDeportes();
     this.construirAtunara();
     this.construirLugares();
     this.construirZonas();
@@ -278,7 +305,11 @@ export class Mundo {
       g.translate((p[0] + q[0]) / 2 - CX, 0.7, (p[1] + q[1]) / 2 - CY);
       espuma.push(g.index ? g.toNonIndexed() : g);
     }
-    if (espuma.length) this.escena.add(new THREE.Mesh(mergeGeometries(espuma), M.mat("#FFFFFF", { transparent: true, opacity: 0.6 })));
+    if (espuma.length) {
+      const m = new THREE.Mesh(mergeGeometries(espuma), M.mat("#FFFFFF", { transparent: true, opacity: 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4 }));
+      m.renderOrder = 5;
+      this.escena.add(m);
+    }
 
     this.escena.add(this.penon());
     // Aeropuerto: la pista cruza el istmo y entra en la bahía.
@@ -340,6 +371,20 @@ export class Mundo {
     return m;
   }
 
+  /**
+   * Material de capa de suelo: no escribe profundidad y se adelanta un poco, así
+   * las capas casi coplanarias (barrios, parques, calles, rayas) no parpadean.
+   * El orden entre capas lo decide renderOrder.
+   */
+  private capaSuelo(m: THREE.Material) {
+    const c = m.clone();
+    c.depthWrite = false;
+    c.polygonOffset = true;
+    c.polygonOffsetFactor = -2;
+    c.polygonOffsetUnits = -4;
+    return c;
+  }
+
   private lamina(anillos: readonly (readonly (readonly Punto[])[])[], material: THREE.Material, alto: number, escalaUV = 1 / 30) {
     const geos = anillos.map((a) => {
       const g = new THREE.ShapeGeometry(this.forma(a));
@@ -348,8 +393,9 @@ export class Mundo {
     });
     const geo = mergeGeometries(geos);
     escalarUV(geo, escalaUV);
-    (material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
-    const m = new THREE.Mesh(geo, material);
+    const mat = this.capaSuelo(material);
+    mat.side = THREE.DoubleSide;
+    const m = new THREE.Mesh(geo, mat);
     m.position.y = alto;
     m.receiveShadow = true;
     return m;
@@ -400,15 +446,21 @@ export class Mundo {
 
   private construirCapas() {
     const c = DATOS.capas;
+    let orden = 10;
     const poner = (nombre: string, material: THREE.Material, alto: number, uv = 1 / 30) => {
-      if (c[nombre]?.length) this.escena.add(this.lamina(c[nombre], material, SUELO + alto, uv));
+      orden++;
+      if (!c[nombre]?.length) return;
+      const m = this.lamina(c[nombre], material, SUELO + alto, uv);
+      m.renderOrder = orden;
+      this.escena.add(m);
     };
     poner("residencial", M.matTex(T.acera(), 1, 1, "#F2E9D8"), 0.04, 1 / 14);
     poner("industrial", M.matTex(T.asfalto(), 1, 1, "#C9CDD4"), 0.05, 1 / 20);
+    poner("deportivo", M.matTex(T.acera(), 1, 1, "#DCDFE4"), 0.055, 1 / 14);
     poner("comercial", M.matTex(T.acera(), 1, 1, "#EADCD2"), 0.06, 1 / 14);
     poner("matorral", M.matTex(T.cesped(), 1, 1, "#B9C77F"), 0.07);
     poner("cesped", M.matTex(T.cesped(), 1, 1, "#B9EC86"), 0.08);
-    poner("parque", M.matTex(T.cesped(), 1, 1, "#A8E57A"), 0.09);
+    poner("parque", M.matTex(T.cesped(), 1, 1, "#9FD372"), 0.09);
     poner("bosque", M.matTex(T.cesped(), 1, 1, "#7FB65A"), 0.09);
     poner("huerto", M.matTex(T.tierraArada(), 1, 1), 0.1, 1 / 10);
     poner("solar", M.mat("#D3B387"), 0.1);
@@ -462,6 +514,7 @@ export class Mundo {
       pista: M.mat("#C9A77A"),
       raya: M.mat("#FFFFFF"),
     };
+    const ordenCalle: Record<string, number> = { acera: 20, asfalto: 21, peatonal: 22, sendero: 23, pista: 24, raya: 25 };
     for (const [k, geos] of Object.entries(grupos)) {
       if (!geos.length) continue;
       const geo = mergeGeometries(geos.map((g) => (g.index ? g.toNonIndexed() : g)).map((g) => {
@@ -469,7 +522,8 @@ export class Mundo {
         if (!g.attributes.normal) g.computeVertexNormals();
         return g;
       }));
-      const m = new THREE.Mesh(geo, mats[k]);
+      const m = new THREE.Mesh(geo, this.capaSuelo(mats[k]));
+      m.renderOrder = ordenCalle[k];
       m.receiveShadow = true;
       this.escena.add(m);
     }
@@ -531,7 +585,7 @@ export class Mundo {
           for (const lado of [-1, 1]) {
             const off = (ANCHO_VIA[t.clase] / 2 + 3) * lado;
             const p: Punto = [a[0] + ((b[0] - a[0]) * s) / l + nx * off, a[1] + ((b[1] - a[1]) * s) / l + ny * off];
-            if (arbolado.length < 2600 && libre(p)) arbolado.push(p);
+            if (arbolado.length < 2600 && libre(p) && !enDeporte(p)) arbolado.push(p);
           }
         }
       }
@@ -552,12 +606,13 @@ export class Mundo {
         cebras.push({ p: [c[0] + ((q[0] - c[0]) * dist) / l, c[1] + ((q[1] - c[1]) * dist) / l], rot: Math.atan2(q[0] - c[0], q[1] - c[1]), w: ANCHO_VIA[t.clase] });
       }
     }
-    const rayasCebra = new THREE.InstancedMesh(new THREE.BoxGeometry(0.7, 0.06, 3), M.mat("#FFFFFF"), cebras.length * 6);
+    const rayasCebra = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.7, 3).rotateX(-Math.PI / 2), this.capaSuelo(M.mat("#FFFFFF")), cebras.length * 6);
+    rayasCebra.renderOrder = 26;
     const ob = new THREE.Object3D();
     let k = 0;
     for (const z of cebras) {
       for (let j = 0; j < 6; j++) {
-        ob.position.copy(p3(z.p, SUELO + 0.42));
+        ob.position.copy(p3(z.p, SUELO + 0.4));
         ob.rotation.set(0, z.rot + Math.PI / 2, 0);
         ob.translateX(0);
         ob.translateZ(0);
@@ -610,11 +665,11 @@ export class Mundo {
       let estilo: number;
       if (tipo === 0) estilo = r < 0.82 ? Math.floor(rand() * 3) : 3;
       else if (tipo === 1) estilo = pl >= 7 && r < 0.3 ? 6 : r < 0.62 ? 4 : r < 0.85 ? 5 : 4;
-      else estilo = ({ 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12 } as Record<number, number>)[tipo];
-      if (estilo === 10 && rand() < 0.4) estilo = 6;
+      else estilo = ({ 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12, 8: 13 } as Record<number, number>)[tipo] ?? 10;
+      if (estilo === 10 && rand() < 0.4 && tipo !== 8) estilo = 6;
       if (estilo >= 7) pl = estilo === 10 || estilo === 9 ? 2 + Math.floor(rand() * 2) : 1;
-      const h = estilo === 7 ? 7 + rand() * 2 : estilo === 12 ? 3.2 : estilo === 11 ? 2.6 : estilo === 8 ? 10 : pl * 3.3 + 0.8;
-      const tienda = estilo <= 6 && cercaDeAvenida(x, y, Math.max(w, d) / 2 + 9);
+      const h = estilo === 13 ? 8 : estilo === 7 ? 7 + rand() * 2 : estilo === 12 ? 3.2 : estilo === 11 ? 2.6 : estilo === 8 ? 10 : pl * 3.3 + 0.8;
+      const tienda = estilo <= 6 && tipo !== 8 && cercaDeAvenida(x, y, Math.max(w, d) / 2 + 9);
       lista.push({ x, y, w, d, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda });
     }
     const o = new THREE.Object3D();
@@ -652,6 +707,7 @@ export class Mundo {
     instancias(lista.filter((b) => b.estilo === 10), M.matTex(T.fachadaPastel("#F4F1EA"), 1, 2));
     instancias(lista.filter((b) => b.estilo === 11), M.matTex(T.piedra(), 1, 1, "#E8D7B8"), () => 0);
     instancias(lista.filter((b) => b.estilo === 12), M.mat("#F7F4EC"), () => 0);
+    instancias(lista.filter((b) => b.estilo === 13), M.matTex(T.fachadaPabellon(), 3, 1), () => 0);
     // Plantas bajas comerciales con toldo en las calles principales.
     const tiendas = lista.filter((b) => b.tienda);
     instancias(tiendas, M.matTex(T.escaparate(), 2, 1), () => 0);
@@ -735,7 +791,7 @@ export class Mundo {
     const frondosos: Punto[] = [];
     const pinos: Punto[] = [];
     const arbustos: Punto[] = [];
-    for (const [x, y, t] of DATOS.arboles) (t === 2 ? arbustos : t === 1 ? pinos : frondosos).push([x, y]);
+    for (const [x, y, t] of DATOS.arboles) if (!enDeporte([x, y])) (t === 2 ? arbustos : t === 1 ? pinos : frondosos).push([x, y]);
     this.bosque(frondosos, rand, false);
     this.bosque(pinos, rand, true);
     const bolas = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 2), M.mat("#FFFFFF"), Math.max(1, arbustos.length));
@@ -770,14 +826,14 @@ export class Mundo {
     }
   }
 
-  private bosque(puntos: Punto[], rand: () => number, pinos: boolean) {
+  private bosque(puntos: Punto[], rand: () => number, pinos: boolean, tonos?: string[]) {
     const n = puntos.length;
     if (!n) return;
     const o = new THREE.Object3D();
     const troncos = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.4, 0.6, 1, 6), M.mat("#7A4E2D"), n);
     const bolas = 4;
     const copas = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 2), M.mat("#FFFFFF"), n * bolas);
-    const verdes = (pinos ? ["#2F6B34", "#3A7A3B", "#285C2E"] : ["#5DB33C", "#8ED14F", "#3E9B45", "#2F8A3A", "#79C447"]).map((c) => new THREE.Color(c));
+    const verdes = (tonos ?? (pinos ? ["#2F6B34", "#3A7A3B", "#285C2E"] : ["#5DB33C", "#8ED14F", "#3E9B45", "#2F8A3A", "#79C447"])).map((c) => new THREE.Color(c));
     let k = 0;
     puntos.forEach((p, i) => {
       const esc = 0.7 + rand() * 0.5;
@@ -801,6 +857,274 @@ export class Mundo {
     this.instanciado(troncos);
     if (copas.instanceColor) copas.instanceColor.needsUpdate = true;
     this.instanciado(copas);
+  }
+
+  /* ── Zona deportiva: estadio, Ciudad Deportiva, Campos Puyol y parque ── */
+
+  private construirDeportes() {
+    const D = DATOS.deportes;
+    const o = new THREE.Object3D();
+    const caja = new THREE.BoxGeometry(1, 1, 1);
+    /** Matriz de una caja orientada como un rectángulo real (w en x local, d en z local). */
+    const rect = (x: number, y: number, w: number, d: number, ang: number, alto: number, h: number, dx = 0, dz = 0) => {
+      o.position.copy(v3(x, y, alto));
+      o.rotation.set(0, -ang, 0);
+      o.translateX(dx);
+      o.translateZ(dz);
+      o.scale.set(w, h, d);
+      o.updateMatrix();
+      return o.matrix.clone();
+    };
+    const lado = M.mat("#C9CED6");
+    /** Losa con textura solo arriba (BoxGeometry: +x, −x, +y, −y, +z, −z). */
+    const losa = (tex: THREE.Material) => [lado, lado, tex, lado, lado, lado];
+    const poner = (matrices: THREE.Matrix4[], material: THREE.Material | THREE.Material[], sombra = true) => {
+      if (!matrices.length) return;
+      const im = new THREE.InstancedMesh(caja, material, matrices.length);
+      matrices.forEach((m, i) => im.setMatrixAt(i, m));
+      im.castShadow = sombra;
+      im.receiveShadow = true;
+      im.instanceMatrix.needsUpdate = true;
+      this.escena.add(im);
+    };
+
+    // Pistas reales con sus marcas y su valla.
+    const texDe: Record<number, THREE.Material> = {
+      0: M.matTex(T.campoFutbol("artificial")), 1: M.matTex(T.campoFutbol("tierra")), 2: M.matTex(T.pistaTenis()),
+      3: M.matTex(T.pistaPadel()), 4: M.matTex(T.pistaBaloncesto()), 5: M.matTex(T.pistaMulti()),
+      6: M.matTex(T.pistaAtletismo()), 7: M.matTex(T.arena(), 1, 1, "#EED9A6"),
+    };
+    const porTipo = new Map<number, THREE.Matrix4[]>();
+    const vallas = { cristal: [] as THREE.Matrix4[], malla: [] as THREE.Matrix4[], postes: [] as THREE.Matrix4[], torres: [] as THREE.Matrix4[] };
+    for (const [x, y, w0, d0, a0, tipo] of D.pistas) {
+      // Las texturas tienen el largo en vertical: el lado largo va en z.
+      const [w, d, ang] = w0 > d0 ? [d0, w0, a0 + Math.PI / 2] : [w0, d0, a0];
+      if (!porTipo.has(tipo)) porTipo.set(tipo, []);
+      porTipo.get(tipo)!.push(rect(x, y, w, d, ang, SUELO + 0.2, 0.36));
+      if (tipo === 3) {
+        // Pádel: paredes de cristal y fondo de muro.
+        for (const s of [-1, 1]) {
+          vallas.cristal.push(rect(x, y, 0.15, d, ang, SUELO + 1.6, 2.4, (s * w) / 2, 0));
+          vallas.malla.push(rect(x, y, w, 0.3, ang, SUELO + 1.6, 2.4, 0, (s * d) / 2));
+        }
+      } else if (tipo === 2 || tipo === 4 || tipo === 5 || tipo === 0) {
+        const alto = tipo === 0 ? 3 : 2;
+        for (const s of [-1, 1]) {
+          vallas.malla.push(rect(x, y, 0.12, d + 1, ang, SUELO + 0.4 + alto / 2, alto, (s * (w + 1)) / 2, 0));
+          vallas.malla.push(rect(x, y, w + 1, 0.12, ang, SUELO + 0.4 + alto / 2, alto, 0, (s * (d + 1)) / 2));
+        }
+        if (tipo === 0 && w * d > 600) {
+          for (const sx of [-1, 1]) for (const sz of [-1, 0, 1]) vallas.torres.push(rect(x, y, 0.5, 14, ang, SUELO + 7, 0.5, (sx * (w + 2)) / 2, (sz * d) / 2.6));
+        }
+      }
+    }
+    for (const [tipo, ms] of porTipo) poner(ms, losa(texDe[tipo]), false);
+    poner(vallas.cristal, M.mat("#CFE8F5", { transparent: true, opacity: 0.35, roughness: 0.1 }), false);
+    poner(vallas.malla, M.mat("#2F5B3A", { transparent: true, opacity: 0.45 }), false);
+    poner(vallas.torres, M.mat("#D8DCE2"));
+
+    // Gradas sueltas (campos de fútbol): tres escalones.
+    const gradas: THREE.Matrix4[] = [];
+    for (const [x, y, w, d, ang] of D.gradas) {
+      const [ww, dd, aa] = w > d ? [d, w, ang + Math.PI / 2] : [w, d, ang];
+      for (let k = 0; k < 3; k++) gradas.push(rect(x, y, ww / 3, dd, aa, SUELO + 0.6 + k * 0.6, 1.2 + k * 1.2, -ww / 3 + (k * ww) / 3, 0));
+    }
+    poner(gradas, M.matTex(T.asientos(), 1, 1));
+
+    // Estadio Municipal Ciudad de La Línea.
+    if (D.estadio) this.estadioReal(D.estadio);
+
+    // Aparcamiento del estadio (entre la Av. del Ejército y la grada norte), con coches.
+    const [px0, px1, py0, py1] = [1572, 1648, 2262, 2289];
+    const ap = new THREE.Mesh(caja, losa(M.matTex(T.aparcamiento(), (px1 - px0) / 10, (py1 - py0) / 12)));
+    ap.position.copy(v3((px0 + px1) / 2, (py0 + py1) / 2, SUELO + 0.17));
+    ap.scale.set(px1 - px0, 0.3, py1 - py0);
+    ap.receiveShadow = true;
+    this.escena.add(ap);
+    const rand = azar(404);
+    const aparcados: THREE.Matrix4[] = [];
+    const colores: THREE.Color[] = [];
+    const paleta = ["#E8423C", "#FFFFFF", "#2F6DB5", "#F2C230", "#2B2D31", "#9AA4B2", "#FFFFFF", "#9AA4B2"].map((c) => new THREE.Color(c));
+    for (let fila = 0; fila < (py1 - py0) / 6; fila++) {
+      for (let x = px0 + 1; x < px1 - 1; x += 1.25) {
+        if (rand() < 0.45) continue;
+        o.position.copy(v3(x, py0 + 1.5 + fila * 6 + (fila % 2) * 2.4, SUELO + 0.9));
+        o.rotation.set(0, 0, 0);
+        o.scale.set(0.95, 1, 1);
+        o.updateMatrix();
+        aparcados.push(o.matrix.clone());
+        colores.push(paleta[Math.floor(rand() * paleta.length)]);
+      }
+    }
+    const coches = new THREE.InstancedMesh(new RoundedBoxGeometry(1.1, 0.75, 2.2, 2, 0.25), M.mat("#FFFFFF", { roughness: 0.35, metalness: 0.2 }), aparcados.length);
+    aparcados.forEach((m, i) => {
+      coches.setMatrixAt(i, m);
+      coches.setColorAt(i, colores[i]);
+    });
+    coches.castShadow = true;
+    this.escena.add(coches);
+
+    // Parque Princesa Sofía: pinar y acebuches, claros de tierra y la pista de atletismo.
+    const PISTA_PARQUE: [number, number, number, number] = [1471, 2326, 26, 66];
+    const pista = new THREE.Mesh(caja, losa(M.matTex(T.pistaAtletismo())));
+    pista.position.copy(v3(PISTA_PARQUE[0], PISTA_PARQUE[1], SUELO + 0.2));
+    pista.scale.set(PISTA_PARQUE[2], 0.36, PISTA_PARQUE[3]);
+    pista.receiveShadow = true;
+    this.escena.add(pista);
+    const parque = (DATOS.capas.parque ?? []).map((a) => a[0]).find((r) => dentroPoli([1400, 2370], r));
+    if (parque) {
+      const xs = parque.map((p) => p[0]);
+      const ys = parque.map((p) => p[1]);
+      const sendas = TRAMOS.filter((t) => t.clase >= 4 && t.puntos.some((p) => p[0] > 1280 && p[0] < 1500 && p[1] > 2250 && p[1] < 2490)).flatMap((t) => t.puntos);
+      const cerca = (p: Punto, r: number) => sendas.some((q) => (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2 < r * r);
+      const enPista = (p: Punto) => Math.abs(p[0] - PISTA_PARQUE[0]) < PISTA_PARQUE[2] / 2 + 3 && Math.abs(p[1] - PISTA_PARQUE[1]) < PISTA_PARQUE[3] / 2 + 3;
+      const pinos: Punto[] = [];
+      const frondosos: Punto[] = [];
+      const claros: Punto[] = [];
+      for (let i = 0; i < 4000 && pinos.length + frondosos.length < 520; i++) {
+        const p: Punto = [Math.min(...xs) + rand() * (Math.max(...xs) - Math.min(...xs)), Math.min(...ys) + rand() * (Math.max(...ys) - Math.min(...ys))];
+        if (!dentroPoli(p, parque) || enPista(p) || enDeporte(p)) continue;
+        if (cerca(p, 3.5)) continue;
+        // Arboledas: más densas en manchas, como en la foto aérea.
+        const mancha = Math.sin(p[0] * 0.045) + Math.cos(p[1] * 0.038) + Math.sin((p[0] + p[1]) * 0.02);
+        if (mancha < -0.4) {
+          if (claros.length < 40 && rand() < 0.08) claros.push(p);
+          continue;
+        }
+        (rand() < 0.55 ? pinos : frondosos).push(p);
+      }
+      this.bosque(pinos, rand, true);
+      this.bosque(frondosos, rand, false, ["#3E7D35", "#4F8F3C", "#5E9B44", "#376F31"]);
+      const tierra = new THREE.InstancedMesh(new THREE.CircleGeometry(1, 18).rotateX(-Math.PI / 2), this.capaSuelo(M.mat("#CDBD92")), Math.max(1, claros.length));
+      claros.forEach((p, i) => {
+        o.position.copy(p3(p, SUELO + 0.15));
+        o.rotation.set(0, rand() * 3, 0);
+        o.scale.set(3 + rand() * 4, 1, 2.5 + rand() * 3.5);
+        o.updateMatrix();
+        tierra.setMatrixAt(i, o.matrix);
+      });
+      tierra.count = claros.length;
+      tierra.renderOrder = 30;
+      this.escena.add(tierra);
+    }
+
+    // Paseo marítimo de Levante: carril rojo y palmeras del lado de la playa.
+    const paseo: THREE.BufferGeometry[] = [];
+    const palmas: Punto[] = [];
+    for (const t of TRAMOS) {
+      if (t.nombre !== "Avenida Príncipe de Asturias" || t.puntos.every((p) => p[0] < 1600)) continue;
+      const off = ANCHO_VIA[t.clase] / 2 + 4;
+      const lado: Punto[] = t.puntos.map((p, i) => {
+        const a = t.puntos[Math.max(0, i - 1)];
+        const b = t.puntos[Math.min(t.puntos.length - 1, i + 1)];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        let nx = -(b[1] - a[1]) / l;
+        let ny = (b[0] - a[0]) / l;
+        if (nx < 0) (nx = -nx), (ny = -ny);
+        return [p[0] + nx * off, p[1] + ny * off];
+      });
+      paseo.push(cinta(lado, 6, 0.28));
+      for (let i = 1; i < lado.length; i++) {
+        const [a, b] = [lado[i - 1], lado[i]];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        for (let s = 4; s < l; s += 13) palmas.push([a[0] + ((b[0] - a[0]) * s) / l + 4, a[1] + ((b[1] - a[1]) * s) / l]);
+      }
+    }
+    if (paseo.length) {
+      const m = new THREE.Mesh(mergeGeometries(paseo), this.capaSuelo(M.mat("#DC7F6E")));
+      m.renderOrder = 40;
+      m.receiveShadow = true;
+      this.escena.add(m);
+    }
+    for (const p of palmas.slice(0, 60)) {
+      const pal = M.palmera(12);
+      pal.scale.setScalar(0.5);
+      pal.position.copy(p3(p));
+      this.escena.add(pal);
+    }
+  }
+
+  /** El estadio, ajustado a la huella real: césped, cuatro gradas, cubierta de preferencia, torres y focos. */
+  private estadioReal([x, y, w0, d0, a0]: [number, number, number, number, number]) {
+    // Ángulo entre −π/2 y π/2 para que la grada de preferencia quede al oeste.
+    let a = a0;
+    while (a > Math.PI / 2) a -= Math.PI;
+    while (a < -Math.PI / 2) a += Math.PI;
+    const [W, L] = w0 > d0 ? [d0, w0] : [w0, d0];
+    if (w0 > d0) a += Math.PI / 2;
+    const g = new THREE.Group();
+    const blanco = M.mat("#F3F4F6");
+    const gris = M.mat("#DADDE2");
+    const marino = M.mat("#14275E");
+    const caja = (w: number, h: number, d: number, m: THREE.Material | THREE.Material[], px: number, py: number, pz: number) => {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+      mesh.position.set(px, py, pz);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      g.add(mesh);
+      return mesh;
+    };
+    const pw = Math.min(35, W - 24);
+    const pl = Math.min(50, L - 26);
+    caja(W, 0.5, L, gris, 0, 0.25, 0);
+    caja(pw + 6, 0.3, pl + 6, M.mat("#3E9B45"), 0, 0.6, 0);
+    const lado = M.mat("#3E9B45");
+    caja(pw, 0.32, pl, [lado, lado, M.matTex(T.campoFutbol("natural")), lado, lado, lado], 0, 0.65, 0);
+    // Porterías.
+    for (const s of [-1, 1]) {
+      caja(3.6, 1.2, 0.15, blanco, 0, 1.4, s * (pl / 2 + 0.6));
+      caja(3.6, 0.15, 1, blanco, 0, 2, s * (pl / 2 + 1));
+    }
+    const asiento = M.matTex(T.asientos(), 2, 1);
+    /** Grada escalonada: n filas que suben desde el borde del césped hacia fuera. */
+    const grada = (largo: number, fondo: number, n: number, altoMax: number, colocar: (m: THREE.Mesh, k: number, paso: number) => void) => {
+      const paso = fondo / n;
+      for (let k = 0; k < n; k++) {
+        const h = 1.2 + ((altoMax - 1.2) * (k + 1)) / n;
+        const m = caja(largo, h, paso, [blanco, blanco, asiento, blanco, blanco, blanco], 0, h / 2 + 0.5, 0);
+        colocar(m, k, paso);
+      }
+    };
+    const fondoLat = (W - pw - 6) / 2 - 1;
+    const fondoFin = (L - pl - 6) / 2 - 1;
+    // Preferencia (oeste): más alta y con cubierta azul marino.
+    grada(pl + 4, fondoLat, 6, 11, (m, k, paso) => { m.rotation.y = Math.PI / 2; m.position.x = -(pw / 2 + 3.5 + paso * (k + 0.5)); });
+    // Tribuna (este) y fondos.
+    grada(pl + 4, fondoLat, 5, 8, (m, k, paso) => { m.rotation.y = Math.PI / 2; m.position.x = pw / 2 + 3.5 + paso * (k + 0.5); });
+    for (const s of [-1, 1]) grada(pw + 6, fondoFin, 4, 6.5, (m, k, paso) => { m.position.z = s * (pl / 2 + 3.5 + paso * (k + 0.5)); });
+    // Cubierta de preferencia con el rótulo del estadio.
+    const xCub = -(pw / 2 + 3.5 + fondoLat / 2);
+    caja(fondoLat + 4, 0.8, pl + 2, marino, xCub + 1, 16, 0).rotation.z = -0.06;
+    const rotulo = M.matTex(T.rotuloEstadio(), 1, 1);
+    caja(0.6, 2.6, pl + 2, [rotulo, marino, marino, marino, marino, marino], xCub + fondoLat / 2 + 3, 15, 0);
+    for (let z = -pl / 2; z <= pl / 2; z += pl / 4) caja(0.7, 16, 0.7, marino, xCub - fondoLat / 2, 8.5, z);
+    // Franja azul de la tribuna (este), como en la foto.
+    caja(0.4, 1.6, pl + 4, marino, pw / 2 + 3.2, 1.3, 0);
+    // Torres de las esquinas y focos.
+    const focos = M.mat("#FFF6D8", { emissive: "#FFE7A0", emissiveIntensity: 0.3 });
+    this.faroles.push(focos);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+      caja(7, 13, 7, blanco, sx * (W / 2 - 3.5), 7, sz * (L / 2 - 3.5));
+      caja(7.6, 0.8, 7.6, gris, sx * (W / 2 - 3.5), 13.8, sz * (L / 2 - 3.5));
+      const fx = sx * (W / 2 - 1);
+      const fz = sz * (L / 2 + 1);
+      caja(0.8, 30, 0.8, gris, fx, 15, fz);
+      const panel = caja(5, 3, 0.6, focos, fx, 30.5, fz);
+      panel.lookAt(new THREE.Vector3(0, 0, 0).add(g.position));
+      panel.rotation.set(-0.5, Math.atan2(-fx, -fz), 0, "YXZ");
+    }
+    // Jugadores entrenando.
+    const rand = azar(9);
+    for (let i = 0; i < 12; i++) {
+      const p = M.persona("#E8B796", i < 6 ? "#FFFFFF" : "#1F5EFF", "#2B1B12", 0.28);
+      p.position.set((rand() - 0.5) * pw * 0.8, 0.8, (rand() - 0.5) * pl * 0.8);
+      p.rotation.y = rand() * 6;
+      g.add(p);
+    }
+    g.position.copy(v3(x, y, SUELO));
+    g.rotation.y = -a;
+    this.hacerTocable(g, { tipo: "lugar", id: "estadio" });
+    this.escena.add(g);
   }
 
   /* ── La Atunara: el puerto pesquero real ────────────────────────────── */
@@ -869,8 +1193,7 @@ export class Mundo {
     poner(M.marquesina(), POSICION.estacion, { tipo: "lugar", id: "estacion" }, mirar(POSICION.estacion, nodoDe("estacion")), 0.45);
     poner(M.frontera(), POSICION.frontera, { tipo: "lugar", id: "frontera" }, 0, 0.5);
     // Fuerte de Santa Bárbara y Estadio Ciudad de La Línea, en su sitio real.
-    poner(M.fuerte(), POSICION.santaBarbara, { tipo: "lugar", id: "santaBarbara" }, 0, 0.6);
-    poner(M.estadio(), POSICION.estadio, { tipo: "lugar", id: "estadio" }, Math.PI / 2, 1.25);
+    poner(M.fuerte(), POSICION.santaBarbara, { tipo: "lugar", id: "santaBarbara" }, 0.12, 1);
     // La Atunara: lonja real y la barca del abuelo.
     poner(M.lonja(), ATUNARA, { tipo: "lugar", id: "atunara" }, mirar(ATUNARA, nodoDe("atunara")), 0.4);
     this.barca = M.barca(M.PALETA.lima);
@@ -1217,9 +1540,10 @@ export class Mundo {
     const r = this.canvas.getBoundingClientRect();
     this.camara.fov = this.camara.aspect > 1 ? 26 : 34;
     this.camara.updateProjectionMatrix();
+    // Tamaño de la sombra por escalones: si cambiase con cada zoom, las sombras temblarían.
     const sc = this.sol.shadow.camera;
-    const s = Math.min(650, Math.max(120, this.alto * 0.85));
-    if (Math.abs(sc.right - s) > 4) {
+    const s = Math.min(650, 120 * Math.pow(1.25, Math.ceil(Math.log(Math.max(1, (this.alto * 0.85) / 120)) / Math.log(1.25))));
+    if (sc.right !== s) {
       sc.left = -s; sc.right = s; sc.top = s; sc.bottom = -s; sc.near = 1; sc.far = 3000;
       sc.updateProjectionMatrix();
     }
@@ -1239,11 +1563,28 @@ export class Mundo {
       this.objetivoCam.z - Math.cos(a) * Math.cos(el) * d,
     );
     this.camara.lookAt(this.objetivoCam);
+    // Planos de recorte ajustados a la distancia: mucha más precisión de profundidad.
+    const cerca = Math.max(1, d * 0.05);
+    const lejos = d * 9 + 2500;
+    if (Math.abs(this.camara.near - cerca) > 0.01 || Math.abs(this.camara.far - lejos) > 1) {
+      this.camara.near = cerca;
+      this.camara.far = lejos;
+      this.camara.updateProjectionMatrix();
+    }
     const niebla = this.escena.fog as THREE.Fog;
     niebla.near = d * 2.2;
     niebla.far = d * 7 + 600;
-    this.sol.position.copy(this.objetivoCam).add(new THREE.Vector3(300, 600, -220));
-    this.sol.target.position.copy(this.objetivoCam);
+    // Sol fijo (de sureste) y centrado en la cámara, pero encajado en la rejilla de
+    // texels del mapa de sombras para que los bordes no tiemblen al moverse.
+    const texel = (2 * this.sol.shadow.camera.right) / this.sol.shadow.mapSize.x;
+    const base = new THREE.Matrix4().lookAt(DIR_SOL, new THREE.Vector3(), new THREE.Vector3(0, 1, 0));
+    const p = this.objetivoCam.clone().applyMatrix4(base.clone().transpose());
+    p.x = Math.round(p.x / texel) * texel;
+    p.y = Math.round(p.y / texel) * texel;
+    p.applyMatrix4(base);
+    this.sol.target.position.copy(p);
+    this.sol.position.copy(p).addScaledVector(DIR_SOL, 900);
+    this.sol.target.updateMatrixWorld();
   }
 
   /* ── Entrada: arrastrar, pellizcar, rueda y toque ───────────────────── */
@@ -1625,16 +1966,21 @@ export class Mundo {
 
   private luz() {
     const h = this.hora;
-    const dia = h >= 7 && h < 19.5 ? 1 : h >= 19.5 && h < 21.5 ? 1 - (h - 19.5) / 2 : h >= 6 && h < 7 ? h - 6 : 0;
-    const atardecer = h >= 18 && h < 21 ? 1 - Math.abs(h - 19.5) / 1.5 : 0;
-    const cielo = new THREE.Color("#132A5C").lerp(new THREE.Color("#A9D8FF"), dia).lerp(new THREE.Color("#FFB98A"), atardecer * 0.5);
-    if (dia > 0.85) this.escena.background = T.cielo();
-    else this.escena.background = cielo;
-    (this.escena.fog as THREE.Fog).color.copy(dia > 0.85 ? new THREE.Color("#F1E4CF") : cielo);
-    this.sol.intensity = 0.3 + 2.3 * dia;
-    this.sol.color.set(atardecer > 0.2 ? "#FFC58A" : "#FFF1D6");
-    this.cielo.intensity = 0.55 + 0.7 * dia;
-    for (const f of this.faroles) (f as THREE.MeshStandardMaterial).emissiveIntensity = 0.3 + (1 - dia) * 2.2;
+    const suave = (a: number, b: number, x: number) => {
+      const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+      return t * t * (3 - 2 * t);
+    };
+    // 0 de noche, 1 de día, con amanecer (6–8 h) y anochecer (19–21:30 h) graduales.
+    const dia = suave(6, 8, h) * (1 - suave(19, 21.5, h));
+    const atardecer = Math.max(0, 1 - Math.abs(h - 19.6) / 1.4) * (h > 12 ? 1 : 0) + Math.max(0, 1 - Math.abs(h - 7) / 1) * (h < 12 ? 0.6 : 0);
+    const cielo = C_NOCHE.clone().lerp(C_DIA, dia).lerp(C_OCASO, atardecer * 0.55);
+    (this.escena.background as THREE.Color).copy(cielo);
+    (this.escena.fog as THREE.Fog).color.copy(cielo);
+    this.sol.intensity = 0.5 + 2 * dia;
+    this.sol.color.copy(C_SOL_NOCHE).lerp(C_SOL, dia).lerp(C_SOL_OCASO, atardecer * 0.7);
+    this.cielo.intensity = 0.7 + 0.35 * dia;
+    this.cielo.color.copy(C_HEMI_NOCHE).lerp(C_HEMI, dia);
+    for (const f of this.faroles) (f as THREE.MeshStandardMaterial).emissiveIntensity = 0.25 + (1 - dia) * 2.2;
   }
 
   /**
@@ -1648,7 +1994,8 @@ export class Mundo {
     const prioridad = (c: DOMTokenList) =>
       c.contains("meta") ? 0 : c.contains("burbuja") ? 1 : c.contains("emote") ? 1 : c.contains("lugar") ? 2 : c.contains("vecino") ? 3 : c.contains("npc") ? 4 : c.contains("candado") ? 5 : c.contains("calle") ? 6 : 7;
     const ocupado: [number, number, number, number][] = [];
-    const orden = [...this.etiquetas].sort((x, y) => prioridad(x.el.classList) - prioridad(y.el.classList));
+    // A igual prioridad, primero los que ya se veían: así no se turnan de un fotograma a otro.
+    const orden = [...this.etiquetas].sort((x, y) => prioridad(x.el.classList) - prioridad(y.el.classList) || (y.el.style.visibility === "visible" ? 1 : 0) - (x.el.style.visibility === "visible" ? 1 : 0));
     for (const e of orden) {
       const c = e.el.classList;
       if (e.el.style.display === "none") continue;

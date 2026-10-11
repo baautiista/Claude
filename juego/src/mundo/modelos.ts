@@ -705,13 +705,38 @@ export function sombrilla(color: string) {
   return g;
 }
 
+/** Fuerte de Santa Bárbara: baluarte en estrella con muros bajos de piedra y césped dentro. */
 export function fuerte() {
   const g = new THREE.Group();
-  const p = matTex(T.piedra(), 3, 1, "#E8D7B8");
-  for (const [x, z, w, d, h] of [[-12, 0, 2.4, 24, 6], [12, 0, 2.4, 18, 4.5], [0, -12, 24, 2.4, 5], [-4, 12, 10, 2.4, 3]] as const) g.add(en(rcaja(w, h, d, p, 0.4), x, h / 2, z));
-  for (const [x, z] of [[-12, -12], [12, -12]]) g.add(en(rcaja(5.5, 8, 5.5, p, 0.6), x, 4, z));
-  g.add(en(arbusto(2.2), 3, 0, 4));
-  g.add(en(arbusto(1.6, PALETA.hoja), -6, 0, -4));
+  const estrella = (r: number) => {
+    const pts: THREE.Vector2[] = [];
+    for (let i = 0; i < 4; i++) {
+      const a = (i * Math.PI) / 2;
+      const [c, s] = [Math.cos(a), Math.sin(a)];
+      // Lado del cuadrado con un baluarte en punta en cada esquina.
+      // Cortina → flanco → punta del baluarte → flanco → cortina.
+      const p = (u: number, v: number) => pts.push(new THREE.Vector2(c * u - s * v, s * u + c * v));
+      p(r, r * 0.45);
+      p(r * 1.18, r * 0.5);
+      p(r * 1.38, r * 1.38);
+      p(r * 0.5, r * 1.18);
+      p(r * 0.45, r);
+    }
+    return pts;
+  };
+  const fuera = new THREE.Shape(estrella(15));
+  fuera.holes.push(new THREE.Path(estrella(12.2).reverse()));
+  const muro = new THREE.ExtrudeGeometry(fuera, { depth: 3.2, bevelEnabled: true, bevelSize: 0.4, bevelThickness: 0.4, bevelSegments: 1 });
+  muro.rotateX(-Math.PI / 2);
+  const piedra = matTex(T.piedra(), 0.08, 0.08, "#E6D3AE");
+  g.add(sombra(new THREE.Mesh(muro, piedra)));
+  const dentro = new THREE.ShapeGeometry(new THREE.Shape(estrella(12.3)));
+  dentro.rotateX(-Math.PI / 2);
+  g.add(en(new THREE.Mesh(dentro, mat("#86C060")), 0, 0.5, 0));
+  // Restos del cuerpo central y explanada.
+  g.add(en(rcaja(10, 2.4, 6, piedra, 0.5), -2, 1.2, 1));
+  g.add(en(arbusto(2), 6, 0, -5));
+  g.add(en(arbusto(1.6, PALETA.hoja), -8, 0, 7));
   return g;
 }
 

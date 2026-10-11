@@ -24,6 +24,8 @@ export interface Linea {
   solares: [number, number, number][];
   puerto: Anillo[];
   poi: Record<string, Punto>;
+  /** Instalaciones deportivas reales: pistas [x, y, ancho, fondo, ángulo, tipo], gradas y el estadio. */
+  deportes: { pistas: [number, number, number, number, number, number][]; gradas: [number, number, number, number, number][]; estadio: [number, number, number, number, number] | null };
 }
 
 export const DATOS = linea as unknown as Linea;

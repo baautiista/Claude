@@ -130,7 +130,8 @@ function capaDe(t) {
   if (t.leisure === "marina") return "puerto";
   if (t.natural === "water" || t.waterway === "dam") return "agua";
   if (t.leisure === "swimming_pool") return "piscina";
-  if (t.leisure === "pitch" || t.leisure === "stadium" || t.leisure === "sports_centre") return "campo";
+  if (t.leisure === "pitch") return "campo";
+  if (t.leisure === "stadium" || t.leisure === "sports_centre") return "deportivo";
   if (t.landuse === "forest" || t.natural === "wood") return "bosque";
   if (t.natural === "heath" || t.natural === "scrub") return "matorral";
   if (["orchard", "farmland", "farmyard", "allotments"].includes(t.landuse)) return "huerto";
@@ -156,6 +157,7 @@ function tipoEdificio(t, ar) {
   const b = t.building;
   if (b === "roof" || b === "carport") return null;
   if (b === "church" || t.amenity === "place_of_worship") return 3;
+  if (t.leisure === "sports_hall" || b === "sports_hall" || b === "sports_centre" || b === "grandstand" || b === "stadium") return 8;
   if (["industrial", "warehouse", "garages", "garage", "hangar", "manufacture"].includes(b) || t.man_made) return 2;
   if (b === "school" || b === "kindergarten" || t.amenity === "school") return 4;
   if (["public", "civic", "government", "commercial", "retail", "hotel", "hospital", "office"].includes(b) || t.amenity === "townhall" || t.amenity === "marketplace") return 5;
@@ -166,6 +168,23 @@ function tipoEdificio(t, ar) {
 }
 
 const edificios = [];
+
+/* ── instalaciones deportivas: pistas con sus marcas, gradas y estadio ── */
+
+/** 0 fútbol (césped), 1 fútbol (tierra), 2 tenis, 3 pádel, 4 baloncesto, 5 multideporte, 6 atletismo, 7 arena. */
+function tipoPista(t) {
+  const d = String(t.sport ?? "");
+  const tierra = ["gravel", "dirt", "sand", "compacted", "ground"].includes(t.surface);
+  if (d.startsWith("soccer")) return tierra ? 1 : 0;
+  if (d.startsWith("tennis")) return 2;
+  if (d.startsWith("padel")) return 3;
+  if (d.startsWith("basketball")) return 4;
+  if (d.startsWith("athletics")) return 6;
+  if (d.startsWith("beachvolleyball") || t.surface === "sand") return 7;
+  return 5;
+}
+const deportes = { pistas: [], gradas: [], estadio: null };
+const rectJSON = (rc) => [r1(rc.x), r1(rc.y), r1(rc.w), r1(rc.d), Math.round(rc.ang * 1000) / 1000];
 
 /* ── red de calles ──────────────────────────────────────────────────── */
 
@@ -233,6 +252,15 @@ for (const f of features) {
 
   if (g.type === "Polygon") {
     const anillos = g.coordinates.map((r) => r.map(([lon, lat]) => [px(lon), py(lat)]));
+    if (!t.building && (t.leisure === "pitch" || t.leisure === "track" || t.leisure === "bleachers")) {
+      const rc = rectangulo(anillos[0]);
+      if (rc && rc.w > 2 && rc.d > 2) {
+        if (t.leisure === "bleachers") deportes.gradas.push(rectJSON(rc));
+        else deportes.pistas.push([...rectJSON(rc), t.leisure === "track" ? 6 : tipoPista(t)]);
+      }
+      continue;
+    }
+    if (t.leisure === "stadium" && t.name === "Estadio Ciudad de La Línea") deportes.estadio = rectJSON(rectangulo(anillos[0]));
     if (t.building) {
       const ext = anillos[0];
       const ar = Math.abs(area(ext));
@@ -365,6 +393,7 @@ const salida = {
   solares: solares.sort((a, b) => b[2] - a[2]).slice(0, 40),
   puerto,
   poi,
+  deportes,
 };
 writeFileSync(SALIDA, JSON.stringify(salida));
 console.log(`Listo → ${SALIDA}`);

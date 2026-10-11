@@ -425,3 +425,192 @@ export const cielo = () =>
     g.fillStyle = grad;
     g.fillRect(0, 0, t, t);
   }, false);
+
+/* ── Instalaciones deportivas (las marcas se pintan a escala real) ───── */
+
+/** Campo de fútbol visto desde arriba: franjas de siega y líneas. Largo en vertical. */
+export const campoFutbol = (tono: "natural" | "artificial" | "tierra") =>
+  textura(`futbol-${tono}`, 512, (g, t) => {
+    const w = t * 0.68;
+    const x0 = (t - w) / 2;
+    const [a, b] = tono === "natural" ? ["#4FB14A", "#45A042"] : tono === "artificial" ? ["#2F9A4A", "#2A8C43"] : ["#D7B987", "#CFAF7C"];
+    g.fillStyle = a;
+    g.fillRect(0, 0, t, t);
+    for (let i = 0; i < 12; i++) {
+      g.fillStyle = i % 2 ? a : b;
+      g.fillRect(x0 - 10, (t / 12) * i, w + 20, t / 12);
+    }
+    g.strokeStyle = tono === "tierra" ? "rgba(255,255,255,0.8)" : "#FFFFFF";
+    g.lineWidth = 4;
+    const m = t * 0.04;
+    g.strokeRect(x0, m, w, t - 2 * m);
+    g.beginPath();
+    g.moveTo(x0, t / 2);
+    g.lineTo(x0 + w, t / 2);
+    g.stroke();
+    g.beginPath();
+    g.arc(t / 2, t / 2, t * 0.09, 0, Math.PI * 2);
+    g.stroke();
+    for (const y of [m, t - m]) {
+      const s = y === m ? 1 : -1;
+      g.strokeRect(t / 2 - w * 0.3, Math.min(y, y + s * t * 0.16), w * 0.6, t * 0.16);
+      g.strokeRect(t / 2 - w * 0.14, Math.min(y, y + s * t * 0.06), w * 0.28, t * 0.06);
+      g.fillStyle = "#FFFFFF";
+      g.fillRect(t / 2 - 22, y - s * 4 - 2, 44, 4);
+    }
+  }, false);
+
+function pistaConLineas(clave: string, fondo: string, interior: string, lineas: (g: CanvasRenderingContext2D, t: number) => void) {
+  return textura(clave, 256, (g, t) => {
+    g.fillStyle = fondo;
+    g.fillRect(0, 0, t, t);
+    g.fillStyle = interior;
+    g.fillRect(t * 0.18, t * 0.08, t * 0.64, t * 0.84);
+    g.strokeStyle = "#FFFFFF";
+    g.lineWidth = 3;
+    lineas(g, t);
+  }, false);
+}
+
+export const pistaTenis = () =>
+  pistaConLineas("tenis", "#5E9C5A", "#8E7CC3", (g, t) => {
+    g.strokeRect(t * 0.18, t * 0.08, t * 0.64, t * 0.84);
+    g.strokeRect(t * 0.25, t * 0.08, t * 0.5, t * 0.84);
+    g.beginPath();
+    g.moveTo(t * 0.25, t * 0.3); g.lineTo(t * 0.75, t * 0.3);
+    g.moveTo(t * 0.25, t * 0.7); g.lineTo(t * 0.75, t * 0.7);
+    g.moveTo(t * 0.5, t * 0.3); g.lineTo(t * 0.5, t * 0.7);
+    g.stroke();
+    g.lineWidth = 5;
+    g.strokeStyle = "#F4F4F4";
+    g.beginPath();
+    g.moveTo(t * 0.14, t * 0.5); g.lineTo(t * 0.86, t * 0.5);
+    g.stroke();
+  });
+
+export const pistaPadel = () =>
+  pistaConLineas("padel", "#2D6FD6", "#2D6FD6", (g, t) => {
+    g.strokeRect(t * 0.08, t * 0.04, t * 0.84, t * 0.92);
+    g.beginPath();
+    g.moveTo(t * 0.08, t * 0.27); g.lineTo(t * 0.92, t * 0.27);
+    g.moveTo(t * 0.08, t * 0.73); g.lineTo(t * 0.92, t * 0.73);
+    g.moveTo(t * 0.5, t * 0.27); g.lineTo(t * 0.5, t * 0.73);
+    g.stroke();
+    g.lineWidth = 5;
+    g.beginPath();
+    g.moveTo(t * 0.04, t * 0.5); g.lineTo(t * 0.96, t * 0.5);
+    g.stroke();
+  });
+
+export const pistaBaloncesto = () =>
+  pistaConLineas("baloncesto", "#3A7BD5", "#E0894A", (g, t) => {
+    g.strokeRect(t * 0.18, t * 0.08, t * 0.64, t * 0.84);
+    g.beginPath();
+    g.moveTo(t * 0.18, t / 2); g.lineTo(t * 0.82, t / 2);
+    g.stroke();
+    g.beginPath();
+    g.arc(t / 2, t / 2, t * 0.08, 0, Math.PI * 2);
+    g.stroke();
+    for (const [y, s] of [[t * 0.08, 1], [t * 0.92, -1]] as const) {
+      g.strokeRect(t * 0.42, Math.min(y, y + s * t * 0.2), t * 0.16, t * 0.2);
+      g.beginPath();
+      g.arc(t / 2, y, t * 0.26, s > 0 ? 0.15 : Math.PI + 0.15, s > 0 ? Math.PI - 0.15 : Math.PI * 2 - 0.15);
+      g.stroke();
+    }
+  });
+
+export const pistaMulti = () =>
+  pistaConLineas("multi", "#4C8DDB", "#5FA35A", (g, t) => {
+    g.strokeRect(t * 0.18, t * 0.08, t * 0.64, t * 0.84);
+    g.beginPath();
+    g.moveTo(t * 0.18, t / 2); g.lineTo(t * 0.82, t / 2);
+    g.stroke();
+    g.beginPath();
+    g.arc(t / 2, t / 2, t * 0.1, 0, Math.PI * 2);
+    g.stroke();
+  });
+
+/** Pista de atletismo: anillo rojo con calles y césped dentro (largo en vertical). */
+export const pistaAtletismo = () =>
+  textura("atletismo", 512, (g, t) => {
+    g.fillStyle = "#6FB257";
+    g.fillRect(0, 0, t, t);
+    const calle = (r: number, color: string, ancho: number) => {
+      g.strokeStyle = color;
+      g.lineWidth = ancho;
+      const w = t * 0.34;
+      g.beginPath();
+      g.arc(t / 2, t * 0.5 - w * 0.75, r, Math.PI, 0);
+      g.lineTo(t / 2 + r, t * 0.5 + w * 0.75);
+      g.arc(t / 2, t * 0.5 + w * 0.75, r, 0, Math.PI);
+      g.closePath();
+      g.stroke();
+    };
+    calle(t * 0.28, "#C9473B", t * 0.13);
+    for (let i = 0; i <= 6; i++) calle(t * 0.225 + i * t * 0.0185, "rgba(255,255,255,0.75)", 1.5);
+  }, false);
+
+/** Aparcamiento: asfalto con plazas pintadas (filas a lo ancho). */
+export const aparcamiento = () =>
+  textura("aparcamiento", 128, (g, t) => {
+    g.fillStyle = "#8E949D";
+    g.fillRect(0, 0, t, t);
+    const r = azar(17);
+    for (let i = 0; i < 300; i++) {
+      g.fillStyle = r() < 0.5 ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)";
+      g.fillRect(r() * t, r() * t, 2, 2);
+    }
+    g.fillStyle = "rgba(255,255,255,0.85)";
+    for (const y0 of [0, t / 2]) {
+      for (let x = 0; x < t; x += t / 8) g.fillRect(x, y0 + 2, 2, t * 0.2);
+      g.fillRect(0, y0 + 2, t, 2);
+    }
+  });
+
+/** Carril bici y paseo rojizo del paseo marítimo de Levante. */
+export const paseoLevante = () =>
+  textura("paseo-levante", 128, (g, t) => {
+    g.fillStyle = "#D9786A";
+    g.fillRect(0, 0, t, t);
+    g.fillStyle = "#E9A08F";
+    g.fillRect(0, 0, t * 0.45, t);
+    g.fillStyle = "rgba(255,255,255,0.8)";
+    for (let y = 0; y < t; y += 24) g.fillRect(t * 0.72, y, 3, 12);
+    g.fillRect(t * 0.45, 0, 2, t);
+  });
+
+/** Fachada de pabellón deportivo: blanco con franja azul y ventanas altas. */
+export const fachadaPabellon = () =>
+  textura("pabellon", 256, (g, t) => {
+    g.fillStyle = "#F4F6F8";
+    g.fillRect(0, 0, t, t);
+    g.fillStyle = "#1F3F8F";
+    g.fillRect(0, t * 0.62, t, t * 0.16);
+    g.fillStyle = "#9FC3E8";
+    for (let x = 8; x < t; x += 32) g.fillRect(x, t * 0.12, 20, t * 0.36);
+    g.fillStyle = "rgba(0,0,0,0.08)";
+    g.fillRect(0, t * 0.96, t, t * 0.04);
+  });
+
+/** Grada vista de frente: filas de asientos claros con pasillos. */
+export const asientos = (color = "#E9ECF1") =>
+  textura(`asientos-${color}`, 128, (g, t) => {
+    g.fillStyle = color;
+    g.fillRect(0, 0, t, t);
+    g.fillStyle = "rgba(20,40,90,0.18)";
+    for (let y = 0; y < t; y += 8) g.fillRect(0, y, t, 2);
+    g.fillStyle = "rgba(255,255,255,0.9)";
+    for (let x = 0; x < t; x += 42) g.fillRect(x, 0, 4, t);
+  });
+
+/** Rótulo de la grada de preferencia. */
+export const rotuloEstadio = () =>
+  textura("rotulo-estadio", 512, (g, t) => {
+    g.fillStyle = "#14275E";
+    g.fillRect(0, 0, t, t);
+    g.fillStyle = "#FFFFFF";
+    g.font = `bold ${t * 0.11}px Fredoka, Arial, sans-serif`;
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    g.fillText("CIUDAD DE LA LÍNEA", t / 2, t / 2);
+  }, false);
