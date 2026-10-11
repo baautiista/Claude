@@ -264,7 +264,17 @@ export class EscenaInterior {
     this.renderer.setSize(r.width, r.height, false);
     this.camara.aspect = r.width / Math.max(1, r.height);
     this.camara.fov = this.camara.aspect > 1 ? 40 : 52;
+    // Con un panel abajo, la casa se centra en la parte que queda libre.
+    if (this.tapadoAbajo > 0) this.camara.setViewOffset(r.width, r.height, 0, (r.height * this.tapadoAbajo) / 2, r.width, r.height);
+    else this.camara.clearViewOffset();
     this.camara.updateProjectionMatrix();
+  }
+
+  /** Fracción de la altura del lienzo tapada por un panel inferior. */
+  private tapadoAbajo = 0;
+  tapar(fraccion: number) {
+    this.tapadoAbajo = Math.max(0, Math.min(0.7, fraccion));
+    this.ajustar();
   }
 
   /* ── Construcción de la vivienda ─────────────────────────────────── */

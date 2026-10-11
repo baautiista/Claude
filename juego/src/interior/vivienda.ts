@@ -198,6 +198,7 @@ export class Vivienda {
   cerrarPanel() {
     this.panel.replaceChildren();
     this.panel.classList.remove("abierto");
+    this.escena.tapar(0);
     this.escena.herramienta = null;
     this.escena.fantasma(null);
     this.escena.resaltar(null);
@@ -224,6 +225,11 @@ export class Vivienda {
     );
     this.panel.classList.add("abierto");
     this.barra.style.display = "none";
+    requestAnimationFrame(() => {
+      const lienzo = this.escena.canvas.getBoundingClientRect();
+      const p = this.panel.getBoundingClientRect();
+      if (lienzo.height && this.panel.classList.contains("abierto")) this.escena.tapar((lienzo.bottom - p.top) / lienzo.height);
+    });
     return cuerpo;
   }
 
