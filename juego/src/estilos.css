@@ -81,6 +81,7 @@ input, select { font: inherit; user-select: text; }
 /* Controles del mapa */
 .controles-mapa { position: absolute; right: 10px; top: calc(96px + var(--arriba)); display: grid; gap: 8px; }
 .controles-mapa button { width: 40px; height: 40px; border-radius: 50%; background: var(--blanco); color: var(--marino); display: grid; place-items: center; font: 700 22px/1 var(--display); --canto: #b8c4e4; }
+.controles-mapa button.activo { background: var(--lima); color: var(--marino); }
 
 /* ── Dock inferior ───────────────────────────────────────────────── */
 .dock { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-around; align-items: flex-end; padding: 0 6px calc(8px + var(--abajo)); pointer-events: none; }

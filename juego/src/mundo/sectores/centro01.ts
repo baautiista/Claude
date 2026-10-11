@@ -39,15 +39,22 @@ const MONUMENTO: P2 = [1107.0, 2138.0];
 
 /* ── Huellas (OSM simplificadas; las del sur, estimadas) ─────────── */
 
-const IGLESIA_FRENTE: [P2, P2] = [[1105.3, 2125.6], [1114.4, 2128.0]];
-const TOLEDANO: P2[] = [[1090.5, 2123.6], [1096.8, 2125.1], [1097.0, 2124.3], [1099.2, 2114.9], [1093.1, 2113.5], [1091.8, 2117.9]];
-const VERDE: P2[] = [[1088.8, 2129.5], [1097.1, 2131.5], [1099.7, 2136.9], [1098.7, 2141.4], [1091.9, 2140.6], [1086.0, 2139.0]];
-const CREMA: P2[] = [[1085.1, 2148.1], [1097.4, 2147.8], [1098.7, 2141.4], [1091.9, 2140.6], [1086.0, 2139.0], [1084.5, 2139.4], [1084.5, 2141.7]];
-const TORRE: P2[] = [[1121.4, 2131.3], [1127.6, 2132.8], [1128.7, 2127.5], [1130.5, 2120.1], [1124.7, 2116.9]];
-const BLANCA: P2[] = [[1113.8, 2146.2], [1123.1, 2144.6], [1124.5, 2136.2], [1121.2, 2135.5], [1115.0, 2139.7]];
+/** Fachada de la iglesia retrasada 1,2 m respecto a OSM para dar algo más de aire a la plaza. */
+const IGLESIA_FRENTE: [P2, P2] = [[1105.6, 2124.4], [1114.7, 2126.8]];
+/** Encoge una huella hacia su centro (la plaza y sus calles quedan algo más holgadas). */
+function encoger(poli: P2[], f = 0.92): P2[] {
+  const [cx, cy] = centroide(poli);
+  return poli.map(([x, y]) => [cx + (x - cx) * f, cy + (y - cy) * f] as P2);
+}
+
+const TOLEDANO: P2[] = encoger([[1090.5, 2123.6], [1096.8, 2125.1], [1097.0, 2124.3], [1099.2, 2114.9], [1093.1, 2113.5], [1091.8, 2117.9]]);
+const VERDE: P2[] = encoger([[1088.8, 2129.5], [1097.1, 2131.5], [1099.7, 2136.9], [1098.7, 2141.4], [1091.9, 2140.6], [1086.0, 2139.0]]);
+const CREMA: P2[] = encoger([[1085.1, 2148.1], [1097.4, 2147.8], [1098.7, 2141.4], [1091.9, 2140.6], [1086.0, 2139.0], [1084.5, 2139.4], [1084.5, 2141.7]]);
+const TORRE: P2[] = encoger([[1121.4, 2131.3], [1127.6, 2132.8], [1128.7, 2127.5], [1130.5, 2120.1], [1124.7, 2116.9]]);
+const BLANCA: P2[] = encoger([[1113.8, 2146.2], [1123.1, 2144.6], [1124.5, 2136.2], [1121.2, 2135.5], [1115.0, 2139.7]]);
 /** Sin huella en OSM: estimadas con las vistas aéreas y de calle. */
-const ROSA: P2[] = [[1094.0, 2149.6], [1113.2, 2149.6], [1113.2, 2157.8], [1094.0, 2158.2]];
-const ESTRECHO: P2[] = [[1113.2, 2149.6], [1119.0, 2149.2], [1119.0, 2157.6], [1113.2, 2157.8]];
+const ROSA: P2[] = encoger([[1094.0, 2149.6], [1113.2, 2149.6], [1113.2, 2157.8], [1094.0, 2158.2]]);
+const ESTRECHO: P2[] = encoger([[1113.2, 2149.6], [1119.0, 2149.2], [1119.0, 2157.6], [1113.2, 2157.8]]);
 
 const HUELLAS = [TOLEDANO, VERDE, CREMA, TORRE, BLANCA, ROSA, ESTRECHO];
 
@@ -148,7 +155,7 @@ function terraza(o: Obra, x: number, z: number, lona: RGB, r: () => number) {
 function santuario(o: Obra, c: Ctx) {
   const mc = new Marco(IGLESIA_FRENTE[0], IGLESIA_FRENTE[1], [1111.5, 2118]);
   const W = mc.usar(o, c);
-  const D = 16.5;
+  const D = 15.3;
   const m = W / 2;
   const B = C("#F8F5EE");
   const OC = C("#D8A13A");
@@ -629,7 +636,8 @@ function plaza(o: Obra, c: Ctx, iglesia: Marco) {
     [1115.0, 2139.9], [1113.9, 2146.6], [1124.0, 2145.6], [1124.0, 2148.4], [1119.0, 2149.2], [1094.0, 2149.6], [1097.4, 2147.8],
     [1098.7, 2141.4], [1099.7, 2136.9], [1097.1, 2131.5],
   ];
-  plano(o, Mat.Suelo, plazaPoli, 0.24, GRIS, 0.35);
+  // El pavimento llega hasta debajo de las fachadas (que se han encogido un poco hacia dentro).
+  plano(o, Mat.Suelo, plazaPoli.map(([x, y]) => [1108 + (x - 1108) * 1.08, 2138 + (y - 2138) * 1.08] as P2), 0.24, GRIS, 0.35);
   // Calles laterales de la iglesia: adoquín claro a poniente y ladrillo en espiga a levante.
   plano(o, Mat.Suelo, [[1097.0, 2125.0], [1105.3, 2125.6], [1108.6, 2110.4], [1100.2, 2108.4]], 0.23, C("#A9A49B"), 0.5);
   plano(o, Mat.Suelo, [[1114.4, 2128.0], [1121.4, 2131.3], [1124.7, 2116.9], [1118.4, 2113.4]], 0.23, C("#B97A5E"), 0.6);

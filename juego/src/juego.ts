@@ -57,7 +57,7 @@ export class Juego {
     this.mundo = previo?.mundo ?? new Mundo(canvas as HTMLCanvasElement, rotulos);
     this.mundo.modoDemo = false;
     this.mundo.colocar(e.nodo);
-    this.mundo.volarA(300);
+    this.mundo.volarA(110);
     this.mundo.ropa = e.ropa;
     this.mundo.piel = e.piel;
     this.mundo.onTocar = (t) => {
@@ -72,6 +72,16 @@ export class Juego {
       h("button", { class: "relieve", "aria-label": "Girar a la derecha", onclick: () => this.mundo.girar(1), html: ico('<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>') }),
       h("button", { class: "relieve", "aria-label": "Acercar", onclick: () => this.mundo.zoom(0.75) }, "+"),
       h("button", { class: "relieve", "aria-label": "Alejar", onclick: () => this.mundo.zoom(1.33) }, "−"),
+      h("button", {
+        class: "relieve boton-pov",
+        "aria-label": "Vista a pie de calle",
+        title: "Vista a pie de calle",
+        onclick: (ev: Event) => {
+          this.mundo.alternarPOV();
+          (ev.currentTarget as HTMLElement).classList.toggle("activo", this.mundo.modoPOV);
+        },
+        html: ico('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+      }),
     ));
     this.conectarRed();
     this.arrancarReloj();

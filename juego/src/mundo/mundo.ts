@@ -22,6 +22,7 @@ import { presente } from "../historia";
 import { esIconoJuego, iconoJuego, iconoSvg } from "../iconos";
 import * as M from "./modelos";
 import * as T from "./texturas";
+import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
 /** Otro jugador conectado (multijugador). */
@@ -206,6 +207,25 @@ const POS_NPC: Record<PersonajeId, Punto> = {
   andres: sumar(NODOS[LUGARES.frontera.nodo], -6, -4),
 };
 
+/** Aspecto 3D de cada vecino del juego (sexo, peinado, atuendo) sobre sus colores de siempre. */
+const ASPECTO_NPC: Record<PersonajeId, Omit<Aspecto, "piel" | "pelo" | "ropa">> = {
+  carmen: { sexo: "m", peinado: "mono", atuendo: "vestido", edad: 1, altura: 0.94, complexion: 1.1 },
+  lola: { sexo: "m", peinado: "coleta", atuendo: "camarero", altura: 0.98 },
+  juani: { sexo: "m", peinado: "rizado", atuendo: "informal", altura: 0.95, complexion: 1.08 },
+  antonio: { sexo: "h", peinado: "calvo", atuendo: "pescador", edad: 1, complexion: 1.1 },
+  rafa: { sexo: "h", peinado: "corto", atuendo: "trabajo", accesorio: "gorra", ropa2: "#2E7D4F" },
+  marta: { sexo: "m", peinado: "largo", atuendo: "informal", accesorio: "gafas", altura: 1.0 },
+  andres: { sexo: "h", peinado: "corto", atuendo: "informal", accesorio: "gafas", edad: 1, pantalon: "#6B6F78" },
+};
+
+/** Aspecto de un jugador a partir de sus colores (y de su id, para variar sexo y peinado). */
+function aspectoJugador(piel: string, ropa: string, id = "yo"): Aspecto {
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const base = id === "yo" || h % 2 === 0 ? REFERENCIA_HOMBRE : REFERENCIA_MUJER;
+  return { ...base, piel, ropa };
+}
+
 interface Etiqueta {
   el: HTMLElement;
   pos: THREE.Vector3;
@@ -268,7 +288,7 @@ export class Mundo {
   private mallaCabezas!: THREE.InstancedMesh;
   private gaviotas: { g: THREE.Group; c: THREE.Vector3; r: number; v: number; f: number }[] = [];
   private busJugador!: THREE.Group;
-  private vecinos = new Map<string, { g: THREE.Group; e: Etiqueta; meta: THREE.Vector3; emote: Etiqueta; rot: number | null; anim: string; dicho: Etiqueta | null; dichoT: number }>();
+  private vecinos = new Map<string, { g: Personaje; e: Etiqueta; meta: THREE.Vector3; emote: Etiqueta; rot: number | null; anim: string; dicho: Etiqueta | null; dichoT: number }>();
   /** Pantalla de inicio: la cámara sobrevuela la ciudad. */
   modoDemo = false;
   private demoAng = 0;
@@ -280,12 +300,22 @@ export class Mundo {
   private destinoCam: THREE.Vector3 | null = null;
   private foco: THREE.Vector3 | null = null;
   /** Distancia de la cámara (zoom): menor = más cerca. */
-  private alto = 300;
+  private alto = 110;
   private altoMeta: number | null = null;
   /** Giro de la cámara en cuartos de vuelta (0: desde el noreste, mirando al Peñón). */
   private giro = 0;
   private giroActual = 0;
-  private jugador: THREE.Group;
+  private jugador: Personaje;
+  /** Personajes de ambiente que también se animan (deportistas, figurantes). */
+  private figurantes: Personaje[] = [];
+  /** Vista a pie de calle detrás del personaje. */
+  modoPOV = false;
+  private povYaw = 0;
+  private povPitch = 0.08;
+  private altoAntesPOV = 110;
+  private velJug = 0;
+  private cuadro = 0;
+  private tmpV = new THREE.Vector3();
   private camino: THREE.Vector3[] = [];
   private alLlegar: (() => void) | null = null;
   private tocables: THREE.Object3D[] = [];
@@ -293,7 +323,7 @@ export class Mundo {
   private flotantes: { el: HTMLElement; pos: THREE.Vector3; t: number }[] = [];
   private marcador: THREE.Group;
   private plantas: { grupo: THREE.Group; clave: string }[] = [];
-  private npcs = new Map<PersonajeId, THREE.Group>();
+  private npcs = new Map<PersonajeId, Personaje>();
   private barca!: THREE.Group;
   private humo: THREE.Mesh[] = [];
   private chimenea = new THREE.Vector3();
@@ -368,7 +398,7 @@ export class Mundo {
     this.construirTrafico();
     this.construirGaviotas();
 
-    this.jugador = M.persona("#E8B796", "#C4E910", "#2B1B12", 0.62);
+    this.jugador = crearPersonaje(aspectoJugador("#E8B796", "#C4E910"));
     this.escena.add(this.jugador);
     this.busJugador = autobusUrbano();
     this.busJugador.visible = false;
@@ -830,7 +860,23 @@ export class Mundo {
       if (estilo >= 7) pl = estilo === 10 || estilo === 9 ? 2 + Math.floor(rand() * 2) : 1;
       const h = estilo === 13 ? 8 : estilo === 7 ? 7 + rand() * 2 : estilo === 12 ? 3.2 : estilo === 11 ? 2.6 : estilo === 8 ? 10 : pl * 3.3 + 0.8;
       const tienda = estilo <= 6 && tipo !== 8 && cercaDeAvenida(x, y, Math.max(w, d) / 2 + 9);
-      lista.push({ x, y, w, d, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda, frente: frenteDe(x, y, w, d, ang), semilla: idx * 7919 + 17, idx });
+      // Calles algo más anchas: la fachada que da a la calle retrocede un metro (sin abrir huecos entre medianeras).
+      const frente = frenteDe(x, y, w, d, ang);
+      let [bx, by, bw, bd] = [x, y, w, d];
+      const RET = 1.0;
+      // Ejes locales en el mapa: +x = (cos, sin), +z = (−sin, cos). El centro se aleja de la calle medio retranqueo.
+      if (frente % 2 === 0 && bd > 6) {
+        const s = frente === 0 ? -1 : 1;
+        bd -= RET;
+        bx += (s * -Math.sin(ang) * RET) / 2;
+        by += (s * Math.cos(ang) * RET) / 2;
+      } else if (frente % 2 === 1 && bw > 6) {
+        const s = frente === 1 ? -1 : 1;
+        bw -= RET;
+        bx += (s * Math.cos(ang) * RET) / 2;
+        by += (s * Math.sin(ang) * RET) / 2;
+      }
+      lista.push({ x: bx, y: by, w: bw, d: bd, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda, frente, semilla: idx * 7919 + 17, idx });
     }
     this.edificios = lista;
     this.prepararTrozos();
@@ -1480,8 +1526,10 @@ export class Mundo {
     // Jugadores entrenando.
     const rand = azar(9);
     for (let i = 0; i < 12; i++) {
-      const p = M.persona("#E8B796", i < 6 ? "#FFFFFF" : "#1F5EFF", "#2B1B12", 0.28);
+      const p = crearPersonaje({ ...(i % 3 ? REFERENCIA_HOMBRE : REFERENCIA_MUJER), atuendo: "verano", ropa: i < 6 ? "#FFFFFF" : "#1F5EFF", pantalon: "#1E2A44", peinado: i % 3 ? "corto" : "coleta", piel: ["#E8B796", "#C98E66", "#F0C3A0", "#8D5A3B"][i % 4] });
       p.position.set((rand() - 0.5) * pw * 0.8, 0.8, (rand() - 0.5) * pl * 0.8);
+      ponerEstado(p, i % 4 === 0 ? "hablar" : "quieto");
+      this.figurantes.push(p);
       p.rotation.y = rand() * 6;
       g.add(p);
     }
@@ -1572,6 +1620,19 @@ export class Mundo {
       this.escena.add(lod);
       if (k === "iglesia") this.hacerTocable(lod, { tipo: "lugar", id: "plaza" });
     }
+    // Personajes de referencia del nuevo estilo, charlando junto al monumento.
+    const pareja: [Aspecto, Punto, Punto][] = [
+      [REFERENCIA_HOMBRE, [1103.6, 2142.2], [1105.0, 2143.6]],
+      [REFERENCIA_MUJER, [1105.0, 2143.6], [1103.6, 2142.2]],
+    ];
+    for (const [a, p, mira] of pareja) {
+      const g = crearPersonaje(a);
+      g.position.copy(p3(p, SUELO + 0.24));
+      g.rotation.y = Math.atan2(mira[0] - p[0], mira[1] - p[1]);
+      ponerEstado(g, "hablar");
+      this.figurantes.push(g);
+      this.escena.add(g);
+    }
   }
 
   /* ── Lugares del juego en su posición real ──────────────────────────── */
@@ -1648,10 +1709,10 @@ export class Mundo {
     // Vecinos.
     for (const id of Object.keys(PERSONAJES) as PersonajeId[]) {
       const p = PERSONAJES[id];
-      const g = M.persona(p.piel, p.ropa, p.canas ? "#E9E9E9" : p.pelo, 0.58);
+      const g = crearPersonaje({ ...ASPECTO_NPC[id], piel: p.piel, ropa: p.ropa, pelo: p.canas ? "#D9D9D6" : p.pelo });
       poner(g, POS_NPC[id], { tipo: "npc", id }, Math.random() * 6);
       this.npcs.set(id, g);
-      this.etiqueta("npc", p.nombre, p3(POS_NPC[id], SUELO + 8));
+      this.etiqueta("npc", p.nombre, p3(POS_NPC[id], SUELO + 3.1));
     }
     // Rótulos de los lugares.
     for (const id of Object.keys(LUGARES) as LugarId[]) {
@@ -1776,10 +1837,10 @@ export class Mundo {
       vistos.add(v.id);
       let r = this.vecinos.get(v.id);
       if (!r) {
-        const g = M.persona(v.piel, v.ropa, "#2B1B12", 0.6);
+        const g = crearPersonaje(aspectoJugador(v.piel, v.ropa, v.id));
         g.position.copy(v3(v.x, v.y));
         this.escena.add(g);
-        r = { g, e: this.etiqueta("vecino", "", v3(v.x, v.y, SUELO + 9)), meta: v3(v.x, v.y), emote: this.etiqueta("emote", "", v3(v.x, v.y, SUELO + 13)), rot: null, anim: "quieto", dicho: null, dichoT: 0 };
+        r = { g, e: this.etiqueta("vecino", "", v3(v.x, v.y, SUELO + 3.3)), meta: v3(v.x, v.y), emote: this.etiqueta("emote", "", v3(v.x, v.y, SUELO + 4.1)), rot: null, anim: "quieto", dicho: null, dichoT: 0 };
         this.vecinos.set(v.id, r);
       }
       r.e.el.textContent = `${v.nombre} · Nv ${v.nivel}`;
@@ -1929,11 +1990,11 @@ export class Mundo {
   /* ── Personaje y cámara ─────────────────────────────────────────────── */
 
   set ropa(c: string) {
-    (this.jugador.userData.cuerpo as THREE.Mesh).material = M.mat(c);
+    if (this.jugador.userData.aspecto.ropa !== c) recolorear(this.jugador, { ropa: c });
   }
 
   set piel(c: string) {
-    (this.jugador.userData.cabeza as THREE.Mesh).material = M.mat(c);
+    if (this.jugador.userData.aspecto.piel !== c) recolorear(this.jugador, { piel: c });
   }
 
   colocar(nodo: string) {
@@ -2060,12 +2121,52 @@ export class Mundo {
       sc.updateProjectionMatrix();
     }
     // Efecto maqueta: más desenfoque arriba y abajo cuanto más cerca.
-    const k = this.alto < 400 ? 0.8 : this.alto < 900 ? 0.6 : 0.4;
+    const k = this.modoPOV ? 0 : this.alto < 70 ? 0.3 : this.alto < 400 ? 0.8 : this.alto < 900 ? 0.6 : 0.4;
     this.tiltH.uniforms.h.value = k / Math.max(1, r.width);
     this.tiltV.uniforms.v.value = k / Math.max(1, r.height);
   }
 
+  /** Activa o quita la vista a pie de calle (cámara detrás del personaje, a la altura de los ojos). */
+  alternarPOV(activo = !this.modoPOV) {
+    if (activo === this.modoPOV) return;
+    this.modoPOV = activo;
+    if (activo) {
+      this.altoAntesPOV = this.alto;
+      this.alto = 40;
+      this.altoMeta = null;
+      this.povYaw = 0;
+      this.povPitch = 0.08;
+    } else {
+      this.alto = this.altoAntesPOV;
+      this.camara.near = 2;
+    }
+    this.proyeccion();
+  }
+
+  private colocarCamaraPOV() {
+    const j = this.enBus ? this.busJugador : this.jugador;
+    const yaw = j.rotation.y + this.povYaw;
+    const fx = Math.sin(yaw);
+    const fz = Math.cos(yaw);
+    const ojos = 1.62 * ESCALA_PERSONAJE;
+    const atras = this.enBus ? 16 : 3.6;
+    const deseada = new THREE.Vector3(j.position.x - fx * atras, j.position.y + ojos + (this.enBus ? 5 : 0.45) + this.povPitch * 2.5, j.position.z - fz * atras);
+    if (this.camara.position.distanceTo(deseada) > 40) this.camara.position.copy(deseada);
+    else this.camara.position.lerp(deseada, 0.18);
+    this.camara.lookAt(j.position.x + fx * 6, j.position.y + ojos * 0.9 - this.povPitch * 6, j.position.z + fz * 6);
+    this.objetivoCam.set(j.position.x, SUELO, j.position.z);
+    if (this.camara.fov !== 60 || this.camara.near !== 0.1) {
+      this.camara.fov = 60;
+      this.camara.near = 0.1;
+      this.camara.far = 3000;
+      this.camara.updateProjectionMatrix();
+    }
+    this.tiltH.uniforms.h.value = 0;
+    this.tiltV.uniforms.v.value = 0;
+  }
+
   private colocarCamara() {
+    if (this.modoPOV) return this.colocarCamaraPOV();
     const a = Math.PI / 4 + this.giroActual * (Math.PI / 2) + this.demoAng;
     const el = THREE.MathUtils.degToRad(Math.min(64, 38 + (this.alto - 120) * 0.012));
     const d = this.alto;
@@ -2124,7 +2225,11 @@ export class Mundo {
       this.punteros.set(ev.pointerId, ahora);
       if (this.punteros.size === 1) {
         if (this.toque && Math.hypot(ahora.x - this.toque.x, ahora.y - this.toque.y) > 8) this.toque.movido = true;
-        if (!this.toque || this.toque.movido) {
+        if ((!this.toque || this.toque.movido) && this.modoPOV) {
+          // A pie de calle, arrastrar gira la mirada.
+          this.povYaw -= (ahora.x - prev.x) * 0.006;
+          this.povPitch = Math.max(-0.35, Math.min(0.5, this.povPitch + (ahora.y - prev.y) * 0.003));
+        } else if (!this.toque || this.toque.movido) {
           const a = this.alSuelo(prev.x, prev.y);
           const b = this.alSuelo(ahora.x, ahora.y);
           if (a && b) this.objetivoCam.sub(b.sub(a));
@@ -2172,7 +2277,8 @@ export class Mundo {
 
   /** Zoom progresivo: fija una altura objetivo y la cámara llega con suavidad. */
   zoom(f: number) {
-    this.altoMeta = Math.max(90, Math.min(2600, (this.altoMeta ?? this.alto) * f));
+    if (this.modoPOV) return;
+    this.altoMeta = Math.max(18, Math.min(2600, (this.altoMeta ?? this.alto) * f));
   }
 
   private limitar() {
@@ -2413,7 +2519,20 @@ export class Mundo {
 
     // Personaje andando por la forma real de las calles.
     if (this.camino.length) {
-      let avance = 85 * dt;
+      // Velocidad según lo que queda: paseo en lo corto, carrera en los trayectos largos.
+      let queda = 0;
+      let px = this.jugador.position.x;
+      let pz = this.jugador.position.z;
+      for (const q of this.camino) {
+        queda += Math.hypot(q.x - px, q.z - pz);
+        px = q.x;
+        pz = q.z;
+        if (queda > 400) break;
+      }
+      const meta = Math.max(4.2, Math.min(34, queda * 0.35));
+      this.velJug += (meta - this.velJug) * (1 - Math.pow(0.05, dt));
+      ponerEstado(this.jugador, this.velJug > 9 ? "correr" : "andar", this.velJug);
+      let avance = this.velJug * dt;
       while (avance > 0 && this.camino.length) {
         const dest = this.camino[0];
         const d = Math.hypot(dest.x - this.jugador.position.x, dest.z - this.jugador.position.z);
@@ -2429,9 +2548,10 @@ export class Mundo {
           avance = 0;
         }
       }
-      this.jugador.position.y = SUELO + Math.abs(Math.sin(t * 16)) * 0.5;
+      this.jugador.position.y = SUELO;
       if (!this.camino.length) {
-        this.jugador.position.y = SUELO;
+        this.velJug = 0;
+        ponerEstado(this.jugador, "quieto");
         const f = this.alLlegar;
         this.alLlegar = null;
         f?.();
@@ -2518,17 +2638,17 @@ export class Mundo {
       r.g.rotation.y += giro * (1 - Math.pow(0.001, dt));
       r.g.position.lerp(r.meta, 1 - Math.pow(0.02, dt));
       const andando = r.anim === "andar" || lejos > 0.4;
-      r.g.position.y = SUELO + (andando ? Math.abs(Math.sin(t * 9)) * 0.35 : 0);
-      r.g.rotation.z = andando ? Math.sin(t * 9) * 0.06 : 0;
-      r.e.pos.copy(r.g.position).setY(SUELO + 9);
-      r.emote.pos.copy(r.g.position).setY(SUELO + 13);
+      r.g.position.y = SUELO;
+      ponerEstado(r.g, andando ? (lejos > 8 ? "correr" : "andar") : r.emote.el.innerHTML ? "saludar" : "quieto", andando ? Math.min(30, 4 + lejos * 2) : 0);
+      r.e.pos.copy(r.g.position).setY(SUELO + 3.3);
+      r.emote.pos.copy(r.g.position).setY(SUELO + 4.1);
       if (r.dicho) {
-        r.dicho.pos.copy(r.g.position).setY(SUELO + 15);
+        r.dicho.pos.copy(r.g.position).setY(SUELO + 4.6);
         r.dicho.el.style.display = performance.now() - r.dichoT < 6000 ? "" : "none";
       }
     }
     if (this.dichoYo) {
-      this.dichoYo.pos.copy((this.enBus ? this.busJugador : this.jugador).position).setY(SUELO + 15);
+      this.dichoYo.pos.copy((this.enBus ? this.busJugador : this.jugador).position).setY(SUELO + 4.6);
       this.dichoYo.el.style.display = performance.now() - this.dichoYoT < 6000 ? "" : "none";
     }
     // Pantalla de inicio: sobrevuelo lento alrededor de la Plaza de la Iglesia.
@@ -2618,7 +2738,19 @@ export class Mundo {
         this.tAvion = 70 + Math.random() * 60;
       }
     }
-    for (const g of this.npcs.values()) g.scale.y = 0.58 + Math.sin(t * 2 + g.position.x) * 0.008;
+    // Personajes: animaciones compartidas (los lejanos se actualizan menos a menudo).
+    this.cuadro = (this.cuadro + 1) % 4;
+    const cam = this.camara.position;
+    const animar = (g: Personaje, i: number) => {
+      if (!g.visible) return;
+      const lejos = g.getWorldPosition(this.tmpV).distanceToSquared(cam) > 160 * 160;
+      if (!lejos || (i + this.cuadro) % 4 === 0) animarPersonaje(g, t, lejos ? dt * 4 : dt);
+    };
+    animar(this.jugador, 0);
+    let i = 1;
+    for (const g of this.npcs.values()) animar(g, i++);
+    for (const r of this.vecinos.values()) animar(r.g, i++);
+    for (const g of this.figurantes) animar(g, i++);
 
     if (this.seleccion) {
       // Aparece con un pequeño rebote y luego late suave.
