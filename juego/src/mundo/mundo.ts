@@ -23,6 +23,7 @@ import { esIconoJuego, iconoJuego, iconoSvg } from "../iconos";
 import * as M from "./modelos";
 import * as T from "./texturas";
 import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
+import { construirCentro02, CENTRO_C02, SUSTITUYE_C02 } from "./sectores/centro02";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
 /** Otro jugador conectado (multijugador). */
@@ -188,7 +189,7 @@ const BANCALES: Punto[] = [0, 1, 2, 3, 4, 5].map((i) => sumar(HUERTA, -26 + (i %
 const PUESTO: Punto = sumar(NODOS[LUGARES.mercado.nodo], 6, -6);
 const TABLON: Punto = TABLON_CENTRO01;
 /** Huellas OSM sustituidas por los sectores reconstruidos a mano (barrio a barrio). */
-const SUSTITUIDAS: Punto[] = [...SUSTITUYE_CENTRO01];
+const SUSTITUIDAS: Punto[] = [...SUSTITUYE_CENTRO01, ...SUSTITUYE_C02];
 const sustituida = (x: number, y: number) => SUSTITUIDAS.some(([sx, sy]) => Math.abs(sx - x) < 0.6 && Math.abs(sy - y) < 0.6);
 const PUERTO_CENTRO: Punto = (() => {
   const r = DATOS.puerto.flat();
@@ -1593,6 +1594,8 @@ export class Mundo {
       const malla = new THREE.Mesh(geo, mats[m]);
       malla.castShadow = true;
       malla.receiveShadow = true;
+      // Después de las láminas de calle (que no escriben profundidad), para que el pavimento propio se vea.
+      malla.renderOrder = 30;
       g.add(malla);
     });
     return g;
@@ -1619,6 +1622,20 @@ export class Mundo {
       }
       this.escena.add(lod);
       if (k === "iglesia") this.hacerTocable(lod, { tipo: "lugar", id: "plaza" });
+    }
+    // CENTRO-02/03 · Calle Real y Plaza Cruz Herrera.
+    {
+      const lod = new THREE.LOD();
+      const centro2 = p3(CENTRO_C02);
+      lod.position.copy(centro2);
+      for (const [obra, dist] of [[construirCentro02(ctx, ocupado, true), 0], [construirCentro02(ctx, ocupado, false), 260]] as const) {
+        const g = this.mallasObra(obra);
+        g.position.copy(centro2).negate();
+        const nivel = new THREE.Group();
+        nivel.add(g);
+        lod.addLevel(nivel, dist);
+      }
+      this.escena.add(lod);
     }
     // Personajes de referencia del nuevo estilo, charlando junto al monumento.
     const pareja: [Aspecto, Punto, Punto][] = [

@@ -23,3 +23,4 @@ Ficheros:
 
 - 2026-10-11: inventario de barrios y división del Centro a partir del extracto OSM del juego. Pedidas las fotos de CENTRO-01. Sin cambios en el juego.
 - 2026-10-11: recibidas 3 capturas de Google Maps, 6 de Street View y 2 fotos del monumento. CENTRO-01 modelado e integrado en el juego (8 edificios, monumento, quioscos, mobiliario, pavimento). Capturas reales en reports/CENTRO-01/. Esperando revisión del usuario.
+- 2026-10-11: CENTRO-02 (Calle Real completa) y CENTRO-03 (Plaza Cruz Herrera) integrados con 54 huellas OSM, fuente de azulejos, Casino Círculo Mercantil, soportales, pérgolas y pavimento con rombos. Personajes 3D nuevos y vista a pie de calle. Pendiente de revisión.
