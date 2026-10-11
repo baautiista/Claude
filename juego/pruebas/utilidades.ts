@@ -59,11 +59,19 @@ export class Servidor {
           x.fn(m);
         }
       };
-      const intentar = (op: string, args: Record<string, unknown> = {}) => new Promise<any>((r) => {
+      const una = (op: string, args: Record<string, unknown>) => new Promise<any>((r) => {
         const id = ++n;
         pend.set(id, r);
         ws.send(JSON.stringify({ id, op, args }));
       });
+      // Respeta el límite de peticiones por segundo del servidor como haría el juego.
+      const intentar = async (op: string, args: Record<string, unknown> = {}) => {
+        for (;;) {
+          const m = await una(op, args);
+          if (m.codigo !== "ritmo") return m;
+          await new Promise((r) => setTimeout(r, 400));
+        }
+      };
       const c: Cliente = {
         intentar,
         async llamar(op, args) {
