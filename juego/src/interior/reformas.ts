@@ -129,10 +129,12 @@ function superposicion(v: Vivienda, seccion: string, titulo: string) {
     cuerpo, pie);
   v.ui.append(el);
   v.escena.pausado = true;
+  v.j.raizJuego.classList.add("con-taller");
   let alCerrar: (() => void) | null = null;
   const cerrar = () => {
     el.remove();
     v.escena.pausado = false;
+    v.j.raizJuego.classList.remove("con-taller");
     alCerrar?.();
     v.directo({ que: "herramienta", texto: "" });
   };
@@ -436,43 +438,45 @@ function pintarHabitacion(v: Vivienda, hab: Habitacion, color: string) {
   const t = superposicion(v, "PINTURA", `${hab.nombre} · ${PINTURAS[color].nombre}`);
   const lados: Lado[] = ["n", "e", "s", "o"];
   const largos = lados.map((l) => (l === "n" || l === "s" ? hab.x1 - hab.x0 : hab.z1 - hab.z0));
-  const total = largos.reduce((s, x) => s + x, 0);
+  // Las cuatro paredes desplegadas en dos filas (norte y este arriba; sur y oeste abajo).
+  const fila = (i: number) => (i < 2 ? 0 : 1);
+  const largoFila = [largos[0] + largos[1], largos[2] + largos[3]];
   const W = 760;
-  const esc = Math.min((W - 30) / total, 60);
+  const esc = Math.min((W - 30) / Math.max(...largoFila), 70);
   const ALTO = 2.7 * esc;
-  const H = ALTO + 70;
+  const ALTO_FILA = ALTO + 44;
+  const H = ALTO_FILA * 2 + 50;
   const { c, x, punto } = lienzo(W, H);
-  const y0 = 30;
   // Rejilla de cobertura (celdas de 6 px) y zonas pintables.
   const CEL = 6;
   const cols = Math.ceil(W / CEL);
   const filas = Math.ceil(H / CEL);
   const pintable = new Uint8Array(cols * filas);
   const pintado = new Uint8Array(cols * filas);
-  const tramos: { x0: number; lado: Lado; huecos: (string | null)[] }[] = [];
-  let ox = 15;
+  const tramos: { x0: number; y0: number; lado: Lado; huecos: (string | null)[] }[] = [];
+  const ox = [15, 15];
   lados.forEach((l, i) => {
-    tramos.push({ x0: ox, lado: l, huecos: huecosPared(v, hab, l) });
-    ox += largos[i] * esc;
+    const f = fila(i);
+    tramos.push({ x0: ox[f], y0: 26 + f * ALTO_FILA, lado: l, huecos: huecosPared(v, hab, l) });
+    ox[f] += largos[i] * esc;
   });
+  const tramoEn = (px: number, py: number) => tramos.find((tr) => px >= tr.x0 && px < tr.x0 + tr.huecos.length * esc && py >= tr.y0 && py < tr.y0 + ALTO) ?? null;
   const esHueco = (px: number, py: number) => {
-    for (const tr of tramos) {
-      const k = Math.floor((px - tr.x0) / esc);
-      if (k < 0 || k >= tr.huecos.length) continue;
-      const hu = tr.huecos[k];
-      if (!hu) return false;
-      const v0 = (y0 + ALTO - py) / esc;
-      const dentro = (px - tr.x0) / esc - k;
-      if ((hu === "puerta" || hu === "entrada") && v0 < 2.1 && dentro > 0.1 && dentro < 0.9) return true;
-      if (hu === "ventana" && v0 > 0.9 && v0 < 2.1 && dentro > 0.15 && dentro < 0.85) return true;
-      return false;
-    }
-    return true;
+    const tr = tramoEn(px, py);
+    if (!tr) return true;
+    const k = Math.floor((px - tr.x0) / esc);
+    const hu = tr.huecos[k];
+    if (!hu) return false;
+    const v0 = (tr.y0 + ALTO - py) / esc;
+    const dentro = (px - tr.x0) / esc - k;
+    if ((hu === "puerta" || hu === "entrada") && v0 < 2.1 && dentro > 0.1 && dentro < 0.9) return true;
+    if (hu === "ventana" && v0 > 0.9 && v0 < 2.1 && dentro > 0.15 && dentro < 0.85) return true;
+    return false;
   };
   for (let i = 0; i < cols; i++) for (let j = 0; j < filas; j++) {
     const px = i * CEL + CEL / 2;
     const py = j * CEL + CEL / 2;
-    if (py > y0 && py < y0 + ALTO && px > 15 && px < ox && !esHueco(px, py)) pintable[j * cols + i] = 1;
+    if (tramoEn(px, py) && !esHueco(px, py)) pintable[j * cols + i] = 1;
   }
   const totalPintable = pintable.reduce((s, b) => s + b, 0);
   const capa = document.createElement("canvas");
@@ -495,15 +499,19 @@ function pintarHabitacion(v: Vivienda, hab: Habitacion, color: string) {
   };
   const dibujar = () => {
     x.clearRect(0, 0, W, H);
-    x.fillStyle = "#FBFAF6";
-    x.fillRect(0, 0, W, y0);
-    x.fillStyle = "#C9B79A";
-    x.fillRect(0, y0 + ALTO, W, H - y0 - ALTO);
+    x.fillStyle = "#EEF2FB";
+    x.fillRect(0, 0, W, H);
     for (const tr of tramos) {
       const w = tr.huecos.length * esc;
+      const y0 = tr.y0;
+      // Techo y suelo: lo que se pinte ahí son salpicones.
+      x.fillStyle = "#FBFAF6";
+      x.fillRect(tr.x0, y0 - 10, w, 10);
+      x.fillStyle = "#C9B79A";
+      x.fillRect(tr.x0, y0 + ALTO, w, 12);
       x.fillStyle = v.doc.pinturaVieja[hab.id] ? "#D9CDB4" : viejo;
       x.fillRect(tr.x0, y0, w, ALTO);
-      x.drawImage(capa, tr.x0, y0, w, ALTO, tr.x0, y0, w, ALTO);
+      x.drawImage(capa, tr.x0, y0 - 10, w, ALTO + 22, tr.x0, y0 - 10, w, ALTO + 22);
       tr.huecos.forEach((hu, k) => {
         const hx = tr.x0 + k * esc;
         if (hu === "puerta" || hu === "entrada") {
@@ -522,10 +530,9 @@ function pintarHabitacion(v: Vivienda, hab: Habitacion, color: string) {
       x.strokeRect(tr.x0, y0, w, ALTO);
       x.fillStyle = "#061E5C";
       x.font = "600 12px Poppins, sans-serif";
-      x.fillText(({ n: "Norte", s: "Sur", e: "Este", o: "Oeste" })[tr.lado], tr.x0 + 4, y0 - 8);
+      x.textAlign = "left";
+      x.fillText(`Pared ${({ n: "norte", s: "sur", e: "este", o: "oeste" })[tr.lado]}`, tr.x0 + 4, y0 - 14);
     }
-    // Manchas fuera (techo, suelo, marcos).
-    x.drawImage(capa, 0, 0, W, y0, 0, 0, W, y0);
     // Bandeja del rodillo.
     x.fillStyle = "#9AA3AE";
     x.fillRect(BANDEJA.x, BANDEJA.y, BANDEJA.w, BANDEJA.h);
