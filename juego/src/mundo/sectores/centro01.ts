@@ -42,7 +42,7 @@ const MONUMENTO: P2 = [1107.0, 2138.0];
 /** Fachada de la iglesia retrasada 1,2 m respecto a OSM para dar algo más de aire a la plaza. */
 const IGLESIA_FRENTE: [P2, P2] = [[1105.6, 2124.4], [1114.7, 2126.8]];
 /** Encoge una huella hacia su centro (la plaza y sus calles quedan algo más holgadas). */
-function encoger(poli: P2[], f = 0.92): P2[] {
+function encoger(poli: P2[], f = 0.84): P2[] {
   const [cx, cy] = centroide(poli);
   return poli.map(([x, y]) => [cx + (x - cx) * f, cy + (y - cy) * f] as P2);
 }
@@ -57,6 +57,17 @@ const ROSA: P2[] = encoger([[1094.0, 2149.6], [1113.2, 2149.6], [1113.2, 2157.8]
 const ESTRECHO: P2[] = encoger([[1113.2, 2149.6], [1119.0, 2149.2], [1119.0, 2157.6], [1113.2, 2157.8]]);
 
 const HUELLAS = [TOLEDANO, VERDE, CREMA, TORRE, BLANCA, ROSA, ESTRECHO];
+
+/** Huellas sólidas del sector (para las colisiones del jugador). */
+export function solidosCentro01(): P2[][] {
+  const [a, b] = IGLESIA_FRENTE;
+  const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+  const nx = (b[1] - a[1]) / L;
+  const ny = -(b[0] - a[0]) / L;
+  const fondo = 15.3;
+  const iglesia: P2[] = [a, b, [b[0] + nx * fondo, b[1] + ny * fondo], [a[0] + nx * fondo, a[1] + ny * fondo]];
+  return [...HUELLAS, iglesia];
+}
 
 /* ── Utilidades del sector ────────────────────────────────────────── */
 

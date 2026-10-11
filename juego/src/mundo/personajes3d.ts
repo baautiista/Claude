@@ -22,7 +22,7 @@ import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js
  */
 
 /** Ligeramente mayores que la realidad para que se distingan desde arriba (≈2,2 m). */
-export const ESCALA_PERSONAJE = 1.25;
+export const ESCALA_PERSONAJE = 1.0;
 
 export type Sexo = "h" | "m";
 export type Peinado = "corto" | "tupe" | "largo" | "coleta" | "mono" | "rizado" | "calvo";

@@ -83,6 +83,7 @@ export class Juego {
         html: ico('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
       }),
     ));
+    this.controlesLibres();
     this.conectarRed();
     this.arrancarReloj();
     this.refrescar();
@@ -172,6 +173,71 @@ export class Juego {
     caja.append(fila);
     this.raiz.append(caja);
     setTimeout(() => caja.remove(), 30000);
+  }
+
+  /** Moverse libremente: WASD o flechas (Mayús para correr) y joystick táctil. */
+  private controlesLibres() {
+    const teclas = new Set<string>();
+    const aplicar = () => {
+      const x = (teclas.has("d") || teclas.has("arrowright") ? 1 : 0) - (teclas.has("a") || teclas.has("arrowleft") ? 1 : 0);
+      const y = (teclas.has("s") || teclas.has("arrowdown") ? 1 : 0) - (teclas.has("w") || teclas.has("arrowup") ? 1 : 0);
+      this.mundo.entrada = { x, y, correr: teclas.has("shift") };
+    };
+    const ignorar = (ev: KeyboardEvent) => {
+      const t = ev.target as HTMLElement | null;
+      return !!t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
+    };
+    window.addEventListener("keydown", (ev) => {
+      if (ignorar(ev) || Vivienda.actual) return;
+      const k = ev.key.toLowerCase();
+      if (!["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright", "shift"].includes(k)) return;
+      teclas.add(k);
+      if (k.startsWith("arrow")) ev.preventDefault();
+      aplicar();
+    });
+    window.addEventListener("keyup", (ev) => {
+      teclas.delete(ev.key.toLowerCase());
+      aplicar();
+    });
+    window.addEventListener("blur", () => {
+      teclas.clear();
+      aplicar();
+    });
+    // Joystick en pantalla (siempre en táctiles; en ordenador también se puede usar).
+    const base = h("div", { class: "joystick", "aria-label": "Joystick para moverte" });
+    const bola = h("div", { class: "joystick-bola" });
+    base.append(bola);
+    this.capa.before(base);
+    let id: number | null = null;
+    const mover = (ev: PointerEvent) => {
+      const r = base.getBoundingClientRect();
+      const R = r.width / 2;
+      let dx = ev.clientX - (r.left + R);
+      let dy = ev.clientY - (r.top + R);
+      const l = Math.hypot(dx, dy);
+      if (l > R) (dx *= R / l), (dy *= R / l);
+      bola.style.transform = `translate(${dx}px, ${dy}px)`;
+      this.mundo.entrada = { x: dx / R, y: dy / R, correr: l > R * 0.92 };
+    };
+    base.addEventListener("pointerdown", (ev) => {
+      id = ev.pointerId;
+      base.setPointerCapture(ev.pointerId);
+      mover(ev);
+      ev.stopPropagation();
+    });
+    base.addEventListener("pointermove", (ev) => ev.pointerId === id && mover(ev));
+    const soltar = (ev: PointerEvent) => {
+      if (ev.pointerId !== id) return;
+      id = null;
+      bola.style.transform = "";
+      this.mundo.entrada = { x: 0, y: 0, correr: false };
+    };
+    base.addEventListener("pointerup", soltar);
+    base.addEventListener("pointercancel", soltar);
+    this.mundo.onParadaLibre = (p) => {
+      this.e.nodo = nodoCercano(p);
+      this.refrescarVecinos();
+    };
   }
 
   /** Envía mi posición (10 veces por segundo como mucho) y pinta el contador de vecinos. */

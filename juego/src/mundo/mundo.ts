@@ -23,7 +23,8 @@ import { esIconoJuego, iconoJuego, iconoSvg } from "../iconos";
 import * as M from "./modelos";
 import * as T from "./texturas";
 import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
-import { construirCentro02, CENTRO_C02, SUSTITUYE_C02 } from "./sectores/centro02";
+import { construirCentro02, CENTRO_C02, SUSTITUYE_C02, solidosCentro02 } from "./sectores/centro02";
+import { solidosCentro01 } from "./sectores/centro01";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
 /** Otro jugador conectado (multijugador). */
@@ -316,6 +317,13 @@ export class Mundo {
   private altoAntesPOV = 110;
   private velJug = 0;
   private cuadro = 0;
+  /** Movimiento libre (teclado o joystick): dirección en pantalla, −1…1. */
+  entrada = { x: 0, y: 0, correr: false };
+  private libreAndando = false;
+  /** Aviso al dejar de moverse libremente (para actualizar el nodo de la partida). */
+  onParadaLibre: (p: Punto) => void = () => {};
+  /** Rejilla de colisiones: edificios (rectángulos girados) y huellas de los sectores (polígonos). */
+  private solidos = new Map<string, ({ r: [number, number, number, number, number] } | { p: Punto[] })[]>();
   private tmpV = new THREE.Vector3();
   private camino: THREE.Vector3[] = [];
   private alLlegar: (() => void) | null = null;
@@ -864,14 +872,14 @@ export class Mundo {
       // Calles algo más anchas: la fachada que da a la calle retrocede un metro (sin abrir huecos entre medianeras).
       const frente = frenteDe(x, y, w, d, ang);
       let [bx, by, bw, bd] = [x, y, w, d];
-      const RET = 1.0;
+      const RET = 2.6;
       // Ejes locales en el mapa: +x = (cos, sin), +z = (−sin, cos). El centro se aleja de la calle medio retranqueo.
-      if (frente % 2 === 0 && bd > 6) {
+      if (frente % 2 === 0 && bd > RET + 4) {
         const s = frente === 0 ? -1 : 1;
         bd -= RET;
         bx += (s * -Math.sin(ang) * RET) / 2;
         by += (s * Math.cos(ang) * RET) / 2;
-      } else if (frente % 2 === 1 && bw > 6) {
+      } else if (frente % 2 === 1 && bw > RET + 4) {
         const s = frente === 1 ? -1 : 1;
         bw -= RET;
         bx += (s * Math.cos(ang) * RET) / 2;
@@ -1669,6 +1677,7 @@ export class Mundo {
 
     // Plaza de la Iglesia: Santuario de la Inmaculada mirando a la plaza, monumento, fuente y tablón.
     this.construirSectores();
+    this.prepararColisiones();
     poner(M.tablon(), TABLON, { tipo: "tablon" }, mirar(TABLON, nodoDe("plaza")), 0.45);
     // Mercado de Abastos con su orientación real y el puesto 14 delante.
     const mercado = edificioCercano(MERCADO);
@@ -2033,7 +2042,90 @@ export class Mundo {
   }
 
   get andando() {
-    return this.camino.length > 0;
+    return this.camino.length > 0 || this.libreAndando;
+  }
+
+  private prepararColisiones() {
+    const meter = (x0: number, y0: number, x1: number, y1: number, s: { r: [number, number, number, number, number] } | { p: Punto[] }) => {
+      for (let cx = Math.floor(x0 / 20); cx <= Math.floor(x1 / 20); cx++)
+        for (let cy = Math.floor(y0 / 20); cy <= Math.floor(y1 / 20); cy++) {
+          const k = `${cx},${cy}`;
+          if (!this.solidos.has(k)) this.solidos.set(k, []);
+          this.solidos.get(k)!.push(s);
+        }
+    };
+    for (const b of this.edificios) {
+      if (b.estilo === 11) continue;
+      const r = Math.hypot(b.w, b.d) / 2;
+      meter(b.x - r, b.y - r, b.x + r, b.y + r, { r: [b.x, b.y, b.w / 2, b.d / 2, b.ang] });
+    }
+    const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
+    for (const poli of [...solidosCentro01(), ...solidosCentro02(ocupado)]) {
+      const xs = poli.map((p) => p[0]);
+      const ys = poli.map((p) => p[1]);
+      meter(Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys), { p: poli as Punto[] });
+    }
+  }
+
+  /** ¿Choca un círculo de radio 0,35 m en (x, y) del mapa con algún edificio? */
+  private choca(x: number, y: number) {
+    const R = 0.35;
+    for (const s of this.solidos.get(`${Math.floor(x / 20)},${Math.floor(y / 20)}`) ?? []) {
+      if ("r" in s) {
+        const [cx, cy, hw, hd, ang] = s.r;
+        const dx = x - cx;
+        const dy = y - cy;
+        const lx = dx * Math.cos(ang) + dy * Math.sin(ang);
+        const lz = -dx * Math.sin(ang) + dy * Math.cos(ang);
+        if (Math.abs(lx) < hw + R && Math.abs(lz) < hd + R) return true;
+      } else if (dentroPoli([x, y], s.p)) return true;
+    }
+    return false;
+  }
+
+  /** Movimiento libre: dirección relativa a la cámara, con choques y deslizamiento por las fachadas. */
+  private moverLibre(dt: number) {
+    const { x, y, correr } = this.entrada;
+    const mag = Math.min(1, Math.hypot(x, y));
+    if (mag < 0.08 || this.enBus || this.modoDemo) {
+      if (this.libreAndando) {
+        this.libreAndando = false;
+        ponerEstado(this.jugador, "quieto");
+        this.onParadaLibre(this.posicionJugador);
+      }
+      return;
+    }
+    if (this.camino.length) {
+      this.camino = [];
+      this.alLlegar = null;
+    }
+    this.libreAndando = true;
+    // Ejes de la pantalla proyectados al suelo.
+    const yaw = this.modoPOV ? this.jugador.rotation.y + this.povYaw : Math.atan2(this.objetivoCam.x - this.camara.position.x, this.objetivoCam.z - this.camara.position.z);
+    const fx = Math.sin(yaw);
+    const fz = Math.cos(yaw);
+    // Arriba en pantalla = hacia donde mira la cámara; derecha = (−fz, fx).
+    const n = Math.hypot(x, y);
+    const dx = (-y * fx - x * fz) / n;
+    const dz = (-y * fz + x * fx) / n;
+    const vel = (correr ? 9 : 4.2) * mag;
+    const j = this.jugador.position;
+    const px = j.x + CX;
+    const py = j.z + CY;
+    const nx = px + dx * vel * dt;
+    const ny = py + dz * vel * dt;
+    if (!this.choca(nx, ny)) j.set(nx - CX, SUELO, ny - CY);
+    else if (!this.choca(nx, py)) j.x = nx - CX;
+    else if (!this.choca(px, ny)) j.z = ny - CY;
+    const objetivo = Math.atan2(dx, dz);
+    let giro = objetivo - this.jugador.rotation.y;
+    giro = Math.atan2(Math.sin(giro), Math.cos(giro));
+    this.jugador.rotation.y += giro * Math.min(1, dt * 12);
+    if (this.modoPOV) this.povYaw -= giro * Math.min(1, dt * 12);
+    ponerEstado(this.jugador, correr ? "correr" : "andar", vel);
+    this.ultimoArrastre = 0;
+    this.destinoCam = null;
+    this.foco = null;
   }
 
   /** Acerca la cámara a un punto. `dist` es el zoom (menor = más cerca). */
@@ -2534,6 +2626,7 @@ export class Mundo {
     const dt = Math.min(0.12, crudo);
     const t = this.reloj.elapsedTime;
 
+    this.moverLibre(dt);
     // Personaje andando por la forma real de las calles.
     if (this.camino.length) {
       // Velocidad según lo que queda: paseo en lo corto, carrera en los trayectos largos.

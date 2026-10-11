@@ -252,25 +252,25 @@ function calleReal(o: Obra, c: Ctx) {
     const uz = (bz - az) / L;
     const nx = -uz;
     const nz = ux;
-    const W = 3.4;
+    const W = 5.3;
     const q = (s: number, d: number): P2 => [ax + ux * s + nx * d, az + uz * s + nz * d];
     plano(o, Mat.Suelo, [q(-0.6, -W), q(L + 0.6, -W), q(L + 0.6, W), q(-0.6, W)], 0.34, ROJO, 0.5);
     // Bandas oscuras y blancas a los lados de la franja central.
     for (const s of [-1, 1]) {
-      plano(o, Mat.Detalle, [q(0, s * 1.6), q(L, s * 1.6), q(L, s * 1.85), q(0, s * 1.85)], 0.345, C("#3A3634"));
-      plano(o, Mat.Detalle, [q(0, s * 1.4), q(L, s * 1.4), q(L, s * 1.55), q(0, s * 1.55)], 0.346, C("#EDEBE6"));
+      plano(o, Mat.Detalle, [q(0, s * 2.5), q(L, s * 2.5), q(L, s * 2.75), q(0, s * 2.75)], 0.345, C("#3A3634"));
+      plano(o, Mat.Detalle, [q(0, s * 2.3), q(L, s * 2.3), q(L, s * 2.45), q(0, s * 2.45)], 0.346, C("#EDEBE6"));
     }
-    if (o.fino) for (let s = 1; s < L; s += 1.6) for (const d of [-2.6, -0.6, 0.9, 2.7]) {
+    if (o.fino) for (let s = 1; s < L; s += 1.6) for (const d of [-4.0, -1.2, 1.2, 4.0]) {
       const [px, pz] = q(s + (d > 0 ? 0.8 : 0), d);
       plano(o, Mat.Detalle, [[px, pz - 0.12], [px + 0.12, pz], [px, pz + 0.12], [px - 0.12, pz]], 0.347, C("#F2F0EA"));
     }
     // Farolas y maceteros alternos por el eje, terrazas con sombrillas blancas.
     for (let s = 5; s < L - 2; s += 13) {
       const lado = Math.floor(s / 13) % 2 ? 1 : -1;
-      const [fx, fz] = q(s, lado * 1.75);
+      const [fx, fz] = q(s, lado * 2.62);
       enMundo(o, c, 0.34);
       farolaFernandina(o, fx, fz);
-      const [mx, mz] = q(s + 6, -lado * 1.75);
+      const [mx, mz] = q(s + 6, -lado * 2.62);
       macetero(o, mx, mz);
       if (r() < 0.45) {
         const [tx, tz] = q(s + 3, 0);
@@ -391,14 +391,57 @@ function plazaCruzHerrera(o: Obra, c: Ctx) {
 }
 
 /** Construye CENTRO-02/03: edificios sobre huellas OSM, Calle Real y Plaza Cruz Herrera. */
+/** Retranquea hacia dentro las caras que dan a la calle (calles más anchas que en el plano). */
+function retranquear(poli: P2[], todas: P2[][], ocupado: (p: P2) => boolean, d: number): P2[] {
+  const n = poli.length;
+  const cen = centroide(poli);
+  const lineas = poli.map((a, i) => {
+    const b = poli[(i + 1) % n];
+    const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+    let nx = -(b[1] - a[1]) / L;
+    let ny = (b[0] - a[0]) / L;
+    const mx = (a[0] + b[0]) / 2;
+    const my = (a[1] + b[1]) / 2;
+    if (nx * (cen[0] - mx) + ny * (cen[1] - my) > 0) (nx = -nx), (ny = -ny);
+    const fuera: P2 = [mx + nx * 1.3, my + ny * 1.3];
+    const calle = L > 2.2 && !todas.some((t) => t !== poli && dentroPoli(fuera, t)) && !ocupado(fuera);
+    const k = calle ? d : 0;
+    return { a: [a[0] - nx * k, a[1] - ny * k] as P2, b: [b[0] - nx * k, b[1] - ny * k] as P2 };
+  });
+  const res: P2[] = [];
+  for (let i = 0; i < n; i++) {
+    const l1 = lineas[(i + n - 1) % n];
+    const l2 = lineas[i];
+    const d1x = l1.b[0] - l1.a[0], d1y = l1.b[1] - l1.a[1];
+    const d2x = l2.b[0] - l2.a[0], d2y = l2.b[1] - l2.a[1];
+    const den = d1x * d2y - d1y * d2x;
+    if (Math.abs(den) < 1e-6) {
+      res.push(l2.a);
+      continue;
+    }
+    const t = ((l2.a[0] - l1.a[0]) * d2y - (l2.a[1] - l1.a[1]) * d2x) / den;
+    const p: P2 = [l1.a[0] + d1x * t, l1.a[1] + d1y * t];
+    res.push(Math.hypot(p[0] - poli[i][0], p[1] - poli[i][1]) > d * 3 ? l2.a : p);
+  }
+  return res;
+}
+
+let cachePolis: P2[][] | null = null;
+/** Huellas finales (simplificadas y retranqueadas) de CENTRO-02/03. */
+export function solidosCentro02(ocupado: (p: P2) => boolean): P2[][] {
+  if (cachePolis) return cachePolis;
+  const base = HUELLAS_C02.map((h) => simplificar(h.p));
+  cachePolis = base.map((p) => retranquear(p, base, ocupado, 2.2));
+  return cachePolis;
+}
+
 export function construirCentro02(c: Ctx, ocupado: (p: P2) => boolean, fino: boolean) {
   const o = new Obra();
   o.fino = fino;
-  const polis = HUELLAS_C02.map((h) => simplificar(h.p));
+  const polis = solidosCentro02(ocupado);
   HUELLAS_C02.forEach((h, i) => edificio(o, c, h, polis[i], polis, ocupado));
   calleReal(o, c);
   plazaCruzHerrera(o, c);
-  void cierro;
   return o;
 }
 

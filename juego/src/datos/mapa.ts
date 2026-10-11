@@ -51,7 +51,8 @@ export const PENON = { x: geo(-5.3462, 0)[0], yNorte: geo(0, 36.1455)[1], ySur: 
 /* ── Red de calles ──────────────────────────────────────────────────── */
 
 /** Clases de vía: 0 tronco, 1 secundaria, 2 terciaria, 3 residencial, 4 peatonal, 5 servicio, 6 sendero, 7 pista. */
-export const ANCHO_VIA = [11, 9, 7.5, 6, 5.5, 4, 2, 3.5] as const;
+/** Anchos de calzada por clase (algo mayores que los reales para que el juego respire). */
+export const ANCHO_VIA = [14, 12, 10, 8.5, 8.5, 5.5, 2.5, 4.5] as const;
 
 export interface Tramo {
   a: string;
