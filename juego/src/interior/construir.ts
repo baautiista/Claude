@@ -55,6 +55,7 @@ export function abrirConstruccion(v: Vivienda) {
   const zona = h("div", { class: "construir-zona" });
   cuerpo.append(estado, zona);
   esc.mostrarRejilla(paso);
+  esc.verCasaEntera();
 
   const cargarInventario = async () => {
     inventario = await con.llamar<Record<string, number>>("hogarInventario").catch(() => inventario);

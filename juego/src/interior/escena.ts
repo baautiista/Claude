@@ -270,6 +270,14 @@ export class EscenaInterior {
     this.camara.updateProjectionMatrix();
   }
 
+  /** Encuadra la vivienda entera (modo construcción). */
+  verCasaEntera() {
+    if (!this.plano) return;
+    this.libre = true;
+    this.objetivo.set(this.plano.ancho / 2, 0, this.plano.fondo / 2);
+    this.dist = Math.max(13, Math.max(this.plano.ancho, this.plano.fondo) * 1.7);
+  }
+
   /** Fracción de la altura del lienzo tapada por un panel inferior. */
   private tapadoAbajo = 0;
   tapar(fraccion: number) {
