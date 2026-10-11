@@ -1,0 +1,39 @@
+{
+  "nota": "Los límites de barrio NO están en el extracto OSM del juego (fuentes/la-linea.geojson no trae polígonos de barrio). 'ancla' = elemento OSM real que sitúa el barrio, en coordenadas del juego (metros: x hacia el este, y hacia el sur). 'confirmado' = existe ancla OSM; 'por confirmar' = ubicación y límites pendientes de tus capturas.",
+  "fuente": "© colaboradores de OpenStreetMap (ODbL)",
+  "barrios": [
+    { "codigo": "CENTRO", "nombre": "Centro", "ancla": ["Plaza de la Iglesia", 1096, 2130], "estado": "confirmado", "limites": "por confirmar" },
+    { "codigo": "STABARBARA", "nombre": "Santa Bárbara", "ancla": ["Fuerte de Santa Bárbara", 1677, 2232], "estado": "confirmado (por el fuerte)", "limites": "por confirmar" },
+    { "codigo": "SANTIAGO", "nombre": "Santiago", "ancla": ["Parroquia de Santiago Apóstol", 1575, 2126], "estado": "confirmado (por la parroquia)", "limites": "por confirmar" },
+    { "codigo": "VELADA", "nombre": "La Velada", "ancla": ["Parque de La Velada", 1231, 1944], "estado": "confirmado (por el parque)", "limites": "por confirmar" },
+    { "codigo": "SANBERNARDO", "nombre": "San Bernardo", "ancla": ["Parroquia de San Bernardo Abad", 1629, 1744], "estado": "confirmado (por la parroquia)", "limites": "por confirmar" },
+    { "codigo": "SANJOSE", "nombre": "San José", "ancla": ["Parroquia San José", 1385, 1689], "estado": "confirmado (por la parroquia)", "limites": "por confirmar" },
+    { "codigo": "SANPEDRO", "nombre": "San Pedro", "ancla": ["Parroquia de San Pedro Apóstol", 964, 1890], "estado": "confirmado (por la parroquia)", "limites": "por confirmar" },
+    { "codigo": "JUNQUILLOS", "nombre": "Los Junquillos", "ancla": ["Mercado El Junquillo", 878, 1792], "estado": "confirmado (por el mercado)", "limites": "por confirmar" },
+    { "codigo": "ATUNARA", "nombre": "La Atunara", "ancla": ["Lonja del Puerto Pesquero / Playa de La Atunara", 1842, 1159], "estado": "confirmado", "limites": "por confirmar" },
+    { "codigo": "PUNTORIBOT", "nombre": "Punto-Ribot", "ancla": ["Parque Canino de Punto Ribot", 1260, 1326], "estado": "confirmado (por el parque)", "limites": "por confirmar" },
+    { "codigo": "ZABAL", "nombre": "El Zabal", "ancla": ["Polígono Industrial El Zabal", 1221, 897], "estado": "confirmado (por el polígono)", "limites": "por confirmar" },
+    { "codigo": "STAMARGARITA", "nombre": "Santa Margarita", "ancla": ["Parque de Santa Margarita", 1615, -151], "estado": "confirmado (por el parque)", "limites": "por confirmar" },
+    { "codigo": "VENTAMELCHOR", "nombre": "Venta Melchor", "ancla": ["Zona Verde de Venta Melchor", 1875, -325], "estado": "confirmado (por la zona verde)", "limites": "por confirmar" },
+    { "codigo": "ALCAIDESA", "nombre": "La Alcaidesa", "ancla": ["Playa de La Alcaidesa", 3041, -2207], "estado": "confirmado (por la playa; parte puede quedar fuera del mapa actual)", "limites": "por confirmar" },
+    { "codigo": "SANFELIPE", "nombre": "San Felipe", "ancla": null, "estado": "por confirmar", "limites": "por confirmar" },
+    { "codigo": "COLONIA", "nombre": "La Colonia", "ancla": null, "estado": "por confirmar", "limites": "por confirmar" },
+    { "codigo": "MONDEJAR", "nombre": "Mondéjar", "ancla": null, "estado": "por confirmar", "limites": "por confirmar" },
+    { "codigo": "HUERTAFAVA", "nombre": "Huerta Fava", "ancla": null, "estado": "por confirmar", "limites": "por confirmar" },
+    { "codigo": "CONCHAL", "nombre": "El Conchal - El Castillo", "ancla": null, "estado": "por confirmar", "limites": "por confirmar" },
+    { "codigo": "NUEVALINEA", "nombre": "Nueva Línea", "ancla": null, "estado": "por confirmar", "limites": "por confirmar" },
+    { "codigo": "MIRASIERRA", "nombre": "Mirasierra (Las Palomeras)", "ancla": null, "estado": "por confirmar", "limites": "por confirmar" }
+  ],
+  "zonas_singulares": [
+    { "codigo": "FRONTERA", "nombre": "Frontera y acceso a Gibraltar", "ancla": ["Puesto de aduana Frontera de Gibraltar", 1237, 2502] },
+    { "codigo": "PRINCESASOFIA", "nombre": "Parque Princesa Sofía", "ancla": ["Parque Municipal Princesa Sofia", 1419, 2371] },
+    { "codigo": "DEPORTIVA", "nombre": "Estadio Municipal y Ciudad Deportiva", "ancla": ["Estadio Ciudad de La Línea", 1602, 2329], "nota": "En OSM aparece también el Estadio de Atletismo (1616, 2439). Límites de la Ciudad Deportiva por confirmar." },
+    { "codigo": "FUERTE", "nombre": "Fuerte de Santa Bárbara", "ancla": ["Fuerte de Santa Barbara", 1677, 2232] },
+    { "codigo": "PUERTOATUNARA", "nombre": "Puerto de La Atunara", "ancla": ["Lonja del Puerto Pesquero", 1842, 1159] },
+    { "codigo": "LEVANTE", "nombre": "Playa y paseo de Levante", "ancla": ["Playa de Levante", 1756, 1693] },
+    { "codigo": "PONIENTE", "nombre": "Playa y Paseo Marítimo de Poniente", "ancla": ["Paseo Marítimo de Poniente", 568, 1922] },
+    { "codigo": "AVENIDAS", "nombre": "Principales avenidas (Av. de España, Av. del Ejército, Av. 20 de Abril, Av. Príncipe de Asturias, Av. Menéndez Pelayo, Av. María Auxiliadora, Av. de la Banqueta...)", "ancla": null, "nota": "Se reconstruyen por tramos dentro del sector que atraviesan." },
+    { "codigo": "TOROS", "nombre": "Plaza de Toros El Arenal y Museo Taurino", "ancla": ["Plaza de Toros El Arenal", 1306, 1807] },
+    { "codigo": "MARINA", "nombre": "Alcaidesa Marina y Palacio de Congresos", "ancla": ["Palacio de Congresos y Exposiciones", 1061, 2358] }
+  ]
+}
