@@ -32,6 +32,9 @@ export interface Vecino {
   nivel: number;
   x: number;
   y: number;
+  /** Orientación (radianes) y animación que manda el servidor. */
+  r?: number;
+  anim?: string;
   emote?: string;
 }
 
@@ -126,6 +129,8 @@ function entornoCielo(renderer: THREE.WebGLRenderer) {
   pmrem.dispose();
   return tex;
 }
+
+const LIMITE_FPS = Number(new URLSearchParams(location.search).get("fps")) || 0;
 
 const TROZO = 80;
 
@@ -257,7 +262,7 @@ export class Mundo {
   private mallaCabezas!: THREE.InstancedMesh;
   private gaviotas: { g: THREE.Group; c: THREE.Vector3; r: number; v: number; f: number }[] = [];
   private busJugador!: THREE.Group;
-  private vecinos = new Map<string, { g: THREE.Group; e: Etiqueta; meta: THREE.Vector3; emote: Etiqueta }>();
+  private vecinos = new Map<string, { g: THREE.Group; e: Etiqueta; meta: THREE.Vector3; emote: Etiqueta; rot: number | null; anim: string; dicho: Etiqueta | null; dichoT: number }>();
   /** Pantalla de inicio: la cámara sobrevuela la ciudad. */
   modoDemo = false;
   private demoAng = 0;
@@ -1712,11 +1717,13 @@ export class Mundo {
         const g = M.persona(v.piel, v.ropa, "#2B1B12", 0.6);
         g.position.copy(v3(v.x, v.y));
         this.escena.add(g);
-        r = { g, e: this.etiqueta("vecino", "", v3(v.x, v.y, SUELO + 9)), meta: v3(v.x, v.y), emote: this.etiqueta("emote", "", v3(v.x, v.y, SUELO + 13)) };
+        r = { g, e: this.etiqueta("vecino", "", v3(v.x, v.y, SUELO + 9)), meta: v3(v.x, v.y), emote: this.etiqueta("emote", "", v3(v.x, v.y, SUELO + 13)), rot: null, anim: "quieto", dicho: null, dichoT: 0 };
         this.vecinos.set(v.id, r);
       }
       r.e.el.textContent = `${v.nombre} · Nv ${v.nivel}`;
       r.meta.copy(v3(v.x, v.y));
+      r.rot = typeof v.r === "number" ? v.r : null;
+      r.anim = v.anim ?? "quieto";
       r.emote.el.innerHTML = v.emote && esIconoJuego(v.emote) ? iconoJuego(v.emote, 30) : "";
       r.emote.el.style.display = v.emote ? "" : "none";
     }
@@ -1725,9 +1732,46 @@ export class Mundo {
       this.escena.remove(r.g);
       r.e.el.remove();
       r.emote.el.remove();
-      this.etiquetas = this.etiquetas.filter((x) => x !== r.e && x !== r.emote);
+      r.dicho?.el.remove();
+      this.etiquetas = this.etiquetas.filter((x) => x !== r.e && x !== r.emote && x !== r.dicho);
       this.vecinos.delete(id);
     }
+  }
+
+  /** Bocadillo de chat sobre un jugador ("yo" o el id de un vecino) durante unos segundos. */
+  private dichoYo: Etiqueta | null = null;
+  private dichoYoT = 0;
+  bocadillo(quien: string, texto: string) {
+    const crear = () => {
+      const e = this.etiqueta("burbuja dicho", "", new THREE.Vector3());
+      e.el.style.pointerEvents = "none";
+      return e;
+    };
+    if (quien === "yo") {
+      this.dichoYo ??= crear();
+      this.dichoYo.el.textContent = texto;
+      delete this.dichoYo.el.dataset.w;
+      this.dichoYoT = performance.now();
+      return;
+    }
+    const r = this.vecinos.get(quien);
+    if (!r) return;
+    r.dicho ??= crear();
+    r.dicho.el.textContent = texto;
+    delete r.dicho.el.dataset.w;
+    r.dichoT = performance.now();
+  }
+
+  /** Orientación actual del personaje (para enviarla a los demás). */
+  get rotJugador() {
+    return (this.enBus ? this.busJugador : this.jugador).rotation.y;
+  }
+
+  /** Coloca al personaje en un punto del mapa (teletransporte por invitación). */
+  colocarEn(x: number, y: number) {
+    this.camino = [];
+    this.jugador.position.copy(v3(x, y));
+    this.objetivoCam.copy(v3(x, y));
   }
 
   /** Posición del jugador en coordenadas del mapa (para enviarla a los demás). */
@@ -2284,6 +2328,7 @@ export class Mundo {
   private tAvion = 25;
 
   private msFotograma = 16;
+  private ultimoDibujo = 0;
   private fotograma() {
     const crudo = this.reloj.getDelta();
     this.msFotograma = this.msFotograma * 0.9 + crudo * 1000 * 0.1;
@@ -2386,12 +2431,29 @@ export class Mundo {
       gv.g.children[1].rotation.z = -aleteo;
     }
     // Vecinos conectados: se deslizan hacia su última posición.
+    // Interpolación: posición suave hacia la última recibida; giro por la orientación enviada.
     for (const r of this.vecinos.values()) {
       const d = r.meta.clone().sub(r.g.position);
-      if (d.length() > 0.3) r.g.rotation.y = Math.atan2(d.x, d.z);
-      r.g.position.lerp(r.meta, 1 - Math.pow(0.05, dt));
+      const lejos = d.length();
+      if (lejos > 60) r.g.position.copy(r.meta);
+      const objetivo = r.rot ?? (lejos > 0.3 ? Math.atan2(d.x, d.z) : r.g.rotation.y);
+      let giro = objetivo - r.g.rotation.y;
+      giro = Math.atan2(Math.sin(giro), Math.cos(giro));
+      r.g.rotation.y += giro * (1 - Math.pow(0.001, dt));
+      r.g.position.lerp(r.meta, 1 - Math.pow(0.02, dt));
+      const andando = r.anim === "andar" || lejos > 0.4;
+      r.g.position.y = SUELO + (andando ? Math.abs(Math.sin(t * 9)) * 0.35 : 0);
+      r.g.rotation.z = andando ? Math.sin(t * 9) * 0.06 : 0;
       r.e.pos.copy(r.g.position).setY(SUELO + 9);
       r.emote.pos.copy(r.g.position).setY(SUELO + 13);
+      if (r.dicho) {
+        r.dicho.pos.copy(r.g.position).setY(SUELO + 15);
+        r.dicho.el.style.display = performance.now() - r.dichoT < 6000 ? "" : "none";
+      }
+    }
+    if (this.dichoYo) {
+      this.dichoYo.pos.copy((this.enBus ? this.busJugador : this.jugador).position).setY(SUELO + 15);
+      this.dichoYo.el.style.display = performance.now() - this.dichoYoT < 6000 ? "" : "none";
     }
     // Pantalla de inicio: sobrevuelo lento alrededor de la Plaza de la Iglesia.
     if (this.modoDemo) {
@@ -2496,6 +2558,9 @@ export class Mundo {
     viento.tiempo.value = performance.now() / 1000;
     viento.fuerza.value = this.viento === "levanteFuerte" ? 2.4 : this.viento === "levante" ? 1.5 : this.viento === "calma" ? 0.35 : 0.85;
     this.actualizarDetalle();
+    // ?fps=N limita los fotogramas dibujados (pruebas con varios navegadores en un equipo).
+    if (LIMITE_FPS && performance.now() - this.ultimoDibujo < 1000 / LIMITE_FPS) return;
+    this.ultimoDibujo = performance.now();
     this.composer.render(dt);
     this.moverEtiquetas(dt);
   }

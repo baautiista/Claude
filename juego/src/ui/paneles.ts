@@ -4,6 +4,7 @@ import { PERSONAJES, type PersonajeId } from "../datos/personajes";
 import { borrar, limitar, nivelAmistad, quitar, VIENTOS } from "../estado";
 import * as historia from "../historia";
 import type { Juego } from "../juego";
+import { con } from "../red/conexion";
 import { h, html } from "./dom";
 import { retrato } from "./retrato";
 import { alternarSonido, sonido, sonidoActivo } from "./sonido";
@@ -81,6 +82,28 @@ export function abrirDiario(j: Juego) {
   );
 }
 
+/** Salas (servidores) de la ciudad, con su ocupación. */
+function salas(j: Juego) {
+  const caja = h("div", { class: "calidad" }, h("p", { class: "vacio" }, "Cargando salas…"));
+  void con.llamar<{ nombre: string; jugadores: number; capacidad: number }[]>("salas").then((lista) =>
+    caja.replaceChildren(...lista.map((s) => h("button", {
+      "aria-pressed": String(con.sala === s.nombre),
+      disabled: s.jugadores >= s.capacidad && con.sala !== s.nombre,
+      onclick: async () => {
+        try {
+          await con.llamar("unirseSala", { sala: s.nombre });
+          con.sala = s.nombre;
+          sonido("bien");
+          j.cerrar();
+          j.aviso(`Ahora juegas en <b>${s.nombre}</b>`);
+        } catch (e) {
+          j.aviso((e as Error).message);
+        }
+      },
+    }, h("b", {}, s.nombre), h("small", {}, `${s.jugadores}/${s.capacidad} jugadores`)))));
+  return caja;
+}
+
 /** Botón con confirmación en dos toques (el visor no admite confirm()). */
 function nuevaPartida() {
   let armado = false;
@@ -94,7 +117,8 @@ function nuevaPartida() {
       return;
     }
     borrar();
-    window.dispatchEvent(new Event("mi-linea:portada"));
+    // Con servidor también se vacía la partida guardada en la cuenta (el dinero y las casas siguen).
+    void con.llamar("guardarPartida", { partida: null }).catch(() => {}).finally(() => window.dispatchEvent(new Event("mi-linea:portada")));
   });
   pintar();
   return b;
@@ -113,8 +137,17 @@ export function abrirMenu(j: Juego) {
   const pintarCalidad = () => calidad.replaceChildren(...niveles.map(([id, t, sub]) =>
     h("button", { "aria-pressed": String(j.mundo.calidad() === id), onclick: () => { j.mundo.calidad(id); sonido("toque"); pintarCalidad(); } }, h("b", {}, t), h("small", {}, sub))));
   pintarCalidad();
+  const cuenta = con.modo === "servidor" && con.perfil
+    ? [
+        h("div", { class: "seccion-titulo" }, "Cuenta y servidor"),
+        h("p", { class: "desc" }, `Conectado como ${con.perfil.usuario} en ${con.sala}. Tu partida, tu dinero y tus casas se guardan en el servidor.`),
+        salas(j),
+        h("div", { class: "acciones" }, j.boton({ icono: "cerrar", titulo: "Cerrar sesión", sub: "Para entrar con otra cuenta", fn: async () => { j.guardarTodo(true); await con.salir(); window.dispatchEvent(new Event("mi-linea:portada")); } })),
+      ]
+    : [h("div", { class: "seccion-titulo" }, "Cuenta"), h("p", { class: "desc" }, "Juegas sin servidor: la partida se guarda en este navegador. Abre el juego desde el servidor de Mi Línea para tener cuenta, amigos y casas compartidas.")];
   j.hoja(
     "AJUSTES", "Mi Línea",
+    ...cuenta,
     h("div", { class: "seccion-titulo" }, "Calidad gráfica"),
     calidad,
     h("div", { class: "seccion-titulo" }, "Partida"),

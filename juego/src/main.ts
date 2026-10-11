@@ -1,10 +1,10 @@
 import "./estilos.css";
 import logo from "./assets/marca/logo.png";
-import { cargar, nuevaPartida, type Trato } from "./estado";
+import { cargar, nuevaPartida, type Estado, type Trato } from "./estado";
+import { con } from "./red/conexion";
 import { intro } from "./historia";
 import { Juego } from "./juego";
 import { Mundo } from "./mundo/mundo";
-import { red } from "./red";
 import { h } from "./ui/dom";
 import { retrato } from "./ui/retrato";
 import { sonido } from "./ui/sonido";
@@ -22,17 +22,68 @@ app.replaceChildren(canvas, rotulos, capa);
 const mundo = new Mundo(canvas as HTMLCanvasElement, rotulos);
 mundo.modoDemo = true;
 mundo.volarA(720);
-void red.iniciar().then(() => contarVecinos());
-
 const enLinea = h("span", { class: "en-linea" }, "Conectando…");
-function contarVecinos() {
-  const n = red.conectados;
-  enLinea.textContent = red.modo === "solo" ? "Un jugador" : n ? `${n + 1} jugando ahora` : "En línea";
-}
-red.onCambio = contarVecinos;
+const contarVecinos = () => {
+  enLinea.textContent = con.modo === "servidor" ? (con.conectado ? `Servidor · ${con.sala}` : "Reconectando…") : "Sin servidor";
+};
+con.on("conexion", contarVecinos);
 
-function portada() {
-  const guardada = cargar();
+/** Partida del jugador con sesión: la del servidor (con su saldo) o la del dispositivo. */
+async function partidaDeCuenta(): Promise<Estado | null> {
+  const r = await con.llamar<{ partida: Estado | null; dinero: number }>("cargarPartida").catch(() => null);
+  if (!r?.partida) return null;
+  r.partida.dinero = r.dinero;
+  return r.partida;
+}
+
+/** Arranque: modo servidor (cuentas) o local (cuenta automática en este navegador). */
+async function arrancar() {
+  await con.iniciar();
+  contarVecinos();
+  if (con.modo === "servidor") {
+    const perfil = await con.sesionGuardada();
+    if (!perfil) return acceso();
+  }
+  portada();
+}
+
+function acceso(error = "", registro = false) {
+  const usuario = h("input", { type: "text", maxlength: 24, placeholder: "Usuario", autocomplete: "username", "aria-label": "Usuario" }) as HTMLInputElement;
+  const clave = h("input", { type: "password", maxlength: 128, placeholder: "Contraseña", autocomplete: registro ? "new-password" : "current-password", "aria-label": "Contraseña" }) as HTMLInputElement;
+  const aviso = h("p", { class: "error-form", role: "alert" }, error);
+  const enviar = async () => {
+    aviso.textContent = "";
+    try {
+      if (registro) await con.registrar(usuario.value, clave.value, usuario.value, ROPAS[0], PIELES[1]);
+      else await con.entrar(usuario.value, clave.value);
+      sonido("bien");
+      portada();
+    } catch (e) {
+      sonido("mal");
+      aviso.textContent = (e as Error).message;
+    }
+  };
+  clave.addEventListener("keydown", (ev) => ev.key === "Enter" && void enviar());
+  capa.replaceChildren(
+    h("div", { class: "pantalla portada" },
+      h("div", { class: "marca" }, h("img", { src: logo, alt: "InfoLinense" }), enLinea),
+      h("div", { class: "logo-juego" }, h("span", { class: "sobre" }, "TEMPORADA 1"), h("h1", { html: "Mi <span>Línea</span>" }), h("p", {}, "Tu cuenta guarda tu casa, tu dinero y tus amigos")),
+      h("div", { class: "espacio" }),
+      h("section", { class: "tarjeta-crear acceso", role: "dialog", "aria-label": registro ? "Crear cuenta" : "Entrar" },
+        h("div", { class: "hoja-cabeza" }, h("div", {}, h("span", { class: "etiqueta" }, registro ? "NUEVA CUENTA" : "BIENVENIDO"), h("h2", {}, registro ? "Crea tu cuenta" : "Entra en La Línea"))),
+        h("div", { class: "campo" }, h("label", {}, "Usuario"), usuario),
+        h("div", { class: "campo" }, h("label", {}, "Contraseña"), clave),
+        aviso,
+        h("button", { class: "boton", onclick: () => void enviar() }, registro ? "Crear cuenta" : "Entrar"),
+        h("button", { class: "boton secundario", onclick: () => acceso("", !registro) }, registro ? "Ya tengo cuenta" : "Crear una cuenta nueva"),
+      ),
+    ),
+  );
+  usuario.focus();
+}
+
+async function portada() {
+  const guardada = con.modo === "servidor" ? await partidaDeCuenta() : cargar();
   capa.replaceChildren(
     h(
       "div", { class: "pantalla portada" },
@@ -46,8 +97,11 @@ function portada() {
       h("div", { class: "espacio" }),
       h(
         "div", { class: "botones" },
-        guardada ? h("button", { class: "boton", onclick: () => { sonido("bien"); jugar(guardada); } }, `Continuar · Día ${guardada.dia}`) : null,
+        guardada ? h("button", { class: "boton", onclick: () => { sonido("bien"); void jugar(guardada); } }, `Continuar · Día ${guardada.dia}`) : null,
         h("button", { class: `boton${guardada ? " secundario" : ""}`, onclick: () => { sonido("toque"); crear(); } }, guardada ? "Nueva partida" : "Jugar"),
+        con.perfil && con.modo === "servidor"
+          ? h("button", { class: "enlace", onclick: async () => { await con.salir(); acceso(); } }, `Conectado como ${con.perfil.usuario} · cambiar de cuenta`)
+          : null,
       ),
       h("p", { class: "pie" }, "Un juego de InfoLinense · Mapa © colaboradores de OpenStreetMap"),
     ),
@@ -78,10 +132,15 @@ function crear() {
   pintar();
   const empezar = h("button", {
     class: "boton",
-    onclick: () => {
+    onclick: async () => {
       const n = nombre.value.trim() || (trato === "a" ? "Lucía" : "Álex");
       const e = nuevaPartida(n, trato, piel, ropa);
-      jugar(e, true);
+      if (con.modo === "servidor") {
+        // El aspecto queda en la cuenta; el dinero es el de la cuenta.
+        await con.llamar("aspecto", { nombre: n, ropa, piel }).catch(() => {});
+        e.dinero = con.perfil?.dinero ?? e.dinero;
+      }
+      void jugar(e, true);
     },
   }, "Coger el autobús a La Línea");
   capa.replaceChildren(
@@ -111,10 +170,17 @@ function crear() {
   );
 }
 
-async function jugar(e: ReturnType<typeof nuevaPartida>, nueva = false) {
+async function jugar(e: Estado, nueva = false) {
+  // Sin servidor: cuenta local automática (respeta el dinero de partidas anteriores).
+  if (con.modo === "local") {
+    const p = await con.cuentaLocal(e.nombre, e.ropa, e.piel, nueva ? undefined : e.dinero);
+    e.dinero = p.dinero;
+  }
+  e.xp = Math.max(e.xp ?? 0, con.perfil?.xp ?? 0);
   const j = new Juego(e, app, { mundo, canvas, rotulos });
+  j.guardarTodo(true);
   if (nueva) await intro(j);
 }
 
 window.addEventListener("mi-linea:portada", () => location.reload());
-portada();
+void arrancar();

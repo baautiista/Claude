@@ -37,6 +37,27 @@ Juego narrativo para móvil ambientado en La Línea de la Concepción. Mezcla la
 
 La partida se guarda sola en el dispositivo.
 
+## Servidor multijugador
+
+El juego funciona de dos maneras:
+
+- **Con servidor** (recomendado): cuentas con usuario y contraseña, ciudad compartida, amigos, chat, invitaciones y una economía que valida el servidor. Se juega abriendo la dirección del servidor en el navegador.
+- **Sin servidor** (enlace de claude.ai o sin conexión): el mismo código de autoridad corre en el navegador sobre localStorage; la presencia de otros jugadores llega por la sala de claude.ai o entre pestañas.
+
+```bash
+npm run build        # compila el juego (dist/)
+npm run servidor     # http://localhost:8787 · datos en ./datos/mi-linea.db (SQLite)
+npm run pruebas      # pruebas automáticas contra un servidor real con base de datos temporal
+```
+
+**Despliegue** (Railway, Fly.io, Render, un VPS…): con el `Dockerfile` incluido. Monta un volumen en `/datos` para que la base de datos sobreviva a los reinicios. Variables: `PORT` (8787) y `DATOS` (ruta del fichero SQLite). Requiere Node 22 o superior (usa `node:sqlite` y TypeScript nativo; sin dependencias compiladas). Un cliente servido desde otro sitio puede apuntar al servidor con `?servidor=https://tu-servidor`.
+
+**Qué valida el servidor:** sesiones (tokens de 30 días, contraseñas con scrypt), cada cambio de saldo en una transacción con su anotación en el libro de operaciones (`operaciones`), saldo nunca negativo, transferencias atómicas, ingresos de actividades locales solo por motivos conocidos y con tope por operación y por día, mercadillo con cobro y pago en una sola transacción, experiencia que no puede saltar de golpe, ritmo máximo de peticiones y de chat, bloqueos (ni se ven ni se escriben) y denuncias.
+
+**Límite conocido:** las actividades que todavía se simulan en el cliente (cosechas, cocina, barca, puesto) solo están acotadas por topes; las de las fases siguientes (viviendas, reformas, oficios) se calculan en el servidor.
+
+**Tiempo real:** WebSocket en `/ws`; cada jugador envía su posición, orientación y animación (máx. 20/s) y recibe 10 veces por segundo a los de su escena (ciudad de su sala o interior de una casa), con interpolación en el cliente. Tres salas de 40 jugadores.
+
 ## Desarrollo
 
 ```bash
@@ -55,7 +76,12 @@ src/
   estado.ts             partida, reloj, viento, necesidades, encargos y guardado
   historia.ts           capítulo 1: objetivos, escenas y decisiones
   juego.ts              bucle principal: HUD, dock, autobús, diálogos, desplazamientos
-  red.ts                multijugador: presencia (room), ranking y mercadillo (db), identidad (user)
+  compartido/           autoridad del juego (la ejecutan el servidor y el modo sin servidor)
+  red/conexion.ts       conexión cliente: servidor por WebSocket o servicio local
+  economia.ts           cobros y pagos confirmados por la autoridad
+  red.ts                presencia sin servidor (sala de claude.ai o pestañas)
+servidor/               HTTP + WebSocket + SQLite
+pruebas/                pruebas automáticas por fases
   mundo/mundo.ts        mundo 3D: terreno, ciudad, cámara, gestos, niveles de detalle, calidad
   mundo/arquitectura.ts edificios detallados (escritor de geometría por materiales)
   mundo/mobiliario.ts   aceras, bordillos, mobiliario urbano, coches aparcados, terrazas

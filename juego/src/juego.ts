@@ -6,7 +6,8 @@ import {
 import * as historia from "./historia";
 import { esIconoJuego, iconoJuego, iconoSvg, type IconoJuego } from "./iconos";
 import { ruta } from "./mapa/rutas";
-import { red } from "./red";
+import { conectarEconomia, pagar, sincronizarSaldo } from "./economia";
+import { con } from "./red/conexion";
 import { Mundo, type FichaEdificio, type Tocable } from "./mundo/mundo";
 import { h, html, esc } from "./ui/dom";
 import { abrirBancal, abrirBarca, abrirCocina, abrirPuesto, accionesLugar, tablon, type Accion } from "./ui/lugares";
@@ -67,28 +68,112 @@ export class Juego {
       h("button", { class: "relieve", "aria-label": "Acercar", onclick: () => this.mundo.zoom(0.75) }, "+"),
       h("button", { class: "relieve", "aria-label": "Alejar", onclick: () => this.mundo.zoom(1.33) }, "−"),
     ));
-    red.onCambio = () => this.refrescarVecinos();
+    this.conectarRed();
     this.arrancarReloj();
     this.refrescar();
-    if (import.meta.env.DEV) (window as unknown as { __mi: Juego }).__mi = this;
+    if (import.meta.env.DEV || location.search.includes("depurar")) Object.assign(window, { __mi: this, __con: con });
   }
 
-  /** Jugadores conectados en el mapa y mi posición para ellos. */
+  /* ── Multijugador ─────────────────────────────────────────────────── */
+
   emote: { e: string; t: number } | null = null;
+  /** Chat de la escena y mensajes sin leer (para el panel de Vecinos). */
+  chatPublico: { de: string; nombre: string; texto: string; hora: number }[] = [];
+  sinLeer = 0;
+  private quitarOyentes: (() => void)[] = [];
+
+  private conectarRed() {
+    conectarEconomia((t) => this.aviso(t), () => this.refrescarHud());
+    void sincronizarSaldo(this.e);
+    const on = (ev: string, fn: (m: Record<string, unknown>) => void) => this.quitarOyentes.push(con.on(ev, fn));
+    on("jugadores", () => this.mundo.vecinosConectados(con.vecinos()));
+    on("saldo", (m) => {
+      this.e.dinero = Number(m.dinero);
+      this.refrescarHud();
+    });
+    on("chat", (m) => {
+      const msg = { de: String(m.de), nombre: String(m.nombre), texto: String(m.texto), hora: Number(m.hora) };
+      this.chatPublico.push(msg);
+      if (this.chatPublico.length > 80) this.chatPublico.shift();
+      this.mundo.bocadillo(msg.de === con.jugador ? "yo" : msg.de, msg.texto);
+      if (msg.de !== con.jugador) this.contarSinLeer(1);
+      this.vivoChat?.();
+    });
+    on("privado", (m) => {
+      this.contarSinLeer(1);
+      this.notificar(`<b>${esc(String(m.nombre))}</b> te escribe: ${esc(String(m.texto)).slice(0, 80)}`, [["Responder", () => abrirVecinos(this, "chat", String(m.de))]]);
+      this.vivoChat?.();
+    });
+    on("amistad", (m) => this.notificar(`<b>${esc(String(m.nombre))}</b> quiere ser tu amigo.`, [
+      ["Aceptar", () => void con.llamar("aceptarAmistad", { de: m.de }).then(() => this.aviso("¡Ahora sois amigos!"))],
+      ["Más tarde", () => {}],
+    ]));
+    on("amistadAceptada", (m) => this.aviso(`<b>${esc(String(m.nombre))}</b> ha aceptado tu amistad.`));
+    on("invitacion", (m) => this.notificar(
+      `<b>${esc(String(m.nombre))}</b> te invita a ${m.tipo === "visita" ? "visitar su casa" : "ir con él o ella"}.`,
+      [["Ir", () => void con.llamar("responderInvitacion", { id: m.id, acepta: true }).catch((e) => this.aviso((e as Error).message))],
+        ["No, gracias", () => void con.llamar("responderInvitacion", { id: m.id, acepta: false })]],
+    ));
+    on("invitacionRespondida", (m) => this.aviso(`<b>${esc(String(m.nombre))}</b> ${m.acepta ? "viene de camino" : "no puede ahora"}.`));
+    on("vendido", (m) => this.aviso(`Has vendido <b>${m.cantidad} ${esc(String(m.objeto))}</b> en el mercadillo por ${m.precio} €.`));
+    on("teletransporte", (m) => {
+      this.cerrar();
+      this.e.nodo = nodoCercano([Number(m.x), Number(m.y)]);
+      this.mundo.colocarEn(Number(m.x), Number(m.y));
+      this.emitirEscena?.(String(m.escena));
+      this.aviso("Te has reunido con tu amigo.");
+    });
+    on("conexion", (m) => {
+      this.hud.classList.toggle("sin-red", !m.conectado);
+      if (m.conectado) void sincronizarSaldo(this.e);
+    });
+  }
+
+  /** Para la fase de viviendas: entrar en una escena interior al teletransportarse. */
+  emitirEscena: ((escena: string) => void) | null = null;
+  vivoChat: (() => void) | null = null;
+
+  contarSinLeer(n: number) {
+    this.sinLeer = n === 0 ? 0 : this.sinLeer + n;
+    this.refrescarVecinos();
+  }
+
+  /** Aviso con botones (invitaciones, solicitudes, mensajes). */
+  notificar(texto: string, botones: [string, () => void][]) {
+    sonido("toque");
+    const caja = h("div", { class: "notificacion", role: "alert" }, h("p", { html: texto }));
+    const fila = h("div", { class: "fila" });
+    for (const [t, fn] of botones) fila.append(h("button", { class: fila.children.length ? "secundario" : "", onclick: () => { caja.remove(); fn(); } }, t));
+    caja.append(fila);
+    this.raiz.append(caja);
+    setTimeout(() => caja.remove(), 30000);
+  }
+
+  /** Envía mi posición (10 veces por segundo como mucho) y pinta el contador de vecinos. */
   refrescarVecinos() {
-    this.mundo.vecinosConectados(red.vecinos());
     const [x, y] = this.mundo.posicionJugador;
     const emote = this.emote && Date.now() - this.emote.t < 4000 ? this.emote : null;
-    red.publicar({ nombre: this.e.nombre, ropa: this.e.ropa, piel: this.e.piel, nivel: nivel(this.e), x, y, emote: emote?.e, emoteT: emote?.t });
+    con.mover(x, y, this.mundo.rotJugador, this.mundo.enBus ? "bus" : this.mundo.andando ? "andar" : "quieto", { nombre: this.e.nombre, ropa: this.e.ropa, piel: this.e.piel, nivel: nivel(this.e), gesto: emote?.e, gestoT: emote?.t });
     this.botonVecinos.querySelector(".punto")?.remove();
-    if (red.conectados) this.botonVecinos.querySelector(".bola")!.append(h("span", { class: "punto" }, red.conectados));
+    const n = this.sinLeer || con.remotos.length;
+    if (n) this.botonVecinos.querySelector(".bola")!.append(h("span", { class: `punto${this.sinLeer ? " rosa" : ""}` }, n));
   }
 
   saludar(emote: string) {
     this.emote = { e: emote, t: Date.now() };
-    this.mundo.vecinosConectados([...red.vecinos()]);
+    con.gesto(emote);
     this.mundo.flotante(esIconoJuego(emote) ? iconoJuego(emote, 34) : "", "yo");
     this.refrescarVecinos();
+  }
+
+  private guardadoRemoto = 0;
+  /** La partida se guarda en el dispositivo y en la autoridad (el dinero lo pone ella). */
+  guardarTodo(forzar = false) {
+    guardar(this.e);
+    const ahora = Date.now();
+    if (!forzar && ahora - this.guardadoRemoto < 15000) return;
+    this.guardadoRemoto = ahora;
+    void con.llamar("guardarPartida", { partida: this.e }).catch(() => {});
   }
 
   /* ── Reloj continuo: 1 s real = 1 min de juego ─────────────────────── */
@@ -106,22 +191,22 @@ export class Juego {
         acumulado += seg;
         guardado += seg;
         this.mundo.sincronizar(this.e);
+        this.refrescarVecinos();
         if (acumulado >= 1) {
           acumulado = 0;
           this.revisarNivel();
           this.refrescarHud();
-          this.refrescarVecinos();
-          if (++this.segundos % 60 === 1) void red.guardarRanking(this.e.nombre, nivel(this.e), this.e.xp ?? 0, this.e.dia);
+          ++this.segundos;
           this.vivo?.();
           if (esMadrugada(this.e)) void this.revisarHora();
         }
         if (guardado >= 5) {
           guardado = 0;
-          guardar(this.e);
+          this.guardarTodo();
         }
       }
     };
-    setInterval(tic, 200);
+    setInterval(tic, 100);
   }
 
   /** Toque en el mundo: si estás lejos, vas andando y luego actúas. */
@@ -249,7 +334,7 @@ export class Juego {
         "div", { class: "recursos" },
         dinero,
         h("button", { class: `pill${e.viento === "levanteFuerte" ? " rosa" : ""}`, onclick: () => this.verTiempo(), "aria-label": "Hora y tiempo" }, h("span", { class: "reloj", html: iconoJuego("reloj", 22) }), `Día ${e.dia} · ${hora(e)}`),
-        h("span", { class: "pill fina", title: "Jugadores conectados" }, h("span", { class: "reloj", html: iconoJuego("gente", 20) }), `${red.conectados + 1} en línea`),
+        h("span", { class: "pill fina", title: "Jugadores conectados" }, h("span", { class: "reloj", html: iconoJuego("gente", 20) }), `${con.remotos.length + 1} en línea`),
       ),
       h("button", { class: "ajustes relieve", "aria-label": "Ajustes", onclick: () => !this.mundo.andando && abrirMenu(this) }, html(iconoSvg("ajustes", 20))),
     );
@@ -347,11 +432,11 @@ export class Juego {
     );
   }
 
-  viajarEnBus(lugar: LugarId) {
+  async viajarEnBus(lugar: LugarId) {
     if (this.e.dinero < 1 || this.mundo.andando || this.mundo.enBus) return;
     const destino = LUGARES[lugar].nodo;
     this.cerrar();
-    this.e.dinero -= 1;
+    if (!(await pagar(this.e, 1, "billete", `Autobús a ${LUGARES[lugar].nombre}`))) return;
     const r = ruta(this.e.nodo, destino);
     sonido("bien");
     const cartel = h("div", { class: "en-bus", role: "status" }, html(iconoSvg("bus", 18)), `Próxima parada: ${LUGARES[lugar].nombre}`);

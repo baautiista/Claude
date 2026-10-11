@@ -9,6 +9,8 @@
     "noUnusedParameters": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "types": ["vite/client"]
   },
   "include": ["src"]

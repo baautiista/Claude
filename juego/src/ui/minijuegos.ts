@@ -1,3 +1,4 @@
+import { cobrar } from "../economia";
 import { OBJETOS, type ObjetoId } from "../datos/objetos";
 import { amistad, dar, ganarXP, publicar, reputacion } from "../estado";
 import * as historia from "../historia";
@@ -9,7 +10,7 @@ import { sonido } from "./sonido";
 
 async function terminarTurno(j: Juego, pago: number, botin: Partial<Record<ObjetoId, number>>, energia: number, resumen: string) {
   const e = j.e;
-  e.dinero += pago;
+  void cobrar(e, pago, "jornada", "Jornada de trabajo");
   for (const [id, n] of Object.entries(botin) as [ObjetoId, number][]) if (n > 0) dar(e, id, n);
   e.turnoDia = e.dia;
   e.turnos += 1;

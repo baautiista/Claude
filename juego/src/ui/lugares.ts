@@ -1,3 +1,4 @@
+import { cobrar, pagar } from "../economia";
 import type { LugarId } from "../datos/mapa";
 import { CULTIVOS, OBJETOS, RECETAS, SALIDAS, TIENDAS, type CultivoId, type ObjetoId, type SalidaId } from "../datos/objetos";
 import { PERSONAJES } from "../datos/personajes";
@@ -160,8 +161,8 @@ function tienda(j: Juego, lugar: LugarId, precios: Partial<Record<ObjetoId, numb
   return (Object.entries(precios) as [ObjetoId, number][]).map(([id, precio]) => ({
     icono: bola(id), titulo: OBJETOS[id].nombre, sub: `${sub} · tienes ${cuantos(j.e, id)}`, precio: `${precio} €`,
     desactivada: cierre || (j.e.dinero < precio && "No te llega el dinero."),
-    fn: () => {
-      j.e.dinero -= precio;
+    fn: async () => {
+      if (!(await pagar(j.e, precio, "semillas", OBJETOS[id].nombre))) return;
       dar(j.e, id);
       sonido("moneda");
       j.refrescar();
@@ -172,7 +173,7 @@ function tienda(j: Juego, lugar: LugarId, precios: Partial<Record<ObjetoId, numb
 
 async function comer(j: Juego, precio: number, comida: number, energia: number, social: number, texto: string, animo = 0) {
   const e = j.e;
-  e.dinero -= precio;
+  if (!(await pagar(e, precio, "compra", "Comida"))) return;
   e.comida = limitar(e.comida + comida);
   e.energia = limitar(e.energia + energia);
   e.social = limitar(e.social + social);
@@ -413,7 +414,7 @@ export function abrirPuesto(j: Juego) {
         ? h("button", {
             class: "boton",
             onclick: () => {
-              e.dinero += e.cajaPuesto;
+              void cobrar(e, e.cajaPuesto, "puesto", "Caja del puesto 14");
               ganarXP(e, Math.ceil(e.cajaPuesto / 4));
               j.mundo.flotante(`+${e.cajaPuesto} €`, j.mundo.posDe("puesto"));
               e.cajaPuesto = 0;
@@ -438,7 +439,7 @@ function vender(j: Juego) {
             icono: bola(id), titulo: OBJETOS[id].nombre, sub: `Tienes ${cuantos(e, id)}`, precio: `${precioVenta(e, id)} €`,
             fn: () => {
               quitar(e, id);
-              e.dinero += precioVenta(e, id);
+              void cobrar(e, precioVenta(e, id), "venta", OBJETOS[id].nombre);
               reputacion(e, "centro", 0.5);
               sonido("moneda");
               j.refrescar();
@@ -465,7 +466,7 @@ export function tablon(j: Juego) {
         desactivada: tiene(e, p.pide) ? false : `Te falta: ${lista(p.pide)}.`,
         fn: () => {
           for (const [id, n] of Object.entries(p.pide) as [ObjetoId, number][]) quitar(e, id, n);
-          e.dinero += p.paga;
+          void cobrar(e, p.paga, "encargo", `Encargo de ${quien.nombre}`);
           ganarXP(e, 8);
           amistad(e, p.de, 8);
           reputacion(e, quien.barrio, 4);

@@ -1,3 +1,4 @@
+import { pagar } from "./economia";
 import type { LugarId } from "./datos/mapa";
 import { PERSONAJES, type PersonajeId } from "./datos/personajes";
 import {
@@ -150,7 +151,7 @@ export function acciones(j: Juego, lugar: LugarId): Accion[] {
       icono: "mercado", titulo: "Reabrir el puesto 14", sub: "Licencia y puesta a punto", precio: "30 €", historia: true,
       desactivada: !abierto(j, "mercado") ? "El Mercado abre de 8:00 a 15:00." : e.dinero < 30 ? `Te faltan ${30 - e.dinero} €. Trabaja o entrega encargos del tablón.` : false,
       fn: async () => {
-        e.dinero -= 30;
+        if (!(await pagar(e, 30, "historia", "Licencia del puesto 14"))) return;
         e.flags.puesto = true;
         sonido("bien");
         await j.decir(
