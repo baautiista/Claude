@@ -121,12 +121,14 @@ export class Conexion {
     const param = new URLSearchParams(location.search).get("servidor");
     const base = param ?? (location.protocol.startsWith("http") ? location.origin : "");
     if (base) {
-      // Tres intentos: con el equipo ocupado (carga de la ciudad) la primera respuesta puede tardar.
-      for (let intento = 0; intento < 3; intento++) {
+      // Varios intentos: con el equipo ocupado (carga de la ciudad) la primera respuesta puede tardar.
+      // Con ?servidor= explícito se insiste más: nunca se cae en silencio al modo local.
+      const intentos = param ? 8 : 4;
+      for (let intento = 0; intento < intentos; intento++) {
         try {
           const r = await Promise.race([
             fetch(`${base.replace(/^ws/, "http")}/api/salud`, { cache: "no-store" }),
-            new Promise<never>((_, ko) => setTimeout(() => ko(new Error("tiempo")), 3000 + intento * 2000)),
+            new Promise<never>((_, ko) => setTimeout(() => ko(new Error("tiempo")), 4000 + intento * 2000)),
           ]);
           if (!r.ok || !(r.headers.get("content-type") ?? "").includes("json")) break;
           const salud = (await r.json()) as { servidor?: string };

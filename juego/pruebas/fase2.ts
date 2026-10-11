@@ -101,6 +101,10 @@ export async function fase2(srv: Servidor) {
       }
     return false;
   });
+  await inf.caso("Decorar da experiencia (decoración libre)", async () => {
+    const r = await a.llamar("hogarInterior", { id: casa });
+    return (r.interior.hechas.decoracion ?? 0) >= 1;
+  });
   await inf.caso("Colisión: dos muebles en el mismo sitio rechazado", async () => {
     const m = interior.muebles.find((x: any) => x.tipo === "maceta");
     return (await a.intentar("hogarColocar", { id: casa, tipo: "maceta", x: m.x, z: m.z, rot: 0, comprar: true })).codigo === "colocacion";
