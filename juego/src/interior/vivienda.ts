@@ -176,6 +176,7 @@ export class Vivienda {
       h("button", { class: "relieve", "aria-label": "Girar a la derecha", onclick: () => this.escena.girar(1), html: ico('<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>') }),
       h("button", { class: "relieve", "aria-label": "Acercar", onclick: () => this.escena.zoom(0.8) }, "+"),
       h("button", { class: "relieve", "aria-label": "Alejar", onclick: () => this.escena.zoom(1.25) }, "−"),
+      h("button", { class: "relieve", "aria-label": "Subir o bajar los tabiques", title: "Paredes", onclick: () => (this.escena.tabiques = this.escena.tabiques < 0.5 ? 1 : 0.32), html: ico('<path d="M4 20V8l8-4 8 4v12"/><path d="M4 14h16"/>') }),
       h("button", { class: "relieve", "aria-label": "Centrar en mí", onclick: () => this.escena.centrar(), html: ico('<circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>') }),
     );
   }

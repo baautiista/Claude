@@ -429,7 +429,7 @@ button { transition: transform 0.12s var(--rebote), filter 0.15s, box-shadow 0.1
 .capa-interior .flotante { position: absolute; left: 0; top: 0; font: 700 18px var(--display); color: var(--lima); -webkit-text-stroke: 3px var(--marino); paint-order: stroke fill; white-space: nowrap; animation: aparecer 0.2s; }
 .ui-interior { position: absolute; inset: 0; pointer-events: none; }
 .ui-interior > * { pointer-events: auto; }
-.interior-cabeza { position: absolute; left: 10px; right: 10px; top: calc(78px + var(--arriba)); display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.94); border-radius: 18px; padding: 8px 12px; box-shadow: var(--sombra); border: 3px solid var(--blanco); max-width: 560px; }
+.interior-cabeza { position: absolute; left: 10px; right: 64px; top: calc(136px + var(--arriba)); display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.94); border-radius: 18px; padding: 8px 12px; box-shadow: var(--sombra); border: 3px solid var(--blanco); max-width: 560px; }
 .interior-titulo h2 { margin: 2px 0 0; font: 600 16px/1.1 var(--display); color: var(--marino); }
 .interior-estado { display: grid; grid-template-columns: auto 80px auto; align-items: center; gap: 6px; margin-left: auto; font: 700 11px var(--texto); color: var(--gris-medio); }
 .interior-estado b { font: 600 14px var(--display); color: var(--marino); }
@@ -438,7 +438,7 @@ button { transition: transform 0.12s var(--rebote), filter 0.15s, box-shadow 0.1
 .barra-estado.mini { width: 60px; height: 8px; display: inline-block; margin-left: auto; }
 .guardado { font: 700 10px var(--texto); color: var(--lima-oscuro); background: rgba(196,233,16,0.18); border-radius: 8px; padding: 3px 7px; }
 .guardado.activo { color: var(--azul); background: rgba(31,94,255,0.12); }
-.interior-controles { top: calc(150px + var(--arriba)); }
+.interior-controles { top: calc(136px + var(--arriba)); }
 .interior-dock { z-index: 2; }
 .interior-dock button:disabled { opacity: 0.45; }
 .interior-panel { position: absolute; left: 8px; right: 8px; bottom: calc(8px + var(--abajo)); max-height: 46%; overflow-y: auto; background: var(--crema); border-radius: 22px; padding: 0 12px 12px; border: 4px solid var(--blanco); box-shadow: 0 10px 40px rgba(6,30,92,0.5); display: none; max-width: 720px; margin: 0 auto; }
@@ -530,7 +530,6 @@ button { transition: transform 0.12s var(--rebote), filter 0.15s, box-shadow 0.1
 .rotulo3d.pin-hogar { background: var(--azul); color: var(--blanco); font: 600 11px var(--display); padding: 3px 8px; border-radius: 10px 10px 10px 2px; border: 2px solid var(--blanco); box-shadow: 0 3px 8px rgba(6,30,92,0.35); }
 .rotulo3d.pin-hogar.tuya { background: var(--lima); color: var(--negro); }
 @media (max-width: 560px) {
-  .interior-cabeza { top: calc(70px + var(--arriba)); }
   .interior-estado { grid-template-columns: auto 50px auto; }
   .datos-ficha { grid-template-columns: repeat(2, 1fr); }
   .montaje-cols { grid-template-columns: 1fr; }

@@ -164,7 +164,7 @@ export class EscenaInterior {
   plano!: Plano;
   doc!: InteriorPublico;
   private casco = new THREE.Group();
-  private paredes: { mesh: THREE.Object3D; normal: THREE.Vector2 }[] = [];
+  private paredes: { mesh: THREE.Object3D; normal: THREE.Vector2; fachada: boolean }[] = [];
   private gMuebles = new THREE.Group();
   private gSucio = new THREE.Group();
   private gJardin = new THREE.Group();
@@ -188,6 +188,8 @@ export class EscenaInterior {
   yaw = Math.PI / 4;
   private yawMeta = Math.PI / 4;
   dist = 14;
+  /** Altura relativa de los tabiques interiores (0,3 = recorte; 1 = enteros). */
+  tabiques = 0.32;
   private reloj = new THREE.Clock();
   private vivo = true;
   private ray = new THREE.Raycaster();
@@ -261,7 +263,7 @@ export class EscenaInterior {
     if (!r.width) return;
     this.renderer.setSize(r.width, r.height, false);
     this.camara.aspect = r.width / Math.max(1, r.height);
-    this.camara.fov = this.camara.aspect > 1 ? 34 : 46;
+    this.camara.fov = this.camara.aspect > 1 ? 40 : 52;
     this.camara.updateProjectionMatrix();
   }
 
@@ -284,7 +286,7 @@ export class EscenaInterior {
       const e = this.plano.entrada;
       this.pos.set(e.x + 0.5, e.z + 0.7);
       this.objetivo.set(this.plano.ancho / 2, 0, this.plano.fondo / 2);
-      this.dist = Math.max(10, Math.max(this.plano.ancho, this.plano.fondo) * 1.25);
+      this.dist = Math.max(13, Math.max(this.plano.ancho, this.plano.fondo) * 1.7);
       const s = Math.max(this.plano.ancho, this.plano.fondo);
       const sc = this.sol.shadow.camera;
       sc.left = sc.bottom = -s;
@@ -380,7 +382,7 @@ export class EscenaInterior {
     x.fillStyle = color;
     x.fillRect(0, 0, 64, 64);
     for (let i = 0; i < 26; i++) {
-      x.fillStyle = i % 3 ? "rgba(120,100,70,0.18)" : "rgba(80,70,60,0.25)";
+      x.fillStyle = i % 3 ? "rgba(140,115,80,0.10)" : "rgba(90,80,70,0.16)";
       x.beginPath();
       x.ellipse((i * 37) % 64, (i * 23) % 64, 3 + (i % 5) * 2, 2 + (i % 3) * 2, i, 0, Math.PI * 2);
       x.fill();
@@ -460,7 +462,7 @@ export class EscenaInterior {
     // El eje z local apunta hacia dentro de la habitación (x local recorre la pared).
     g.rotation.y = { n: 0, s: Math.PI, o: Math.PI / 2, e: -Math.PI / 2 }[lado];
     this.casco.add(g);
-    this.paredes.push({ mesh: g, normal: new THREE.Vector2(-dx, -dz) });
+    this.paredes.push({ mesh: g, normal: new THREE.Vector2(-dx, -dz), fachada });
   }
 
   private dibujarGrieta(hab: Habitacion, gr: InteriorDoc["grietas"][number]) {
@@ -1060,8 +1062,10 @@ export class EscenaInterior {
     this.camara.lookAt(this.objetivo.x, 0.6, this.objetivo.z);
     // Corte de paredes: las que quedan entre la cámara y la habitación se bajan.
     const vista = new THREE.Vector2(-Math.sin(this.yaw), -Math.cos(this.yaw));
+    // Como en una casa de muñecas: fachadas del fondo enteras, las de delante cortadas y
+    // los tabiques interiores a media altura para ver todas las habitaciones.
     for (const p of this.paredes) {
-      const meta = p.normal.dot(vista) > 0.3 ? 0.12 : 1;
+      const meta = p.normal.dot(vista) > 0.3 ? 0.12 : p.fachada ? 1 : this.tabiques;
       p.mesh.scale.y += (meta - p.mesh.scale.y) * Math.min(1, dt * 8);
     }
     // Sol entrando por las ventanas.
