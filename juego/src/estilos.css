@@ -489,7 +489,7 @@ button { transition: transform 0.12s var(--rebote), filter 0.15s, box-shadow 0.1
 .taller .hoja-cabeza { margin: 0; border-radius: 0; }
 .taller-cuerpo { flex: 1; min-height: 0; display: grid; place-items: center; padding: 8px; overflow: auto; }
 .taller-lienzo { width: 100%; max-height: 100%; height: auto; touch-action: none; border-radius: 12px; background: #fff; box-shadow: 0 2px 10px rgba(6,30,92,0.18); cursor: crosshair; }
-.taller-pie { padding: 8px 12px 12px; font: 600 14px/1.4 var(--texto); color: var(--gris-oscuro); }
+.taller-pie { flex: none; min-height: 150px; box-sizing: border-box; padding: 8px 12px 12px; font: 600 14px/1.4 var(--texto); color: var(--gris-oscuro); }
 .taller-pie p { margin: 4px 0 8px; }
 .medidor { display: inline-block; width: 90px; height: 12px; border-radius: 6px; background: var(--gris-claro); overflow: hidden; border: 2px solid var(--borde); }
 .medidor i { display: block; height: 100%; }
