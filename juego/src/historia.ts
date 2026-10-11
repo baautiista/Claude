@@ -382,7 +382,7 @@ function finCapitulo(j: Juego) {
   return new Promise<void>((resolver) => {
     j.pantalla(
       h(
-        "div", { class: "pantalla" },
+        "div", { class: "pantalla solida" },
         h("span", { class: "etiqueta lima", style: "align-self:flex-start" }, "FIN DEL CAPÍTULO 1"),
         h("h1", { style: "margin-top:14px" }, "La caja de la abuela"),
         h("p", { style: "margin-top:14px" }, "La historia de Concha y Manolo continúa en la Temporada 3 · La Verja. Antes llega la Temporada 2 · La Feria."),

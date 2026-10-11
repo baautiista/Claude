@@ -290,3 +290,138 @@ function shade(hex: string, k: number) {
   const c = (v: number) => Math.max(0, Math.min(255, Math.round(v * k)));
   return `rgb(${c(n >> 16)},${c((n >> 8) & 255)},${c(n & 255)})`;
 }
+
+/* ── Estilo «ciudad de juego»: fachadas con más detalle ─────────────── */
+
+/** Ventana con marco claro, cristal con reflejo y alféizar. */
+function ventana(g: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, marco = "#FFFFFF", cristal = "#6E9FD8") {
+  g.fillStyle = "rgba(0,0,0,0.18)";
+  g.fillRect(x + 3, y + 3, w, h);
+  g.fillStyle = marco;
+  g.fillRect(x - 3, y - 3, w + 6, h + 6);
+  const grad = g.createLinearGradient(x, y, x + w, y + h);
+  grad.addColorStop(0, shade(cristal, 1.25));
+  grad.addColorStop(0.5, cristal);
+  grad.addColorStop(1, shade(cristal, 0.7));
+  g.fillStyle = grad;
+  g.fillRect(x, y, w, h);
+  g.fillStyle = "rgba(255,255,255,0.35)";
+  g.beginPath();
+  g.moveTo(x + 2, y + h - 2);
+  g.lineTo(x + w * 0.45, y + 2);
+  g.lineTo(x + w * 0.65, y + 2);
+  g.lineTo(x + w * 0.2, y + h - 2);
+  g.fill();
+  g.fillStyle = marco;
+  g.fillRect(x + w / 2 - 1.5, y, 3, h);
+  g.fillRect(x - 6, y + h + 3, w + 12, 5);
+}
+
+/** Bloque de ladrillo rojo con molduras crema (una planta por repetición). */
+export const fachadaLadrillo = () =>
+  textura("ladrillo", 256, (g, t) => {
+    const r = azar(41);
+    g.fillStyle = "#B8553C";
+    g.fillRect(0, 0, t, t);
+    for (let y = 0; y < t; y += 10) {
+      for (let x = (y / 10) % 2 ? -12 : 0; x < t; x += 24) {
+        g.fillStyle = shade("#C25F45", 0.88 + r() * 0.2);
+        g.fillRect(x + 1, y + 1, 22, 8);
+      }
+    }
+    g.fillStyle = "#F2E3C4";
+    g.fillRect(0, 0, t, 14);
+    g.fillStyle = "rgba(0,0,0,0.15)";
+    g.fillRect(0, 14, t, 3);
+    for (let i = 0; i < 2; i++) ventana(g, 38 + i * 128, 62, 52, 120, "#F4E8CF", "#5F8FCB");
+  });
+
+/** Bloque pastel con balcones de barandilla blanca. */
+export const fachadaPastel = (tono: string) =>
+  textura(`pastel-${tono}`, 256, (g, t) => {
+    g.fillStyle = tono;
+    g.fillRect(0, 0, t, t);
+    g.fillStyle = "rgba(255,255,255,0.35)";
+    g.fillRect(0, 0, t, 10);
+    for (let i = 0; i < 2; i++) {
+      const x = 30 + i * 128;
+      ventana(g, x + 8, 50, 50, 110, "#FFFFFF", "#7FB0E0");
+      g.fillStyle = "rgba(0,0,0,0.15)";
+      g.fillRect(x - 6, 172, 92, 8);
+      g.fillStyle = "#FFFFFF";
+      g.fillRect(x - 8, 164, 92, 10);
+      g.strokeStyle = "#FFFFFF";
+      g.lineWidth = 4;
+      g.strokeRect(x - 6, 176, 88, 44);
+      for (let k = 1; k < 8; k++) {
+        g.beginPath();
+        g.moveTo(x - 6 + k * 11, 176);
+        g.lineTo(x - 6 + k * 11, 220);
+        g.stroke();
+      }
+      g.fillStyle = ["#FF6F91", "#7BD55A", "#FFC145"][i % 3];
+      g.beginPath();
+      g.arc(x + 10, 170, 8, 0, Math.PI * 2);
+      g.fill();
+    }
+  });
+
+/** Muro cortina de cristal (edificios altos y públicos modernos). */
+export const fachadaCristal = () =>
+  textura("cristal", 256, (g, t) => {
+    const grad = g.createLinearGradient(0, 0, t, t);
+    grad.addColorStop(0, "#9CC9F5");
+    grad.addColorStop(0.5, "#5E93D6");
+    grad.addColorStop(1, "#3D6FB8");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, t, t);
+    g.fillStyle = "rgba(255,255,255,0.25)";
+    g.beginPath();
+    g.moveTo(0, t * 0.8);
+    g.lineTo(t * 0.6, 0);
+    g.lineTo(t * 0.8, 0);
+    g.lineTo(t * 0.1, t);
+    g.lineTo(0, t);
+    g.fill();
+    g.fillStyle = "#EEF3F8";
+    for (let x = 0; x < t; x += 64) g.fillRect(x, 0, 6, t);
+    g.fillRect(0, 0, t, 8);
+    g.fillRect(0, t / 2, t, 4);
+  });
+
+/** Planta baja comercial: escaparates, puerta y toldo. */
+export const escaparate = () =>
+  textura("escaparate", 256, (g, t) => {
+    g.fillStyle = "#F3EDE2";
+    g.fillRect(0, 0, t, t);
+    for (let i = 0; i < 3; i++) {
+      const x = 12 + i * 82;
+      g.fillStyle = "#2E3B4E";
+      g.fillRect(x, 60, 70, 170);
+      g.fillStyle = "rgba(255,230,160,0.55)";
+      g.fillRect(x + 6, 70, 58, 100);
+      g.fillStyle = "rgba(255,255,255,0.3)";
+      g.fillRect(x + 8, 72, 12, 96);
+    }
+  });
+
+/** Toldo a rayas (comercios de las calles principales). */
+export const toldo = (color: string) =>
+  textura(`toldo-${color}`, 64, (g, t) => {
+    for (let x = 0; x < t; x += 16) {
+      g.fillStyle = (x / 16) % 2 ? "#FFFFFF" : color;
+      g.fillRect(x, 0, 16, t);
+    }
+  });
+
+/** Cielo: degradado de horizonte con bruma cálida. */
+export const cielo = () =>
+  textura("cielo", 256, (g, t) => {
+    const grad = g.createLinearGradient(0, 0, 0, t);
+    grad.addColorStop(0, "#5FA8F0");
+    grad.addColorStop(0.55, "#A9D3F7");
+    grad.addColorStop(0.85, "#F4E6CF");
+    grad.addColorStop(1, "#FBEFD9");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, t, t);
+  }, false);

@@ -1,9 +1,15 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+import { HorizontalTiltShiftShader } from "three/examples/jsm/shaders/HorizontalTiltShiftShader.js";
+import { VerticalTiltShiftShader } from "three/examples/jsm/shaders/VerticalTiltShiftShader.js";
 import {
   ANCHO_VIA, BARRIOS, DATOS, GIBRALTAR, LUGARES, NODOS, PENON, PISTA, POSICION, TIERRA, TRAMOS, VERJA, ZONAS,
-  type LugarId, type Punto, type Zona,
+  type LugarId, type Punto, type Tramo, type Zona,
 } from "../datos/mapa";
 import { OBJETOS, SALIDAS, type CultivoId } from "../datos/objetos";
 import { PERSONAJES, type PersonajeId } from "../datos/personajes";
@@ -12,6 +18,18 @@ import { presente } from "../historia";
 import { iconoSvg } from "../iconos";
 import * as M from "./modelos";
 import * as T from "./texturas";
+
+/** Otro jugador conectado (multijugador). */
+export interface Vecino {
+  id: string;
+  nombre: string;
+  ropa: string;
+  piel: string;
+  nivel: number;
+  x: number;
+  y: number;
+  emote?: string;
+}
 
 /**
  * La Línea isométrica (2.5D), construida desde la geometría real de
@@ -94,7 +112,24 @@ function edificioCercano(p: Punto) {
 export class Mundo {
   private renderer: THREE.WebGLRenderer;
   private escena = new THREE.Scene();
-  private camara = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 8000);
+  private camara = new THREE.PerspectiveCamera(30, 1, 2, 14000);
+  private composer!: EffectComposer;
+  private tiltH!: ShaderPass;
+  private tiltV!: ShaderPass;
+  /** Tráfico, peatones, gaviotas y autobuses (animación de ciudad viva). */
+  private coches: Movil[] = [];
+  private peatones: Movil[] = [];
+  private autobuses: { m: Movil; g: THREE.Group }[] = [];
+  private mallaCoches!: THREE.InstancedMesh;
+  private mallaCabinas!: THREE.InstancedMesh;
+  private mallaPeatones!: THREE.InstancedMesh;
+  private mallaCabezas!: THREE.InstancedMesh;
+  private gaviotas: { g: THREE.Group; c: THREE.Vector3; r: number; v: number; f: number }[] = [];
+  private busJugador!: THREE.Group;
+  private vecinos = new Map<string, { g: THREE.Group; e: Etiqueta; meta: THREE.Vector3; emote: Etiqueta }>();
+  /** Pantalla de inicio: la cámara sobrevuela la ciudad. */
+  modoDemo = false;
+  private demoAng = 0;
   private sol = new THREE.DirectionalLight("#FFF1D6", 2.6);
   private cielo = new THREE.HemisphereLight("#E3F1FF", "#7DB24A", 1.2);
   private mar!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>;
@@ -102,8 +137,8 @@ export class Mundo {
   private objetivoCam = new THREE.Vector3();
   private destinoCam: THREE.Vector3 | null = null;
   private foco: THREE.Vector3 | null = null;
-  /** Alto visible del mundo (zoom ortográfico). */
-  private alto = 230;
+  /** Distancia de la cámara (zoom): menor = más cerca. */
+  private alto = 300;
   private altoMeta: number | null = null;
   /** Giro de la cámara en cuartos de vuelta (0: desde el noreste, mirando al Peñón). */
   private giro = 0;
@@ -131,6 +166,9 @@ export class Mundo {
   /** Huecos donde no se dibujan los edificios reales (los sustituye un modelo). */
   private reservas: [number, number, number][] = [];
   private reloj = new THREE.Clock();
+  private ayudante = new THREE.Object3D();
+  private rutaBus: THREE.Vector3[] = [];
+  private velBus = 75;
   private ultimoArrastre = 0;
   private punteros = new Map<number, { x: number; y: number }>();
   private toque: { x: number; y: number; t: number; movido: boolean } | null = null;
@@ -152,7 +190,17 @@ export class Mundo {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.1;
-    this.escena.background = new THREE.Color("#A9D8FF");
+    this.escena.background = T.cielo();
+    this.escena.fog = new THREE.Fog("#F1E4CF", 900, 3200);
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.addPass(new RenderPass(this.escena, this.camara));
+    this.tiltH = new ShaderPass(HorizontalTiltShiftShader);
+    this.tiltV = new ShaderPass(VerticalTiltShiftShader);
+    this.tiltH.uniforms.r.value = 0.5;
+    this.tiltV.uniforms.r.value = 0.5;
+    this.composer.addPass(this.tiltH);
+    this.composer.addPass(this.tiltV);
+    this.composer.addPass(new OutputPass());
 
     this.sol.castShadow = true;
     this.sol.shadow.mapSize.set(2048, 2048);
@@ -175,9 +223,14 @@ export class Mundo {
     this.construirAtunara();
     this.construirLugares();
     this.construirZonas();
+    this.construirTrafico();
+    this.construirGaviotas();
 
     this.jugador = M.persona("#E8B796", "#C4E910", "#2B1B12", 0.62);
     this.escena.add(this.jugador);
+    this.busJugador = autobusUrbano();
+    this.busJugador.visible = false;
+    this.escena.add(this.busJugador);
     this.marcador = this.crearMarcador();
     this.escena.add(this.marcador);
     this.nubePenon = M.nube(2.2);
@@ -450,6 +503,72 @@ export class Mundo {
     });
     postes.castShadow = true;
     this.escena.add(postes, farolas);
+
+    // Árboles de acera en avenidas y calles principales.
+    const edif = new Map<string, number[][]>();
+    for (const e of DATOS.edificios) {
+      const k = `${Math.floor(e[0] / 20)},${Math.floor(e[1] / 20)}`;
+      if (!edif.has(k)) edif.set(k, []);
+      edif.get(k)!.push(e);
+    }
+    const libre = (p: Punto) => {
+      for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+        for (const e of edif.get(`${Math.floor(p[0] / 20) + dx},${Math.floor(p[1] / 20) + dy}`) ?? []) {
+          if ((e[0] - p[0]) ** 2 + (e[1] - p[1]) ** 2 < (Math.max(e[2], e[3]) / 2 + 1.5) ** 2) return false;
+        }
+      }
+      return true;
+    };
+    const arbolado: Punto[] = [];
+    for (const t of TRAMOS) {
+      if (t.clase > 2 || t.largo < 30) continue;
+      for (let i = 1; i < t.puntos.length; i++) {
+        const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        for (let s = 10; s < l - 8; s += 15) {
+          const nx = -(b[1] - a[1]) / l;
+          const ny = (b[0] - a[0]) / l;
+          for (const lado of [-1, 1]) {
+            const off = (ANCHO_VIA[t.clase] / 2 + 3) * lado;
+            const p: Punto = [a[0] + ((b[0] - a[0]) * s) / l + nx * off, a[1] + ((b[1] - a[1]) * s) / l + ny * off];
+            if (arbolado.length < 2600 && libre(p)) arbolado.push(p);
+          }
+        }
+      }
+    }
+    this.bosque(arbolado, azar(5), false);
+
+    // Pasos de cebra en los cruces de las vías principales.
+    const cebras: { p: Punto; rot: number; w: number }[] = [];
+    for (const [n, adj] of ADY_COCHE) {
+      if (adj.length < 3 || !adj.some((t) => t.clase <= 2)) continue;
+      const c = NODOS[n];
+      for (const t of adj) {
+        const pts = t.a === n ? t.puntos : [...t.puntos].reverse();
+        const q = pts[1];
+        const l = Math.hypot(q[0] - c[0], q[1] - c[1]);
+        const dist = ANCHO_VIA[t.clase] / 2 + 5;
+        if (l < dist + 4) continue;
+        cebras.push({ p: [c[0] + ((q[0] - c[0]) * dist) / l, c[1] + ((q[1] - c[1]) * dist) / l], rot: Math.atan2(q[0] - c[0], q[1] - c[1]), w: ANCHO_VIA[t.clase] });
+      }
+    }
+    const rayasCebra = new THREE.InstancedMesh(new THREE.BoxGeometry(0.7, 0.06, 3), M.mat("#FFFFFF"), cebras.length * 6);
+    const ob = new THREE.Object3D();
+    let k = 0;
+    for (const z of cebras) {
+      for (let j = 0; j < 6; j++) {
+        ob.position.copy(p3(z.p, SUELO + 0.42));
+        ob.rotation.set(0, z.rot + Math.PI / 2, 0);
+        ob.translateX(0);
+        ob.translateZ(0);
+        ob.rotateY(-Math.PI / 2);
+        ob.translateX(((j - 2.5) * z.w) / 6.5);
+        ob.updateMatrix();
+        rayasCebra.setMatrixAt(k++, ob.matrix);
+      }
+    }
+    rayasCebra.count = k;
+    this.escena.add(rayasCebra);
   }
 
   /* ── Edificios reales con estilo de juego ───────────────────────────── */
@@ -457,61 +576,150 @@ export class Mundo {
   private construirEdificios() {
     const rand = azar(7);
     const reservado = (x: number, y: number) => this.reservas.some(([rx, ry, r]) => (x - rx) ** 2 + (y - ry) ** 2 < r * r);
-    type B = { x: number; y: number; w: number; d: number; ang: number; h: number; tipo: number; teja: boolean; var: number; pl: number };
+    // Puntos de las calles principales (para poner comercios en planta baja).
+    const rejilla = new Map<string, Punto[]>();
+    const celda = (x: number, y: number) => `${Math.floor(x / 20)},${Math.floor(y / 20)}`;
+    for (const t of TRAMOS) {
+      if (t.clase > 2 && !(t.clase === 4 && t.nombre)) continue;
+      for (let i = 1; i < t.puntos.length; i++) {
+        const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        for (let s = 0; s <= l; s += 5) {
+          const p: Punto = [a[0] + ((b[0] - a[0]) * s) / l, a[1] + ((b[1] - a[1]) * s) / l];
+          const k = celda(...p);
+          if (!rejilla.has(k)) rejilla.set(k, []);
+          rejilla.get(k)!.push(p);
+        }
+      }
+    }
+    const cercaDeAvenida = (x: number, y: number, r: number) => {
+      for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+        for (const p of rejilla.get(`${Math.floor(x / 20) + dx},${Math.floor(y / 20) + dy}`) ?? []) if ((p[0] - x) ** 2 + (p[1] - y) ** 2 < r * r) return true;
+      }
+      return false;
+    };
+    /** Estilos: 0-2 casa encalada (persianas), 3 casa pastel, 4 bloque pastel, 5 ladrillo, 6 cristal, 7 nave, 8 iglesia, 9 escuela, 10 público, 11 ruina, 12 caseta. */
+    type B = { x: number; y: number; w: number; d: number; ang: number; h: number; estilo: number; teja: boolean; tono: number; pl: number; tienda: boolean };
     const lista: B[] = [];
     for (const [x, y, w0, d0, ang, tipo, plantas] of DATOS.edificios) {
       if (reservado(x, y)) continue;
-      const w = Math.max(2.4, w0 * 0.92);
-      const d = Math.max(2.4, d0 * 0.92);
-      const pl = Math.min(8, plantas || (tipo === 1 ? 3 + Math.floor(rand() * 5) : 1 + (rand() < 0.35 ? 1 : 0)));
-      const h = tipo === 2 ? 6 + rand() * 2 : tipo === 7 ? 3.2 : tipo === 6 ? 2.5 : tipo === 3 ? 9 : tipo === 4 || tipo === 5 ? 6 + pl * 2 : pl * 3 + 1.5;
-      lista.push({ x, y, w, d, ang, h, tipo, teja: (tipo === 0 && rand() < 0.45) || tipo === 3, var: Math.floor(rand() * 4), pl });
+      const w = Math.max(3.2, w0 * 0.9);
+      const d = Math.max(3.2, d0 * 0.9);
+      const r = rand();
+      let pl = Math.min(9, plantas || (tipo === 1 ? 3 + Math.floor(rand() * 5) : 1 + (rand() < 0.4 ? 1 : 0)));
+      let estilo: number;
+      if (tipo === 0) estilo = r < 0.82 ? Math.floor(rand() * 3) : 3;
+      else if (tipo === 1) estilo = pl >= 7 && r < 0.3 ? 6 : r < 0.62 ? 4 : r < 0.85 ? 5 : 4;
+      else estilo = ({ 2: 7, 3: 8, 4: 9, 5: 10, 6: 11, 7: 12 } as Record<number, number>)[tipo];
+      if (estilo === 10 && rand() < 0.4) estilo = 6;
+      if (estilo >= 7) pl = estilo === 10 || estilo === 9 ? 2 + Math.floor(rand() * 2) : 1;
+      const h = estilo === 7 ? 7 + rand() * 2 : estilo === 12 ? 3.2 : estilo === 11 ? 2.6 : estilo === 8 ? 10 : pl * 3.3 + 0.8;
+      const tienda = estilo <= 6 && cercaDeAvenida(x, y, Math.max(w, d) / 2 + 9);
+      lista.push({ x, y, w, d, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda });
     }
     const o = new THREE.Object3D();
-    const caja = new RoundedBoxGeometry(1, 1, 1, 1, 0.08);
-    const colocar = (b: B, alto: number, escala: [number, number, number]) => {
+    const caja = new RoundedBoxGeometry(1, 1, 1, 1, 0.06);
+    const colocar = (b: B, alto: number, escala: [number, number, number], dx = 0, dz = 0) => {
       o.position.copy(v3(b.x, b.y, alto));
       o.rotation.set(0, -b.ang, 0);
+      o.translateX(dx);
+      o.translateZ(dz);
       o.scale.set(...escala);
       o.updateMatrix();
       return o.matrix;
     };
-    const instancias = (sub: B[], material: THREE.Material) => {
+    const instancias = (sub: B[], material: THREE.Material, base = (b: B) => (b.tienda ? 3.6 : 0)) => {
       if (!sub.length) return;
       const im = new THREE.InstancedMesh(caja, material, sub.length);
-      sub.forEach((b, i) => im.setMatrixAt(i, colocar(b, SUELO + b.h / 2, [b.w, b.h, b.d])));
+      sub.forEach((b, i) => {
+        const b0 = base(b);
+        im.setMatrixAt(i, colocar(b, SUELO + b0 + (b.h - b0) / 2, [b.w, b.h - b0, b.d]));
+      });
       this.instanciado(im);
     };
     const persianas: T.Persiana[] = ["verde", "azul", "marron"];
-    persianas.forEach((ps, k) => instancias(lista.filter((b) => b.tipo === 0 && b.var % 3 === k), M.matTex(T.fachada(ps))));
-    const tonos = ["#F3E6CF", "#EBD5CC", "#DDE7F0", "#F1E2B8"];
-    for (let pl = 1; pl <= 8; pl++) {
-      tonos.forEach((tono, k) => instancias(lista.filter((b) => b.tipo === 1 && b.pl === pl && b.var === k), M.matTex(T.fachadaBloque(tono), 1, pl)));
-    }
-    instancias(lista.filter((b) => b.tipo === 2), M.mat("#E6E9EE"));
-    instancias(lista.filter((b) => b.tipo === 3), M.mat("#FBF7EE"));
-    instancias(lista.filter((b) => b.tipo === 4), M.matTex(T.fachadaBloque("#F2D9A0"), 1, 2));
-    instancias(lista.filter((b) => b.tipo === 5), M.matTex(T.fachadaBloque("#F7F3EA"), 1, 2));
-    instancias(lista.filter((b) => b.tipo === 6), M.matTex(T.piedra(), 1, 1, "#E8D7B8"));
-    instancias(lista.filter((b) => b.tipo === 7), M.mat("#F7F4EC"));
-    // Tejados: teja a dos aguas, azoteas y cubiertas de nave.
+    persianas.forEach((ps, k) => instancias(lista.filter((b) => b.estilo === k), M.matTex(T.fachada(ps))));
+    const pasteles = ["#F6C9A8", "#BFE3D0", "#F7E3A1", "#BFD8F2", "#F2C6D4"];
+    pasteles.forEach((tono, k) => {
+      instancias(lista.filter((b) => b.estilo === 3 && b.tono === k), M.matTex(T.fachadaPastel(tono), 1, 1));
+      for (let pl = 1; pl <= 9; pl++) instancias(lista.filter((b) => b.estilo === 4 && b.tono === k && b.pl === pl), M.matTex(T.fachadaPastel(tono), 1, pl));
+    });
+    for (let pl = 1; pl <= 9; pl++) instancias(lista.filter((b) => b.estilo === 5 && b.pl === pl), M.matTex(T.fachadaLadrillo(), 1, pl));
+    for (let pl = 1; pl <= 9; pl++) instancias(lista.filter((b) => b.estilo === 6 && b.pl === pl), M.matTex(T.fachadaCristal(), 1, Math.max(1, Math.round(pl / 2))));
+    instancias(lista.filter((b) => b.estilo === 7), M.mat("#E6E9EE"), () => 0);
+    instancias(lista.filter((b) => b.estilo === 8), M.mat("#FBF7EE"), () => 0);
+    instancias(lista.filter((b) => b.estilo === 9), M.matTex(T.fachadaPastel("#F2D9A0"), 1, 2));
+    instancias(lista.filter((b) => b.estilo === 10), M.matTex(T.fachadaPastel("#F4F1EA"), 1, 2));
+    instancias(lista.filter((b) => b.estilo === 11), M.matTex(T.piedra(), 1, 1, "#E8D7B8"), () => 0);
+    instancias(lista.filter((b) => b.estilo === 12), M.mat("#F7F4EC"), () => 0);
+    // Plantas bajas comerciales con toldo en las calles principales.
+    const tiendas = lista.filter((b) => b.tienda);
+    instancias(tiendas, M.matTex(T.escaparate(), 2, 1), () => 0);
+    const colToldo = ["#E8423C", "#2E8B57", "#1F5EFF", "#F2A93B", "#8E44AD"];
+    colToldo.forEach((c, k) => {
+      const sub = tiendas.filter((b) => b.tono === k);
+      if (!sub.length) return;
+      const im = new THREE.InstancedMesh(caja, M.matTex(T.toldo(c), 3, 1), sub.length);
+      sub.forEach((b, i) => im.setMatrixAt(i, colocar(b, SUELO + 3.6, [b.w + 1.6, 0.5, b.d + 1.6])));
+      this.instanciado(im);
+    });
+    // Tejados de teja a dos aguas.
     const forma = new THREE.Shape([new THREE.Vector2(-0.5, 0), new THREE.Vector2(0.5, 0), new THREE.Vector2(0, 0.5)]);
     const prisma = new THREE.ExtrudeGeometry(forma, { depth: 1, bevelEnabled: false });
     prisma.translate(0, 0, -0.5);
     prisma.rotateY(Math.PI / 2);
     const conTeja = lista.filter((b) => b.teja);
     const tejas = new THREE.InstancedMesh(prisma, M.matTex(T.teja(), 1, 1), conTeja.length);
-    conTeja.forEach((b, i) => tejas.setMatrixAt(i, colocar(b, SUELO + b.h - 0.05, [b.w + 0.8, Math.min(b.w, b.d) * 0.9, b.d + 0.8])));
+    conTeja.forEach((b, i) => tejas.setMatrixAt(i, colocar(b, SUELO + b.h - 0.05, [b.w + 0.8, Math.min(b.w, b.d) * 0.85, b.d + 0.8])));
     this.instanciado(tejas);
+    // Azoteas: borde claro y suelo algo más oscuro, como un pretil.
     const planas = lista.filter((b) => !b.teja);
-    const azoteas = new THREE.InstancedMesh(caja, M.mat("#FFFFFF"), planas.length);
-    const colAzotea = [new THREE.Color("#EFE6D3"), new THREE.Color("#E5DFD3"), new THREE.Color("#F2EADB")];
+    const bordes = new THREE.InstancedMesh(caja, M.mat("#FFFFFF"), planas.length);
+    const suelos = new THREE.InstancedMesh(caja, M.mat("#FFFFFF"), planas.length);
+    const colBorde = [new THREE.Color("#F4EEE2"), new THREE.Color("#EDE5D6"), new THREE.Color("#FAF5EC")];
     planas.forEach((b, i) => {
-      azoteas.setMatrixAt(i, colocar(b, SUELO + b.h + 0.35, [b.w + 0.5, 0.7, b.d + 0.5]));
-      azoteas.setColorAt(i, b.tipo === 2 ? new THREE.Color(b.var % 2 ? "#2F6DB5" : "#B9C1CC") : b.tipo === 7 ? new THREE.Color("#A9AFB8") : colAzotea[b.var % 3]);
+      bordes.setMatrixAt(i, colocar(b, SUELO + b.h + 0.45, [b.w + 0.5, 0.9, b.d + 0.5]));
+      bordes.setColorAt(i, b.estilo === 7 ? new THREE.Color(b.tono % 2 ? "#2F6DB5" : "#B9C1CC") : b.estilo === 12 ? new THREE.Color("#A9AFB8") : colBorde[b.tono % 3]);
+      suelos.setMatrixAt(i, colocar(b, SUELO + b.h + 0.92, [Math.max(0.5, b.w - 1), 0.1, Math.max(0.5, b.d - 1)]));
+      suelos.setColorAt(i, b.estilo === 7 ? new THREE.Color(b.tono % 2 ? "#2A62A6" : "#A9B1BC") : new THREE.Color(b.tono % 2 ? "#C9BFAE" : "#D6CCBA"));
     });
-    if (azoteas.instanceColor) azoteas.instanceColor.needsUpdate = true;
-    this.instanciado(azoteas);
+    for (const im of [bordes, suelos]) {
+      if (im.instanceColor) im.instanceColor.needsUpdate = true;
+      this.instanciado(im);
+    }
+    // Detalles de azotea: aires acondicionados, depósitos, placas solares y terrazas verdes.
+    const conDetalle = planas.filter((b) => b.w * b.d > 24 && b.estilo !== 12 && b.estilo !== 11);
+    const aires: [B, number, number][] = [];
+    const depositos: [B, number, number][] = [];
+    const placas: [B, number, number][] = [];
+    const jardines: B[] = [];
+    for (const b of conDetalle) {
+      const n = 1 + Math.floor(rand() * 3);
+      for (let k = 0; k < n; k++) {
+        const dx = (rand() - 0.5) * (b.w - 3);
+        const dz = (rand() - 0.5) * (b.d - 3);
+        const r = rand();
+        if (r < 0.45) aires.push([b, dx, dz]);
+        else if (r < 0.7) depositos.push([b, dx, dz]);
+        else if (r < 0.9 && b.estilo !== 7) placas.push([b, dx, dz]);
+        else if (!jardines.includes(b)) jardines.push(b);
+      }
+      if (b.estilo === 7) placas.push([b, 0, 0]);
+    }
+    const props = (lista2: [B, number, number][], geo: THREE.BufferGeometry, mat: THREE.Material, escala: [number, number, number], alto: number) => {
+      if (!lista2.length) return;
+      const im = new THREE.InstancedMesh(geo, mat, lista2.length);
+      lista2.forEach(([b, dx, dz], i) => im.setMatrixAt(i, colocar(b, SUELO + b.h + 0.95 + alto, escala, dx, dz)));
+      this.instanciado(im);
+    };
+    props(aires, caja, M.mat("#D9DDE3"), [1.6, 1, 1.2], 0.5);
+    props(depositos, new THREE.CylinderGeometry(0.8, 0.8, 1.6, 10), M.mat("#F7F7F2"), [1, 1, 1], 0.8);
+    props(placas, caja, M.mat("#2C3E6B", { roughness: 0.3, metalness: 0.3 }), [3.2, 0.2, 2], 0.35);
+    if (jardines.length) {
+      const im = new THREE.InstancedMesh(caja, M.mat("#6DBE45"), jardines.length);
+      jardines.forEach((b, i) => im.setMatrixAt(i, colocar(b, SUELO + b.h + 1.05, [b.w * 0.5, 0.25, b.d * 0.5], b.w * 0.15, 0)));
+      this.instanciado(im);
+    }
   }
 
   private instanciado(im: THREE.InstancedMesh) {
@@ -718,12 +926,12 @@ export class Mundo {
     // Nombres de las calles principales: en el tramo más largo de cada una.
     const largos = new Map<string, (typeof TRAMOS)[number]>();
     for (const t of TRAMOS) {
-      if (!t.nombre || t.clase > 4) continue;
+      if (!t.nombre || (t.clase > 2 && t.clase !== 4)) continue;
       const prev = largos.get(t.nombre);
       if (!prev || t.largo > prev.largo) largos.set(t.nombre, t);
     }
     for (const [nombre, t] of largos) {
-      if (t.largo < 40) continue;
+      if (t.largo < 60) continue;
       const m = t.puntos[Math.floor(t.puntos.length / 2)];
       this.etiqueta("calle", nombre, p3(m, SUELO + 1));
     }
@@ -731,9 +939,136 @@ export class Mundo {
     for (const b of Object.values(BARRIOS)) this.etiqueta("zona-lejos", b.nombre.toUpperCase(), p3(b.rotulo, 30));
   }
 
+  /* ── Ciudad viva: coches, autobuses, peatones y gaviotas ───────────── */
+
+  private construirTrafico() {
+    const rand = azar(91);
+    const conducibles = TRAMOS.filter((t) => t.clase <= 3 && t.largo > 6);
+    const principales = conducibles.filter((t) => t.clase <= 2);
+    const aceras = TRAMOS.filter((t) => (t.clase <= 4 || t.clase === 6) && t.largo > 6);
+    const nuevo = (lista: Tramo[], v: number, lado: number): Movil => {
+      const t = lista[Math.floor(rand() * lista.length)];
+      return { t, dir: rand() < 0.5 ? 1 : -1, s: rand() * t.largo, v: v * (0.8 + rand() * 0.4), lado, red: lista === aceras ? "pie" : "coche" };
+    };
+    for (let i = 0; i < 170; i++) this.coches.push(nuevo(rand() < 0.65 ? principales : conducibles, 16, 1));
+    for (let i = 0; i < 240; i++) this.peatones.push(nuevo(aceras, 2.6, 0));
+    const colores = ["#E8423C", "#FFFFFF", "#2F6DB5", "#F2C230", "#2B2D31", "#9AA4B2", "#3FA046", "#F28C28", "#C4E910"].map((c) => new THREE.Color(c));
+    this.mallaCoches = new THREE.InstancedMesh(new RoundedBoxGeometry(2.3, 1.2, 4.6, 2, 0.45), M.mat("#FFFFFF", { roughness: 0.35, metalness: 0.2 }), this.coches.length);
+    this.mallaCabinas = new THREE.InstancedMesh(new RoundedBoxGeometry(2, 1, 2.4, 2, 0.4), M.mat("#33465F", { roughness: 0.2, metalness: 0.4 }), this.coches.length);
+    this.coches.forEach((_, i) => this.mallaCoches.setColorAt(i, colores[i % colores.length]));
+    this.mallaPeatones = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.42, 0.9, 2, 6), M.mat("#FFFFFF"), this.peatones.length);
+    this.mallaCabezas = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.42, 1), M.mat("#FFFFFF"), this.peatones.length);
+    const ropas = ["#E8423C", "#2F6DB5", "#F2C230", "#3FA046", "#FFFFFF", "#8E44AD", "#F28C28", "#1C2A44"].map((c) => new THREE.Color(c));
+    const pieles = ["#F3D3B8", "#E8B796", "#C98E66", "#9A6644"].map((c) => new THREE.Color(c));
+    this.peatones.forEach((_, i) => {
+      this.mallaPeatones.setColorAt(i, ropas[i % ropas.length]);
+      this.mallaCabezas.setColorAt(i, pieles[i % pieles.length]);
+    });
+    for (const m of [this.mallaCoches, this.mallaCabinas, this.mallaPeatones, this.mallaCabezas]) {
+      m.castShadow = true;
+      m.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      if (m.instanceColor) m.instanceColor.needsUpdate = true;
+      m.frustumCulled = false;
+      this.escena.add(m);
+    }
+    // Autobuses urbanos verdes por las avenidas.
+    for (let i = 0; i < 7; i++) {
+      const g = autobusUrbano();
+      this.escena.add(g);
+      this.autobuses.push({ m: nuevo(principales, 11, 1), g });
+    }
+  }
+
+  private construirGaviotas() {
+    const centros: Punto[] = [PUERTO_CENTRO, POSICION.paseo, POSICION.levante, sumar(POSICION.levante, 30, 300), sumar(POSICION.paseo, -60, 150)];
+    for (let i = 0; i < 18; i++) {
+      const g = new THREE.Group();
+      const ala = M.caja(2.4, 0.15, 0.8, "#FFFFFF");
+      ala.castShadow = false;
+      const ala2 = ala.clone();
+      ala.position.x = 1.1;
+      ala2.position.x = -1.1;
+      g.add(ala, ala2, M.en(M.caja(0.5, 0.5, 1.4, "#F4F4F4"), 0, 0, 0));
+      this.escena.add(g);
+      this.gaviotas.push({ g, c: p3(centros[i % centros.length], 24 + (i % 5) * 4), r: 18 + (i % 7) * 8, v: 0.25 + (i % 4) * 0.08, f: i * 1.3 });
+    }
+  }
+
+  /** Mueve un vehículo o peatón por la red real; al final de un tramo elige otro. */
+  private avanzar(m: Movil, dt: number) {
+    m.s += m.v * dt * m.dir;
+    let vueltas = 0;
+    while ((m.s > m.t.largo || m.s < 0) && vueltas++ < 4) {
+      const nodo = m.dir === 1 ? m.t.b : m.t.a;
+      const sobra = m.dir === 1 ? m.s - m.t.largo : -m.s;
+      const opciones = (m.red === "pie" ? ADY_PIE : ADY_COCHE).get(nodo) ?? [];
+      const otras = opciones.filter((t) => t !== m.t);
+      const sig = (otras.length ? otras : opciones)[Math.floor(Math.random() * Math.max(1, (otras.length ? otras : opciones).length))] ?? m.t;
+      m.dir = sig.a === nodo ? 1 : -1;
+      m.t = sig;
+      m.s = m.dir === 1 ? sobra : sig.largo - sobra;
+    }
+    return sobreTramo(m.t, Math.max(0, Math.min(m.t.largo, m.s)), m.dir, m.lado * (ANCHO_VIA[m.t.clase] / 4 + 0.2), m.red === "pie" ? ANCHO_VIA[m.t.clase] / 2 + 1.6 : 0);
+  }
+
+  /** Viaje en autobús: el jugador sube y el bus recorre las calles reales hasta la parada. */
+  viajarEnBus(puntos: readonly Punto[], fin: () => void) {
+    this.camino = [];
+    this.rutaBus = puntos.map((p) => p3(p));
+    // Viajes de 6 a 12 s, sea cual sea la distancia.
+    let largo = 0;
+    for (let i = 1; i < puntos.length; i++) largo += Math.hypot(puntos[i][0] - puntos[i - 1][0], puntos[i][1] - puntos[i - 1][1]);
+    this.velBus = Math.max(70, largo / 10);
+    this.busJugador.position.copy(this.rutaBus[0]);
+    this.busJugador.visible = true;
+    this.jugador.visible = false;
+    this.alLlegar = fin;
+    this.ultimoArrastre = 0;
+    this.destinoCam = null;
+    this.foco = null;
+  }
+
+  get enBus() {
+    return this.rutaBus.length > 0;
+  }
+
+  /** Jugadores conectados: aparecen, se mueven con suavidad y saludan. */
+  vecinosConectados(lista: Vecino[]) {
+    const vistos = new Set<string>();
+    for (const v of lista) {
+      vistos.add(v.id);
+      let r = this.vecinos.get(v.id);
+      if (!r) {
+        const g = M.persona(v.piel, v.ropa, "#2B1B12", 0.6);
+        g.position.copy(v3(v.x, v.y));
+        this.escena.add(g);
+        r = { g, e: this.etiqueta("vecino", "", v3(v.x, v.y, SUELO + 9)), meta: v3(v.x, v.y), emote: this.etiqueta("emote", "", v3(v.x, v.y, SUELO + 13)) };
+        this.vecinos.set(v.id, r);
+      }
+      r.e.el.textContent = `${v.nombre} · Nv ${v.nivel}`;
+      r.meta.copy(v3(v.x, v.y));
+      r.emote.el.textContent = v.emote ?? "";
+      r.emote.el.style.display = v.emote ? "" : "none";
+    }
+    for (const [id, r] of this.vecinos) {
+      if (vistos.has(id)) continue;
+      this.escena.remove(r.g);
+      r.e.el.remove();
+      r.emote.el.remove();
+      this.etiquetas = this.etiquetas.filter((x) => x !== r.e && x !== r.emote);
+      this.vecinos.delete(id);
+    }
+  }
+
+  /** Posición del jugador en coordenadas del mapa (para enviarla a los demás). */
+  get posicionJugador(): Punto {
+    const p = this.enBus ? this.busJugador.position : this.jugador.position;
+    return [Math.round(p.x + CX), Math.round(p.z + CY)];
+  }
+
   /** Niebla sobre las zonas que aún no se han desbloqueado, con su cartel. */
   private construirZonas() {
-    const mat = new THREE.MeshStandardMaterial({ color: "#F4F8FF", transparent: true, opacity: 0.42, depthWrite: false, roughness: 1 });
+    const mat = new THREE.MeshStandardMaterial({ color: "#7F95C4", transparent: true, opacity: 0.3, depthWrite: false, roughness: 1 });
     for (const z of ZONAS) {
       const mallas = z.zonas.map(([x0, y0, x1, y1]) => {
         const m = new THREE.Mesh(new RoundedBoxGeometry(x1 - x0, 1.5, y1 - y0, 2, 0.7), mat);
@@ -783,8 +1118,9 @@ export class Mundo {
   }
 
   /** Texto que sube y se desvanece («+3 tomates»). */
-  flotante(texto: string, donde: THREE.Vector3 | LugarId) {
-    const pos = typeof donde === "string" ? nodo3(LUGARES[donde].nodo).setY(SUELO + 10) : donde.clone();
+  flotante(texto: string, donde: THREE.Vector3 | LugarId | "yo") {
+    const pos = donde === "yo" ? (this.enBus ? this.busJugador : this.jugador).position.clone().setY(SUELO + 10)
+      : typeof donde === "string" ? nodo3(LUGARES[donde].nodo).setY(SUELO + 10) : donde.clone();
     const el = document.createElement("div");
     el.className = "flotante3d";
     el.innerHTML = texto;
@@ -838,8 +1174,8 @@ export class Mundo {
 
   /** Acerca la cámara a un punto. `dist` es el zoom (menor = más cerca). */
   enfocar(p: THREE.Vector3, dist = 260) {
-    this.altoMeta = Math.max(70, dist * 0.42);
-    const despl = this.direccion().multiplyScalar(this.altoMeta * 0.28);
+    this.altoMeta = Math.max(120, dist * 0.75);
+    const despl = this.direccion().multiplyScalar(this.altoMeta * 0.12);
     this.foco = new THREE.Vector3(p.x - despl.x, SUELO, p.z - despl.z);
     this.destinoCam = null;
     this.ultimoArrastre = 0;
@@ -849,7 +1185,7 @@ export class Mundo {
   soltarFoco() {
     if (!this.foco) return;
     this.foco = null;
-    this.altoMeta = 230;
+    this.altoMeta = 300;
   }
 
   centrarEn(lugar: LugarId) {
@@ -871,37 +1207,42 @@ export class Mundo {
   private ajustar() {
     const r = this.canvas.getBoundingClientRect();
     this.renderer.setSize(r.width, r.height, false);
+    this.composer.setSize(r.width, r.height);
+    this.composer.setPixelRatio(this.renderer.getPixelRatio());
+    this.camara.aspect = r.width / Math.max(1, r.height);
     this.proyeccion();
   }
 
   private proyeccion() {
     const r = this.canvas.getBoundingClientRect();
-    const asp = r.width / Math.max(1, r.height);
-    const alto = asp > 1 ? this.alto * 0.75 : this.alto;
-    this.camara.left = (-alto * asp) / 2;
-    this.camara.right = (alto * asp) / 2;
-    this.camara.top = alto / 2;
-    this.camara.bottom = -alto / 2;
+    this.camara.fov = this.camara.aspect > 1 ? 26 : 34;
     this.camara.updateProjectionMatrix();
     const sc = this.sol.shadow.camera;
-    const s = Math.min(700, alto * 0.9);
-    if (sc.right !== s) {
-      sc.left = -s; sc.right = s; sc.top = s; sc.bottom = -s; sc.near = 1; sc.far = 2500;
+    const s = Math.min(650, Math.max(120, this.alto * 0.85));
+    if (Math.abs(sc.right - s) > 4) {
+      sc.left = -s; sc.right = s; sc.top = s; sc.bottom = -s; sc.near = 1; sc.far = 3000;
       sc.updateProjectionMatrix();
     }
+    // Efecto maqueta: más desenfoque arriba y abajo cuanto más cerca.
+    const k = this.alto < 400 ? 1.3 : this.alto < 900 ? 0.95 : 0.6;
+    this.tiltH.uniforms.h.value = k / Math.max(1, r.width);
+    this.tiltV.uniforms.v.value = k / Math.max(1, r.height);
   }
 
   private colocarCamara() {
-    const a = Math.PI / 4 + this.giroActual * (Math.PI / 2);
-    const el = Math.atan(1 / Math.SQRT2);
-    const d = 1500;
+    const a = Math.PI / 4 + this.giroActual * (Math.PI / 2) + this.demoAng;
+    const el = THREE.MathUtils.degToRad(Math.min(64, 38 + (this.alto - 120) * 0.012));
+    const d = this.alto;
     this.camara.position.set(
       this.objetivoCam.x + Math.sin(a) * Math.cos(el) * d,
       this.objetivoCam.y + Math.sin(el) * d,
       this.objetivoCam.z - Math.cos(a) * Math.cos(el) * d,
     );
     this.camara.lookAt(this.objetivoCam);
-    this.sol.position.copy(this.objetivoCam).add(new THREE.Vector3(260, 520, -180));
+    const niebla = this.escena.fog as THREE.Fog;
+    niebla.near = d * 2.2;
+    niebla.far = d * 7 + 600;
+    this.sol.position.copy(this.objetivoCam).add(new THREE.Vector3(300, 600, -220));
     this.sol.target.position.copy(this.objetivoCam);
   }
 
@@ -965,9 +1306,20 @@ export class Mundo {
     }, { passive: false });
   }
 
+  /** Lleva la cámara a un punto del mapa (coordenadas del mapa). */
+  mirarA(x: number, y: number) {
+    this.destinoCam = v3(x, y);
+    this.ultimoArrastre = performance.now();
+  }
+
+  /** Acercamiento suave a una altura de cámara (entrada en partida). */
+  volarA(alto: number) {
+    this.altoMeta = Math.max(90, Math.min(2600, alto));
+  }
+
   zoom(f: number) {
     this.altoMeta = null;
-    this.alto = Math.max(55, Math.min(1500, this.alto * f));
+    this.alto = Math.max(90, Math.min(2600, this.alto * f));
     this.proyeccion();
   }
 
@@ -992,7 +1344,7 @@ export class Mundo {
     const p = this.alSuelo(cx, cy);
     if (!p) return;
     let mejor: LugarId | null = null;
-    let dMin = Math.max(20, this.alto * 0.06);
+    let dMin = Math.max(20, this.alto * 0.05);
     for (const id of Object.keys(LUGARES) as LugarId[]) {
       const d = nodo3(LUGARES[id].nodo).distanceTo(p);
       if (d < dMin) {
@@ -1101,6 +1453,92 @@ export class Mundo {
       }
     }
 
+    // Viaje en autobús: el bus recorre las calles y la cámara lo sigue.
+    if (this.rutaBus.length) {
+      let avance = this.velBus * dt;
+      while (avance > 0 && this.rutaBus.length) {
+        const dest = this.rutaBus[0];
+        const d = Math.hypot(dest.x - this.busJugador.position.x, dest.z - this.busJugador.position.z);
+        if (d > 0.01) this.busJugador.rotation.y = Math.atan2(dest.x - this.busJugador.position.x, dest.z - this.busJugador.position.z);
+        if (d <= avance) {
+          this.busJugador.position.set(dest.x, SUELO + 0.3, dest.z);
+          this.rutaBus.shift();
+          avance -= d;
+        } else {
+          const k = avance / d;
+          this.busJugador.position.x += (dest.x - this.busJugador.position.x) * k;
+          this.busJugador.position.z += (dest.z - this.busJugador.position.z) * k;
+          avance = 0;
+        }
+      }
+      this.busJugador.position.y = SUELO + 0.3 + Math.abs(Math.sin(t * 9)) * 0.15;
+      if (!this.rutaBus.length) {
+        this.busJugador.visible = false;
+        this.jugador.position.set(this.busJugador.position.x, SUELO, this.busJugador.position.z);
+        this.jugador.visible = true;
+        const f = this.alLlegar;
+        this.alLlegar = null;
+        f?.();
+      }
+    }
+
+    // Tráfico, autobuses y peatones por las calles reales.
+    const o = this.ayudante;
+    this.coches.forEach((c, i) => {
+      const p = this.avanzar(c, dt);
+      o.position.set(p.x - CX, SUELO + 1, p.y - CY);
+      o.rotation.set(0, p.rot, 0);
+      o.scale.set(1, 1, 1);
+      o.updateMatrix();
+      this.mallaCoches.setMatrixAt(i, o.matrix);
+      o.position.y = SUELO + 2;
+      o.translateZ(-0.3);
+      o.updateMatrix();
+      this.mallaCabinas.setMatrixAt(i, o.matrix);
+    });
+    this.peatones.forEach((c, i) => {
+      const p = this.avanzar(c, dt);
+      const paso = Math.abs(Math.sin(t * 8 + i)) * 0.25;
+      o.position.set(p.x - CX, SUELO + 1.3 + paso, p.y - CY);
+      o.rotation.set(0, p.rot, 0);
+      o.updateMatrix();
+      this.mallaPeatones.setMatrixAt(i, o.matrix);
+      o.position.y = SUELO + 2.6 + paso;
+      o.updateMatrix();
+      this.mallaCabezas.setMatrixAt(i, o.matrix);
+    });
+    for (const m of [this.mallaCoches, this.mallaCabinas, this.mallaPeatones, this.mallaCabezas]) m.instanceMatrix.needsUpdate = true;
+    for (const b of this.autobuses) {
+      const p = this.avanzar(b.m, dt);
+      b.g.position.set(p.x - CX, SUELO + 0.3, p.y - CY);
+      b.g.rotation.y = p.rot;
+    }
+    for (const gv of this.gaviotas) {
+      const ang = t * gv.v + gv.f;
+      gv.g.position.set(gv.c.x + Math.cos(ang) * gv.r, gv.c.y + Math.sin(t * 0.7 + gv.f) * 2, gv.c.z + Math.sin(ang) * gv.r);
+      gv.g.rotation.set(0, -ang, Math.sin(t * 1.3 + gv.f) * 0.2);
+      const aleteo = Math.sin(t * 9 + gv.f) * 0.5;
+      gv.g.children[0].rotation.z = aleteo;
+      gv.g.children[1].rotation.z = -aleteo;
+    }
+    // Vecinos conectados: se deslizan hacia su última posición.
+    for (const r of this.vecinos.values()) {
+      const d = r.meta.clone().sub(r.g.position);
+      if (d.length() > 0.3) r.g.rotation.y = Math.atan2(d.x, d.z);
+      r.g.position.lerp(r.meta, 1 - Math.pow(0.05, dt));
+      r.e.pos.copy(r.g.position).setY(SUELO + 9);
+      r.emote.pos.copy(r.g.position).setY(SUELO + 13);
+    }
+    // Pantalla de inicio: sobrevuelo lento alrededor de la Plaza de la Iglesia.
+    if (this.modoDemo) {
+      this.demoAng += dt * 0.05;
+      this.objetivoCam.lerp(p3(PLAZA), 1 - Math.pow(0.2, dt));
+      this.jugador.visible = false;
+    } else if (this.demoAng && !this.enBus) {
+      this.demoAng = 0;
+      this.jugador.visible = true;
+    }
+
     // Giro y zoom suaves.
     this.giroActual += (this.giro - this.giroActual) * (1 - Math.pow(0.002, dt));
     if (this.altoMeta !== null) {
@@ -1110,7 +1548,7 @@ export class Mundo {
     }
     // La cámara sigue al personaje salvo que el jugador esté mirando el mapa.
     const libre = performance.now() - this.ultimoArrastre > 2500;
-    const destino = this.destinoCam ?? this.foco ?? (libre ? this.jugador.position : null);
+    const destino = this.modoDemo ? null : this.destinoCam ?? this.foco ?? (this.enBus ? this.busJugador.position : libre ? this.jugador.position : null);
     if (destino) {
       this.objetivoCam.lerp(new THREE.Vector3(destino.x, SUELO, destino.z), 1 - Math.pow(0.02, dt));
       if (this.destinoCam && this.objetivoCam.distanceTo(this.destinoCam) < 2) {
@@ -1181,7 +1619,7 @@ export class Mundo {
     for (const g of this.npcs.values()) g.scale.y = 0.58 + Math.sin(t * 2 + g.position.x) * 0.008;
 
     this.luz();
-    this.renderer.render(this.escena, this.camara);
+    this.composer.render(dt);
     this.moverEtiquetas(dt);
   }
 
@@ -1190,36 +1628,65 @@ export class Mundo {
     const dia = h >= 7 && h < 19.5 ? 1 : h >= 19.5 && h < 21.5 ? 1 - (h - 19.5) / 2 : h >= 6 && h < 7 ? h - 6 : 0;
     const atardecer = h >= 18 && h < 21 ? 1 - Math.abs(h - 19.5) / 1.5 : 0;
     const cielo = new THREE.Color("#132A5C").lerp(new THREE.Color("#A9D8FF"), dia).lerp(new THREE.Color("#FFB98A"), atardecer * 0.5);
-    (this.escena.background as THREE.Color).copy(cielo);
+    if (dia > 0.85) this.escena.background = T.cielo();
+    else this.escena.background = cielo;
+    (this.escena.fog as THREE.Fog).color.copy(dia > 0.85 ? new THREE.Color("#F1E4CF") : cielo);
     this.sol.intensity = 0.3 + 2.3 * dia;
     this.sol.color.set(atardecer > 0.2 ? "#FFC58A" : "#FFF1D6");
     this.cielo.intensity = 0.55 + 0.7 * dia;
     for (const f of this.faroles) (f as THREE.MeshStandardMaterial).emissiveIntensity = 0.3 + (1 - dia) * 2.2;
   }
 
+  /**
+   * Rótulos sobre el mundo, sin solaparse: se colocan por prioridad (objetivo,
+   * lugares, vecinos, avisos, calles, zonas) y se descarta el que pisaría a otro.
+   */
   private moverEtiquetas(dt: number) {
     const r = this.canvas.getBoundingClientRect();
     const v = new THREE.Vector3();
     const a = this.alto;
-    for (const e of this.etiquetas) {
+    const prioridad = (c: DOMTokenList) =>
+      c.contains("meta") ? 0 : c.contains("burbuja") ? 1 : c.contains("emote") ? 1 : c.contains("lugar") ? 2 : c.contains("vecino") ? 3 : c.contains("npc") ? 4 : c.contains("candado") ? 5 : c.contains("calle") ? 6 : 7;
+    const ocupado: [number, number, number, number][] = [];
+    const orden = [...this.etiquetas].sort((x, y) => prioridad(x.el.classList) - prioridad(y.el.classList));
+    for (const e of orden) {
       const c = e.el.classList;
       if (e.el.style.display === "none") continue;
       v.copy(e.pos).project(this.camara);
-      const fuera = Math.abs(v.x) > 1.15 || Math.abs(v.y) > 1.15;
-      const ocultar = fuera
-        || (c.contains("npc") && a > 300)
-        || (c.contains("calle") && (a < 90 || a > 520))
-        || (c.contains("zona-lejos") && a < 600)
-        || (c.contains("lugar") && a > 900 && !c.contains("meta"))
-        || (c.contains("candado") && a < 120);
+      let ocultar = v.z > 1 || Math.abs(v.x) > 1.1 || Math.abs(v.y) > 1.1
+        || (c.contains("npc") && a > 420)
+        || (c.contains("vecino") && a > 900)
+        || (c.contains("calle") && (a < 110 || a > 330))
+        || (c.contains("zona-lejos") && a < 1100)
+        || (c.contains("candado") && a < 160)
+        || this.modoDemo && !c.contains("zona-lejos");
+      // Lejos, los lugares se quedan en icono.
+      if (c.contains("lugar")) c.toggle("compacto", a > 650 && !c.contains("meta"));
+      const x = ((v.x + 1) / 2) * r.width;
+      const y = ((1 - v.y) / 2) * r.height;
+      if (!ocultar) {
+        if (!e.el.dataset.w) {
+          e.el.style.visibility = "hidden";
+          e.el.style.transform = "translate(-9999px,0)";
+          e.el.dataset.w = String(e.el.offsetWidth || 80);
+          e.el.dataset.h = String(e.el.offsetHeight || 20);
+        }
+        const w = c.contains("compacto") ? 34 : Number(e.el.dataset.w);
+        const h = Number(e.el.dataset.h);
+        const caja: [number, number, number, number] = [x - w / 2 - 3, y - h - 3, x + w / 2 + 3, y + 3];
+        // Fuera de las franjas del HUD y del dock.
+        if (!this.modoDemo && (caja[1] < 118 || caja[3] > r.height - 96) && !c.contains("meta")) ocultar = true;
+        else if (ocupado.some((o) => caja[0] < o[2] && caja[2] > o[0] && caja[1] < o[3] && caja[3] > o[1])) ocultar = true;
+        else ocupado.push(caja);
+      }
       e.el.style.visibility = ocultar ? "hidden" : "visible";
-      if (!ocultar) e.el.style.transform = `translate(${((v.x + 1) / 2) * r.width}px, ${((1 - v.y) / 2) * r.height}px) translate(-50%, -100%)`;
+      if (!ocultar) e.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -100%)`;
     }
     for (let i = this.flotantes.length - 1; i >= 0; i--) {
       const f = this.flotantes[i];
       f.t += dt;
       v.copy(f.pos).add(new THREE.Vector3(0, f.t * 6, 0)).project(this.camara);
-      f.el.style.transform = `translate(${((v.x + 1) / 2) * r.width}px, ${((1 - v.y) / 2) * r.height}px) translate(-50%, -100%)`;
+      f.el.style.transform = `translate(${((v.x + 1) / 2) * r.width}px, ${((1 - v.y) / 2) * r.height}px) translate(-50%, -100%) scale(${1 + Math.min(0.3, f.t)})`;
       f.el.style.opacity = String(Math.max(0, 1 - f.t / 1.8));
       if (f.t > 1.8) {
         f.el.remove();
@@ -1227,6 +1694,73 @@ export class Mundo {
       }
     }
   }
+}
+
+/* ── Tráfico ────────────────────────────────────────────────────────── */
+
+interface Movil {
+  t: Tramo;
+  dir: number;
+  s: number;
+  v: number;
+  /** 1: carril derecho (coches); 0: acera (peatones). */
+  lado: number;
+  red: "coche" | "pie";
+}
+
+function adyacencia(filtro: (t: Tramo) => boolean) {
+  const m = new Map<string, Tramo[]>();
+  for (const t of TRAMOS) {
+    if (!filtro(t)) continue;
+    for (const n of [t.a, t.b]) {
+      if (!m.has(n)) m.set(n, []);
+      m.get(n)!.push(t);
+    }
+  }
+  return m;
+}
+const ADY_COCHE = adyacencia((t) => t.clase <= 3);
+const ADY_PIE = adyacencia((t) => t.clase <= 4 || t.clase === 6);
+
+const longitudes = new WeakMap<Tramo, number[]>();
+/** Punto a `s` unidades del inicio de un tramo, desplazado a un lado según el sentido. */
+function sobreTramo(t: Tramo, s: number, dir: number, carril: number, acera: number) {
+  let acc = longitudes.get(t);
+  if (!acc) {
+    acc = [0];
+    for (let i = 1; i < t.puntos.length; i++) acc.push(acc[i - 1] + Math.hypot(t.puntos[i][0] - t.puntos[i - 1][0], t.puntos[i][1] - t.puntos[i - 1][1]));
+    longitudes.set(t, acc);
+  }
+  let i = 1;
+  while (i < acc.length - 1 && acc[i] < s) i++;
+  const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+  const l = acc[i] - acc[i - 1] || 1;
+  const k = (s - acc[i - 1]) / l;
+  let dx = (b[0] - a[0]) / l;
+  let dy = (b[1] - a[1]) / l;
+  if (dir < 0) {
+    dx = -dx;
+    dy = -dy;
+  }
+  // Derecha del sentido de marcha (y crece hacia el sur): (−dy, dx).
+  const off = carril || acera;
+  return { x: a[0] + (b[0] - a[0]) * k - dy * off, y: a[1] + (b[1] - a[1]) * k + dx * off, rot: Math.atan2(dx, dy) };
+}
+
+/** Autobús urbano verde y blanco. */
+function autobusUrbano() {
+  const g = new THREE.Group();
+  g.add(M.en(M.rcaja(3, 3.2, 10, "#FFFFFF", 0.7), 0, 2.4, 0));
+  g.add(M.en(M.rcaja(3.1, 1, 10.1, "#2FA84A", 0.4), 0, 1.3, 0));
+  g.add(M.en(M.rcaja(3.15, 1.1, 9.4, M.mat("#3B5B7E", { roughness: 0.2, metalness: 0.4 }), 0.3), 0, 3, 0));
+  g.add(M.en(M.rcaja(3.15, 0.5, 2.2, "#2FA84A", 0.2), 0, 4.1, 3.6));
+  for (const z of [-3.2, 3.2]) for (const x of [-1.5, 1.5]) {
+    const r = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.5, 10), M.mat("#1C1D21"));
+    r.rotation.z = Math.PI / 2;
+    g.add(M.en(r, x, 0.7, z));
+  }
+  g.traverse((o) => (o.castShadow = true));
+  return g;
 }
 
 /* ── utilidades de geometría ────────────────────────────────────────── */

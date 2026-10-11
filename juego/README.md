@@ -20,6 +20,12 @@ Juego narrativo para móvil ambientado en La Línea de la Concepción. Mezcla la
 | Vida | Energía, comida, ánimo y gente; día y noche; viento diario. |
 | InfoLinense | El móvil del personaje es la web de InfoLinense (noticias de la ciudad del juego y, opcionalmente, el feed real). |
 
+**Multijugador:** dentro de InfoLinense (claude.ai) ves a los demás jugadores paseando por la ciudad con su nombre, puedes saludarles con emojis, hay un **ranking** de los linenses con más experiencia y un **mercadillo** para comprar y vender cosechas, pescado y platos entre jugadores. Fuera de la plataforma, las pestañas del mismo navegador se ven entre sí.
+
+**Autobús urbano:** el botón central del dock abre las paradas (1 €); el autobús recorre las calles reales y la cámara lo sigue.
+
+**Interfaz de juego:** portada con sobrevuelo 3D de la ciudad, HUD con avatar, nivel y XP, monedas, reloj y necesidades en indicadores circulares, dock de botones redondos, paneles con cabecera y animaciones (subida de nivel con confeti, avisos, rebotes). Tipografías Fredoka y Nunito.
+
 La partida se guarda sola en el dispositivo.
 
 ## Desarrollo
@@ -39,12 +45,13 @@ src/
   datos/personajes.ts   vecinos
   estado.ts             partida, reloj, viento, necesidades, encargos y guardado
   historia.ts           capítulo 1: objetivos, escenas y decisiones
-  juego.ts              bucle principal: HUD, diálogos, desplazamientos
+  juego.ts              bucle principal: HUD, dock, autobús, diálogos, desplazamientos
+  red.ts                multijugador: presencia (room), ranking y mercadillo (db), identidad (user)
   mundo/mundo.ts        mundo 3D: terreno, ciudad, cámara, gestos, sincronización
   mundo/modelos.ts      modelos low-poly estilo Hay Day (iglesia, barcas, huertos…)
   mundo/texturas.ts     texturas pintadas con canvas (césped, adoquín, teja, fachadas)
   mapa/rutas.ts         camino más corto por las calles reales (Dijkstra con montículo)
-  ui/                   lugares, minijuegos, móvil InfoLinense, paneles
+  ui/                   lugares, minijuegos, móvil InfoLinense, paneles, vecinos
   config.ts             conexión con el feed real de InfoLinense
 scripts/geojson-a-mapa.mjs  GeoJSON de OSM → geometría del juego (linea.json)
 ```

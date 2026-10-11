@@ -1,15 +1,17 @@
 import { LUGARES, ZONAS, zonaDeLugar, type LugarId, type Zona } from "./datos/mapa";
 import { PERSONAJES, type PersonajeId } from "./datos/personajes";
 import {
-  dormir, esMadrugada, g, ganarXP, guardar, hora, nivel, pasarTiempo, progresoNivel, sinLeer, VIENTOS, type Estado,
+  dormir, esMadrugada, g, ganarXP, guardar, hora, nivel, NIVELES, pasarTiempo, progresoNivel, sinLeer, VIENTOS, type Estado,
 } from "./estado";
 import * as historia from "./historia";
 import { iconoSvg } from "./iconos";
 import { ruta } from "./mapa/rutas";
+import { red } from "./red";
 import { Mundo, type Tocable } from "./mundo/mundo";
 import { h, html, esc } from "./ui/dom";
 import { abrirBancal, abrirBarca, abrirCocina, abrirPuesto, accionesLugar, tablon, type Accion } from "./ui/lugares";
 import { abrirMovil } from "./ui/movil";
+import { abrirVecinos } from "./ui/vecinos";
 import { abrirDiario, abrirMenu, abrirMochila } from "./ui/paneles";
 import { retrato, retratoNarrador } from "./ui/retrato";
 import { sonido } from "./ui/sonido";
@@ -23,6 +25,8 @@ const formato = (t: string) => esc(t).replace(/\*\*(.+?)\*\*/g, "<strong>$1</str
 export class Juego {
   readonly mundo: Mundo;
   private hud: HTMLElement;
+  private necesidadesEl: HTMLElement;
+  private botonVecinos!: HTMLButtonElement;
   private objetivoEl: HTMLButtonElement;
   private capa: HTMLElement;
   private botonMovil!: HTMLButtonElement;
@@ -33,17 +37,21 @@ export class Juego {
   /** Panel abierto que se repinta cada segundo (bancales, cocina, barca…). */
   vivo: (() => void) | null = null;
   private revisando = false;
+  private segundos = 0;
 
-  constructor(public e: Estado, private raiz: HTMLElement) {
-    raiz.innerHTML = "";
-    const canvas = h("canvas", { id: "mapa", "aria-label": "La Línea en 3D" });
-    const rotulos = h("div", { class: "capa3d" });
+  constructor(public e: Estado, private raiz: HTMLElement, previo?: { mundo: Mundo; canvas: HTMLElement; rotulos: HTMLElement }) {
+    const canvas = previo?.canvas ?? h("canvas", { id: "mapa", "aria-label": "La Línea en 3D" });
+    const rotulos = previo?.rotulos ?? h("div", { class: "capa3d" });
+    raiz.replaceChildren(canvas, rotulos);
     this.hud = h("div", { class: "hud" });
+    this.necesidadesEl = h("div", { class: "necesidades" });
     this.objetivoEl = h("button", { class: "objetivo", onclick: () => this.irAlObjetivo() });
     this.capa = h("div");
-    raiz.append(canvas, rotulos, this.hud, this.objetivoEl, this.barra(), this.capa);
-    this.mundo = new Mundo(canvas, rotulos);
+    raiz.append(this.hud, this.necesidadesEl, this.objetivoEl, this.barra(), this.capa);
+    this.mundo = previo?.mundo ?? new Mundo(canvas as HTMLCanvasElement, rotulos);
+    this.mundo.modoDemo = false;
     this.mundo.colocar(e.nodo);
+    this.mundo.volarA(300);
     this.mundo.ropa = e.ropa;
     this.mundo.piel = e.piel;
     this.mundo.onTocar = (t) => {
@@ -51,16 +59,36 @@ export class Juego {
     };
     this.mundo.zonaAbierta = (z) => this.zonaAbierta(z);
     this.mundo.sincronizar(e);
-    raiz.append(h(
+    const ico = (d: string) => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+    this.capa.before(h(
       "div", { class: "controles-mapa" },
-      h("button", { "aria-label": "Girar a la izquierda", onclick: () => this.mundo.girar(-1), html: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>' }),
-      h("button", { "aria-label": "Girar a la derecha", onclick: () => this.mundo.girar(1), html: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>' }),
-      h("button", { "aria-label": "Acercar", onclick: () => this.mundo.zoom(0.75) }, "+"),
-      h("button", { "aria-label": "Alejar", onclick: () => this.mundo.zoom(1.33) }, "−"),
+      h("button", { class: "relieve", "aria-label": "Girar a la izquierda", onclick: () => this.mundo.girar(-1), html: ico('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>') }),
+      h("button", { class: "relieve", "aria-label": "Girar a la derecha", onclick: () => this.mundo.girar(1), html: ico('<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>') }),
+      h("button", { class: "relieve", "aria-label": "Acercar", onclick: () => this.mundo.zoom(0.75) }, "+"),
+      h("button", { class: "relieve", "aria-label": "Alejar", onclick: () => this.mundo.zoom(1.33) }, "−"),
     ));
+    red.onCambio = () => this.refrescarVecinos();
     this.arrancarReloj();
     this.refrescar();
     if (import.meta.env.DEV) (window as unknown as { __mi: Juego }).__mi = this;
+  }
+
+  /** Jugadores conectados en el mapa y mi posición para ellos. */
+  emote: { e: string; t: number } | null = null;
+  refrescarVecinos() {
+    this.mundo.vecinosConectados(red.vecinos());
+    const [x, y] = this.mundo.posicionJugador;
+    const emote = this.emote && Date.now() - this.emote.t < 4000 ? this.emote : null;
+    red.publicar({ nombre: this.e.nombre, ropa: this.e.ropa, piel: this.e.piel, nivel: nivel(this.e), x, y, emote: emote?.e, emoteT: emote?.t });
+    this.botonVecinos.querySelector(".punto")?.remove();
+    if (red.conectados) this.botonVecinos.querySelector(".bola")!.append(h("span", { class: "punto" }, red.conectados));
+  }
+
+  saludar(emote: string) {
+    this.emote = { e: emote, t: Date.now() };
+    this.mundo.vecinosConectados([...red.vecinos()]);
+    this.mundo.flotante(emote, "yo");
+    this.refrescarVecinos();
   }
 
   /* ── Reloj continuo: 1 s real = 1 min de juego ─────────────────────── */
@@ -82,6 +110,8 @@ export class Juego {
           acumulado = 0;
           this.revisarNivel();
           this.refrescarHud();
+          this.refrescarVecinos();
+          if (++this.segundos % 60 === 1) void red.guardarRanking(this.e.nombre, nivel(this.e), this.e.xp ?? 0, this.e.dia);
           this.vivo?.();
           if (esMadrugada(this.e)) void this.revisarHora();
         }
@@ -141,7 +171,7 @@ export class Juego {
     this.nivelVisto = n;
     const nuevas = ZONAS.filter((z) => z.nivel === n).map((z) => z.nombre);
     sonido("bien");
-    this.aviso(`<b>¡Nivel ${n}!</b>${nuevas.length ? ` Se abre: ${nuevas.join(", ")}.` : ""}`);
+    this.celebrar(`¡Nivel ${n}!`, nuevas.length ? `Se abre: ${nuevas.join(", ")}` : "Sigue así");
   }
 
   async hablarCon(p: PersonajeId) {
@@ -153,15 +183,18 @@ export class Juego {
   /* ── HUD ──────────────────────────────────────────────────────────── */
 
   private barra() {
-    const boton = (icono: Parameters<typeof iconoSvg>[0], texto: string, fn: () => void) =>
-      h("button", { onclick: () => !this.mundo.andando && fn(), "aria-label": texto }, html(iconoSvg(icono, 24)), texto);
+    const boton = (icono: Parameters<typeof iconoSvg>[0], texto: string, fn: () => void, principal = false) =>
+      h("button", { class: principal ? "principal" : "", onclick: () => !this.mundo.andando && !this.mundo.enBus && fn(), "aria-label": texto },
+        h("span", { class: "bola relieve" }, html(iconoSvg(icono, principal ? 34 : 26))), texto);
     this.botonMovil = boton("movil", "InfoLinense", () => abrirMovil(this));
+    this.botonVecinos = boton("gente", "Vecinos", () => abrirVecinos(this));
     return h(
-      "nav", { class: "navegacion" },
+      "nav", { class: "dock" },
       boton("mochila", "Mochila", () => abrirMochila(this)),
-      this.botonMovil,
       boton("diario", "Diario", () => abrirDiario(this)),
-      boton("menu", "Menú", () => abrirMenu(this)),
+      boton("bus", "Autobús", () => this.abrirBus(), true),
+      this.botonMovil,
+      this.botonVecinos,
     );
   }
 
@@ -176,36 +209,96 @@ export class Juego {
     this.refrescarHud();
     const obj = historia.objetivo(e);
     this.objetivoEl.replaceChildren(
-      h("span", { class: "icono" }, html(iconoSvg("objetivo", 20))),
+      h("span", { class: "icono" }, html(iconoSvg("objetivo", 22))),
       h("div", {}, h("small", {}, obj.titulo.toUpperCase()), h("span", {}, obj.texto)),
     );
-    this.objetivoEl.style.display = this.ocupado ? "none" : "";
+    this.objetivoEl.style.display = this.ocupado || this.mundo.enBus ? "none" : "";
     this.mundo.objetivo = obj.lugar ?? null;
     this.mundo.sincronizar(e);
     const n = sinLeer(e);
     this.botonMovil.querySelector(".punto")?.remove();
-    if (n > 0) this.botonMovil.append(h("span", { class: "punto" }, n));
+    if (n > 0) this.botonMovil.querySelector(".bola")!.append(h("span", { class: "punto" }, n));
     guardar(e);
   }
 
+  private dineroVisto = -1;
   private refrescarHud() {
     const e = this.e;
-    const necesidad = (nombre: string, v: number) =>
-      h("div", { class: `necesidad${v < 25 ? " baja" : ""}` }, nombre, h("div", { class: "nivel" }, h("i", { style: `width:${Math.round(v)}%` })));
+    const necesidad = (icono: Parameters<typeof iconoSvg>[0], nombre: string, v: number) =>
+      h("button", { class: `necesidad${v < 25 ? " baja" : ""}`, style: `--v:${Math.round(v)}`, title: `${nombre}: ${Math.round(v)}%`, "aria-label": `${nombre} ${Math.round(v)}%`, onclick: () => this.aviso(`<b>${nombre}</b> ${Math.round(v)}%`) }, html(iconoSvg(icono, 15)));
+    const n = nivel(e);
+    const sig = NIVELES[n] ?? NIVELES[NIVELES.length - 1];
+    const dinero = h("span", { class: `pill dinero${this.dineroVisto >= 0 && e.dinero > this.dineroVisto ? " sube" : ""}` }, h("span", { class: "moneda" }, "€"), String(e.dinero));
+    this.dineroVisto = e.dinero;
     this.hud.replaceChildren(
       h(
-        "div", { class: "hud-fila" },
-        h("span", { class: "chip" }, `Día ${e.dia} · ${hora(e)}`),
-        h("button", { class: `chip ${e.viento === "levanteFuerte" ? "rosa" : ""}`, onclick: () => this.verTiempo() }, html(iconoSvg("viento", 15)), VIENTOS[e.viento].nombre),
-        h("span", { class: "espacio" }),
-        h("span", { class: "chip nivel", title: `${e.xp ?? 0} puntos de experiencia` }, `Nv ${nivel(e)}`, h("i", { style: `width:${Math.round(progresoNivel(e) * 100)}%` })),
-        h("span", { class: "chip lima" }, `${e.dinero} €`),
+        "div", { class: "perfil" },
+        h("button", { class: "avatar", "aria-label": "Tu diario", onclick: () => !this.mundo.andando && abrirDiario(this), html: retrato({ piel: e.piel, pelo: "#2B1B12", ropa: e.ropa }) }, h("span", { class: "estrella" }, n)),
+        h("div", { class: "perfil-datos" }, h("b", {}, e.nombre), h("div", { class: "xp" }, h("i", { style: `width:${Math.round(progresoNivel(e) * 100)}%` }), h("span", {}, `${e.xp ?? 0} / ${sig} XP`))),
       ),
+      h("span", { class: "espacio" }),
       h(
-        "div", { class: "necesidades" },
-        necesidad("Energía", e.energia), necesidad("Comida", e.comida), necesidad("Ánimo", e.animo), necesidad("Gente", e.social),
+        "div", { class: "recursos" },
+        dinero,
+        h("button", { class: `pill${e.viento === "levanteFuerte" ? " rosa" : ""}`, onclick: () => this.verTiempo() }, h("span", { class: "reloj" }, html(iconoSvg("viento", 15))), `Día ${e.dia} · ${hora(e)}`),
       ),
+      h("button", { class: "ajustes relieve", "aria-label": "Ajustes", onclick: () => !this.mundo.andando && abrirMenu(this) }, html(iconoSvg("ajustes", 20))),
     );
+    this.necesidadesEl.replaceChildren(
+      necesidad("rayo", "Energía", e.energia), necesidad("cubiertos", "Comida", e.comida), necesidad("cara", "Ánimo", e.animo), necesidad("gente", "Gente", e.social),
+    );
+  }
+
+  /** Celebración a pantalla completa (subida de nivel). */
+  celebrar(titulo: string, texto: string) {
+    const colores = ["#C4E910", "#FF1254", "#1F5EFF", "#FFFFFF", "#FFD23F"];
+    const c = h("div", { class: "celebracion", "aria-live": "polite" }, h("div", {}, h("b", {}, titulo), h("span", {}, texto)));
+    for (let i = 0; i < 28; i++) {
+      const ang = (i / 28) * Math.PI * 2;
+      const d = 120 + Math.random() * 140;
+      c.append(h("i", { style: `background:${colores[i % 5]};--dx:${Math.cos(ang) * d}px;--dy:${Math.sin(ang) * d + 120}px;animation-delay:${Math.random() * 0.2}s` }));
+    }
+    this.raiz.append(c);
+    setTimeout(() => c.remove(), 2800);
+  }
+
+  /* ── Autobús urbano: de parada en parada por las calles reales ─────── */
+
+  abrirBus() {
+    const aqui = this.lugarActual;
+    const paradas = (Object.keys(LUGARES) as LugarId[]).filter((l) => l !== aqui);
+    this.hoja(
+      "MOVILIDAD", "Autobús urbano",
+      h("div", { class: "linea-bus" }, h("b", {}, "L1"), h("span", {}, "Recorre La Línea por sus calles. Billete: ", h("strong", {}, "1 €"), ". Mira la ciudad por la ventanilla.")),
+      h("div", { class: "paradas" }, ...paradas.map((l) => {
+        const zona = zonaDeLugar(l);
+        const cerrada = zona && !this.zonaAbierta(zona) ? `Se abre en el nivel ${zona.nivel}` : false;
+        const b = this.boton({
+          icono: LUGARES[l].icono, titulo: LUGARES[l].nombre, sub: LUGARES[l].descripcion, precio: "1 €",
+          desactivada: cerrada || (this.e.dinero < 1 ? "No tienes 1 € para el billete" : false),
+          fn: () => this.viajarEnBus(l),
+        });
+        b.classList.add("parada");
+        return b;
+      })),
+    );
+  }
+
+  viajarEnBus(lugar: LugarId) {
+    if (this.e.dinero < 1 || this.mundo.andando || this.mundo.enBus) return;
+    const destino = LUGARES[lugar].nodo;
+    this.cerrar();
+    this.e.dinero -= 1;
+    const r = ruta(this.e.nodo, destino);
+    sonido("bien");
+    const cartel = h("div", { class: "en-bus", role: "status" }, html(iconoSvg("bus", 18)), `Próxima parada: ${LUGARES[lugar].nombre}`);
+    this.raiz.append(cartel);
+    this.objetivoEl.style.display = "none";
+    this.mundo.viajarEnBus(r.puntos, () => {
+      cartel.remove();
+      this.llegar(lugar);
+    });
+    this.refrescarHud();
   }
 
   private verTiempo() {
@@ -356,7 +449,7 @@ export class Juego {
 
   /** Va andando a un lugar; al llegar, abre su ficha o hace `despues`. */
   ir(lugar: LugarId, despues?: () => void) {
-    if (this.mundo.andando) return;
+    if (this.mundo.andando || this.mundo.enBus) return;
     const destino = LUGARES[lugar].nodo;
     if (destino === this.e.nodo) {
       (despues ?? (() => this.abrirLugar(lugar)))();
@@ -371,13 +464,15 @@ export class Juego {
     const r = ruta(this.e.nodo, destino);
     this.objetivoEl.style.display = "none";
     sonido("paso");
-    this.mundo.andar(r.puntos, async () => {
-      this.e.nodo = destino;
-      this.refrescar();
-      await historia.alLlegar(this, lugar);
-      if (this.ocupado) return;
-      (despues ?? (() => this.abrirLugar(lugar)))();
-    });
+    this.mundo.andar(r.puntos, () => this.llegar(lugar, despues));
+  }
+
+  private async llegar(lugar: LugarId, despues?: () => void) {
+    this.e.nodo = LUGARES[lugar].nodo;
+    this.refrescar();
+    await historia.alLlegar(this, lugar);
+    if (this.ocupado) return;
+    (despues ?? (() => this.abrirLugar(lugar)))();
   }
 
   abrirLugar(lugar: LugarId) {

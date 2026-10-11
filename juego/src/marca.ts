@@ -26,6 +26,6 @@ export const MAPA = {
 } as const;
 
 export const FUENTE = {
-  display: "Poppins, system-ui, sans-serif",
-  texto: "Inter, system-ui, sans-serif",
+  display: "Fredoka, system-ui, sans-serif",
+  texto: "Nunito, system-ui, sans-serif",
 } as const;
