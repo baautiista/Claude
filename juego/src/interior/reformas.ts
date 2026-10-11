@@ -547,7 +547,7 @@ function pintarHabitacion(v: Vivienda, hab: Habitacion, color: string) {
       h("button", { class: `chip${herramienta === "brocha" ? " activo" : ""}`, onclick: () => ((herramienta = "brocha"), pie()) }, "Brocha (bordes)"),
       h("span", { class: "medidor" }, h("i", { style: `width:${Math.round(carga)}%;background:${nuevo}` })),
     ),
-    h("p", { html: `Cobertura <b>${Math.round(cobertura() * 100)}%</b> (hace falta 95 %) · Salpicones fuera de la pared: <b>${manchas}</b>${carga < 5 ? " · <b>Moja el rodillo en la bandeja</b>" : ""}` }),
+    h("p", { html: `Cobertura <b>${Math.floor(cobertura() * 100)}%</b> (hace falta 95 %) · Salpicones fuera de la pared: <b>${manchas}</b>${carga < 5 ? " · <b>Moja el rodillo en la bandeja</b>" : ""}` }),
     h("button", { class: "boton azul", disabled: cobertura() < 0.95, onclick: async () => {
       const r = await v.op("hogarPintar", { hab: hab.id, color, cobertura: Math.round(cobertura() * 1000) / 1000, manchas });
       if (r) {
