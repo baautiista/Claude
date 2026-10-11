@@ -55,7 +55,7 @@ El mapa se construye desde **datos reales de OpenStreetMap** (GeoJSON exportado 
 
 ```bash
 # El GeoJSON original (22 MB) va en fuentes/ y no se sube al repositorio.
-node scripts/geojson-a-mapa.mjs fuentes/la-linea.geojson   # → src/datos/linea.json (1,1 MB)
+npm run mapa -- fuentes/la-linea.geojson   # → src/datos/linea.json (1,1 MB)
 ```
 
 El preprocesador:

@@ -6,7 +6,7 @@
     "dev": "vite --host",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host",
-    "mapa": "node scripts/mapa-osm.mjs"
+    "mapa": "node scripts/geojson-a-mapa.mjs"
   },
   "devDependencies": {
     "@types/three": "^0.169.0",
