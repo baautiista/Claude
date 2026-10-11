@@ -343,10 +343,11 @@ export class EscenaInterior {
         const bombilla = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 8), new THREE.MeshStandardMaterial({ color: "#FFF6DA", emissive: new THREE.Color("#FFD98A"), emissiveIntensity: 0 }));
         bombilla.position.set(hab.x0 + w / 2, ALTO_PARED - 0.35, hab.z0 + d / 2);
         const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.3, 4), matI("#2A2C31"));
-        cable.position.set(bombilla.position.x, ALTO_PARED - 0.15, bombilla.position.z);
+        cable.position.set(0, 0.2, 0);
+        bombilla.add(cable);
         const luz = new THREE.PointLight("#FFD9A0", 0, Math.max(w, d) * 1.6, 1.6);
         luz.position.copy(bombilla.position);
-        this.casco.add(bombilla, cable, luz);
+        this.casco.add(bombilla, luz);
         this.luces.push({ luz, bombilla });
       }
       // Paredes: cada habitación pinta la cara que da hacia dentro.
@@ -1006,8 +1007,11 @@ export class EscenaInterior {
 
   /* ── Bucle ────────────────────────────────────────────────────────── */
 
+  /** Con un taller a pantalla completa encima no hace falta dibujar el 3D. */
+  pausado = false;
+
   private fotograma() {
-    if (!this.vivo || !this.plano) return;
+    if (!this.vivo || !this.plano || this.pausado) return;
     const dt = Math.min(0.1, this.reloj.getDelta());
     const t = this.reloj.elapsedTime;
     // Andar.
@@ -1068,6 +1072,8 @@ export class EscenaInterior {
       const meta = p.normal.dot(vista) > 0.3 ? 0.12 : p.fachada ? 1 : this.tabiques;
       p.mesh.scale.y += (meta - p.mesh.scale.y) * Math.min(1, dt * 8);
     }
+    // Las lámparas de techo solo se ven con los tabiques enteros (si no, flotan).
+    for (const l of this.luces) l.bombilla.visible = this.tabiques > 0.5;
     // Sol entrando por las ventanas.
     const ang = ((this.hora - 6) / 14) * Math.PI;
     this.sol.position.set(this.plano.ancho / 2 + Math.cos(ang) * 14, 6 + Math.sin(Math.max(0.15, ang)) * 10, this.plano.fondo / 2 - 8);

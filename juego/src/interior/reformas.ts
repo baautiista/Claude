@@ -128,9 +128,11 @@ function superposicion(v: Vivienda, seccion: string, titulo: string) {
     ),
     cuerpo, pie);
   v.ui.append(el);
+  v.escena.pausado = true;
   let alCerrar: (() => void) | null = null;
   const cerrar = () => {
     el.remove();
+    v.escena.pausado = false;
     alCerrar?.();
     v.directo({ que: "herramienta", texto: "" });
   };
