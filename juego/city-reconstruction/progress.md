@@ -15,10 +15,11 @@ Ficheros:
 
 | Sector | Zona | Estado |
 |---|---|---|
-| CENTRO-01 | Plaza de la Iglesia | esperando fotografías |
+| CENTRO-01 | Plaza de la Iglesia | **pendiente de revisión** · [informe](reports/CENTRO-01.md) |
 | CENTRO-02 … CENTRO-09 | resto del Centro | pendiente de documentación |
 | Resto de barrios | — | pendiente de documentación |
 
 ## Diario
 
 - 2026-10-11: inventario de barrios y división del Centro a partir del extracto OSM del juego. Pedidas las fotos de CENTRO-01. Sin cambios en el juego.
+- 2026-10-11: recibidas 3 capturas de Google Maps, 6 de Street View y 2 fotos del monumento. CENTRO-01 modelado e integrado en el juego (8 edificios, monumento, quioscos, mobiliario, pavimento). Capturas reales en reports/CENTRO-01/. Esperando revisión del usuario.

@@ -22,6 +22,7 @@ import { presente } from "../historia";
 import { esIconoJuego, iconoJuego, iconoSvg } from "../iconos";
 import * as M from "./modelos";
 import * as T from "./texturas";
+import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
 /** Otro jugador conectado (multijugador). */
 export interface Vecino {
@@ -184,7 +185,10 @@ const ATUNARA = POSICION.atunara;
 const HUERTA = POSICION.huerta;
 const BANCALES: Punto[] = [0, 1, 2, 3, 4, 5].map((i) => sumar(HUERTA, -26 + (i % 3) * 14, 10 + Math.floor(i / 3) * 14));
 const PUESTO: Punto = sumar(NODOS[LUGARES.mercado.nodo], 6, -6);
-const TABLON: Punto = sumar(NODOS[LUGARES.plaza.nodo], -7, 5);
+const TABLON: Punto = TABLON_CENTRO01;
+/** Huellas OSM sustituidas por los sectores reconstruidos a mano (barrio a barrio). */
+const SUSTITUIDAS: Punto[] = [...SUSTITUYE_CENTRO01];
+const sustituida = (x: number, y: number) => SUSTITUIDAS.some(([sx, sy]) => Math.abs(sx - x) < 0.6 && Math.abs(sy - y) < 0.6);
 const PUERTO_CENTRO: Punto = (() => {
   const r = DATOS.puerto.flat();
   return [r.reduce((s, p) => s + p[0], 0) / r.length, r.reduce((s, p) => s + p[1], 0) / r.length];
@@ -348,8 +352,6 @@ export class Mundo {
 
     // Lugares con modelo propio: no se dibuja el edificio real que hay debajo.
     this.reservas.push([...CASA, 9], [...MERCADO, 18], [...POSICION.bar, 6], [...POSICION.redaccion, 7], [...ATUNARA, 12], [...POSICION.santaBarbara, 30], [...(DATOS.deportes.estadio ?? POSICION.estadio).slice(0, 2) as unknown as Punto, 52], [...POSICION.estacion, 12], [...POSICION.frontera, 12]);
-    const santuario = DATOS.poi["Santuario de la Inmaculada Concepción"];
-    this.reservas.push([...santuario, 16]);
     for (const b of BANCALES) this.reservas.push([...b, 9]);
     this.reservas.push([...sumar(HUERTA, 22, -6), 9]);
 
@@ -815,7 +817,7 @@ export class Mundo {
     let idx = -1;
     for (const [x, y, w0, d0, ang, tipo, plantas] of DATOS.edificios) {
       idx++;
-      if (reservado(x, y)) continue;
+      if (reservado(x, y) || sustituida(x, y)) continue;
       const w = Math.max(3.2, w0 * 0.9);
       const d = Math.max(3.2, d0 * 0.9);
       const r = rand();
@@ -1160,7 +1162,15 @@ export class Mundo {
     const frondosos: Punto[] = [];
     const pinos: Punto[] = [];
     const arbustos: Punto[] = [];
-    for (const [x, y, t] of DATOS.arboles) if (!enDeporte([x, y])) (t === 2 ? arbustos : t === 1 ? pinos : frondosos).push([x, y]);
+    for (const [x, y, t] of DATOS.arboles) {
+      if (enDeporte([x, y])) continue;
+      // Plaza de la Iglesia: plátanos de sombra altos, como en las fotos.
+      if (t === 0 && Math.hypot(x - ZONA_CENTRO01.c[0], y - ZONA_CENTRO01.c[1]) < ZONA_CENTRO01.r) {
+        this.plantar([x, y], Especie.Sombra, rand, 1.12 + rand() * 0.15);
+        continue;
+      }
+      (t === 2 ? arbustos : t === 1 ? pinos : frondosos).push([x, y]);
+    }
     this.bosque(frondosos, rand, "jardin");
     this.bosque(pinos, rand, "pino");
     for (const p of arbustos) this.plantar(p, Especie.Arbusto, rand, 0.9 + rand() * 0.6);
@@ -1511,6 +1521,59 @@ export class Mundo {
     }
   }
 
+  /* ── Sectores reconstruidos con fotos reales (city-reconstruction/) ─── */
+
+  /** ¿Cae el punto dentro de un edificio OSM que se sigue dibujando de forma procedural? */
+  private ocupadoOSM(p: Punto) {
+    for (const [x, y, w, d, ang] of DATOS.edificios) {
+      if (Math.abs(x - p[0]) > 30 || Math.abs(y - p[1]) > 30 || sustituida(x, y)) continue;
+      const dx = p[0] - x;
+      const dy = p[1] - y;
+      const lx = dx * Math.cos(ang) + dy * Math.sin(ang);
+      const lz = -dx * Math.sin(ang) + dy * Math.cos(ang);
+      if (Math.abs(lx) < w / 2 && Math.abs(lz) < d / 2) return true;
+    }
+    return false;
+  }
+
+  /** Malla de una obra (una por material), con sombras. */
+  private mallasObra(o: Obra) {
+    const g = new THREE.Group();
+    const mats = materialesArquitectura();
+    o.geometrias().forEach((geo, m) => {
+      if (!geo) return;
+      const malla = new THREE.Mesh(geo, mats[m]);
+      malla.castShadow = true;
+      malla.receiveShadow = true;
+      g.add(malla);
+    });
+    return g;
+  }
+
+  private construirSectores() {
+    const ctx = { cx: CX, cy: CY, suelo: SUELO };
+    const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
+    // CENTRO-01 · Plaza de la Iglesia: detalle completo de cerca y versión ligera de lejos.
+    const cerca = construirCentro01(ctx, ocupado, true);
+    const lejos = construirCentro01(ctx, ocupado, false);
+    // La geometría ya está en coordenadas del mundo: el LOD se sitúa en el centro del sector
+    // (para medir bien la distancia a la cámara) y sus niveles se desplazan al revés.
+    const centro = p3(ZONA_CENTRO01.c);
+    for (const k of ["iglesia", "resto"] as const) {
+      const lod = new THREE.LOD();
+      lod.position.copy(centro);
+      for (const [obra, dist] of [[cerca[k], 0], [lejos[k], 260]] as const) {
+        const g = this.mallasObra(obra);
+        g.position.copy(centro).negate();
+        const nivel = new THREE.Group();
+        nivel.add(g);
+        lod.addLevel(nivel, dist);
+      }
+      this.escena.add(lod);
+      if (k === "iglesia") this.hacerTocable(lod, { tipo: "lugar", id: "plaza" });
+    }
+  }
+
   /* ── Lugares del juego en su posición real ──────────────────────────── */
 
   private construirLugares() {
@@ -1527,10 +1590,7 @@ export class Mundo {
     const nodoDe = (l: LugarId) => NODOS[LUGARES[l].nodo];
 
     // Plaza de la Iglesia: Santuario de la Inmaculada mirando a la plaza, monumento, fuente y tablón.
-    const santuario = DATOS.poi["Santuario de la Inmaculada Concepción"];
-    poner(M.iglesia(), santuario, { tipo: "lugar", id: "plaza" }, mirar(santuario, PLAZA), 0.42);
-    poner(M.monumento(), sumar(PLAZA, 6, 2), undefined, 0, 0.45);
-    poner(M.fuente(), sumar(PLAZA, -5, -3), undefined, 0, 0.45);
+    this.construirSectores();
     poner(M.tablon(), TABLON, { tipo: "tablon" }, mirar(TABLON, nodoDe("plaza")), 0.45);
     // Mercado de Abastos con su orientación real y el puesto 14 delante.
     const mercado = edificioCercano(MERCADO);

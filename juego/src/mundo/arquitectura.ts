@@ -18,7 +18,7 @@ import * as T from "./texturas";
 export const enum Mat { Muro, Ladrillo, Cristal, Luz, Teja, Detalle, Metal, Chapa, Suelo }
 const N_MAT = 9;
 
-type RGB = readonly [number, number, number];
+export type RGB = readonly [number, number, number];
 const cache = new Map<string, RGB>();
 export const rgb = (hex: string): RGB => {
   let c = cache.get(hex);

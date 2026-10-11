@@ -1,12 +1,98 @@
 {
   "nota": "Elementos por sector. 'osm' = coordenadas del juego tomadas de OpenStreetMap. 'modelo_actual' describe lo que el juego tiene hoy.",
   "CENTRO-01": [
-    { "id": "santuario-inmaculada", "nombre": "Santuario de la Inmaculada Concepción", "ubicacion": "Plaza de la Iglesia (lado este)", "osm": [1110, 2117], "importancia": "máxima", "modelo_actual": "modelo estilizado hecho a partir de una foto anterior (src/mundo/modelos.ts)", "fotos": ["fachada principal frontal", "lateral completo", "torre/espadaña de cerca", "cubierta desde arriba (vista aérea)"], "estado": "esperando fotografías" },
-    { "id": "casa-ruperto-toledano", "nombre": "Casa de Ruperto Toledano Fernández", "ubicacion": "Plaza de la Iglesia (OSM: historic=manor)", "osm": [1094, 2120], "importancia": "alta", "modelo_actual": "bloque genérico", "fotos": ["fachada frontal completa", "detalle de balcones y cornisa"], "estado": "esperando fotografías" },
-    { "id": "edificio-tetuan", "nombre": "Edificio Tetuán / esquina Duque de Tetuán", "ubicacion": "Calle Duque de Tetuán con la plaza", "osm": [1077, 2132], "importancia": "alta", "modelo_actual": "bloque genérico", "fotos": ["esquina desde la plaza", "fachada a Duque de Tetuán"], "estado": "esperando fotografías" },
-    { "id": "edf-linea-real", "nombre": "Edf. Línea Real", "ubicacion": "Arranque de Calle Real / Méndez Núñez", "osm": [1125, 2144], "importancia": "media", "modelo_actual": "bloque genérico", "fotos": ["fachada desde Calle Real"], "estado": "esperando fotografías" },
-    { "id": "tres-gracias", "nombre": "Escultura Las Tres Gracias", "ubicacion": "Plaza de la Iglesia / Calle Real", "osm": [1107, 2138], "importancia": "media", "modelo_actual": "monumento genérico", "fotos": ["la escultura de frente y de lado"], "estado": "esperando fotografías" },
-    { "id": "frentes-comerciales", "nombre": "Frentes comerciales de la plaza (Bar La Parada, Damajuana, Caja Rural...)", "ubicacion": "Perímetro de la plaza", "osm": [1096, 2135], "importancia": "media", "modelo_actual": "bajos genéricos", "fotos": ["panorámica de cada lado de la plaza a pie de calle"], "estado": "esperando fotografías" },
-    { "id": "pavimento-mobiliario", "nombre": "Pavimento, bancos, farolas, árboles y fuente de la plaza", "ubicacion": "Interior de la plaza", "osm": [1096, 2130], "importancia": "alta", "modelo_actual": "mobiliario genérico", "fotos": ["suelo y mobiliario", "vista aérea de Google Maps"], "estado": "esperando fotografías" }
+    {
+      "id": "santuario-inmaculada",
+      "nombre": "Santuario de la Inmaculada Concepción",
+      "osm": [
+        1110,
+        2117
+      ],
+      "importancia": "máxima",
+      "estado": "pendiente de revisión",
+      "modelo": "src/mundo/sectores/centro01.ts · santuario()",
+      "referencias": [
+        "Google Maps 3D x2",
+        "Street View 2 y 3",
+        "fotos del monumento x2"
+      ]
+    },
+    {
+      "id": "edificio-verde",
+      "nombre": "Edificio verde de la esquina (Duque de Tetuán con la plaza)",
+      "osm_huella": "OSM, centro [1093.4, 2135.8]",
+      "importancia": "alta",
+      "estado": "pendiente de revisión",
+      "nota": "Identificado en Street View 6 y Street View 1. OSM no le da nombre; el 'Edificio Tetuán' de OSM está detrás, en Duque de Tetuán."
+    },
+    {
+      "id": "edificio-crema",
+      "nombre": "Edificio crema de cierros (lado oeste)",
+      "osm_huella": "OSM, centro [1091.6, 2143.4]",
+      "importancia": "media",
+      "estado": "pendiente de revisión",
+      "nota": "Aspecto estimado: apenas visible en las fotos."
+    },
+    {
+      "id": "casa-ruperto-toledano",
+      "nombre": "Casa de Ruperto Toledano Fernández + terraza del Café Bar La Parada",
+      "osm": [
+        1094,
+        2120
+      ],
+      "importancia": "alta",
+      "estado": "pendiente de revisión"
+    },
+    {
+      "id": "torre-ladrillo",
+      "nombre": "Torre de ladrillo (boca de Calle Real, lado norte)",
+      "osm_huella": "OSM, centro [1126.2, 2124.8]",
+      "importancia": "alta",
+      "estado": "pendiente de revisión"
+    },
+    {
+      "id": "edificio-blanco",
+      "nombre": "Edificio blanco del tejado a cuatro aguas (boca de Calle Real, lado sur)",
+      "osm_huella": "OSM, centro [1119.2, 2141.2]",
+      "importancia": "alta",
+      "estado": "pendiente de revisión"
+    },
+    {
+      "id": "edificio-rosa",
+      "nombre": "Edificio rosa del pasaje (Pasaje Doctor José Torres Vico)",
+      "osm_huella": "estimada, no está en OSM",
+      "importancia": "alta",
+      "estado": "pendiente de revisión"
+    },
+    {
+      "id": "edificio-celosias",
+      "nombre": "Edificio verde estrecho de celosías",
+      "osm_huella": "estimada",
+      "importancia": "media",
+      "estado": "pendiente de revisión"
+    },
+    {
+      "id": "monumento-cruz-herrera",
+      "nombre": "Monumento a José Cruz Herrera (OSM: 'Las Tres Gracias')",
+      "osm": [
+        1107,
+        2138
+      ],
+      "importancia": "alta",
+      "estado": "pendiente de revisión",
+      "nota": "Figuras estilizadas; mejorables con fotos de cerca."
+    },
+    {
+      "id": "quioscos",
+      "nombre": "Quioscos de cúpula a los lados del compás (Kiosco Inmaculada)",
+      "importancia": "media",
+      "estado": "pendiente de revisión"
+    },
+    {
+      "id": "mobiliario-pavimento",
+      "nombre": "Pavimento con rosa de los vientos, farolas fernandinas, bancos granates, bolardos, terrazas y plátanos",
+      "importancia": "alta",
+      "estado": "pendiente de revisión"
+    }
   ]
 }

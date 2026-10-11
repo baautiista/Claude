@@ -1,21 +1,207 @@
 {
-  "estados": ["pendiente de documentación", "esperando fotografías", "analizando referencias", "modelado en curso", "integrado en el juego", "pendiente de revisión", "aprobado"],
+  "estados": [
+    "pendiente de documentación",
+    "esperando fotografías",
+    "analizando referencias",
+    "modelado en curso",
+    "integrado en el juego",
+    "pendiente de revisión",
+    "aprobado"
+  ],
   "nota": "Coordenadas del juego en metros (x este, y sur). Las delimitaciones son propuestas a partir de OSM: se ajustan con tus capturas.",
   "sectores": [
-    { "codigo": "CENTRO-01", "barrio": "CENTRO", "zona": "Plaza de la Iglesia", "centro": [1096, 2130], "calles": ["Calle Real (arranque)", "Calle Padre Rodríguez Cantizano", "Calle Duque de Tetuán", "Calle Méndez Núñez", "Calle del Padre Junco", "Pasaje Doctor José Torres Vico"], "estado": "esperando fotografías" },
-    { "codigo": "CENTRO-02", "barrio": "CENTRO", "zona": "Calle Real (tramo central) y Plaza Fariñas", "centro": [1150, 2155], "calles": ["Calle Real", "Plaza Fariñas", "Calle Alfonso X el Sabio"], "estado": "pendiente de documentación" },
-    { "codigo": "CENTRO-03", "barrio": "CENTRO", "zona": "Plaza Cruz Herrera y final de Calle Real", "centro": [1205, 2175], "calles": ["Plaza Cruz Herrera", "Calle Real (final)"], "estado": "pendiente de documentación" },
-    { "codigo": "CENTRO-04", "barrio": "CENTRO", "zona": "Plaza de la Constitución", "centro": [1256, 2180], "calles": ["Plaza de la Constitución", "Calle Clavel", "Calle Gibraltar", "Calle Jardines (arranque)"], "estado": "pendiente de documentación" },
-    { "codigo": "CENTRO-05", "barrio": "CENTRO", "zona": "Mercado de la Concepción y entorno", "centro": [1160, 2070], "calles": ["Plaza San Pablo", "Pasaje del Teatro"], "estado": "pendiente de documentación" },
-    { "codigo": "CENTRO-06", "barrio": "CENTRO", "zona": "Ayuntamiento y Jardines Saccone", "centro": [1125, 2235], "calles": ["Avenida de España", "Paseo de los Rocking Boys", "Plaza Juan José García Cabreros", "Paseo Félix Enríquez"], "estado": "pendiente de documentación" },
-    { "codigo": "CENTRO-07", "barrio": "CENTRO", "zona": "Fachada de Poniente del Centro (Plaza Camarón de la Isla)", "centro": [990, 2230], "calles": ["Avenida del Mar", "Paseo Cornisa", "Paseo Andrés Viñas", "Plaza Doctor Juanito"], "estado": "pendiente de documentación" },
-    { "codigo": "CENTRO-08", "barrio": "CENTRO", "zona": "Calle del Teatro, Plaza San Cecilio y Plaza Vista Alegre", "centro": [1180, 1990], "calles": ["Calle del Teatro", "Plaza San Cecilio", "Plaza Vista Alegre"], "estado": "pendiente de documentación", "nota": "Límite con La Velada por confirmar." },
-    { "codigo": "CENTRO-09", "barrio": "CENTRO", "zona": "Calle Jardines, Plaza Las Armas y Comandancia (Museo del Istmo)", "centro": [1330, 2170], "calles": ["Calle Jardines", "Avenida de la Banqueta (tramo)", "Plaza Las Armas"], "estado": "pendiente de documentación", "nota": "Límite con Santa Bárbara / Santiago por confirmar." },
-    { "codigo": "FRONTERA-01", "barrio": "FRONTERA", "zona": "Avenida 20 de Abril, Plaza Europa y aduana", "centro": [1200, 2400], "estado": "pendiente de documentación" },
-    { "codigo": "PRINCESASOFIA-01", "barrio": "PRINCESASOFIA", "zona": "Parque Princesa Sofía", "centro": [1419, 2371], "estado": "pendiente de documentación" },
-    { "codigo": "MARINA-01", "barrio": "MARINA", "zona": "Palacio de Congresos, hotel y Alcaidesa Marina", "centro": [1060, 2350], "estado": "pendiente de documentación" },
-    { "codigo": "DEPORTIVA-01", "barrio": "DEPORTIVA", "zona": "Estadio Municipal", "centro": [1602, 2329], "estado": "pendiente de documentación" },
-    { "codigo": "FUERTE-01", "barrio": "FUERTE", "zona": "Fuerte de Santa Bárbara", "centro": [1677, 2232], "estado": "pendiente de documentación" }
+    {
+      "codigo": "CENTRO-01",
+      "barrio": "CENTRO",
+      "zona": "Plaza de la Iglesia",
+      "centro": [
+        1096,
+        2130
+      ],
+      "calles": [
+        "Calle Real (arranque)",
+        "Calle Padre Rodríguez Cantizano",
+        "Calle Duque de Tetuán",
+        "Calle Méndez Núñez",
+        "Calle del Padre Junco",
+        "Pasaje Doctor José Torres Vico"
+      ],
+      "estado": "pendiente de revisión",
+      "informe": "reports/CENTRO-01.md"
+    },
+    {
+      "codigo": "CENTRO-02",
+      "barrio": "CENTRO",
+      "zona": "Calle Real (tramo central) y Plaza Fariñas",
+      "centro": [
+        1150,
+        2155
+      ],
+      "calles": [
+        "Calle Real",
+        "Plaza Fariñas",
+        "Calle Alfonso X el Sabio"
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "CENTRO-03",
+      "barrio": "CENTRO",
+      "zona": "Plaza Cruz Herrera y final de Calle Real",
+      "centro": [
+        1205,
+        2175
+      ],
+      "calles": [
+        "Plaza Cruz Herrera",
+        "Calle Real (final)"
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "CENTRO-04",
+      "barrio": "CENTRO",
+      "zona": "Plaza de la Constitución",
+      "centro": [
+        1256,
+        2180
+      ],
+      "calles": [
+        "Plaza de la Constitución",
+        "Calle Clavel",
+        "Calle Gibraltar",
+        "Calle Jardines (arranque)"
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "CENTRO-05",
+      "barrio": "CENTRO",
+      "zona": "Mercado de la Concepción y entorno",
+      "centro": [
+        1160,
+        2070
+      ],
+      "calles": [
+        "Plaza San Pablo",
+        "Pasaje del Teatro"
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "CENTRO-06",
+      "barrio": "CENTRO",
+      "zona": "Ayuntamiento y Jardines Saccone",
+      "centro": [
+        1125,
+        2235
+      ],
+      "calles": [
+        "Avenida de España",
+        "Paseo de los Rocking Boys",
+        "Plaza Juan José García Cabreros",
+        "Paseo Félix Enríquez"
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "CENTRO-07",
+      "barrio": "CENTRO",
+      "zona": "Fachada de Poniente del Centro (Plaza Camarón de la Isla)",
+      "centro": [
+        990,
+        2230
+      ],
+      "calles": [
+        "Avenida del Mar",
+        "Paseo Cornisa",
+        "Paseo Andrés Viñas",
+        "Plaza Doctor Juanito"
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "CENTRO-08",
+      "barrio": "CENTRO",
+      "zona": "Calle del Teatro, Plaza San Cecilio y Plaza Vista Alegre",
+      "centro": [
+        1180,
+        1990
+      ],
+      "calles": [
+        "Calle del Teatro",
+        "Plaza San Cecilio",
+        "Plaza Vista Alegre"
+      ],
+      "estado": "pendiente de documentación",
+      "nota": "Límite con La Velada por confirmar."
+    },
+    {
+      "codigo": "CENTRO-09",
+      "barrio": "CENTRO",
+      "zona": "Calle Jardines, Plaza Las Armas y Comandancia (Museo del Istmo)",
+      "centro": [
+        1330,
+        2170
+      ],
+      "calles": [
+        "Calle Jardines",
+        "Avenida de la Banqueta (tramo)",
+        "Plaza Las Armas"
+      ],
+      "estado": "pendiente de documentación",
+      "nota": "Límite con Santa Bárbara / Santiago por confirmar."
+    },
+    {
+      "codigo": "FRONTERA-01",
+      "barrio": "FRONTERA",
+      "zona": "Avenida 20 de Abril, Plaza Europa y aduana",
+      "centro": [
+        1200,
+        2400
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "PRINCESASOFIA-01",
+      "barrio": "PRINCESASOFIA",
+      "zona": "Parque Princesa Sofía",
+      "centro": [
+        1419,
+        2371
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "MARINA-01",
+      "barrio": "MARINA",
+      "zona": "Palacio de Congresos, hotel y Alcaidesa Marina",
+      "centro": [
+        1060,
+        2350
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "DEPORTIVA-01",
+      "barrio": "DEPORTIVA",
+      "zona": "Estadio Municipal",
+      "centro": [
+        1602,
+        2329
+      ],
+      "estado": "pendiente de documentación"
+    },
+    {
+      "codigo": "FUERTE-01",
+      "barrio": "FUERTE",
+      "zona": "Fuerte de Santa Bárbara",
+      "centro": [
+        1677,
+        2232
+      ],
+      "estado": "pendiente de documentación"
+    }
   ],
   "resto": "Los demás barrios se dividirán en sectores (CODIGO-01, -02...) cuando lleguemos a ellos, para no fijar delimitaciones sin referencias."
 }
