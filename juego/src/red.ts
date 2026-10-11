@@ -39,7 +39,8 @@ export interface Oferta {
   mia: boolean;
 }
 
-export const EMOTES = ["👋", "😄", "👍", "❤️", "🎣", "🍅", "⚽", "🌬️"] as const;
+/** Saludos (iconos propios, no emojis). */
+export const EMOTES = ["hola", "risa", "bien", "corazon", "pez", "tomate", "balon", "sol"] as const;
 
 type Room = {
   presence(p: Record<string, unknown>): Promise<void>;

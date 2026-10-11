@@ -2,12 +2,17 @@ import { OBJETOS, type ObjetoId } from "../datos/objetos";
 import { cuantos, dar, quitar } from "../estado";
 import type { Juego } from "../juego";
 import { EMOTES, red, type Oferta } from "../red";
+import { iconoJuego } from "../iconos";
 import { h, html } from "./dom";
 import { retrato } from "./retrato";
 import { sonido } from "./sonido";
 
 /** Vecinos: quién juega ahora, ranking de la ciudad y mercadillo entre jugadores. */
 type Pestana = "ahora" | "ranking" | "mercadillo";
+
+const NOMBRE_SALUDO: Record<(typeof EMOTES)[number], string> = {
+  hola: "¡Hola!", risa: "Risas", bien: "¡Bien!", corazon: "Cariño", pez: "A pescar", tomate: "De la huerta", balon: "¡Aúpa Balona!", sol: "Buen día",
+};
 
 export function abrirVecinos(j: Juego, inicial: Pestana = "ahora") {
   let pestana = inicial;
@@ -38,7 +43,7 @@ function ahora(j: Juego, cuerpo: HTMLElement) {
   const lista = red.lista();
   cuerpo.replaceChildren(
     h("div", { class: "seccion-titulo" }, "Saluda a quien esté cerca"),
-    h("div", { class: "emotes" }, ...EMOTES.map((e) => h("button", { "aria-label": `Saludar con ${e}`, onclick: () => { sonido("bien"); j.saludar(e); j.cerrar(); } }, e))),
+    h("div", { class: "emotes" }, ...EMOTES.map((e) => h("button", { "aria-label": `Saludar: ${NOMBRE_SALUDO[e]}`, title: NOMBRE_SALUDO[e], onclick: () => { sonido("bien"); j.saludar(e); j.cerrar(); }, html: iconoJuego(e, 30) }))),
     h("div", { class: "seccion-titulo" }, "En la ciudad"),
     lista.length
       ? h("div", { class: "acciones" }, ...lista.map((v) => {

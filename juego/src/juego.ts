@@ -1,13 +1,13 @@
-import { LUGARES, ZONAS, zonaDeLugar, type LugarId, type Zona } from "./datos/mapa";
+import { LUGARES, nodoCercano, ZONAS, zonaDeLugar, type LugarId, type Punto, type Zona } from "./datos/mapa";
 import { PERSONAJES, type PersonajeId } from "./datos/personajes";
 import {
   dormir, esMadrugada, g, ganarXP, guardar, hora, nivel, NIVELES, pasarTiempo, progresoNivel, sinLeer, VIENTOS, type Estado,
 } from "./estado";
 import * as historia from "./historia";
-import { iconoSvg } from "./iconos";
+import { esIconoJuego, iconoJuego, iconoSvg, type IconoJuego } from "./iconos";
 import { ruta } from "./mapa/rutas";
 import { red } from "./red";
-import { Mundo, type Tocable } from "./mundo/mundo";
+import { Mundo, type FichaEdificio, type Tocable } from "./mundo/mundo";
 import { h, html, esc } from "./ui/dom";
 import { abrirBancal, abrirBarca, abrirCocina, abrirPuesto, accionesLugar, tablon, type Accion } from "./ui/lugares";
 import { abrirMovil } from "./ui/movil";
@@ -87,7 +87,7 @@ export class Juego {
   saludar(emote: string) {
     this.emote = { e: emote, t: Date.now() };
     this.mundo.vecinosConectados([...red.vecinos()]);
-    this.mundo.flotante(emote, "yo");
+    this.mundo.flotante(esIconoJuego(emote) ? iconoJuego(emote, 34) : "", "yo");
     this.refrescarVecinos();
   }
 
@@ -139,6 +139,7 @@ export class Juego {
       case "puesto": return alli("mercado", () => abrirPuesto(this));
       case "tablon": return alli("plaza", () => tablon(this));
       case "zona": return this.avisoZona(t.zona);
+      case "edificio": return this.abrirEdificio(t.ficha);
       case "solar":
         sonido("toque");
         return this.aviso("<b>Solar en venta.</b> Aquí podrás levantar una churrería, una conservera o un comercio en la próxima fase.");
@@ -222,31 +223,54 @@ export class Juego {
   }
 
   private dineroVisto = -1;
+  private xpVisto = -1;
   private refrescarHud() {
     const e = this.e;
-    const necesidad = (icono: Parameters<typeof iconoSvg>[0], nombre: string, v: number) =>
-      h("button", { class: `necesidad${v < 25 ? " baja" : ""}`, style: `--v:${Math.round(v)}`, title: `${nombre}: ${Math.round(v)}%`, "aria-label": `${nombre} ${Math.round(v)}%`, onclick: () => this.aviso(`<b>${nombre}</b> ${Math.round(v)}%`) }, html(iconoSvg(icono, 15)));
+    const necesidad = (icono: IconoJuego, nombre: string, v: number) =>
+      h("button", { class: `necesidad${v < 25 ? " baja" : ""}`, style: `--v:${Math.round(v)}`, title: `${nombre}: ${Math.round(v)}%`, "aria-label": `${nombre} ${Math.round(v)}%`, onclick: () => this.aviso(`<b>${nombre}</b> ${Math.round(v)}%`) },
+        h("span", { class: "anillo", html: iconoJuego(icono, 18) }), h("span", { class: "valor" }, Math.round(v)));
     const n = nivel(e);
     const sig = NIVELES[n] ?? NIVELES[NIVELES.length - 1];
-    const dinero = h("span", { class: `pill dinero${this.dineroVisto >= 0 && e.dinero > this.dineroVisto ? " sube" : ""}` }, h("span", { class: "moneda" }, "€"), String(e.dinero));
+    const sube = this.dineroVisto >= 0 && e.dinero > this.dineroVisto;
+    const subeXP = this.xpVisto >= 0 && (e.xp ?? 0) > this.xpVisto;
+    const dinero = h("span", { class: `pill dinero${sube ? " sube" : ""}` }, h("span", { class: "moneda", html: iconoJuego("moneda", 24) }), String(e.dinero));
+    if (sube) this.volar("moneda", e.dinero - this.dineroVisto, ".pill.dinero");
+    if (subeXP) this.volar("estrella", (e.xp ?? 0) - this.xpVisto, ".avatar");
     this.dineroVisto = e.dinero;
+    this.xpVisto = e.xp ?? 0;
     this.hud.replaceChildren(
       h(
         "div", { class: "perfil" },
-        h("button", { class: "avatar", "aria-label": "Tu diario", onclick: () => !this.mundo.andando && abrirDiario(this), html: retrato({ piel: e.piel, pelo: "#2B1B12", ropa: e.ropa }) }, h("span", { class: "estrella" }, n)),
+        h("button", { class: `avatar${subeXP ? " brilla" : ""}`, "aria-label": "Tu diario", onclick: () => !this.mundo.andando && abrirDiario(this), html: retrato({ piel: e.piel, pelo: "#2B1B12", ropa: e.ropa }) }, h("span", { class: "estrella" }, n)),
         h("div", { class: "perfil-datos" }, h("b", {}, e.nombre), h("div", { class: "xp" }, h("i", { style: `width:${Math.round(progresoNivel(e) * 100)}%` }), h("span", {}, `${e.xp ?? 0} / ${sig} XP`))),
       ),
       h("span", { class: "espacio" }),
       h(
         "div", { class: "recursos" },
         dinero,
-        h("button", { class: `pill${e.viento === "levanteFuerte" ? " rosa" : ""}`, onclick: () => this.verTiempo() }, h("span", { class: "reloj" }, html(iconoSvg("viento", 15))), `Día ${e.dia} · ${hora(e)}`),
+        h("button", { class: `pill${e.viento === "levanteFuerte" ? " rosa" : ""}`, onclick: () => this.verTiempo(), "aria-label": "Hora y tiempo" }, h("span", { class: "reloj", html: iconoJuego("reloj", 22) }), `Día ${e.dia} · ${hora(e)}`),
+        h("span", { class: "pill fina", title: "Jugadores conectados" }, h("span", { class: "reloj", html: iconoJuego("gente", 20) }), `${red.conectados + 1} en línea`),
       ),
       h("button", { class: "ajustes relieve", "aria-label": "Ajustes", onclick: () => !this.mundo.andando && abrirMenu(this) }, html(iconoSvg("ajustes", 20))),
     );
     this.necesidadesEl.replaceChildren(
       necesidad("rayo", "Energía", e.energia), necesidad("cubiertos", "Comida", e.comida), necesidad("cara", "Ánimo", e.animo), necesidad("gente", "Gente", e.social),
     );
+  }
+
+  /** Monedas o estrellas que vuelan hasta su contador al ganar algo. */
+  private volar(icono: IconoJuego, cantidad: number, destinoSel: string) {
+    const destino = this.raiz.querySelector(destinoSel)?.getBoundingClientRect();
+    const raiz = this.raiz.getBoundingClientRect();
+    if (!destino) return;
+    const n = Math.min(8, Math.max(2, Math.round(cantidad / 2)));
+    for (let i = 0; i < n; i++) {
+      const x0 = raiz.width / 2 + (Math.random() - 0.5) * 90;
+      const y0 = raiz.height * 0.5 + (Math.random() - 0.5) * 60;
+      const el = h("span", { class: "volador", html: iconoJuego(icono, 26), style: `left:${x0}px;top:${y0}px;--dx:${destino.left - raiz.left + destino.width / 2 - x0}px;--dy:${destino.top - raiz.top + destino.height / 2 - y0}px;animation-delay:${i * 0.06}s` });
+      this.raiz.append(el);
+      setTimeout(() => el.remove(), 1100 + i * 60);
+    }
   }
 
   /** Celebración a pantalla completa (subida de nivel). */
@@ -260,6 +284,45 @@ export class Juego {
     }
     this.raiz.append(c);
     setTimeout(() => c.remove(), 2800);
+  }
+
+  /** Ficha de un edificio cualquiera de la ciudad, con la opción de ir andando. */
+  private abrirEdificio(f: FichaEdificio) {
+    sonido("toque");
+    const fila = (icono: IconoJuego, titulo: string, valor: string) =>
+      h("div", { class: "dato-ficha" }, h("span", { class: "ico", html: iconoJuego(icono, 26) }), h("span", {}, h("small", {}, titulo), h("b", {}, valor)));
+    const panel = this.bandeja(f.barrio.toUpperCase() || "LA LÍNEA", f.tipo, () => [
+      h("div", { class: "ficha-edificio" },
+        fila("calle", "Calle", f.calle || "Sin nombre"),
+        fila("plantas", "Plantas", String(f.plantas)),
+        fila(f.comercio ? "tienda" : "edificio", "Uso", f.comercio ? "Viviendas con comercio" : f.tipo),
+      ),
+      this.boton({ icono: html(iconoJuego("ir", 26)), titulo: "Ir hasta aquí", sub: `Andando por ${f.calle || "las calles"}`, fn: () => this.irAPunto(f.punto) }),
+    ]);
+    void panel;
+    // Sin repintado, pero el mapa sigue respondiendo para tocar otro edificio.
+    this.vivo = () => {};
+  }
+
+  /** Va andando hasta el nodo de calle más cercano a un punto del mapa. */
+  irAPunto(p: Punto) {
+    if (this.mundo.andando || this.mundo.enBus) return;
+    const destino = nodoCercano(p);
+    if (!destino || destino === this.e.nodo) return;
+    const zona = ZONAS.find((z) => z.zonas.some(([x0, y0, x1, y1]) => p[0] >= x0 && p[0] <= x1 && p[1] >= y0 && p[1] <= y1));
+    if (zona && !this.zonaAbierta(zona)) {
+      this.cerrar();
+      this.avisoZona(zona);
+      return;
+    }
+    this.cerrar();
+    const r = ruta(this.e.nodo, destino);
+    sonido("paso");
+    this.objetivoEl.style.display = "none";
+    this.mundo.andar(r.puntos, () => {
+      this.e.nodo = destino;
+      this.refrescar();
+    });
   }
 
   /* ── Autobús urbano: de parada en parada por las calles reales ─────── */
@@ -332,6 +395,7 @@ export class Juego {
   }
 
   cerrar() {
+    this.mundo.seleccionar(null);
     this.mundo.soltarFoco();
     this.capa.replaceChildren();
     this.ocupado = false;

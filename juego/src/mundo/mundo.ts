@@ -5,6 +5,10 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+import { urbanizar, type Segmento } from "./mobiliario";
+import { Especie, geoArbol, materialesArbol, N_ESPECIES, VARIANTES, viento } from "./vegetacion";
+import { edificar, materialesArquitectura, matLuz, Obra, type Edificio } from "./arquitectura";
+import { GTAOPass } from "three/examples/jsm/postprocessing/GTAOPass.js";
 import { HorizontalTiltShiftShader } from "three/examples/jsm/shaders/HorizontalTiltShiftShader.js";
 import { VerticalTiltShiftShader } from "three/examples/jsm/shaders/VerticalTiltShiftShader.js";
 import {
@@ -15,7 +19,7 @@ import { OBJETOS, SALIDAS, type CultivoId } from "../datos/objetos";
 import { PERSONAJES, type PersonajeId } from "../datos/personajes";
 import { barcaFuera, horaDelDia, listo, progresoCultivo, type Estado } from "../estado";
 import { presente } from "../historia";
-import { iconoSvg } from "../iconos";
+import { esIconoJuego, iconoJuego, iconoSvg } from "../iconos";
 import * as M from "./modelos";
 import * as T from "./texturas";
 
@@ -49,7 +53,101 @@ export type Tocable =
   | { tipo: "puesto" }
   | { tipo: "tablon" }
   | { tipo: "solar"; i: number }
-  | { tipo: "zona"; zona: Zona };
+  | { tipo: "zona"; zona: Zona }
+  | { tipo: "edificio"; ficha: FichaEdificio };
+
+/** Lo que se cuenta de un edificio al tocarlo. */
+export interface FichaEdificio {
+  tipo: string;
+  plantas: number;
+  calle: string;
+  barrio: string;
+  comercio: boolean;
+  /** Punto del mapa delante de su fachada (para ir andando). */
+  punto: Punto;
+}
+
+const NOMBRE_ESTILO: Record<number, string> = {
+  0: "Casa encalada", 1: "Casa encalada", 2: "Casa encalada", 3: "Casa", 4: "Bloque de viviendas", 5: "Bloque de ladrillo",
+  6: "Edificio de oficinas", 7: "Nave industrial", 8: "Iglesia", 9: "Colegio", 10: "Edificio público", 11: "Ruinas", 12: "Caseta", 13: "Pabellón deportivo",
+};
+
+export type NivelCalidad = "baja" | "media" | "alta";
+interface Calidad {
+  pixel: number;
+  sombra: number;
+  msaa: number;
+  ao: boolean;
+  tilt: boolean;
+  detalle: boolean;
+  altoDetalle: number;
+  radioDetalle: number;
+  trozosCache: number;
+  sombrasDetalle: boolean;
+}
+const CALIDADES: Record<NivelCalidad, Calidad> = {
+  baja: { pixel: 1, sombra: 1024, msaa: 0, ao: false, tilt: false, detalle: true, altoDetalle: 320, radioDetalle: 150, trozosCache: 12, sombrasDetalle: false },
+  media: { pixel: 1.5, sombra: 2048, msaa: 4, ao: false, tilt: true, detalle: true, altoDetalle: 520, radioDetalle: 230, trozosCache: 30, sombrasDetalle: true },
+  alta: { pixel: 2, sombra: 4096, msaa: 4, ao: true, tilt: true, detalle: true, altoDetalle: 820, radioDetalle: 420, trozosCache: 60, sombrasDetalle: true },
+};
+function calidadGuardada(): NivelCalidad {
+  try {
+    const v = localStorage.getItem("mi-linea-calidad");
+    if (v === "baja" || v === "media" || v === "alta") return v;
+  } catch {
+    /* sin almacenamiento */
+  }
+  const movil = matchMedia("(pointer: coarse)").matches || Math.min(screen.width, screen.height) < 700;
+  return movil ? "media" : "alta";
+}
+
+/** Mapa de entorno exterior: cúpula de cielo con degradado y suelo cálido, prefiltrada con PMREM. */
+function entornoCielo(renderer: THREE.WebGLRenderer) {
+  const escena = new THREE.Scene();
+  const geo = new THREE.SphereGeometry(10, 32, 16);
+  const col: number[] = [];
+  const pos = geo.attributes.position;
+  const arriba = new THREE.Color("#3E7FC8");
+  const horizonte = new THREE.Color("#A8C3DC");
+  const suelo = new THREE.Color("#6E6252");
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i) / 10;
+    const c = y > 0 ? horizonte.clone().lerp(arriba, Math.pow(y, 0.6)) : horizonte.clone().lerp(suelo, Math.min(1, -y * 3));
+    col.push(c.r, c.g, c.b);
+  }
+  geo.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
+  escena.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide })));
+  // Un «sol» brillante para los brillos especulares.
+  const sol = new THREE.Mesh(new THREE.SphereGeometry(0.8, 12, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color(6, 5.6, 4.8) }));
+  sol.position.copy(DIR_SOL).multiplyScalar(9);
+  escena.add(sol);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const tex = pmrem.fromScene(escena, 0.02).texture;
+  pmrem.dispose();
+  return tex;
+}
+
+const TROZO = 80;
+
+/** Libera la memoria de un trozo (las geometrías de árbol son compartidas y se conservan). */
+function liberar(g: THREE.Group) {
+  g.traverse((m) => {
+    if ((m as THREE.InstancedMesh).isInstancedMesh) (m as THREE.InstancedMesh).dispose();
+    else if ((m as THREE.Mesh).isMesh) (m as THREE.Mesh).geometry.dispose();
+  });
+}
+interface Trozo {
+  cx: number;
+  cy: number;
+  edificios: EdificioDet[];
+  segs: (Segmento & { r0: number; r1: number })[];
+  arboles: number[];
+  grupo: THREE.Group | null;
+  visible: boolean;
+  uso: number;
+  fino: boolean;
+}
+type EdificioDet = Edificio & { idx: number };
 
 /** Dirección del sol: alto y del sureste, para que las fachadas que ve la cámara tengan luz y sombra. */
 const DIR_SOL = new THREE.Vector3(0.5, 1, 0.62).normalize();
@@ -140,6 +238,13 @@ export class Mundo {
   private escena = new THREE.Scene();
   private camara = new THREE.PerspectiveCamera(30, 1, 2, 14000);
   private composer!: EffectComposer;
+  private ao: GTAOPass | null = null;
+  ajustesCalidad: Calidad;
+  private edificios: EdificioDet[] = [];
+  private arboles: { x: number; y: number; e: Especie; v: number; esc: number; rot: number }[] = [];
+  private ranuras = new Map<number, [THREE.InstancedMesh, number][]>();
+  private trozos = new Map<string, Trozo>();
+  private rejillaCalzada = new Map<string, Segmento[]>();
   private tiltH!: ShaderPass;
   private tiltV!: ShaderPass;
   /** Tráfico, peatones, gaviotas y autobuses (animación de ciudad viva). */
@@ -215,21 +320,21 @@ export class Mundo {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1;
+    this.renderer.toneMappingExposure = 0.98;
     this.escena.background = new THREE.Color("#BFE0F7");
     this.escena.fog = new THREE.Fog("#BFE0F7", 900, 3200);
-    this.composer = new EffectComposer(this.renderer);
-    this.composer.addPass(new RenderPass(this.escena, this.camara));
+    // Luz ambiental por imagen: un cielo exterior (azul arriba, horizonte claro, suelo cálido)
+    // filtrado con PMREM. Da reflejos creíbles en cristales y una aproximación de luz global.
+    this.escena.environment = entornoCielo(this.renderer);
+    this.ajustesCalidad = CALIDADES[calidadGuardada()];
     this.tiltH = new ShaderPass(HorizontalTiltShiftShader);
     this.tiltV = new ShaderPass(VerticalTiltShiftShader);
     this.tiltH.uniforms.r.value = 0.5;
     this.tiltV.uniforms.r.value = 0.5;
-    this.composer.addPass(this.tiltH);
-    this.composer.addPass(this.tiltV);
-    this.composer.addPass(new OutputPass());
+    this.montarComposer();
 
     this.sol.castShadow = true;
-    this.sol.shadow.mapSize.set(2048, 2048);
+    this.sol.shadow.mapSize.set(this.ajustesCalidad.sombra, this.ajustesCalidad.sombra);
     this.sol.shadow.bias = -0.0004;
     this.sol.shadow.normalBias = 0.25;
     this.escena.add(this.sol, this.sol.target, this.cielo);
@@ -247,6 +352,7 @@ export class Mundo {
     this.construirEdificios();
     this.construirVegetacion();
     this.construirDeportes();
+    this.montarArboles();
     this.construirAtunara();
     this.construirLugares();
     this.construirZonas();
@@ -542,17 +648,30 @@ export class Mundo {
         }
       }
     }
-    const postes = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.22, 0.32, 7, 6), M.mat("#23262C"), pts.length);
-    const farolMat = M.mat("#FFE7A3", { emissive: "#FFC64D", emissiveIntensity: 0.4 });
+    // Farola fernandina: basa, fuste estriado, collarín y farol hexagonal con su sombrerete.
+    const pieza = (g: THREE.BufferGeometry, y: number) => {
+      g.translate(0, y, 0);
+      g.deleteAttribute("uv");
+      return g.index ? g.toNonIndexed() : g;
+    };
+    const cuerpo = mergeGeometries([
+      pieza(new THREE.CylinderGeometry(0.42, 0.5, 0.35, 8), 0.17),
+      pieza(new THREE.CylinderGeometry(0.3, 0.42, 1.1, 8), 0.9),
+      pieza(new THREE.CylinderGeometry(0.13, 0.18, 4.8, 8), 3.85),
+      pieza(new THREE.CylinderGeometry(0.26, 0.2, 0.25, 8), 6.3),
+      pieza(new THREE.CylinderGeometry(0.42, 0.24, 0.18, 6), 6.5),
+      pieza(new THREE.CylinderGeometry(0.06, 0.62, 0.55, 6), 7.75),
+      pieza(new THREE.SphereGeometry(0.12, 6, 4), 8.1),
+    ]);
+    const postes = new THREE.InstancedMesh(cuerpo, M.mat("#1E2126", { roughness: 0.45, metalness: 0.55 }), pts.length);
+    const farolMat = M.mat("#FFF0C2", { emissive: "#FFC64D", emissiveIntensity: 0.4, roughness: 0.2 });
     this.faroles.push(farolMat);
-    const farolas = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.7, 0.45, 1.3, 6), farolMat, pts.length);
+    const farolas = new THREE.InstancedMesh(pieza(new THREE.CylinderGeometry(0.5, 0.32, 0.95, 6), 7.05), farolMat, pts.length);
     const o = new THREE.Object3D();
     pts.forEach((p, i) => {
-      o.position.copy(p3(p, SUELO + 3.5));
+      o.position.copy(p3(p, SUELO + 0.3));
       o.updateMatrix();
       postes.setMatrixAt(i, o.matrix);
-      o.position.y = SUELO + 7.6;
-      o.updateMatrix();
       farolas.setMatrixAt(i, o.matrix);
     });
     postes.castShadow = true;
@@ -590,7 +709,7 @@ export class Mundo {
         }
       }
     }
-    this.bosque(arbolado, azar(5), false);
+    this.bosque(arbolado, azar(5), "calle");
 
     // Pasos de cebra en los cruces de las vías principales.
     const cebras: { p: Punto; rot: number; w: number }[] = [];
@@ -654,9 +773,41 @@ export class Mundo {
       return false;
     };
     /** Estilos: 0-2 casa encalada (persianas), 3 casa pastel, 4 bloque pastel, 5 ladrillo, 6 cristal, 7 nave, 8 iglesia, 9 escuela, 10 público, 11 ruina, 12 caseta. */
-    type B = { x: number; y: number; w: number; d: number; ang: number; h: number; estilo: number; teja: boolean; tono: number; pl: number; tienda: boolean };
+    type B = EdificioDet;
     const lista: B[] = [];
+    // Todas las calles muestreadas: para saber qué fachada da a la calle (puerta, escaparate).
+    const calles = new Map<string, Punto[]>();
+    for (const t of TRAMOS) {
+      for (let i = 1; i < t.puntos.length; i++) {
+        const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        for (let s = 0; s <= l; s += 4) {
+          const p: Punto = [a[0] + ((b[0] - a[0]) * s) / l, a[1] + ((b[1] - a[1]) * s) / l];
+          const k = celda(...p);
+          if (!calles.has(k)) calles.set(k, []);
+          calles.get(k)!.push(p);
+        }
+      }
+    }
+    const frenteDe = (x: number, y: number, w: number, d: number, ang: number) => {
+      let mejor: Punto | null = null;
+      let md = Infinity;
+      for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+        for (const p of calles.get(`${Math.floor(x / 20) + dx},${Math.floor(y / 20) + dy}`) ?? []) {
+          const dd = (p[0] - x) ** 2 + (p[1] - y) ** 2;
+          if (dd < md) (md = dd), (mejor = p);
+        }
+      }
+      if (!mejor) return 0;
+      const ex = mejor[0] - x;
+      const ey = mejor[1] - y;
+      const lx = ex * Math.cos(ang) + ey * Math.sin(ang);
+      const lz = -ex * Math.sin(ang) + ey * Math.cos(ang);
+      return Math.abs(lx) / (w / 2) > Math.abs(lz) / (d / 2) ? (lx > 0 ? 1 : 3) : lz > 0 ? 0 : 2;
+    };
+    let idx = -1;
     for (const [x, y, w0, d0, ang, tipo, plantas] of DATOS.edificios) {
+      idx++;
       if (reservado(x, y)) continue;
       const w = Math.max(3.2, w0 * 0.9);
       const d = Math.max(3.2, d0 * 0.9);
@@ -670,8 +821,10 @@ export class Mundo {
       if (estilo >= 7) pl = estilo === 10 || estilo === 9 ? 2 + Math.floor(rand() * 2) : 1;
       const h = estilo === 13 ? 8 : estilo === 7 ? 7 + rand() * 2 : estilo === 12 ? 3.2 : estilo === 11 ? 2.6 : estilo === 8 ? 10 : pl * 3.3 + 0.8;
       const tienda = estilo <= 6 && tipo !== 8 && cercaDeAvenida(x, y, Math.max(w, d) / 2 + 9);
-      lista.push({ x, y, w, d, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda });
+      lista.push({ x, y, w, d, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda, frente: frenteDe(x, y, w, d, ang), semilla: idx * 7919 + 17, idx });
     }
+    this.edificios = lista;
+    this.prepararTrozos();
     const o = new THREE.Object3D();
     const caja = new RoundedBoxGeometry(1, 1, 1, 1, 0.06);
     const colocar = (b: B, alto: number, escala: [number, number, number], dx = 0, dz = 0) => {
@@ -688,7 +841,7 @@ export class Mundo {
       const im = new THREE.InstancedMesh(caja, material, sub.length);
       sub.forEach((b, i) => {
         const b0 = base(b);
-        im.setMatrixAt(i, colocar(b, SUELO + b0 + (b.h - b0) / 2, [b.w, b.h - b0, b.d]));
+        this.fijar(im, i, b, colocar(b, SUELO + b0 + (b.h - b0) / 2, [b.w, b.h - b0, b.d]));
       });
       this.instanciado(im);
     };
@@ -716,7 +869,7 @@ export class Mundo {
       const sub = tiendas.filter((b) => b.tono === k);
       if (!sub.length) return;
       const im = new THREE.InstancedMesh(caja, M.matTex(T.toldo(c), 3, 1), sub.length);
-      sub.forEach((b, i) => im.setMatrixAt(i, colocar(b, SUELO + 3.6, [b.w + 1.6, 0.5, b.d + 1.6])));
+      sub.forEach((b, i) => this.fijar(im, i, b, colocar(b, SUELO + 3.6, [b.w + 1.6, 0.5, b.d + 1.6])));
       this.instanciado(im);
     });
     // Tejados de teja a dos aguas.
@@ -726,7 +879,7 @@ export class Mundo {
     prisma.rotateY(Math.PI / 2);
     const conTeja = lista.filter((b) => b.teja);
     const tejas = new THREE.InstancedMesh(prisma, M.matTex(T.teja(), 1, 1), conTeja.length);
-    conTeja.forEach((b, i) => tejas.setMatrixAt(i, colocar(b, SUELO + b.h - 0.05, [b.w + 0.8, Math.min(b.w, b.d) * 0.85, b.d + 0.8])));
+    conTeja.forEach((b, i) => this.fijar(tejas, i, b, colocar(b, SUELO + b.h - 0.05, [b.w + 0.8, Math.min(b.w, b.d) * 0.85, b.d + 0.8])));
     this.instanciado(tejas);
     // Azoteas: borde claro y suelo algo más oscuro, como un pretil.
     const planas = lista.filter((b) => !b.teja);
@@ -734,9 +887,9 @@ export class Mundo {
     const suelos = new THREE.InstancedMesh(caja, M.mat("#FFFFFF"), planas.length);
     const colBorde = [new THREE.Color("#F4EEE2"), new THREE.Color("#EDE5D6"), new THREE.Color("#FAF5EC")];
     planas.forEach((b, i) => {
-      bordes.setMatrixAt(i, colocar(b, SUELO + b.h + 0.45, [b.w + 0.5, 0.9, b.d + 0.5]));
+      this.fijar(bordes, i, b, colocar(b, SUELO + b.h + 0.45, [b.w + 0.5, 0.9, b.d + 0.5]));
       bordes.setColorAt(i, b.estilo === 7 ? new THREE.Color(b.tono % 2 ? "#2F6DB5" : "#B9C1CC") : b.estilo === 12 ? new THREE.Color("#A9AFB8") : colBorde[b.tono % 3]);
-      suelos.setMatrixAt(i, colocar(b, SUELO + b.h + 0.92, [Math.max(0.5, b.w - 1), 0.1, Math.max(0.5, b.d - 1)]));
+      this.fijar(suelos, i, b, colocar(b, SUELO + b.h + 0.92, [Math.max(0.5, b.w - 1), 0.1, Math.max(0.5, b.d - 1)]));
       suelos.setColorAt(i, b.estilo === 7 ? new THREE.Color(b.tono % 2 ? "#2A62A6" : "#A9B1BC") : new THREE.Color(b.tono % 2 ? "#C9BFAE" : "#D6CCBA"));
     });
     for (const im of [bordes, suelos]) {
@@ -765,7 +918,7 @@ export class Mundo {
     const props = (lista2: [B, number, number][], geo: THREE.BufferGeometry, mat: THREE.Material, escala: [number, number, number], alto: number) => {
       if (!lista2.length) return;
       const im = new THREE.InstancedMesh(geo, mat, lista2.length);
-      lista2.forEach(([b, dx, dz], i) => im.setMatrixAt(i, colocar(b, SUELO + b.h + 0.95 + alto, escala, dx, dz)));
+      lista2.forEach(([b, dx, dz], i) => this.fijar(im, i, b, colocar(b, SUELO + b.h + 0.95 + alto, escala, dx, dz)));
       this.instanciado(im);
     };
     props(aires, caja, M.mat("#D9DDE3"), [1.6, 1, 1.2], 0.5);
@@ -773,8 +926,217 @@ export class Mundo {
     props(placas, caja, M.mat("#2C3E6B", { roughness: 0.3, metalness: 0.3 }), [3.2, 0.2, 2], 0.35);
     if (jardines.length) {
       const im = new THREE.InstancedMesh(caja, M.mat("#6DBE45"), jardines.length);
-      jardines.forEach((b, i) => im.setMatrixAt(i, colocar(b, SUELO + b.h + 1.05, [b.w * 0.5, 0.25, b.d * 0.5], b.w * 0.15, 0)));
+      jardines.forEach((b, i) => this.fijar(im, i, b, colocar(b, SUELO + b.h + 1.05, [b.w * 0.5, 0.25, b.d * 0.5], b.w * 0.15, 0)));
       this.instanciado(im);
+    }
+  }
+
+  /** Coloca una instancia del nivel lejano y recuerda a qué edificio pertenece. */
+  private fijar(im: THREE.InstancedMesh, i: number, b: EdificioDet, m: THREE.Matrix4) {
+    im.setMatrixAt(i, m);
+    let l = this.ranuras.get(b.idx);
+    if (!l) this.ranuras.set(b.idx, (l = []));
+    l.push([im, i]);
+  }
+
+  /* ── Nivel de detalle: arquitectura completa por trozos alrededor de la cámara ── */
+
+  private trozoDe(x: number, y: number) {
+    const cx = Math.floor(x / TROZO);
+    const cy = Math.floor(y / TROZO);
+    const k = `${cx},${cy}`;
+    let t = this.trozos.get(k);
+    if (!t) this.trozos.set(k, (t = { cx: (cx + 0.5) * TROZO, cy: (cy + 0.5) * TROZO, edificios: [], segs: [], arboles: [], grupo: null, visible: false, uso: 0, fino: false }));
+    return t;
+  }
+
+  private prepararTrozos() {
+    const trozo = (x: number, y: number) => this.trozoDe(x, y);
+    // Calles con coches: aceras y bordillos, recortados en los cruces.
+    const nodo = new Map<string, { ancho: number; grado: number }>();
+    for (const t of TRAMOS) {
+      if (t.clase > 3) continue;
+      for (const n of [t.a, t.b]) {
+        const v = nodo.get(n) ?? { ancho: 0, grado: 0 };
+        nodo.set(n, { ancho: Math.max(v.ancho, ANCHO_VIA[t.clase]), grado: v.grado + 1 });
+      }
+    }
+    for (const t of TRAMOS) {
+      if (t.clase > 3) continue;
+      const recorte = (n: string) => ((nodo.get(n)?.grado ?? 0) >= 2 ? nodo.get(n)!.ancho / 2 + 1.8 : 0);
+      const ultimo = t.puntos.length - 2;
+      for (let i = 0; i <= ultimo; i++) {
+        const [a, b] = [t.puntos[i], t.puntos[i + 1]];
+        const seg = { a, b, clase: t.clase, ancho: ANCHO_VIA[t.clase], r0: i === 0 ? recorte(t.a) : 0, r1: i === ultimo ? recorte(t.b) : 0 };
+        trozo((a[0] + b[0]) / 2, (a[1] + b[1]) / 2).segs.push(seg);
+        // Rejilla para saber si un punto cae en alguna calzada (celdas de 20 que toca el segmento).
+        const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 10));
+        const celdas = new Set<string>();
+        for (let k = 0; k <= n; k++) celdas.add(`${Math.floor((a[0] + ((b[0] - a[0]) * k) / n) / 20)},${Math.floor((a[1] + ((b[1] - a[1]) * k) / n) / 20)}`);
+        for (const c of celdas) {
+          if (!this.rejillaCalzada.has(c)) this.rejillaCalzada.set(c, []);
+          this.rejillaCalzada.get(c)!.push(seg);
+        }
+      }
+    }
+    for (const b of this.edificios) {
+      trozo(b.x, b.y).edificios.push(b);
+    }
+  }
+
+  /** ¿El punto cae sobre una calzada que no es la del segmento dado? */
+  private enCalzada(p: Punto, propio: Segmento) {
+    for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+      for (const s of this.rejillaCalzada.get(`${Math.floor(p[0] / 20) + dx},${Math.floor(p[1] / 20) + dy}`) ?? []) {
+        if (s.a === propio.a && s.b === propio.b) continue;
+        const vx = s.b[0] - s.a[0];
+        const vy = s.b[1] - s.a[1];
+        const l2 = vx * vx + vy * vy || 1;
+        const t = Math.max(0, Math.min(1, ((p[0] - s.a[0]) * vx + (p[1] - s.a[1]) * vy) / l2));
+        const d = Math.hypot(p[0] - s.a[0] - t * vx, p[1] - s.a[1] - t * vy);
+        if (d < s.ancho / 2 + 0.6) return true;
+      }
+    }
+    return false;
+  }
+
+  /** Oculta (escala 0) o restaura las instancias lejanas de una lista de edificios. */
+  private lejanos(t: Trozo, ocultar: boolean) {
+    const tocadas = new Set<THREE.InstancedMesh>();
+    const cero = new THREE.Matrix4().makeScale(0, 0, 0);
+    const claves = [...t.edificios.map((b) => b.idx), ...t.arboles.map((i) => -1 - i)];
+    for (const k of claves) {
+      for (const [im, i] of this.ranuras.get(k) ?? []) {
+        if (!im.userData.orig) im.userData.orig = (im.instanceMatrix.array as Float32Array).slice();
+        if (ocultar) im.setMatrixAt(i, cero);
+        else (im.instanceMatrix.array as Float32Array).set((im.userData.orig as Float32Array).subarray(i * 16, i * 16 + 16), i * 16);
+        tocadas.add(im);
+      }
+    }
+    for (const im of tocadas) im.instanceMatrix.needsUpdate = true;
+  }
+
+  /** Construcción repartida en fotogramas: edificio a edificio, luego calles y árboles. */
+  private obra: { t: Trozo; fino: boolean; o: Obra; i: number } | null = null;
+
+  /** Avanza la obra en curso hasta `limite` (ms de performance.now). Devuelve true al terminar. */
+  private avanzarObra(limite: number) {
+    const w = this.obra!;
+    while (w.i < w.t.edificios.length) {
+      const b = w.t.edificios[w.i++];
+      edificar(w.o, b, b.x - CX, SUELO, b.y - CY);
+      if (performance.now() > limite) return false;
+    }
+    this.terminarTrozo(w.t, w.fino, w.o);
+    this.obra = null;
+    return true;
+  }
+
+  private terminarTrozo(t: Trozo, fino: boolean, o: Obra) {
+    urbanizar(o, t.segs, t.edificios.filter((b) => b.tienda), CX, CY, SUELO, Math.round(t.cx * 31 + t.cy * 17), (p, propio) => this.enCalzada(p, propio));
+    const g = new THREE.Group();
+    const mats = materialesArquitectura();
+    o.geometrias().forEach((geo, m) => {
+      if (!geo) return;
+      const malla = new THREE.Mesh(geo, mats[m]);
+      malla.castShadow = this.ajustesCalidad.sombrasDetalle;
+      malla.receiveShadow = true;
+      g.add(malla);
+    });
+    // Árboles detallados del trozo, instanciados por especie y variante.
+    const porTipo = new Map<number, number[]>();
+    for (const i of t.arboles) {
+      const a = this.arboles[i];
+      const k = a.e * VARIANTES + a.v;
+      if (!porTipo.has(k)) porTipo.set(k, []);
+      porTipo.get(k)!.push(i);
+    }
+    const [matA, matP] = materialesArbol();
+    const ob = new THREE.Object3D();
+    for (const [k, lista] of porTipo) {
+      const e = Math.floor(k / VARIANTES) as Especie;
+      const im = new THREE.InstancedMesh(geoArbol(e, k % VARIANTES, fino), e === Especie.Palmera ? matP : matA, lista.length);
+      lista.forEach((i, n) => {
+        const a = this.arboles[i];
+        ob.position.copy(v3(a.x, a.y, SUELO));
+        ob.rotation.set(0, a.rot, 0);
+        ob.scale.setScalar(a.esc);
+        ob.updateMatrix();
+        im.setMatrixAt(n, ob.matrix);
+      });
+      im.castShadow = true;
+      im.receiveShadow = true;
+      im.computeBoundingSphere();
+      g.add(im);
+    }
+    // Sustituye la versión anterior (si la había) sin dejar huecos.
+    const habia = t.visible;
+    if (t.grupo) {
+      liberar(t.grupo);
+      this.escena.remove(t.grupo);
+    }
+    g.visible = habia;
+    this.escena.add(g);
+    t.grupo = g;
+    t.fino = fino;
+  }
+
+  /** Cada fotograma: construye (con presupuesto de tiempo) y muestra los trozos cercanos. */
+  private actualizarDetalle() {
+    const q = this.ajustesCalidad;
+    const activo = q.detalle && this.alto < q.altoDetalle;
+    const cx = this.objetivoCam.x + CX;
+    const cy = this.objetivoCam.z + CY;
+    const R = Math.min(q.radioDetalle, 70 + this.alto * 0.95);
+    const ahora = performance.now();
+    const pendientes: [Trozo, boolean][] = [];
+    const radioFino = R * 0.5;
+    for (const t of this.trozos.values()) {
+      const dist = Math.hypot(t.cx - cx, t.cy - cy);
+      const dentro = activo && dist < R;
+      if (dentro) {
+        t.uso = ahora;
+        const fino = dist < radioFino;
+        if (!t.grupo || (fino && !t.fino)) pendientes.push([t, fino]);
+        if (t.grupo && !t.visible) {
+          t.grupo.visible = t.visible = true;
+          this.lejanos(t, true);
+        }
+      } else if (t.visible) {
+        t.grupo!.visible = t.visible = false;
+        this.lejanos(t, false);
+      }
+    }
+    // Obra en curso: si ya no hace falta, se abandona.
+    if (this.obra && !pendientes.some(([t, f]) => t === this.obra!.t && f === this.obra!.fino)) this.obra = null;
+    // Presupuesto por fotograma: la ciudad se va detallando sin congelar la imagen.
+    // ~7 ms a 60 fps; si el dispositivo ya va lento, se aprovecha más cada fotograma.
+    const limite = ahora + Math.min(45, Math.max(this.modoDemo ? 4 : 7, this.msFotograma * 0.25));
+    pendientes.sort((a, b) => Math.hypot(a[0].cx - cx, a[0].cy - cy) - Math.hypot(b[0].cx - cx, b[0].cy - cy));
+    while (performance.now() < limite) {
+      if (!this.obra) {
+        const sig = pendientes.shift();
+        if (!sig) break;
+        const o = new Obra();
+        o.fino = sig[1];
+        this.obra = { t: sig[0], fino: sig[1], o, i: 0 };
+      }
+      const t = this.obra.t;
+      if (!this.avanzarObra(limite)) break;
+      if (!t.visible) {
+        t.grupo!.visible = t.visible = true;
+        this.lejanos(t, true);
+      }
+    }
+    // Memoria: se liberan los trozos construidos que llevan tiempo sin verse.
+    const hechos = [...this.trozos.values()].filter((t) => t.grupo && !t.visible);
+    if (hechos.length > q.trozosCache) {
+      hechos.sort((a, b) => a.uso - b.uso);
+      for (const t of hechos.slice(0, hechos.length - q.trozosCache)) {
+        liberar(t.grupo!);
+        this.escena.remove(t.grupo!);
+        t.grupo = null;
+      }
     }
   }
 
@@ -792,22 +1154,9 @@ export class Mundo {
     const pinos: Punto[] = [];
     const arbustos: Punto[] = [];
     for (const [x, y, t] of DATOS.arboles) if (!enDeporte([x, y])) (t === 2 ? arbustos : t === 1 ? pinos : frondosos).push([x, y]);
-    this.bosque(frondosos, rand, false);
-    this.bosque(pinos, rand, true);
-    const bolas = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 2), M.mat("#FFFFFF"), Math.max(1, arbustos.length));
-    const o = new THREE.Object3D();
-    const verdes = ["#6FA048", "#5E9440", "#8AB35A"].map((c) => new THREE.Color(c));
-    arbustos.forEach((p, i) => {
-      const r = 1.4 + rand() * 1.2;
-      o.position.copy(p3(p, SUELO + r * 0.5));
-      o.scale.set(r, r * 0.7, r);
-      o.updateMatrix();
-      bolas.setMatrixAt(i, o.matrix);
-      bolas.setColorAt(i, verdes[i % 3]);
-    });
-    bolas.count = arbustos.length;
-    if (bolas.instanceColor) bolas.instanceColor.needsUpdate = true;
-    this.instanciado(bolas);
+    this.bosque(frondosos, rand, "jardin");
+    this.bosque(pinos, rand, "pino");
+    for (const p of arbustos) this.plantar(p, Especie.Arbusto, rand, 0.9 + rand() * 0.6);
     // Palmeras a lo largo del Paseo Marítimo de Poniente.
     const palmas: Punto[] = [];
     for (const t of TRAMOS) {
@@ -818,45 +1167,48 @@ export class Mundo {
         for (let s = 0; s < l; s += 16) palmas.push([a[0] + ((b[0] - a[0]) * s) / l - 3, a[1] + ((b[1] - a[1]) * s) / l]);
       }
     }
-    for (const p of palmas.slice(0, 120)) {
-      const pal = M.palmera(12);
-      pal.scale.setScalar(0.55);
-      pal.position.copy(p3(p));
-      this.escena.add(pal);
+    for (const p of palmas.slice(0, 160)) this.plantar(p, Especie.Palmera, rand, 0.55 + rand() * 0.15);
+  }
+
+  /** Planta árboles de un uso: pinares, arbolado de calle, parques o jardines (especies mediterráneas). */
+  private bosque(puntos: Punto[], rand: () => number, uso: "pino" | "calle" | "parque" | "jardin") {
+    for (const p of puntos) {
+      const t = rand();
+      const e =
+        uso === "pino" ? Especie.Pino
+        : uso === "calle" ? (t < 0.5 ? Especie.Naranjo : t < 0.85 ? Especie.Sombra : Especie.Ficus)
+        : uso === "parque" ? (t < 0.45 ? Especie.Ficus : t < 0.9 ? Especie.Sombra : Especie.Pino)
+        : t < 0.5 ? Especie.Sombra : t < 0.7 ? Especie.Ficus : t < 0.82 ? Especie.Palmera : t < 0.92 ? Especie.Cipres : Especie.Naranjo;
+      this.plantar(p, e, rand, e === Especie.Palmera ? 0.6 : 0.8 + rand() * 0.35);
     }
   }
 
-  private bosque(puntos: Punto[], rand: () => number, pinos: boolean, tonos?: string[]) {
-    const n = puntos.length;
-    if (!n) return;
+  private plantar(p: Punto, e: Especie, rand: () => number, escala = 1) {
+    this.arboles.push({ x: p[0], y: p[1], e, v: Math.floor(rand() * VARIANTES), esc: escala, rot: rand() * Math.PI * 2 });
+  }
+
+  /** Árboles: nivel lejano instanciado en toda la ciudad; los cercanos se detallan por trozos. */
+  private montarArboles() {
     const o = new THREE.Object3D();
-    const troncos = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.4, 0.6, 1, 6), M.mat("#7A4E2D"), n);
-    const bolas = 4;
-    const copas = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 2), M.mat("#FFFFFF"), n * bolas);
-    const verdes = (tonos ?? (pinos ? ["#2F6B34", "#3A7A3B", "#285C2E"] : ["#5DB33C", "#8ED14F", "#3E9B45", "#2F8A3A", "#79C447"])).map((c) => new THREE.Color(c));
-    let k = 0;
-    puntos.forEach((p, i) => {
-      const esc = 0.7 + rand() * 0.5;
-      const alto = (pinos ? 7 : 3.5) * esc;
-      o.position.copy(p3(p, SUELO + alto / 2));
-      o.rotation.set(0, 0, 0);
-      o.scale.set(esc, alto, esc);
-      o.updateMatrix();
-      troncos.setMatrixAt(i, o.matrix);
-      for (let b = 0; b < bolas; b++) {
-        const a = (b / bolas) * Math.PI * 2 + rand();
-        const r = (pinos ? [3.2, 2.2, 2.1, 2] : [2.4, 1.8, 1.8, 1.6])[b] * esc;
-        const off = b === 0 ? 0 : (pinos ? 2.2 : 1.4) * esc;
-        o.position.copy(p3([p[0] + Math.cos(a) * off, p[1] + Math.sin(a) * off], SUELO + alto + (pinos ? 0.3 : b === 0 ? 1.2 : 0.6 + rand() * 1.4) * esc));
-        o.scale.set(r, pinos ? r * 0.42 : r * 0.92, r);
+    const [matA, matP] = materialesArbol();
+    for (let e = 0; e < N_ESPECIES; e++) {
+      const idx = this.arboles.map((a, i) => (a.e === e ? i : -1)).filter((i) => i >= 0);
+      if (!idx.length) continue;
+      const im = new THREE.InstancedMesh(geoArbol(e, 0, false), e === Especie.Palmera ? matP : matA, idx.length);
+      idx.forEach((i, k) => {
+        const a = this.arboles[i];
+        o.position.copy(v3(a.x, a.y, SUELO));
+        o.rotation.set(0, a.rot, 0);
+        o.scale.setScalar(a.esc);
         o.updateMatrix();
-        copas.setMatrixAt(k, o.matrix);
-        copas.setColorAt(k++, verdes[Math.floor(rand() * verdes.length)]);
-      }
-    });
-    this.instanciado(troncos);
-    if (copas.instanceColor) copas.instanceColor.needsUpdate = true;
-    this.instanciado(copas);
+        im.setMatrixAt(k, o.matrix);
+        let l = this.ranuras.get(-1 - i);
+        if (!l) this.ranuras.set(-1 - i, (l = []));
+        l.push([im, k]);
+        this.trozoDe(a.x, a.y).arboles.push(i);
+      });
+      this.instanciado(im);
+    }
   }
 
   /* ── Zona deportiva: estadio, Ciudad Deportiva, Campos Puyol y parque ── */
@@ -993,8 +1345,8 @@ export class Mundo {
         }
         (rand() < 0.55 ? pinos : frondosos).push(p);
       }
-      this.bosque(pinos, rand, true);
-      this.bosque(frondosos, rand, false, ["#3E7D35", "#4F8F3C", "#5E9B44", "#376F31"]);
+      this.bosque(pinos, rand, "pino");
+      this.bosque(frondosos, rand, "parque");
       const tierra = new THREE.InstancedMesh(new THREE.CircleGeometry(1, 18).rotateX(-Math.PI / 2), this.capaSuelo(M.mat("#CDBD92")), Math.max(1, claros.length));
       claros.forEach((p, i) => {
         o.position.copy(p3(p, SUELO + 0.15));
@@ -1036,12 +1388,7 @@ export class Mundo {
       m.receiveShadow = true;
       this.escena.add(m);
     }
-    for (const p of palmas.slice(0, 60)) {
-      const pal = M.palmera(12);
-      pal.scale.setScalar(0.5);
-      pal.position.copy(p3(p));
-      this.escena.add(pal);
-    }
+    for (const p of palmas.slice(0, 80)) this.plantar(p, Especie.Palmera, rand, 0.55 + rand() * 0.15);
   }
 
   /** El estadio, ajustado a la huella real: césped, cuatro gradas, cubierta de preferencia, torres y focos. */
@@ -1370,7 +1717,7 @@ export class Mundo {
       }
       r.e.el.textContent = `${v.nombre} · Nv ${v.nivel}`;
       r.meta.copy(v3(v.x, v.y));
-      r.emote.el.textContent = v.emote ?? "";
+      r.emote.el.innerHTML = v.emote && esIconoJuego(v.emote) ? iconoJuego(v.emote, 30) : "";
       r.emote.el.style.display = v.emote ? "" : "none";
     }
     for (const [id, r] of this.vecinos) {
@@ -1527,11 +1874,60 @@ export class Mundo {
     return new THREE.Vector3(-Math.sin(a), 0, Math.cos(a));
   }
 
+  /** Cadena de render según la calidad: MSAA, oclusión ambiental (alta), efecto maqueta suave y salida. */
+  private montarComposer() {
+    const q = this.ajustesCalidad;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, q.pixel));
+    const rt = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: q.msaa });
+    this.composer?.dispose();
+    this.composer = new EffectComposer(this.renderer, rt);
+    this.composer.addPass(new RenderPass(this.escena, this.camara));
+    this.ao = null;
+    if (q.ao) {
+      this.ao = new GTAOPass(this.escena, this.camara, 1, 1);
+      this.ao.blendIntensity = 0.85;
+      this.ao.updateGtaoMaterial({ radius: 2.2, distanceExponent: 1.4, thickness: 1.2, scale: 1 });
+      this.composer.addPass(this.ao);
+    }
+    if (q.tilt) {
+      this.composer.addPass(this.tiltH);
+      this.composer.addPass(this.tiltV);
+    }
+    this.composer.addPass(new OutputPass());
+  }
+
+  /** Cambia la calidad gráfica (baja, media, alta) y la recuerda. */
+  calidad(nivel?: NivelCalidad) {
+    if (!nivel) return (Object.keys(CALIDADES) as NivelCalidad[]).find((k) => CALIDADES[k] === this.ajustesCalidad) ?? "media";
+    this.ajustesCalidad = CALIDADES[nivel];
+    try {
+      localStorage.setItem("mi-linea-calidad", nivel);
+    } catch {
+      /* sin almacenamiento: solo esta sesión */
+    }
+    this.sol.shadow.mapSize.set(this.ajustesCalidad.sombra, this.ajustesCalidad.sombra);
+    this.sol.shadow.map?.dispose();
+    this.sol.shadow.map = null;
+    // Los trozos se reconstruyen con la nueva configuración.
+    this.obra = null;
+    for (const t of this.trozos.values()) {
+      if (!t.grupo) continue;
+      if (t.visible) this.lejanos(t, false);
+      liberar(t.grupo);
+      this.escena.remove(t.grupo);
+      t.grupo = null;
+      t.visible = false;
+    }
+    this.montarComposer();
+    this.ajustar();
+    return nivel;
+  }
+
   private ajustar() {
     const r = this.canvas.getBoundingClientRect();
     this.renderer.setSize(r.width, r.height, false);
-    this.composer.setSize(r.width, r.height);
     this.composer.setPixelRatio(this.renderer.getPixelRatio());
+    this.composer.setSize(r.width, r.height);
     this.camara.aspect = r.width / Math.max(1, r.height);
     this.proyeccion();
   }
@@ -1548,7 +1944,7 @@ export class Mundo {
       sc.updateProjectionMatrix();
     }
     // Efecto maqueta: más desenfoque arriba y abajo cuanto más cerca.
-    const k = this.alto < 400 ? 1.3 : this.alto < 900 ? 0.95 : 0.6;
+    const k = this.alto < 400 ? 0.8 : this.alto < 900 ? 0.6 : 0.4;
     this.tiltH.uniforms.h.value = k / Math.max(1, r.width);
     this.tiltV.uniforms.v.value = k / Math.max(1, r.height);
   }
@@ -1572,8 +1968,8 @@ export class Mundo {
       this.camara.updateProjectionMatrix();
     }
     const niebla = this.escena.fog as THREE.Fog;
-    niebla.near = d * 2.2;
-    niebla.far = d * 7 + 600;
+    niebla.near = d * 3;
+    niebla.far = d * 10 + 900;
     // Sol fijo (de sureste) y centrado en la cámara, pero encajado en la rejilla de
     // texels del mapa de sombras para que los bordes no tiemblen al moverse.
     const texel = (2 * this.sol.shadow.camera.right) / this.sol.shadow.mapSize.x;
@@ -1658,10 +2054,9 @@ export class Mundo {
     this.altoMeta = Math.max(90, Math.min(2600, alto));
   }
 
+  /** Zoom progresivo: fija una altura objetivo y la cámara llega con suavidad. */
   zoom(f: number) {
-    this.altoMeta = null;
-    this.alto = Math.max(90, Math.min(2600, this.alto * f));
-    this.proyeccion();
+    this.altoMeta = Math.max(90, Math.min(2600, (this.altoMeta ?? this.alto) * f));
   }
 
   private limitar() {
@@ -1693,7 +2088,132 @@ export class Mundo {
         mejor = id;
       }
     }
-    if (mejor) this.onTocar({ tipo: "lugar", id: mejor });
+    if (mejor) {
+      this.onTocar({ tipo: "lugar", id: mejor });
+      return;
+    }
+    const b = this.edificioBajo(this.ray.ray);
+    if (b) {
+      this.seleccionar(b);
+      this.onTocar({ tipo: "edificio", ficha: this.ficha(b) });
+    }
+  }
+
+  /* ── Selección de edificios ──────────────────────────────────────────── */
+
+  private rejillaEdif = new Map<string, EdificioDet[]>();
+  private seleccion: THREE.Group | null = null;
+  private tSeleccion = 0;
+
+  /** Edificio que atraviesa el rayo primero (caja orientada de cada edificio cercano a su recorrido). */
+  private edificioBajo(rayo: THREE.Ray) {
+    if (!this.rejillaEdif.size) {
+      for (const b of this.edificios) {
+        const k = `${Math.floor(b.x / 20)},${Math.floor(b.y / 20)}`;
+        if (!this.rejillaEdif.has(k)) this.rejillaEdif.set(k, []);
+        this.rejillaEdif.get(k)!.push(b);
+      }
+    }
+    // Tramo del rayo entre 70 unidades de altura y el suelo.
+    const dy = rayo.direction.y;
+    if (dy >= -0.01) return null;
+    const t0 = (SUELO + 70 - rayo.origin.y) / dy;
+    const t1 = (SUELO - rayo.origin.y) / dy;
+    const celdas = new Set<string>();
+    for (let t = Math.max(0, t0); t <= t1; t += 6) {
+      const p = rayo.at(t, new THREE.Vector3());
+      const x = p.x + CX;
+      const y = p.z + CY;
+      for (let a = -1; a <= 1; a++) for (let c = -1; c <= 1; c++) celdas.add(`${Math.floor(x / 20) + a},${Math.floor(y / 20) + c}`);
+    }
+    let mejor: EdificioDet | null = null;
+    let tMin = Infinity;
+    for (const k of celdas) {
+      for (const b of this.rejillaEdif.get(k) ?? []) {
+        // Rayo al sistema local del edificio (giro −ang alrededor de Y).
+        const ox = rayo.origin.x - (b.x - CX);
+        const oz = rayo.origin.z - (b.y - CY);
+        const c = Math.cos(b.ang);
+        const s = Math.sin(b.ang);
+        const lo = [ox * c + oz * s, rayo.origin.y - SUELO, -ox * s + oz * c];
+        const ld = [rayo.direction.x * c + rayo.direction.z * s, rayo.direction.y, -rayo.direction.x * s + rayo.direction.z * c];
+        const min = [-b.w / 2, 0, -b.d / 2];
+        const max = [b.w / 2, b.h + (b.teja ? Math.min(b.w, b.d) * 0.3 : 1), b.d / 2];
+        let tn = -Infinity;
+        let tf = Infinity;
+        let ok = true;
+        for (let i = 0; i < 3 && ok; i++) {
+          if (Math.abs(ld[i]) < 1e-9) {
+            if (lo[i] < min[i] || lo[i] > max[i]) ok = false;
+            continue;
+          }
+          let a = (min[i] - lo[i]) / ld[i];
+          let z = (max[i] - lo[i]) / ld[i];
+          if (a > z) [a, z] = [z, a];
+          tn = Math.max(tn, a);
+          tf = Math.min(tf, z);
+          if (tn > tf) ok = false;
+        }
+        if (ok && tf > 0 && tn < tMin) {
+          tMin = tn;
+          mejor = b;
+        }
+      }
+    }
+    return mejor;
+  }
+
+  /** Contorno animado y anillo en el suelo sobre el edificio elegido. */
+  seleccionar(b: EdificioDet | null) {
+    if (this.seleccion) {
+      this.escena.remove(this.seleccion);
+      this.seleccion.traverse((o) => (o as THREE.Mesh).geometry?.dispose());
+      this.seleccion = null;
+    }
+    if (!b) return;
+    const g = new THREE.Group();
+    const alto = b.h + (b.teja ? Math.min(b.w, b.d) * 0.3 : 1);
+    const caja = new THREE.BoxGeometry(b.w + 0.8, alto + 0.6, b.d + 0.8);
+    caja.translate(0, (alto + 0.6) / 2, 0);
+    const bordes = new THREE.LineSegments(new THREE.EdgesGeometry(caja), new THREE.LineBasicMaterial({ color: "#C4E910", transparent: true, depthTest: false }));
+    bordes.renderOrder = 999;
+    g.add(bordes);
+    const relleno = new THREE.Mesh(caja, new THREE.MeshBasicMaterial({ color: "#C4E910", transparent: true, opacity: 0.12, depthWrite: false }));
+    g.add(relleno);
+    const r = Math.max(b.w, b.d) * 0.75 + 2;
+    const anillo = new THREE.Mesh(new THREE.RingGeometry(r, r + 0.9, 40).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: "#C4E910", transparent: true, opacity: 0.85, depthWrite: false }));
+    anillo.position.y = 0.6;
+    anillo.renderOrder = 60;
+    g.add(anillo);
+    g.position.copy(v3(b.x, b.y, SUELO));
+    g.rotation.y = -b.ang;
+    this.escena.add(g);
+    this.seleccion = g;
+    this.tSeleccion = 0;
+  }
+
+  private ficha(b: EdificioDet): FichaEdificio {
+    let calle = "";
+    let dMin = Infinity;
+    let punto: Punto = [b.x, b.y];
+    for (const t of TRAMOS) {
+      if (!t.nombre || t.clase > 4) continue;
+      for (const p of t.puntos) {
+        const d = (p[0] - b.x) ** 2 + (p[1] - b.y) ** 2;
+        if (d < dMin) {
+          dMin = d;
+          calle = t.nombre;
+          punto = p;
+        }
+      }
+    }
+    let barrio = "";
+    let dB = Infinity;
+    for (const z of Object.values(BARRIOS)) {
+      const d = (z.rotulo[0] - b.x) ** 2 + (z.rotulo[1] - b.y) ** 2;
+      if (d < dB) (dB = d), (barrio = z.nombre);
+    }
+    return { tipo: NOMBRE_ESTILO[b.estilo] ?? "Edificio", plantas: b.pl, calle, barrio, comercio: b.tienda, punto };
   }
 
   /* ── Sincronizar con la partida ─────────────────────────────────────── */
@@ -1763,8 +2283,11 @@ export class Mundo {
 
   private tAvion = 25;
 
+  private msFotograma = 16;
   private fotograma() {
-    const dt = Math.min(0.12, this.reloj.getDelta());
+    const crudo = this.reloj.getDelta();
+    this.msFotograma = this.msFotograma * 0.9 + crudo * 1000 * 0.1;
+    const dt = Math.min(0.12, crudo);
     const t = this.reloj.elapsedTime;
 
     // Personaje andando por la forma real de las calles.
@@ -1841,7 +2364,7 @@ export class Mundo {
       const p = this.avanzar(c, dt);
       const paso = Math.abs(Math.sin(t * 8 + i)) * 0.25;
       o.position.set(p.x - CX, SUELO + 1.3 + paso, p.y - CY);
-      o.rotation.set(0, p.rot, 0);
+      o.rotation.set(0, p.rot, Math.sin(t * 8 + i) * 0.08);
       o.updateMatrix();
       this.mallaPeatones.setMatrixAt(i, o.matrix);
       o.position.y = SUELO + 2.6 + paso;
@@ -1959,7 +2482,20 @@ export class Mundo {
     }
     for (const g of this.npcs.values()) g.scale.y = 0.58 + Math.sin(t * 2 + g.position.x) * 0.008;
 
+    if (this.seleccion) {
+      // Aparece con un pequeño rebote y luego late suave.
+      this.tSeleccion += dt;
+      const e = Math.min(1, this.tSeleccion * 4);
+      const rebote = 1 + Math.sin(e * Math.PI) * 0.12;
+      this.seleccion.scale.set(rebote, e * rebote, rebote);
+      const anillo = this.seleccion.children[2] as THREE.Mesh;
+      anillo.scale.setScalar(1 + Math.sin(this.tSeleccion * 4) * 0.04);
+      ((this.seleccion.children[1] as THREE.Mesh).material as THREE.MeshBasicMaterial).opacity = 0.08 + Math.sin(this.tSeleccion * 4) * 0.05;
+    }
     this.luz();
+    viento.tiempo.value = performance.now() / 1000;
+    viento.fuerza.value = this.viento === "levanteFuerte" ? 2.4 : this.viento === "levante" ? 1.5 : this.viento === "calma" ? 0.35 : 0.85;
+    this.actualizarDetalle();
     this.composer.render(dt);
     this.moverEtiquetas(dt);
   }
@@ -1978,7 +2514,9 @@ export class Mundo {
     (this.escena.fog as THREE.Fog).color.copy(cielo);
     this.sol.intensity = 0.5 + 2 * dia;
     this.sol.color.copy(C_SOL_NOCHE).lerp(C_SOL, dia).lerp(C_SOL_OCASO, atardecer * 0.7);
-    this.cielo.intensity = 0.7 + 0.35 * dia;
+    this.cielo.intensity = 0.45 + 0.4 * dia;
+    this.escena.environmentIntensity = 0.15 + 0.4 * dia;
+    if (matLuz) matLuz.emissiveIntensity = Math.pow(1 - dia, 1.5) * 1.8;
     this.cielo.color.copy(C_HEMI_NOCHE).lerp(C_HEMI, dia);
     for (const f of this.faroles) (f as THREE.MeshStandardMaterial).emissiveIntensity = 0.25 + (1 - dia) * 2.2;
   }

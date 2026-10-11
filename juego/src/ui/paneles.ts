@@ -108,8 +108,16 @@ export function abrirMenu(j: Juego) {
     pintarSonido();
   });
   pintarSonido();
+  const niveles = [["baja", "Baja", "Más fluido en móviles sencillos"], ["media", "Media", "Equilibrio: detalle y sombras"], ["alta", "Alta", "Oclusión ambiental y sombras finas"]] as const;
+  const calidad = h("div", { class: "calidad", role: "group", "aria-label": "Calidad gráfica" });
+  const pintarCalidad = () => calidad.replaceChildren(...niveles.map(([id, t, sub]) =>
+    h("button", { "aria-pressed": String(j.mundo.calidad() === id), onclick: () => { j.mundo.calidad(id); sonido("toque"); pintarCalidad(); } }, h("b", {}, t), h("small", {}, sub))));
+  pintarCalidad();
   j.hoja(
-    "MENÚ", "Mi Línea",
+    "AJUSTES", "Mi Línea",
+    h("div", { class: "seccion-titulo" }, "Calidad gráfica"),
+    calidad,
+    h("div", { class: "seccion-titulo" }, "Partida"),
     h("p", { class: "desc" }, "La partida se guarda sola en este dispositivo."),
     h("div", { class: "acciones" },
       boton,

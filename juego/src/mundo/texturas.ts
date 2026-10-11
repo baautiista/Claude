@@ -79,14 +79,39 @@ export const adoquin = (clave = "adoquin", base = "#D9D3C7", junta = "#B5ADA0") 
   });
 
 export const acera = () => adoquin("acera", "#EEE6D6", "#CFC4AE");
+/** Asfalto con grano, parches de bacheo, manchas de aceite y grietas muy suaves. */
 export const asfalto = () =>
-  textura("asfalto", 128, (g, t) => {
+  textura("asfalto", 256, (g, t) => {
     const r = azar(5);
-    g.fillStyle = "#6E7480";
+    g.fillStyle = "#676D78";
     g.fillRect(0, 0, t, t);
-    for (let i = 0; i < 500; i++) {
-      g.fillStyle = r() < 0.5 ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)";
-      g.fillRect(r() * t, r() * t, 2, 2);
+    for (let i = 0; i < 5; i++) {
+      g.fillStyle = r() < 0.5 ? "rgba(40,44,52,0.18)" : "rgba(120,126,136,0.18)";
+      g.fillRect(r() * t, r() * t, 30 + r() * 60, 20 + r() * 40);
+    }
+    for (let i = 0; i < 6; i++) {
+      g.fillStyle = "rgba(20,22,28,0.12)";
+      g.beginPath();
+      g.ellipse(r() * t, r() * t, 6 + r() * 14, 4 + r() * 8, r() * 3, 0, Math.PI * 2);
+      g.fill();
+    }
+    for (let i = 0; i < 2200; i++) {
+      g.fillStyle = r() < 0.5 ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.1)";
+      g.fillRect(r() * t, r() * t, 1.5, 1.5);
+    }
+    g.strokeStyle = "rgba(30,32,38,0.25)";
+    g.lineWidth = 1;
+    for (let i = 0; i < 4; i++) {
+      let x = r() * t;
+      let y = r() * t;
+      g.beginPath();
+      g.moveTo(x, y);
+      for (let k = 0; k < 6; k++) {
+        x += (r() - 0.5) * 18;
+        y += (r() - 0.5) * 18;
+        g.lineTo(x, y);
+      }
+      g.stroke();
     }
   });
 
@@ -614,3 +639,112 @@ export const rotuloEstadio = () =>
     g.textBaseline = "middle";
     g.fillText("CIUDAD DE LA LÍNEA", t / 2, t / 2);
   }, false);
+
+/* ── Materiales de la arquitectura detallada (texturas neutras, el color va por vértice) ── */
+
+/** Estuco encalado: casi blanco, con grano y manchas muy suaves para que el color por vértice lo tiña. */
+export const estuco = () =>
+  textura("estuco", 256, (g, t) => {
+    const r = azar(61);
+    g.fillStyle = "#F4F4F2";
+    g.fillRect(0, 0, t, t);
+    for (let i = 0; i < 40; i++) {
+      g.fillStyle = `rgba(${r() < 0.5 ? "255,255,255" : "120,110,100"},${0.03 + r() * 0.04})`;
+      g.beginPath();
+      g.ellipse(r() * t, r() * t, 10 + r() * 40, 6 + r() * 24, r() * 3, 0, Math.PI * 2);
+      g.fill();
+    }
+    for (let i = 0; i < 2600; i++) {
+      g.fillStyle = r() < 0.5 ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.05)";
+      g.fillRect(r() * t, r() * t, 1.5, 1.5);
+    }
+  });
+
+/** Ladrillo visto sin ventanas (las ventanas son geometría). */
+export const ladrilloLiso = () =>
+  textura("ladrillo-liso", 256, (g, t) => {
+    const r = azar(43);
+    g.fillStyle = "#D9CFC2";
+    g.fillRect(0, 0, t, t);
+    for (let y = 0; y < t; y += 16) {
+      for (let x = (y / 16) % 2 ? -18 : 0; x < t; x += 36) {
+        g.fillStyle = shade("#C8664B", 0.85 + r() * 0.25);
+        g.fillRect(x + 1.5, y + 1.5, 33, 13);
+      }
+    }
+  });
+
+/** Teja árabe vista desde arriba: canales y cobijas con sombra en cada hilada. */
+export const tejaArabe = () =>
+  textura("teja-arabe", 256, (g, t) => {
+    const r = azar(71);
+    const n = 8;
+    const w = t / n;
+    for (let fila = 0; fila < 8; fila++) {
+      for (let x = 0; x < n; x++) {
+        const tono = 0.86 + r() * 0.24;
+        const grad = g.createLinearGradient(x * w, 0, (x + 1) * w, 0);
+        grad.addColorStop(0, shade("#9E4127", tono));
+        grad.addColorStop(0.5, shade("#E58A5C", tono));
+        grad.addColorStop(1, shade("#8E3A22", tono));
+        g.fillStyle = grad;
+        g.fillRect(x * w, fila * w, w, w);
+        g.fillStyle = "rgba(60,20,8,0.35)";
+        g.fillRect(x * w, fila * w + w - 4, w, 4);
+        if (r() < 0.12) {
+          g.fillStyle = "rgba(80,90,40,0.25)";
+          g.fillRect(x * w + 3, fila * w + 4, w - 6, w * 0.4);
+        }
+      }
+    }
+  });
+
+/** Relieve de la teja (mapa de normales): cilindros a lo largo y escalón en cada hilada. */
+export const tejaNormal = () => {
+  const clave = "teja-normal";
+  const t = 128;
+  const [c, g] = (() => {
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = t;
+    return [cv, cv.getContext("2d")!] as const;
+  })();
+  const img = g.createImageData(t, t);
+  const n = 8;
+  const w = t / n;
+  for (let y = 0; y < t; y++) {
+    for (let x = 0; x < t; x++) {
+      const fase = ((x % w) / w) * Math.PI;
+      let nx = -Math.cos(fase) * 0.75;
+      let ny = (y % w) > w - 3 ? 0.6 : (y % w) < 2 ? -0.3 : 0;
+      const l = Math.hypot(nx, ny, 1);
+      nx /= l;
+      ny /= l;
+      const nz = 1 / l;
+      const i = (y * t + x) * 4;
+      img.data[i] = (nx * 0.5 + 0.5) * 255;
+      img.data[i + 1] = (ny * 0.5 + 0.5) * 255;
+      img.data[i + 2] = (nz * 0.5 + 0.5) * 255;
+      img.data[i + 3] = 255;
+    }
+  }
+  g.putImageData(img, 0, 0);
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.name = clave;
+  return tex;
+};
+
+/** Chapa grecada de naves industriales. */
+export const chapa = () =>
+  textura("chapa", 128, (g, t) => {
+    g.fillStyle = "#E9ECF0";
+    g.fillRect(0, 0, t, t);
+    for (let x = 0; x < t; x += 16) {
+      const grad = g.createLinearGradient(x, 0, x + 16, 0);
+      grad.addColorStop(0, "#C9CED6");
+      grad.addColorStop(0.4, "#FFFFFF");
+      grad.addColorStop(1, "#BFC5CE");
+      g.fillStyle = grad;
+      g.fillRect(x, 0, 16, t);
+    }
+  });

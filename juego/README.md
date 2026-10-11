@@ -26,6 +26,15 @@ Juego narrativo para móvil ambientado en La Línea de la Concepción. Mezcla la
 
 **Interfaz de juego:** portada con sobrevuelo 3D de la ciudad, HUD con avatar, nivel y XP, monedas, reloj y necesidades en indicadores circulares, dock de botones redondos, paneles con cabecera y animaciones (subida de nivel con confeti, avisos, rebotes). Tipografías Fredoka y Nunito.
 
+**Motor visual (rediseño integral):**
+
+- *Arquitectura detallada por trozos* (`mundo/arquitectura.ts`): alrededor de la cámara cada edificio real se genera con geometría propia: zócalo, oclusión en la base, ventanas con marco, cristal y alféizar, rejas andaluzas, persianas y contraventanas, balcones con forja y macetas, cornisas, pilastras en albero, tejados de teja árabe con relieve (mapa de normales), azoteas con pretil, casetón, depósitos, antenas, placas y tendederos; comercios con escaparate y toldo; bloques con forjados; oficinas de muro cortina; naves de chapa; iglesias con espadaña; pabellones con bóveda. Lejos se usan las cajas instanciadas. La construcción se reparte entre fotogramas (sin tirones) y los trozos se liberan de memoria.
+- *Espacio público* (`mundo/mobiliario.ts`): aceras elevadas con baldosa y bordillo 3D, bancos, papeleras, jardineras, bolardos, señales, coches aparcados, terrazas de bar y farolas fernandinas.
+- *Vegetación mediterránea* (`mundo/vegetacion.ts`): pino piñonero, ficus, árbol de sombra, naranjo, palmera datilera, ciprés y arbustos en flor; copas con tarjetas de hojas recortadas y balanceo por viento en el shader (más fuerte con levante).
+- *Render*: luz ambiental por imagen (cielo prefiltrado con PMREM) y reflejos en cristales, MSAA en el postprocesado, sombras estables, oclusión ambiental (GTAO) en calidad alta, ventanas iluminadas de noche y día/noche gradual.
+- *Calidad gráfica* elegible en Ajustes (baja, media, alta); por defecto media en móvil y alta en ordenador.
+- *Interacción*: tocar cualquier edificio lo selecciona (contorno animado) y abre su ficha con la opción de ir andando; zoom progresivo; monedas y estrellas que vuelan al contador; iconos propios a dos tonos (sin emojis).
+
 La partida se guarda sola en el dispositivo.
 
 ## Desarrollo
@@ -47,7 +56,10 @@ src/
   historia.ts           capítulo 1: objetivos, escenas y decisiones
   juego.ts              bucle principal: HUD, dock, autobús, diálogos, desplazamientos
   red.ts                multijugador: presencia (room), ranking y mercadillo (db), identidad (user)
-  mundo/mundo.ts        mundo 3D: terreno, ciudad, cámara, gestos, sincronización
+  mundo/mundo.ts        mundo 3D: terreno, ciudad, cámara, gestos, niveles de detalle, calidad
+  mundo/arquitectura.ts edificios detallados (escritor de geometría por materiales)
+  mundo/mobiliario.ts   aceras, bordillos, mobiliario urbano, coches aparcados, terrazas
+  mundo/vegetacion.ts   especies mediterráneas con viento
   mundo/modelos.ts      modelos low-poly estilo Hay Day (iglesia, barcas, huertos…)
   mundo/texturas.ts     texturas pintadas con canvas (césped, adoquín, teja, fachadas)
   mapa/rutas.ts         camino más corto por las calles reales (Dijkstra con montículo)
