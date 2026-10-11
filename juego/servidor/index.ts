@@ -16,6 +16,8 @@ import { WebSocketServer, type WebSocket } from "ws";
 import { AlmacenSQLite } from "./bd.ts";
 import { ErrorJuego, Servicio, type Contexto } from "../src/compartido/servicio.ts";
 import { registrarModulos } from "../src/compartido/modulos.ts";
+import { datosDesdeLinea, fijarMapa } from "../src/compartido/hogar/datos.ts";
+import "../src/compartido/hogar/hogar.ts";
 
 const RAIZ = dirname(fileURLToPath(import.meta.url));
 const DIST = normalize(join(RAIZ, "..", "dist"));
@@ -102,6 +104,7 @@ const publico = (c: Conexion) => {
 
 /* ── Módulos de juego (inmobiliaria, interiores, oficios…) ─────────── */
 
+fijarMapa(datosDesdeLinea(JSON.parse(readFileSync(join(RAIZ, "..", "src", "datos", "linea.json"), "utf8"))));
 const modulos = registrarModulos(servicio);
 
 /** Teletransporte tras aceptar una invitación. */

@@ -1,5 +1,10 @@
 import { AlmacenMemoria } from "../compartido/almacen.ts";
 import { registrarModulos } from "../compartido/modulos.ts";
+import { datosDesdeLinea, fijarMapa } from "../compartido/hogar/datos.ts";
+import "../compartido/hogar/hogar.ts";
+import { DATOS } from "../datos/mapa.ts";
+
+fijarMapa(datosDesdeLinea(DATOS));
 import { ErrorJuego, Servicio, type Contexto } from "../compartido/servicio.ts";
 import type { Vecino } from "../mundo/mundo";
 import { red } from "../red";
