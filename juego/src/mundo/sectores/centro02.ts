@@ -26,8 +26,17 @@ interface Estilo {
   tipo: Tipo;
   color: RGB;
   plantas: number;
-  remate?: RGB;
   cierros?: boolean;
+  /** Planta baja de pilares crema con escaparates entre ellos. */
+  pilares?: boolean;
+  /** Ventanas con arco de medio punto en todas las plantas. */
+  arcos?: boolean;
+  /** Balcón en todos los huecos. */
+  balcones?: boolean;
+  /** Color de las barandillas (por defecto, hierro oscuro). */
+  barandilla?: RGB;
+  /** Tejado de teja a cuatro aguas. */
+  tejado?: boolean;
 }
 
 /** Edificios identificados en las fotos (por el centro de su huella OSM). */
@@ -40,14 +49,15 @@ const CONOCIDOS: [P2, Estilo][] = [
   [[1216, 2203], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
   [[1213, 2202], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
   [[1210, 2200], { tipo: "bloque", color: C("#F4F1EA"), plantas: 5 }],
-  // Plaza de la Constitución, de Calle Real a Av. España (fotos)
-  [[1240, 2177], { tipo: "bloque", color: C("#D8602E"), plantas: 5, remate: C("#EFE3C6") }], // esquina 100 Montaditos
-  [[1239, 2182], { tipo: "porticos", color: C("#E07B39"), plantas: 5 }], // bloque naranja de esquina redondeada
-  [[1237, 2186], { tipo: "casita", color: C("#E9A98A"), plantas: 2, cierros: true }], // casa salmón (Kebab House)
-  [[1235, 2193], { tipo: "historico", color: C("#F4F2EC"), plantas: 4 }], // MONACO
-  [[1227, 2207], { tipo: "bloque", color: C("#EFE3C6"), plantas: 4 }],
-  [[1222, 2215], { tipo: "bloque", color: C("#E8C35A"), plantas: 9, cierros: true }], // torre amarilla
-  [[1217, 2224], { tipo: "moderno", color: C("#F6F4EF"), plantas: 3 }], // esquina art déco, Av. España
+  // Plaza de la Constitución, de Calle Real a Av. España (foto del usuario y POI de OSM)
+  [[1240, 2177], { tipo: "bloque", color: C("#D98A6A"), plantas: 5, pilares: true }], // esquina curva salmón (Diputación)
+  [[1239, 2182], { tipo: "bloque", color: C("#EFE6D2"), plantas: 5, pilares: true }], // bloque crema (100 Montaditos)
+  [[1242, 2187], { tipo: "casita", color: C("#E3A487"), plantas: 2, cierros: true }], // Kebab House
+  [[1240, 2191], { tipo: "historico", color: C("#F4F2EC"), plantas: 4, arcos: true, barandilla: C("#2F5FA8") }], // Salón Mónaco
+  [[1234, 2199], { tipo: "bloque", color: C("#D9826A"), plantas: 3, balcones: true }],
+  [[1230, 2208], { tipo: "bloque", color: C("#F2F0EA"), plantas: 3, balcones: true }], // Hostal Carlos I
+  [[1225, 2217], { tipo: "bloque", color: C("#CDB06A"), plantas: 10, balcones: true, barandilla: C("#4E7A4A") }], // torre ocre
+  [[1221, 2224], { tipo: "moderno", color: C("#F6F4EF"), plantas: 3 }], // esquina blanca, Av. España
   [[1235, 2175], { tipo: "bloque", color: C("#E9A98A"), plantas: 8 }],
   [[1229, 2176], { tipo: "casita", color: C("#F3F1EB"), plantas: 2 }], // Bablú
   [[1224, 2171], { tipo: "bloque", color: C("#A8322E"), plantas: 5, cierros: true }],
@@ -132,7 +142,7 @@ function edificio(o: Obra, c: Ctx, h: HuellaOSM, poli: P2[], todas: P2[][], ocup
     const L = mc.usar(o, c);
     muro(o, 0, L, 0, H, colMuro, matMuro, 0.8);
     const fuera = mc.g(L / 2, 1.3);
-    const calle = L > 2.2 && !todas.some((t) => t !== poli && dentroPoli(fuera, t)) && !ocupado(fuera);
+    const calle = L > 2.2 && !todas.some((t) => t !== poli && dentroPoli(fuera, t)) && (h.f === 1 || !ocupado(fuera));
     if (!calle) continue;
     // Planta baja: comercio con escaparate, rótulo y a veces toldo.
     const bajo: RGB = e.tipo === "casino" ? C("#7C7A77") : e.tipo === "moderno" ? C("#E9E7E2") : e.tipo === "historico" ? claro(0.92) : claro(1.05);
@@ -176,6 +186,12 @@ function edificio(o: Obra, c: Ctx, h: HuellaOSM, poli: P2[], todas: P2[][], ocup
       o.caja(Mat.Detalle, 0.6, 0, 0.02, 1.6, 2.4, 0.06, C("#2B2D31"));
       if (L > 3) ventana(o, L * 0.6, PB * 0.55, 1.0, 1.1, { marco: C("#2B2D31") });
       if (o.fino && e.color[1] < 0.6) disco(o, Mat.Detalle, L * 0.82, H - 1.2, 0.02, 0.06, 0.3, BLANCO, 14);
+    } else if (e.pilares) {
+      for (const x of vanos(L, 3.0, 0.2)) o.caja(Mat.Cristal, x - 1.15, 0.15, 0.03, x + 1.15, 3.2, 0.06, CRISTAL_TIENDA);
+      for (let k = 0; k <= Math.round(L / 3); k++) {
+        const x = Math.min(L - 0.25, Math.max(0.25, (k * L) / Math.round(L / 3)));
+        o.caja(Mat.Detalle, x - 0.25, 0, 0, x + 0.25, PB, 0.35, C("#EFE6D2"));
+      }
     } else {
       const tiendas = vanos(L, 4.2, 0.3);
       for (const x of tiendas) {
@@ -195,7 +211,7 @@ function edificio(o: Obra, c: Ctx, h: HuellaOSM, poli: P2[], todas: P2[][], ocup
           o.caja(Mat.Detalle, x - 1.0, y + 0.45, 0, x + 1.0, y + 0.6, 0.6, BLANCO);
           continue;
         }
-        if (e.cierros && t < 0.4) {
+        if (e.cierros && (t < 0.4 || e.tipo === "casita")) {
           cierro(o, x, y + 0.4, 1.4, 2.4, 0.55, BLANCO, HIERRO);
           continue;
         }
@@ -203,14 +219,15 @@ function edificio(o: Obra, c: Ctx, h: HuellaOSM, poli: P2[], todas: P2[][], ocup
           marco: e.tipo === "historico" ? C("#E6E0D2") : BLANCO,
           recercado: e.tipo === "verdes" ? C("#2E7D3A") : e.tipo === "historico" ? claro(1.15) : undefined,
           recercadoAncho: e.tipo === "verdes" ? 0.18 : 0.12,
-          arco: e.tipo === "verdes" || (e.tipo === "historico" && t < 0.3),
+          arco: e.arcos || e.tipo === "verdes" || (e.tipo === "historico" && t < 0.3),
           persiana: e.tipo === "historico" ? undefined : C("#EDEBE4"),
           bajada: 0.2 + r() * 0.4,
           cuarterones: e.tipo === "historico",
         };
         ventana(o, x, y + 0.55, 1.0, e.tipo === "historico" ? 2.1 : 1.6, op);
-        if (e.tipo === "ladrillo" || e.tipo === "verdes" || t < 0.55) balcon(o, x, y + 0.55, 1.4, 0.45, claro(1.15), HIERRO);
-        else if (t < 0.7) reja(o, x, y + 0.55, 1.0, 1.4, 0.15, HIERRO);
+        const hierro = e.barandilla ?? HIERRO;
+        if (e.balcones || e.arcos || e.tipo === "ladrillo" || e.tipo === "verdes" || t < 0.55) balcon(o, x, y + 0.55, 1.4, 0.45, claro(1.15), hierro);
+        else if (t < 0.7) reja(o, x, y + 0.55, 1.0, 1.4, 0.15, hierro);
       }
       if (e.tipo === "historico" && o.fino) for (let k = 0; k < Math.floor(L / 0.9); k++) o.caja(Mat.Detalle, 0.4 + k * 0.9, y + 0.4, 0.035, 0.46 + k * 0.9, y + 2.8, 0.045, C("#3E6FB5"));
     }
@@ -222,7 +239,7 @@ function edificio(o: Obra, c: Ctx, h: HuellaOSM, poli: P2[], todas: P2[][], ocup
   enMundo(o, c);
   plano(o, Mat.Muro, poli, H + 0.01, C("#CDBFAE"));
   // Tejado de teja en la casita de la Patagónica.
-  if (e.tipo === "casita" && e.plantas === 1) {
+  if (e.tejado || (e.tipo === "casita" && e.plantas === 1)) {
     const xs = poli.map((p) => p[0]);
     const zs = poli.map((p) => p[1]);
     enMundo(o, c, H);
@@ -396,6 +413,72 @@ function plazaCruzHerrera(o: Obra, c: Ctx) {
   enMundo(o, c);
 }
 
+/* ── Plaza de la Constitución ─────────────────────────────────────── */
+
+/** Losa gris de la plaza, desde las fachadas hasta Correos y la Av. del Ejército (OSM). */
+const CONSTITUCION: P2[] = [[1251.0, 2176.5], [1264.7, 2181.1], [1273.0, 2184.5], [1272.0, 2192.0], [1266.0, 2206.0], [1266.0, 2222.0], [1273.0, 2244.0], [1270.0, 2256.0], [1246.5, 2256.5], [1243.5, 2245.0], [1234.0, 2232.0], [1231.5, 2223.8], [1233.2, 2219.8], [1236.5, 2216.0], [1239.4, 2208.6], [1243.0, 2203.0], [1247.0, 2196.0], [1249.0, 2190.0]];
+/** Parterres de OSM: en la plaza son jardineras con murete rojo y naranjos en bola. */
+const PARTERRES: P2[][] = [
+  [[1252.5, 2190.1], [1253.8, 2191.7], [1257.5, 2190.7], [1260.4, 2187.5], [1261.7, 2184.7], [1261.5, 2180.0], [1258.8, 2179.1], [1252.7, 2187.3]],
+  [[1246.7, 2203.0], [1248.4, 2204.4], [1251.1, 2202.1], [1251.3, 2198.5], [1248.5, 2197.4], [1247.8, 2200.5]],
+  [[1264.0, 2191.2], [1264.3, 2195.1], [1270.7, 2192.2], [1272.1, 2187.6], [1272.3, 2184.5], [1268.3, 2185.0]],
+  [[1262.0, 2203.7], [1264.0, 2205.9], [1267.4, 2201.2], [1264.2, 2200.2], [1262.2, 2201.5]],
+  [[1260.9, 2211.8], [1263.3, 2216.0], [1265.2, 2218.3], [1264.7, 2214.6], [1261.7, 2209.2]],
+  [[1239.8, 2214.1], [1238.8, 2215.3], [1248.0, 2216.1], [1248.0, 2219.7], [1250.0, 2219.3], [1249.0, 2214.7], [1247.1, 2212.0], [1245.3, 2214.2], [1244.2, 2214.8]],
+];
+const FUENTE_CONSTITUCION: P2 = [1244.0, 2231.6];
+
+function plazaConstitucion(o: Obra, c: Ctx) {
+  enMundo(o, c);
+  plano(o, Mat.Suelo, CONSTITUCION, 0.36, C("#9E9C98"), 0.45);
+  // Bandas oscuras curvas del pavimento, concéntricas a la fuente.
+  if (o.fino) for (const R of [24, 31, 38, 45]) {
+    const n = 90;
+    for (let i = 0; i < n; i++) {
+      const a0 = -Math.PI * 0.62 + (i / n) * Math.PI * 0.9;
+      const a1 = a0 + (Math.PI * 0.9) / n;
+      const p = (a: number, r: number): P2 => [FUENTE_CONSTITUCION[0] + Math.cos(a) * r, FUENTE_CONSTITUCION[1] + Math.sin(a) * r];
+      if (!dentroPoli(p((a0 + a1) / 2, R), CONSTITUCION)) continue;
+      plano(o, Mat.Detalle, [p(a0, R - 0.18), p(a1, R - 0.18), p(a1, R + 0.18), p(a0, R + 0.18)], 0.365, C("#45464A"));
+    }
+  }
+  // Jardineras con murete rojo, tierra y naranjos recortados en bola.
+  const ROJO = C("#B5503F");
+  for (const poli of PARTERRES) {
+    for (let i = 0; i < poli.length; i++) {
+      const mc = new Marco(poli[i], poli[(i + 1) % poli.length], interiorArista(poli, i));
+      const L = mc.usar(o, c, 0.36);
+      if (L < 0.2) continue;
+      o.caja(Mat.Muro, -0.15, 0, -0.35, L + 0.15, 0.95, 0, ROJO);
+      o.caja(Mat.Detalle, -0.18, 0.95, -0.38, L + 0.18, 1.02, 0.03, C("#C9C3B8"));
+    }
+    enMundo(o, c);
+    plano(o, Mat.Detalle, poli, 1.2, C("#4E7A3C"));
+    const cx = poli.reduce((a, p) => a + p[0], 0) / poli.length;
+    const cz = poli.reduce((a, p) => a + p[1], 0) / poli.length;
+    enMundo(o, c, 1.2);
+    arbolito(o, cx, 0, cz, 2.6, C("#3F7A36"));
+    enMundo(o, c);
+  }
+  enMundo(o, c, 0.36);
+  // Fuente de la Constitución: vaso circular de piedra con agua.
+  const [fx, fz] = FUENTE_CONSTITUCION;
+  torno(o, Mat.Detalle, fx, 0, fz, [[3.9, 0], [3.9, 0.6], [3.6, 0.65], [3.5, 0.1]], C("#D8D2C4"), 28);
+  enMundo(o, c);
+  const agua: P2[] = [];
+  for (let i = 0; i < 28; i++) agua.push([fx + Math.cos((i / 28) * Math.PI * 2) * 3.55, fz + Math.sin((i / 28) * Math.PI * 2) * 3.55]);
+  plano(o, Mat.Cristal, agua, 0.8, C("#5E8FB0"));
+  enMundo(o, c, 0.36);
+  // Palmera grande tras la primera jardinera y quiosco de prensa.
+  palmera(o, 1256.5, 2185.0, 11);
+  o.caja(Mat.Muro, 1250.6, 0, 2180.6, 1253.4, 2.6, 2183.0, C("#D9DADC"));
+  o.caja(Mat.Detalle, 1250.4, 2.6, 2180.4, 1253.6, 3.1, 2183.2, C("#2B2D31"));
+  // Parada de taxis con marquesina de madera.
+  pergola(o, 1258.5, 2174.6, 1271.0, 2177.2, C("#5A3E2B"), C("#6B4A33"));
+  for (const [x, z] of [[1247.0, 2185.5], [1243.5, 2199.5], [1239.0, 2210.5], [1262.0, 2198.0]] as P2[]) farolaFernandina(o, x, z);
+  enMundo(o, c);
+}
+
 /** Construye CENTRO-02/03: edificios sobre huellas OSM, Calle Real y Plaza Cruz Herrera. */
 /** Retranquea hacia dentro las caras que dan a la calle (calles más anchas que en el plano). */
 function retranquear(poli: P2[], todas: P2[][], ocupado: (p: P2) => boolean, d: number): P2[] {
@@ -437,7 +520,7 @@ let cachePolis: P2[][] | null = null;
 export function solidosCentro02(ocupado: (p: P2) => boolean): P2[][] {
   if (cachePolis) return cachePolis;
   const base = HUELLAS_C02.map((h) => simplificar(h.p));
-  cachePolis = base.map((p) => retranquear(p, base, ocupado, 2.2));
+  cachePolis = base.map((p, i) => (HUELLAS_C02[i].f ? p : retranquear(p, base, ocupado, 2.2)));
   return cachePolis;
 }
 
@@ -448,6 +531,7 @@ export function construirCentro02(c: Ctx, ocupado: (p: P2) => boolean, fino: boo
   HUELLAS_C02.forEach((h, i) => edificio(o, c, h, polis[i], polis, ocupado));
   calleReal(o, c);
   plazaCruzHerrera(o, c);
+  plazaConstitucion(o, c);
   return o;
 }
 
