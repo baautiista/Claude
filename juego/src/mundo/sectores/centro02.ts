@@ -1,7 +1,7 @@
 import { Mat, Obra, rgb, type RGB } from "../arquitectura";
 import {
-  Marco, enMundo, centroide, prisma, plano, arco, torno, muro, moldura, sillares, ventana,
-  verja, balcon, balaustrada, cierro, reja, toldo, jarron, arbolito, disco, type Ctx, type P2,
+  Marco, enMundo, prisma, plano, arco, torno, muro, moldura, sillares, ventana,
+  interiorArista, verja, balcon, balaustrada, cierro, reja, toldo, jarron, arbolito, disco, type Ctx, type P2,
 } from "./piezas";
 import { HUELLAS_C02, type HuellaOSM } from "./centro02.datos";
 
@@ -116,13 +116,12 @@ function edificio(o: Obra, c: Ctx, h: HuellaOSM, poli: P2[], todas: P2[][], ocup
   const PB = e.tipo === "casita" ? 3.6 : 4.2;
   const P = 3.05;
   const H = e.tipo === "casita" ? PB + (e.plantas - 1) * P : PB + (e.plantas - 1) * P;
-  const cen = centroide(poli);
   const claro = (k: number): RGB => [Math.min(1, e.color[0] * k), Math.min(1, e.color[1] * k), Math.min(1, e.color[2] * k)];
   const moldC = e.tipo === "historico" ? claro(1.12) : e.tipo === "verdes" ? C("#2E7D3A") : e.tipo === "casino" ? BLANCO : claro(1.18);
   const matMuro = e.tipo === "ladrillo" ? Mat.Ladrillo : Mat.Muro;
   const colMuro: RGB = e.tipo === "ladrillo" ? [1.0, 1.42, 1.3] : e.color;
   for (let i = 0; i < poli.length; i++) {
-    const mc = new Marco(poli[i], poli[(i + 1) % poli.length], cen);
+    const mc = new Marco(poli[i], poli[(i + 1) % poli.length], interiorArista(poli, i));
     const L = mc.usar(o, c);
     muro(o, 0, L, 0, H, colMuro, matMuro, 0.8);
     const fuera = mc.g(L / 2, 1.3);
@@ -394,7 +393,6 @@ function plazaCruzHerrera(o: Obra, c: Ctx) {
 /** Retranquea hacia dentro las caras que dan a la calle (calles más anchas que en el plano). */
 function retranquear(poli: P2[], todas: P2[][], ocupado: (p: P2) => boolean, d: number): P2[] {
   const n = poli.length;
-  const cen = centroide(poli);
   const lineas = poli.map((a, i) => {
     const b = poli[(i + 1) % n];
     const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
@@ -402,7 +400,8 @@ function retranquear(poli: P2[], todas: P2[][], ocupado: (p: P2) => boolean, d: 
     let ny = (b[0] - a[0]) / L;
     const mx = (a[0] + b[0]) / 2;
     const my = (a[1] + b[1]) / 2;
-    if (nx * (cen[0] - mx) + ny * (cen[1] - my) > 0) (nx = -nx), (ny = -ny);
+    const dentro = interiorArista(poli, i);
+    if (nx * (dentro[0] - mx) + ny * (dentro[1] - my) > 0) (nx = -nx), (ny = -ny);
     const fuera: P2 = [mx + nx * 1.3, my + ny * 1.3];
     const calle = L > 2.2 && !todas.some((t) => t !== poli && dentroPoli(fuera, t)) && !ocupado(fuera);
     const k = calle ? d : 0;

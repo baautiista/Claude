@@ -311,7 +311,8 @@ for (const f of features) {
       if (tipo === null) continue;
       let rc = rectangulo(ext);
       if (!rc || rc.w < 1 || rc.d < 1) continue;
-      if (Math.hypot(rc.x - ZONA_PRUEBA.c[0], rc.y - ZONA_PRUEBA.c[1]) < ZONA_PRUEBA.r + 20) rc = ajustarAHuella(rc, ext);
+      // Todas las huellas: el rectángulo se apoya en la planta real (no la envuelve).
+      rc = ajustarAHuella(rc, ext);
       const plantas = Number(t["building:levels"]) || 0;
       edificios.push([r1(rc.x), r1(rc.y), r1(rc.w), r1(rc.d), Math.round(rc.ang * 100) / 100, tipo, plantas]);
       continue;

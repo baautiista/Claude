@@ -1,3 +1,4 @@
+import { edificiosConservados } from "../ciudad.ts";
 import { definirModulo, type Extra } from "../modulos.ts";
 import { ErrorJuego, nivelDe, type Contexto, type Servicio } from "../servicio.ts";
 import { CATEGORIAS, MUEBLES, PINTURAS, PLANTAS_JARDIN, precioCaja, precioReventa, PRECIO_PINTURA, SUELOS } from "./catalogo.ts";
@@ -103,8 +104,11 @@ function barrioDe(x: number, y: number) {
 export function unidades(): Unidad[] {
   if (cacheUnidades) return cacheUnidades;
   const out: Unidad[] = [];
+  // Solo hay viviendas en los edificios que existen en la ciudad (ver compartido/ciudad.ts).
+  const existen = edificiosConservados(mapa().edificios, (x, y) => barrioDe(x, y).id);
   mapa().edificios.forEach((e, idx) => {
     if (e.tipo !== 0 && e.tipo !== 1) return;
+    if (!existen.has(idx)) return;
     const huella = e.w * e.d * 4; // m² (1 unidad = 2 m)
     if (huella < 40) return;
     const h = hashTexto(`e${idx}`);

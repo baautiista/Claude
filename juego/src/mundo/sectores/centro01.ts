@@ -1,7 +1,7 @@
 import { Mat, Obra, rgb, type RGB } from "../arquitectura";
 import {
   Marco, enMundo, centroide, prisma, plano, arco, disco, torno, tira, muro, moldura, sillares, ventana,
-  verja, balcon, balaustrada, cierro, reja, toldo, jarron, arbolito, type Ctx, type P2,
+  interiorArista, verja, balcon, balaustrada, cierro, reja, toldo, jarron, arbolito, type Ctx, type P2,
 } from "./piezas";
 
 /**
@@ -22,12 +22,12 @@ const BLANCO = C("#F6F3EC");
 export const SUSTITUYE_CENTRO01: P2[] = [
   [1111.8, 2119.3], // Santuario
   [1095, 2119.3], // Casa de Ruperto Toledano
-  [1093.4, 2135.8], // edificio verde de la esquina
-  [1091.6, 2143.4], // edificio crema de cierros
+  [1092.9, 2135.6], // edificio verde de la esquina
+  [1091.3, 2144.5], // edificio crema de cierros
   [1119.6, 2141.1], // edificio blanco del tejado a cuatro aguas
   [1126.5, 2122.7], // torre de ladrillo
   [1126.9, 2130], // torre de ladrillo (anexo)
-  [1110.4, 2160.7], // queda dentro del edificio rosa (huella estimada)
+  [1110.4, 2160.6], // queda dentro del edificio rosa (huella estimada)
 ];
 
 /** Zona del sector: aquí los árboles son plátanos de sombra grandes, como en la plaza real. */
@@ -92,10 +92,9 @@ interface Cara {
  * una cara «da a la calle» si delante no hay otro edificio (medianera).
  */
 function cuerpo(o: Obra, c: Ctx, poli: P2[], alto: number, color: RGB, ocupado: (p: P2) => boolean, m = Mat.Muro, azotea = C("#CDBFAE")): Cara[] {
-  const cen = centroide(poli);
   const caras: Cara[] = [];
   for (let i = 0; i < poli.length; i++) {
-    const mc = new Marco(poli[i], poli[(i + 1) % poli.length], cen);
+    const mc = new Marco(poli[i], poli[(i + 1) % poli.length], interiorArista(poli, i));
     const L = mc.usar(o, c);
     muro(o, 0, L, 0, alto, color, m, 0.78);
     const fuera = mc.g(L / 2, 1.4);

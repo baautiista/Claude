@@ -317,3 +317,25 @@ export function arbolito(o: Obra, x: number, y: number, z: number, alto: number,
   torno(o, Mat.Detalle, x, y, z, [[0.06, 0], [0.05, alto * 0.55]], [0.42, 0.33, 0.24], 5);
   torno(o, Mat.Detalle, x, y + alto * 0.45, z, [[0.05, 0], [alto * 0.3, alto * 0.12], [alto * 0.34, alto * 0.3], [alto * 0.25, alto * 0.46], [0.02, alto * 0.56]], hoja, 7);
 }
+
+/**
+ * Punto interior junto a la arista i de un polígono, según su sentido de giro.
+ * (El centroide no sirve: en huellas cóncavas, en L o en U, puede caer fuera y dejaría las
+ * paredes mirando hacia dentro: invisibles desde la calle.)
+ */
+export function interiorArista(poli: P2[], i: number): P2 {
+  let area = 0;
+  for (let k = 0; k < poli.length; k++) {
+    const [x0, y0] = poli[k];
+    const [x1, y1] = poli[(k + 1) % poli.length];
+    area += x0 * y1 - x1 * y0;
+  }
+  const a = poli[i];
+  const b = poli[(i + 1) % poli.length];
+  const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+  // Normal a la izquierda de a→b; es interior si el polígono gira en sentido positivo.
+  const s = area > 0 ? 1 : -1;
+  const nx = (-(b[1] - a[1]) / L) * s;
+  const ny = ((b[0] - a[0]) / L) * s;
+  return [(a[0] + b[0]) / 2 + nx * 0.3, (a[1] + b[1]) / 2 + ny * 0.3];
+}

@@ -1,4 +1,5 @@
 /** Fase 2: Hogar Linense, interiores, muebles, reformas, cooperativo y encargos. */
+import { enZonaReconstruida } from "../src/compartido/ciudad.ts";
 import { esperar, Informe, Servidor, unico, type Cliente } from "./utilidades.ts";
 
 /** Resuelve un puzle de giros por búsqueda con poda (solo con lo que ve el jugador). */
@@ -50,13 +51,14 @@ export async function fase2(srv: Servidor) {
   let casa = "";
   let barata: any;
 
-  await inf.caso("Catálogo generado de edificios reales (no se agota)", async () => {
+  await inf.caso("Catálogo: solo viviendas en edificios que existen (zonas reconstruidas)", async () => {
     const r = await a.llamar("hogarCatalogo", {});
-    return r.total > 1000 && r.lista.length === 20;
+    const todas = (await a.llamar("hogarCatalogo", { pagina: 0, porPagina: 500 })).lista;
+    return r.total > 20 && r.lista.length === Math.min(20, r.total) && todas.every((u: any) => enZonaReconstruida(u.x, u.y));
   });
   await inf.caso("Filtros: barrio, tipo y precio máximo", async () => {
-    const r = await a.llamar("hogarCatalogo", { barrio: "atunara", tipo: "piso", precioMax: 3000 });
-    return r.lista.length > 0 && r.lista.every((u: any) => u.barrioId === "atunara" && u.tipo === "piso" && u.precio <= 3000);
+    const r = await a.llamar("hogarCatalogo", { barrio: "centro", tipo: "piso", precioMax: 20000 });
+    return r.lista.length > 0 && r.lista.every((u: any) => u.barrioId === "centro" && u.tipo === "piso" && u.precio <= 20000);
   });
   await inf.caso("Ficha con habitaciones, inspección y materiales", async () => {
     barata = (await a.llamar("hogarCatalogo", { orden: "precio" })).lista[0];

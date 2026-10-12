@@ -7,7 +7,7 @@ import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { urbanizar, type Segmento } from "./mobiliario";
 import { Especie, geoArbol, materialesArbol, N_ESPECIES, VARIANTES, viento } from "./vegetacion";
-import { edificar, materialesArquitectura, matLuz, Obra, type Edificio } from "./arquitectura";
+import { edificar, Mat, materialesArquitectura, matLuz, Obra, type Edificio } from "./arquitectura";
 import { GTAOPass } from "three/examples/jsm/postprocessing/GTAOPass.js";
 import { HorizontalTiltShiftShader } from "three/examples/jsm/shaders/HorizontalTiltShiftShader.js";
 import { VerticalTiltShiftShader } from "three/examples/jsm/shaders/VerticalTiltShiftShader.js";
@@ -16,6 +16,7 @@ import {
   type LugarId, type Punto, type Tramo, type Zona,
 } from "../datos/mapa";
 import { OBJETOS, SALIDAS, type CultivoId } from "../datos/objetos";
+import { edificiosConservados, enZonaReconstruida } from "../compartido/ciudad";
 import { PERSONAJES, type PersonajeId } from "../datos/personajes";
 import { barcaFuera, horaDelDia, listo, progresoCultivo, type Estado } from "../estado";
 import { presente } from "../historia";
@@ -232,7 +233,6 @@ function aspectoJugador(piel: string, ropa: string, id = "yo"): Aspecto {
 
 /** Manzanas alrededor del Mercado de la Concepción: aquí rigen las reglas nuevas de colocación. */
 export const ZONA_PRUEBA = { c: [1165, 2045] as Punto, r: 95 };
-const enZonaPrueba = (x: number, y: number) => Math.hypot(x - ZONA_PRUEBA.c[0], y - ZONA_PRUEBA.c[1]) < ZONA_PRUEBA.r;
 
 /**
  * Anchura de calzada de cada tramo. Fuera de la zona de prueba, la de su clase. Dentro, la que
@@ -242,9 +242,12 @@ const enZonaPrueba = (x: number, y: number) => Math.hypot(x - ZONA_PRUEBA.c[0], 
 const ANCHO_TRAMO = new Map<Tramo, number>();
 const anchoDe = (t: Tramo) => ANCHO_TRAMO.get(t) ?? ANCHO_VIA[t.clase];
 function calcularAnchos() {
-  const rects = DATOS.edificios.filter(([x, y]) => enZonaPrueba(x, y) || Math.hypot(x - ZONA_PRUEBA.c[0], y - ZONA_PRUEBA.c[1]) < ZONA_PRUEBA.r + 30);
+  const cons = CONSERVADOS();
+  const rects = DATOS.edificios.filter((_, i) => cons.has(i));
+  const cerca = new Set<string>();
+  for (const [x, y] of rects) for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) cerca.add(`${Math.floor(x / 40) + dx},${Math.floor(y / 40) + dy}`);
   for (const t of TRAMOS) {
-    if (t.clase > 4 || !t.puntos.some(([x, y]) => enZonaPrueba(x, y))) continue;
+    if (t.clase > 4 || !t.puntos.some(([x, y]) => cerca.has(`${Math.floor(x / 40)},${Math.floor(y / 40)}`))) continue;
     const libres: number[] = [];
     for (let i = 1; i < t.puntos.length; i++) {
       const [a, b] = [t.puntos[i - 1], t.puntos[i]];
@@ -271,6 +274,19 @@ function calcularAnchos() {
     ANCHO_TRAMO.set(t, media * 2);
   }
 }
+
+/** Barrio de un punto: el del rótulo más cercano (igual que el catálogo de viviendas). */
+const barrioMapa = (x: number, y: number) => {
+  let mejor = "";
+  let dm = Infinity;
+  for (const [id, b] of Object.entries(BARRIOS)) {
+    const d = (b.rotulo[0] - x) ** 2 + (b.rotulo[1] - y) ** 2;
+    if (d < dm) (dm = d), (mejor = id);
+  }
+  return mejor;
+};
+/** Edificios que existen en la ciudad (zonas reconstruidas + principales de cada barrio). */
+const CONSERVADOS = () => edificiosConservados(DATOS.edificios.map(([x, y, w, d, , tipo]) => ({ x, y, w, d, tipo })), barrioMapa);
 
 /** Acera mínima entre el borde de la calzada y la fachada (m). */
 const ACERA = 1.2;
@@ -333,6 +349,8 @@ function muestrasCara(r: Rect, lado: number, fuera: number, n = 5) {
 function validarEdificios(lista: EdificioDet[], enZona: (x: number, y: number) => boolean, obstaculos: Punto[][]): EdificioDet[] {
   const inf: InformeValidacion = { revisados: 0, recortadosCalle: 0, descartadosCalle: 0, calleAtraviesa: 0, solapesCorregidos: 0, descartadosSolape: 0, carasCiegas: 0, descartados: [] };
   const zona = lista.filter((b) => enZona(b.x, b.y) && b.estilo <= 10);
+  const rejillaEd = new Set(zona.flatMap((b) => [-1, 0, 1].flatMap((dx) => [-1, 0, 1].map((dy) => `${Math.floor(b.x / 40) + dx},${Math.floor(b.y / 40) + dy}`))));
+  const cercaDeEdificio = (p: Punto) => rejillaEd.has(`${Math.floor(p[0] / 40)},${Math.floor(p[1] / 40)}`);
   // Segmentos de calle cercanos (calzadas y peatonales; no senderos ni pasos).
   const segs: { a: Punto; b: Punto; calzada: number; libre: number }[] = [];
   for (const t of TRAMOS) {
@@ -342,7 +360,7 @@ function validarEdificios(lista: EdificioDet[], enZona: (x: number, y: number) =
     for (let i = 1; i < t.puntos.length; i++) {
       const a = t.puntos[i - 1];
       const b = t.puntos[i];
-      if (!enZona(a[0], a[1]) && !enZona(b[0], b[1]) && !enZona((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)) continue;
+      if (!cercaDeEdificio(a) && !cercaDeEdificio(b)) continue;
       segs.push({ a, b, calzada: anchoDe(t) / 2, libre: anchoDe(t) / 2 + ACERA });
     }
   }
@@ -410,6 +428,8 @@ function validarEdificios(lista: EdificioDet[], enZona: (x: number, y: number) =
           if (extra > 0.05) recortar(r, l, extra);
         }
       }
+      // Los edificios principales de cada barrio no se quitan nunca: se retranquean lo posible.
+      if (invadeCalzada && !enZonaReconstruida(b.x, b.y)) invadeCalzada = false;
       if (invadeCalzada) {
         inf.descartadosCalle++;
         descartar(b, "invade la calzada");
@@ -571,6 +591,11 @@ export class Mundo {
   private altoAntesPOV = 110;
   private velJug = 0;
   private cuadro = 0;
+  /** Superficies pisables: calles, aceras, plazas y pavimentos de los sectores. */
+  private suelos: THREE.Object3D[] = [];
+  /** Caché de alturas del suelo por celda de 0,4 m (se vacía al construir un trozo). */
+  private alturas = new Map<string, number>();
+  private rayoSuelo = new THREE.Raycaster();
   /** Movimiento libre (teclado o joystick): dirección en pantalla, −1…1. */
   entrada = { x: 0, y: 0, correr: false };
   private libreAndando = false;
@@ -807,6 +832,7 @@ export class Mundo {
     const m = new THREE.Mesh(geo, mat);
     m.position.y = alto;
     m.receiveShadow = true;
+    this.suelos.push(m);
     return m;
   }
 
@@ -932,6 +958,7 @@ export class Mundo {
         return g;
       }));
       const m = new THREE.Mesh(geo, this.capaSuelo(mats[k]));
+      if (k !== "raya") this.suelos.push(m);
       m.renderOrder = ordenCalle[k];
       m.receiveShadow = true;
       this.escena.add(m);
@@ -1108,11 +1135,13 @@ export class Mundo {
       const lz = -ex * Math.sin(ang) + ey * Math.cos(ang);
       return Math.abs(lx) / (w / 2) > Math.abs(lz) / (d / 2) ? (lx > 0 ? 1 : 3) : lz > 0 ? 0 : 2;
     };
+    const conservados = CONSERVADOS();
     let idx = -1;
     for (const [x, y, w0, d0, ang, tipo, plantas] of DATOS.edificios) {
       idx++;
-      if (reservado(x, y) || sustituida(x, y)) continue;
-      const prueba = enZonaPrueba(x, y);
+      if (!conservados.has(idx) || reservado(x, y) || sustituida(x, y)) continue;
+      // Todos los edificios conservados pasan por el sistema nuevo (huella real + validador).
+      const prueba = true;
       // En la zona de prueba la parcela es la huella real; fuera se mantiene el sistema anterior.
       const w = prueba ? w0 : Math.max(3.2, w0 * 0.9);
       const d = prueba ? d0 : Math.max(3.2, d0 * 0.9);
@@ -1146,7 +1175,7 @@ export class Mundo {
       }
       lista.push({ x: bx, y: by, w: bw, d: bd, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda, frente, semilla: idx * 7919 + 17, idx });
     }
-    this.edificios = validarEdificios(lista, enZonaPrueba, this.sectoresSolidos());
+    this.edificios = validarEdificios(lista, () => true, this.sectoresSolidos());
     this.prepararTrozos();
     const o = new THREE.Object3D();
     const caja = new RoundedBoxGeometry(1, 1, 1, 1, 0.06);
@@ -1364,8 +1393,11 @@ export class Mundo {
       const malla = new THREE.Mesh(geo, mats[m]);
       malla.castShadow = this.ajustesCalidad.sombrasDetalle;
       malla.receiveShadow = true;
+      // Aceras del trozo: son suelo pisable.
+      if (m === Mat.Suelo) g.userData.suelo = malla;
       g.add(malla);
     });
+    this.alturas.clear();
     // Árboles detallados del trozo, instanciados por especie y variante.
     const porTipo = new Map<number, number[]>();
     for (const i of t.arboles) {
@@ -1869,6 +1901,7 @@ export class Mundo {
       malla.receiveShadow = true;
       // Después de las láminas de calle (que no escriben profundidad), para que el pavimento propio se vea.
       malla.renderOrder = 30;
+      if (m === Mat.Suelo) this.suelos.push(malla);
       g.add(malla);
     });
     return g;
@@ -1917,7 +1950,7 @@ export class Mundo {
     ];
     for (const [a, p, mira] of pareja) {
       const g = crearPersonaje(a);
-      g.position.copy(p3(p, SUELO + 0.24));
+      g.position.copy(p3(p));
       g.rotation.y = Math.atan2(mira[0] - p[0], mira[1] - p[1]);
       ponerEstado(g, "hablar");
       this.figurantes.push(g);
@@ -2304,6 +2337,23 @@ export class Mundo {
       this.alLlegar = null;
       fin();
     }
+  }
+
+  /** Altura del suelo pisable en un punto del mundo (rayo vertical; con caché). */
+  alturaSuelo(x: number, z: number) {
+    const k = `${Math.round(x * 2.5)},${Math.round(z * 2.5)}`;
+    const c = this.alturas.get(k);
+    if (c !== undefined) return c;
+    const lista = [...this.suelos];
+    const t = this.trozoDe(x + CX, z + CY);
+    if (t.grupo?.userData.suelo) lista.push(t.grupo.userData.suelo);
+    this.rayoSuelo.set(this.tmpV.set(x, SUELO + 1.4, z), new THREE.Vector3(0, -1, 0));
+    this.rayoSuelo.far = 2;
+    const hit = this.rayoSuelo.intersectObjects(lista, false)[0];
+    const h = hit ? Math.max(SUELO, hit.point.y) : SUELO;
+    if (this.alturas.size > 20000) this.alturas.clear();
+    this.alturas.set(k, h);
+    return h;
   }
 
   get andando() {
@@ -2933,6 +2983,9 @@ export class Mundo {
       }
     }
 
+    // El personaje pisa la superficie real (calzada, acera o pavimento), no el terreno de debajo.
+    if (!this.enBus) this.jugador.position.y = this.alturaSuelo(this.jugador.position.x, this.jugador.position.z);
+
     // Viaje en autobús: el bus recorre las calles y la cámara lo sigue.
     if (this.rutaBus.length) {
       let avance = this.velBus * dt;
@@ -3013,7 +3066,7 @@ export class Mundo {
       r.g.rotation.y += giro * (1 - Math.pow(0.001, dt));
       r.g.position.lerp(r.meta, 1 - Math.pow(0.02, dt));
       const andando = r.anim === "andar" || lejos > 0.4;
-      r.g.position.y = SUELO;
+      r.g.position.y = this.alturaSuelo(r.g.position.x, r.g.position.z);
       ponerEstado(r.g, andando ? (lejos > 8 ? "correr" : "andar") : r.emote.el.innerHTML ? "saludar" : "quieto", andando ? Math.min(30, 4 + lejos * 2) : 0);
       r.e.pos.copy(r.g.position).setY(SUELO + 3.3);
       r.emote.pos.copy(r.g.position).setY(SUELO + 4.1);
@@ -3118,6 +3171,8 @@ export class Mundo {
     const cam = this.camara.position;
     const animar = (g: Personaje, i: number) => {
       if (!g.visible) return;
+      // Los que están en la escena se apoyan en el suelo real (los del estadio van en su grupo).
+      if (g.parent === this.escena && (i + this.cuadro) % 4 === 0) g.position.y = this.alturaSuelo(g.position.x, g.position.z);
       const lejos = g.getWorldPosition(this.tmpV).distanceToSquared(cam) > 160 * 160;
       if (!lejos || (i + this.cuadro) % 4 === 0) animarPersonaje(g, t, lejos ? dt * 4 : dt);
     };

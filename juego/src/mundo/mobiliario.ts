@@ -21,7 +21,6 @@ const MADERA = rgb("#8A5A35");
 const VERDE = rgb("#4E9A3A");
 const VERDE2 = rgb("#3E8432");
 const COCHES = ["#E8423C", "#FFFFFF", "#2F6DB5", "#F2C230", "#2B2D31", "#9AA4B2", "#FFFFFF", "#C9CED6", "#3FA046", "#7A1F2B"].map(rgb);
-const SOMBRILLAS = ["#FFFFFF", "#C0392B", "#2E7D4F", "#1F5EFF", "#F2C230"].map(rgb);
 
 function azar(s: number) {
   let v = (s % 2147483646) + 1;
@@ -98,28 +97,6 @@ export function coche(o: Obra, x: number, z: number, r: () => number) {
   o.caja(Mat.Detalle, x - L - 0.02, 0.55, z + W * 0.35, x - L + 0.05, 0.75, z + W * 0.7, rgb("#C0392B"));
 }
 
-/** Terraza de bar: mesas, sillas y sombrillas. */
-function terraza(o: Obra, x: number, z: number, r: () => number) {
-  const tela = SOMBRILLAS[Math.floor(r() * SOMBRILLAS.length)];
-  for (let k = 0; k < 2; k++) {
-    const mx = x + (k - 0.5) * 2.6;
-    o.cilindro(Mat.Metal, mx, 0, z, 0.05, 0.75, HIERRO, 4, false);
-    o.cilindro(Mat.Detalle, mx, 0.75, z, 0.45, 0.06, rgb("#F2F2EE"), 8);
-    for (const s of [-1, 1]) {
-      o.caja(Mat.Detalle, mx + s * 0.75 - 0.22, 0.42, z - 0.22, mx + s * 0.75 + 0.22, 0.48, z + 0.22, rgb("#C9A06A"));
-      o.caja(Mat.Detalle, mx + s * 0.97 - 0.04, 0.42, z - 0.22, mx + s * 0.97 + 0.04, 0.95, z + 0.22, rgb("#C9A06A"));
-    }
-    // Sombrilla: mástil y cono de cuatro caras.
-    o.cilindro(Mat.Metal, mx, 0.75, z, 0.04, 1.6, HIERRO, 4, false);
-    const y0 = 2.1;
-    const y1 = 2.75;
-    const R = 1.25;
-    o.poli(Mat.Detalle, [[mx - R, y0, z + R], [mx + R, y0, z + R], [mx, y1, z]], tela);
-    o.poli(Mat.Detalle, [[mx + R, y0, z + R], [mx + R, y0, z - R], [mx, y1, z]], tela);
-    o.poli(Mat.Detalle, [[mx + R, y0, z - R], [mx - R, y0, z - R], [mx, y1, z]], tela);
-    o.poli(Mat.Detalle, [[mx - R, y0, z - R], [mx - R, y0, z + R], [mx, y1, z]], tela);
-  }
-}
 
 /**
  * Urbaniza los segmentos de un trozo. `recortes` dice cuánto acortar el principio
@@ -174,16 +151,8 @@ export function urbanizar(o: Obra, segs: (Segmento & { r0: number; r1: number })
       }
     }
   }
-  // Terrazas delante de los comercios.
-  if (o.fino) {
-    for (const b of tiendas) {
-      if (r() > 0.35) continue;
-      const lado = b.frente;
-      const dist = (lado % 2 === 0 ? b.d : b.w) / 2 + 2.6;
-      const ux = [0, 1, 0, -1][lado];
-      const uz = [1, 0, -1, 0][lado];
-      o.marco(b.x - cx, suelo + 0.52, b.y - cy, b.ang);
-      terraza(o, ux * dist, uz * dist, r);
-    }
-  }
+  // (Las terrazas procedurales se han retirado: se colocaban a una altura fija delante de la
+  // fachada, sin saber si debajo había acera, y quedaban flotando. Las terrazas reales van en
+  // los sectores reconstruidos, apoyadas en su pavimento.)
+  void tiendas;
 }
