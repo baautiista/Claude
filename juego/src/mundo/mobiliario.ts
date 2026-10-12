@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { Mat, Obra, rgb, type Edificio } from "./arquitectura";
 
 /**
@@ -82,19 +83,62 @@ function senal(o: Obra, x: number, z: number, r: () => number) {
   }
 }
 
-/** Coche aparcado orientado a lo largo de la calle. */
+type P2 = [number, number];
+
+/** Extruye un perfil (x, y) entre z0 y z1, con las dos tapas. */
+function extruir(o: Obra, m: Mat, perfil: P2[], x: number, z: number, z0: number, z1: number, color: ReturnType<typeof rgb>) {
+  let c = perfil;
+  if (THREE.ShapeUtils.isClockWise(c.map(([a, b]) => new THREE.Vector2(a, b)))) c = [...c].reverse();
+  const tris = THREE.ShapeUtils.triangulateShape(c.map(([a, b]) => new THREE.Vector2(a, b)), []);
+  for (const [i, j, k] of tris) {
+    o.poli(m, [[x + c[i][0], c[i][1], z + z1], [x + c[j][0], c[j][1], z + z1], [x + c[k][0], c[k][1], z + z1]], color);
+    o.poli(m, [[x + c[k][0], c[k][1], z + z0], [x + c[j][0], c[j][1], z + z0], [x + c[i][0], c[i][1], z + z0]], color);
+  }
+  for (let i = 0; i < c.length; i++) {
+    const p = c[i];
+    const q = c[(i + 1) % c.length];
+    o.poli(m, [[x + p[0], p[1], z + z0], [x + q[0], q[1], z + z0], [x + q[0], q[1], z + z1], [x + p[0], p[1], z + z1]], color);
+  }
+}
+
+const RUEDA: P2[] = Array.from({ length: 12 }, (_, i) => [Math.cos((i / 12) * Math.PI * 2) * 0.32, Math.sin((i / 12) * Math.PI * 2) * 0.32] as P2);
+const LLANTA: P2[] = RUEDA.map(([a, b]) => [a * 0.55, b * 0.55] as P2);
+
+/** Coche aparcado orientado a lo largo de la calle (turismo de 4,2 × 1,8 m). */
 export function coche(o: Obra, x: number, z: number, r: () => number) {
   const c = COCHES[Math.floor(r() * COCHES.length)];
-  const L = 2 + r() * 0.4;
-  const W = 0.95;
-  for (const sx of [-1, 1]) for (const sz of [-1, 1]) o.caja(Mat.Metal, x + sx * L * 0.62 - 0.3, 0, z + sz * W - 0.12, x + sx * L * 0.62 + 0.3, 0.6, z + sz * W + 0.12, rgb("#1C1D21"));
-  o.caja(Mat.Metal, x - L, 0.25, z - W, x + L, 1.05, z + W, c, 0.7);
-  o.caja(Mat.Cristal, x - L * 0.55, 1.05, z - W * 0.86, x + L * 0.4, 1.75, z + W * 0.86, rgb("#2E4560"));
-  o.caja(Mat.Metal, x - L * 0.5, 1.75, z - W * 0.8, x + L * 0.35, 1.85, z + W * 0.8, c);
-  o.caja(Mat.Detalle, x + L - 0.05, 0.55, z - W * 0.7, x + L + 0.02, 0.75, z - W * 0.35, rgb("#FFF4C8"));
-  o.caja(Mat.Detalle, x + L - 0.05, 0.55, z + W * 0.35, x + L + 0.02, 0.75, z + W * 0.7, rgb("#FFF4C8"));
-  o.caja(Mat.Detalle, x - L - 0.02, 0.55, z - W * 0.7, x - L + 0.05, 0.75, z - W * 0.35, rgb("#C0392B"));
-  o.caja(Mat.Detalle, x - L - 0.02, 0.55, z + W * 0.35, x - L + 0.05, 0.75, z + W * 0.7, rgb("#C0392B"));
+  const L = 2.0 + r() * 0.25;
+  const W = 0.88;
+  const familiar = r() < 0.3;
+  const CRISTAL = rgb("#22303D");
+  const NEGRO = rgb("#1C1D21");
+  // Ruedas con llanta, en los pasos de rueda.
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    const cx = sx * L * 0.66;
+    const RU = RUEDA.map(([a, b]) => [cx + a, b + 0.32] as P2);
+    const LL = LLANTA.map(([a, b]) => [cx + a, b + 0.32] as P2);
+    extruir(o, Mat.Metal, RU, x, z, sz > 0 ? W - 0.26 : -W, sz > 0 ? W : -W + 0.26, NEGRO);
+    extruir(o, Mat.Metal, LL, x, z, sz > 0 ? W : -W - 0.01, sz > 0 ? W + 0.01 : -W, rgb("#B9BCC0"));
+  }
+  // Carrocería: capó y maletero inclinados.
+  const cuerpo: P2[] = [[-L, 0.34], [L, 0.34], [L, 0.66], [L - 0.12, 0.8], [L * 0.38, 0.92], [-L * 0.8, 0.96], [-L + 0.05, 0.9], [-L, 0.78]];
+  extruir(o, Mat.Metal, cuerpo, x, z, -W, W, c);
+  // Habitáculo: lunas tintadas, techo y pilares del color de la carrocería.
+  const atras = familiar ? -L * 0.92 : -L * 0.72;
+  const cab: P2[] = [[L * 0.38, 0.92], [L * 0.02, 1.4], [atras + 0.1, 1.42], [atras, 0.96]];
+  extruir(o, Mat.Cristal, cab, x, z, -W * 0.84, W * 0.84, CRISTAL);
+  extruir(o, Mat.Metal, [[L * 0.04, 1.39], [atras + 0.08, 1.41], [atras + 0.08, 1.47], [L * 0.04, 1.45]], x, z, -W * 0.82, W * 0.82, c);
+  for (const px of [L * 0.2, -L * 0.18]) extruir(o, Mat.Metal, [[px - 0.06, 0.94], [px + 0.06, 0.94], [px + 0.06 - (px > 0 ? 0.25 : 0), 1.4], [px - 0.06 - (px > 0 ? 0.25 : 0), 1.4]], x, z, -W * 0.86, W * 0.86, c);
+  // Parachoques, faros, pilotos, matrícula y retrovisores.
+  o.caja(Mat.Detalle, x + L - 0.02, 0.3, z - W, x + L + 0.06, 0.52, z + W, rgb("#2B2D31"));
+  o.caja(Mat.Detalle, x - L - 0.06, 0.3, z - W, x - L + 0.02, 0.52, z + W, rgb("#2B2D31"));
+  for (const sz of [-1, 1]) {
+    o.caja(Mat.Luz, x + L - 0.08, 0.6, z + sz * W * 0.78 - 0.18, x + L + 0.01, 0.72, z + sz * W * 0.78 + 0.18, rgb("#FFF4C8"));
+    o.caja(Mat.Detalle, x - L - 0.01, 0.62, z + sz * W * 0.8 - 0.16, x - L + 0.06, 0.76, z + sz * W * 0.8 + 0.16, rgb("#C0392B"));
+    o.caja(Mat.Metal, x + L * 0.33, 0.95, z + sz * (W + 0.12) - 0.06, x + L * 0.4, 1.08, z + sz * (W + 0.12) + 0.06, c);
+  }
+  o.caja(Mat.Detalle, x - L - 0.07, 0.36, z - 0.26, x - L - 0.05, 0.47, z + 0.26, rgb("#F2F2F0"));
+  o.caja(Mat.Detalle, x + L + 0.06, 0.36, z - 0.26, x + L + 0.08, 0.47, z + 0.26, rgb("#F2F2F0"));
 }
 
 

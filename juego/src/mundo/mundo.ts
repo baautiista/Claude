@@ -2075,8 +2075,9 @@ export class Mundo {
     for (let i = 0; i < 170; i++) this.coches.push(nuevo(rand() < 0.65 ? principales : conducibles, 16, 1));
     for (let i = 0; i < 240; i++) this.peatones.push(nuevo(aceras, 2.6, 0));
     const colores = ["#E8423C", "#FFFFFF", "#2F6DB5", "#F2C230", "#2B2D31", "#9AA4B2", "#3FA046", "#F28C28", "#C4E910"].map((c) => new THREE.Color(c));
-    this.mallaCoches = new THREE.InstancedMesh(new RoundedBoxGeometry(2.3, 1.2, 4.6, 2, 0.45), M.mat("#FFFFFF", { roughness: 0.35, metalness: 0.2 }), this.coches.length);
-    this.mallaCabinas = new THREE.InstancedMesh(new RoundedBoxGeometry(2, 1, 2.4, 2, 0.4), M.mat("#33465F", { roughness: 0.2, metalness: 0.4 }), this.coches.length);
+    const [carroceria, oscuro] = geometriaCoche();
+    this.mallaCoches = new THREE.InstancedMesh(carroceria, M.mat("#FFFFFF", { roughness: 0.3, metalness: 0.35 }), this.coches.length);
+    this.mallaCabinas = new THREE.InstancedMesh(oscuro, M.mat("#202833", { roughness: 0.2, metalness: 0.4 }), this.coches.length);
     this.coches.forEach((_, i) => this.mallaCoches.setColorAt(i, colores[i % colores.length]));
     this.mallaPeatones = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.42, 0.9, 2, 6), M.mat("#FFFFFF"), this.peatones.length);
     this.mallaCabezas = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.42, 1), M.mat("#FFFFFF"), this.peatones.length);
@@ -3024,9 +3025,6 @@ export class Mundo {
       o.scale.set(1, 1, 1);
       o.updateMatrix();
       this.mallaCoches.setMatrixAt(i, o.matrix);
-      o.position.y = SUELO + 2;
-      o.translateZ(-0.3);
-      o.updateMatrix();
       this.mallaCabinas.setMatrixAt(i, o.matrix);
     });
     this.peatones.forEach((c, i) => {
@@ -3441,4 +3439,39 @@ function escalarUV(geo: THREE.BufferGeometry, k: number) {
   if (!uv) return;
   for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * k, uv.getY(i) * k);
   uv.needsUpdate = true;
+}
+
+/**
+ * Turismo para el tráfico (4,4 × 1,8 m): carrocería con capó y maletero inclinados y techo
+ * (se tiñe por instancia) y, aparte, lunas y ruedas oscuras. Origen a 1 m sobre el suelo.
+ */
+function geometriaCoche(): [THREE.BufferGeometry, THREE.BufferGeometry] {
+  const forma = (p: number[][]) => new THREE.Shape(p.map(([x, y]) => new THREE.Vector2(x, y)));
+  const extruir = (p: number[][], ancho: number, bisel = 0.05) => {
+    const g = new THREE.ExtrudeGeometry(forma(p), { depth: ancho, bevelEnabled: bisel > 0, bevelThickness: bisel, bevelSize: bisel, bevelSegments: 2, curveSegments: 1 });
+    g.translate(0, 0, -ancho / 2);
+    return g.index ? g.toNonIndexed() : g;
+  };
+  const cuerpo = extruir([[-2.2, 0.36], [2.2, 0.36], [2.2, 0.66], [2.06, 0.8], [0.84, 0.92], [-1.76, 0.96], [-2.14, 0.9], [-2.2, 0.78]], 1.7);
+  const techo = extruir([[0.1, 1.38], [-1.46, 1.4], [-1.46, 1.47], [0.1, 1.45]], 1.42, 0.02);
+  const lunas = extruir([[0.84, 0.92], [0.06, 1.39], [-1.5, 1.41], [-1.62, 0.96]], 1.5, 0.03);
+  const ruedas: THREE.BufferGeometry[] = [];
+  for (const x of [-1.42, 1.42]) for (const z of [-0.8, 0.8]) {
+    const r = new THREE.CylinderGeometry(0.33, 0.33, 0.26, 14).toNonIndexed();
+    r.rotateX(Math.PI / 2);
+    r.translate(x, 0.33, z);
+    ruedas.push(r);
+  }
+  const quitarUv = (g: THREE.BufferGeometry) => {
+    g.deleteAttribute("uv");
+    return g;
+  };
+  const a = mergeGeometries([cuerpo, techo].map(quitarUv))!;
+  const b = mergeGeometries([lunas, ...ruedas].map(quitarUv))!;
+  for (const g of [a, b]) {
+    g.rotateY(-Math.PI / 2);
+    g.translate(0, -1, 0);
+    g.computeVertexNormals();
+  }
+  return [a, b];
 }
