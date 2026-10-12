@@ -58,6 +58,10 @@ const CONOCIDOS: [P2, Estilo][] = [
   [[1230, 2208], { tipo: "bloque", color: C("#F2F0EA"), plantas: 3, balcones: true }], // Hostal Carlos I
   [[1225, 2217], { tipo: "bloque", color: C("#CDB06A"), plantas: 10, balcones: true, barandilla: C("#4E7A4A") }], // torre ocre
   [[1221, 2224], { tipo: "moderno", color: C("#F6F4EF"), plantas: 3 }], // esquina blanca, Av. España
+  [[1281, 2230], { tipo: "bloque", color: C("#EADFB8"), plantas: 13, balcones: true }], // Edificio La Línea (torre crema escalonada)
+  [[1271, 2163], { tipo: "bloque", color: C("#E9E4D6"), plantas: 16, balcones: true }], // Torre de La Línea
+  [[1265, 2163], { tipo: "bloque", color: C("#E3B98F"), plantas: 6 }],
+  [[1278, 2163], { tipo: "bloque", color: C("#F1EDE4"), plantas: 5 }],
   [[1235, 2175], { tipo: "bloque", color: C("#E9A98A"), plantas: 8 }],
   [[1229, 2176], { tipo: "casita", color: C("#F3F1EB"), plantas: 2 }], // Bablú
   [[1224, 2171], { tipo: "bloque", color: C("#A8322E"), plantas: 5, cierros: true }],
@@ -414,70 +418,322 @@ function plazaCruzHerrera(o: Obra, c: Ctx) {
 }
 
 /* ── Plaza de la Constitución ─────────────────────────────────────── */
+/*
+ * Fotos del usuario: la parte norte (Comandancia, Correos) está a nivel de calle;
+ * una escalinata sube a la explanada sobre el Parking Constitución-Centro, con la
+ * fuente circular, el césped de bordillo rosa, las pérgolas de madera y la boca
+ * del parking hacia la Av. del Ejército. Huellas y puntos: OpenStreetMap.
+ */
 
-/** Losa gris de la plaza, desde las fachadas hasta Correos y la Av. del Ejército (OSM). */
-const CONSTITUCION: P2[] = [[1251.0, 2176.5], [1264.7, 2181.1], [1273.0, 2184.5], [1272.0, 2192.0], [1266.0, 2206.0], [1266.0, 2222.0], [1273.0, 2244.0], [1270.0, 2256.0], [1246.5, 2256.5], [1243.5, 2245.0], [1234.0, 2232.0], [1231.5, 2223.8], [1233.2, 2219.8], [1236.5, 2216.0], [1239.4, 2208.6], [1243.0, 2203.0], [1247.0, 2196.0], [1249.0, 2190.0]];
-/** Parterres de OSM: en la plaza son jardineras con murete rojo y naranjos en bola. */
-const PARTERRES: P2[][] = [
-  [[1252.5, 2190.1], [1253.8, 2191.7], [1257.5, 2190.7], [1260.4, 2187.5], [1261.7, 2184.7], [1261.5, 2180.0], [1258.8, 2179.1], [1252.7, 2187.3]],
-  [[1246.7, 2203.0], [1248.4, 2204.4], [1251.1, 2202.1], [1251.3, 2198.5], [1248.5, 2197.4], [1247.8, 2200.5]],
-  [[1264.0, 2191.2], [1264.3, 2195.1], [1270.7, 2192.2], [1272.1, 2187.6], [1272.3, 2184.5], [1268.3, 2185.0]],
-  [[1262.0, 2203.7], [1264.0, 2205.9], [1267.4, 2201.2], [1264.2, 2200.2], [1262.2, 2201.5]],
-  [[1260.9, 2211.8], [1263.3, 2216.0], [1265.2, 2218.3], [1264.7, 2214.6], [1261.7, 2209.2]],
-  [[1239.8, 2214.1], [1238.8, 2215.3], [1248.0, 2216.1], [1248.0, 2219.7], [1250.0, 2219.3], [1249.0, 2214.7], [1247.1, 2212.0], [1245.3, 2214.2], [1244.2, 2214.8]],
+/** Parte baja a nivel de calle (recortada para no pisar Calle Real, la explanada, la rampa ni los edificios). */
+const PC_BAJA: P2[][] = [[[1247.0, 2196.0], [1243.0, 2203.0], [1239.5, 2213.0], [1237.6, 2219.0], [1235.0, 2225.0], [1236.0, 2247.0], [1240.0, 2253.5], [1244.4, 2253.8], [1240.0, 2252.0], [1236.5, 2247.0], [1235.5, 2225.0], [1238.5, 2219.0], [1250.5, 2219.0], [1250.5, 2207.0], [1260.5, 2207.0], [1260.5, 2219.0], [1262.5, 2219.0], [1265.0, 2236.0], [1265.0, 2246.0], [1270.0, 2249.0], [1270.0, 2254.0], [1263.8, 2254.0], [1263.8, 2255.0], [1271.0, 2255.5], [1290.0, 2255.0], [1290.2, 2251.9], [1288.6, 2252.8], [1283.8, 2246.0], [1286.4, 2244.8], [1284.6, 2242.0], [1287.0, 2240.5], [1283.7, 2227.4], [1281.9, 2228.4], [1278.7, 2223.4], [1275.9, 2224.8], [1273.0, 2219.8], [1270.6, 2221.2], [1267.4, 2211.7], [1272.0, 2210.8], [1288.5, 2220.6], [1286.0, 2214.0], [1279.6, 2203.0], [1275.1, 2211.5], [1264.8, 2206.3], [1272.7, 2191.2], [1272.6, 2191.0], [1273.0, 2184.5], [1264.7, 2181.1], [1253.5, 2177.2], [1251.8, 2180.8], [1249.7, 2179.8], [1249.0, 2190.0]]];
+/** Explanada sobre el parking (vista cenital del usuario). Aristas sin muro: escaleras, rampa y boca del parking. */
+const PC_ALTA: P2[] = [[1238.5, 2219.0], [1239.0, 2219.0], [1248.0, 2219.0], [1250.5, 2219.0], [1260.5, 2219.0], [1262.5, 2219.0], [1265.0, 2236.0], [1265.0, 2239.5], [1265.0, 2246.0], [1270.0, 2249.0], [1270.0, 2254.0], [1263.8, 2254.0], [1263.8, 2247.0], [1259.8, 2247.0], [1259.8, 2254.0], [1245.0, 2254.0], [1240.0, 2252.0], [1236.5, 2247.0], [1235.5, 2225.0]];
+const SIN_MURO = new Set([1, 3, 6, 12]);
+const ALTO_PC = 1.5;
+const FUENTE_PC: P2 = [1244.0, 2231.6];
+/** Parterres en lente con bordillo rosa: [centro, semieje largo, semieje corto, ángulo]. */
+const LENTES: [P2, number, number, number][] = [
+  [[1257.0, 2185.5], 6.5, 3.6, -0.94],
+  [[1268.0, 2191.2], 7.5, 3.0, -1.0],
+  [[1249.8, 2201.3], 4.0, 1.8, -1.14],
+  [[1244.0, 2209.0], 4.5, 2.0, -0.96],
+  [[1264.2, 2203.0], 3.2, 2.2, -0.7],
+  [[1264.0, 2213.0], 4.6, 2.3, -1.06],
 ];
-const FUENTE_CONSTITUCION: P2 = [1244.0, 2231.6];
+const lente = ([c, a, b, ang]: [P2, number, number, number], n = 24): P2[] =>
+  Array.from({ length: n }, (_, i) => {
+    const t = (i / n) * Math.PI * 2;
+    const x = Math.cos(t) * a;
+    const z = Math.sin(t) * b * (0.55 + 0.45 * Math.abs(Math.cos(t * 0.5)));
+    return [c[0] + x * Math.cos(ang) - z * Math.sin(ang), c[1] + x * Math.sin(ang) + z * Math.cos(ang)] as P2;
+  });
+const COMANDANCIA: P2[] = [[1284.2, 2189.4], [1285.8, 2174.9], [1275.5, 2173.0], [1273.9, 2188.3]];
+const CORREOS: P2[] = [[1271.9, 2192.8], [1264.8, 2206.3], [1275.1, 2211.5], [1280.3, 2201.7], [1282.6, 2202.8], [1285.4, 2197.8], [1272.8, 2191.0]];
+const ROSA = C("#D7826F");
+const ALBARDILLA = C("#E2D6C2");
+const MADERA = C("#6B3326");
 
-function plazaConstitucion(o: Obra, c: Ctx) {
+/** Muro de contención rosa con albardilla, de a a b, hacia el interior `dentro`. */
+function muroRosa(o: Obra, c: Ctx, a: P2, b: P2, dentro: P2, y0: number, y1: number, grueso = 0.35) {
+  const mc = new Marco(a, b, dentro);
+  const L = mc.usar(o, c, y0);
+  if (L < 0.1) return;
+  o.caja(Mat.Muro, 0, 0, -grueso, L, y1 - y0, 0, ROSA);
+  o.caja(Mat.Detalle, -0.04, y1 - y0, -grueso - 0.05, L + 0.04, y1 - y0 + 0.09, 0.05, ALBARDILLA);
+}
+
+function parterre(o: Obra, c: Ctx, poli: P2[], y: number, h: number) {
+  const cen = centroPoli(poli);
+  for (let i = 0; i < poli.length; i++) muroRosa(o, c, poli[i], poli[(i + 1) % poli.length], cen, y, y + h, 0.25);
   enMundo(o, c);
-  plano(o, Mat.Suelo, CONSTITUCION, 0.36, C("#9E9C98"), 0.45);
-  // Bandas oscuras curvas del pavimento, concéntricas a la fuente.
-  if (o.fino) for (const R of [24, 31, 38, 45]) {
-    const n = 90;
-    for (let i = 0; i < n; i++) {
-      const a0 = -Math.PI * 0.62 + (i / n) * Math.PI * 0.9;
-      const a1 = a0 + (Math.PI * 0.9) / n;
-      const p = (a: number, r: number): P2 => [FUENTE_CONSTITUCION[0] + Math.cos(a) * r, FUENTE_CONSTITUCION[1] + Math.sin(a) * r];
-      if (!dentroPoli(p((a0 + a1) / 2, R), CONSTITUCION)) continue;
-      plano(o, Mat.Detalle, [p(a0, R - 0.18), p(a1, R - 0.18), p(a1, R + 0.18), p(a0, R + 0.18)], 0.365, C("#45464A"));
+  plano(o, Mat.Detalle, poli, y + h - 0.06, C("#5E8F3E"));
+}
+
+function centroPoli(p: P2[]): P2 {
+  return [p.reduce((a, v) => a + v[0], 0) / p.length, p.reduce((a, v) => a + v[1], 0) / p.length];
+}
+
+/** Pérgola de madera rojiza entre dos puntos (pies a ambos lados, viguetas cruzadas). */
+function pergolaLarga(o: Obra, c: Ctx, a: P2, b: P2, y: number, ancho = 3.2) {
+  const mc = new Marco(a, b, [a[0] + 100, a[1] + 100]);
+  const L = mc.usar(o, c, y);
+  const H = 2.9;
+  for (let x = 0.2; x <= L - 0.1; x += 2.6) for (const z of [-ancho / 2, ancho / 2]) o.caja(Mat.Detalle, x - 0.11, 0, z - 0.11, x + 0.11, H, z + 0.11, MADERA);
+  for (const z of [-ancho / 2, ancho / 2]) o.caja(Mat.Detalle, -0.3, H - 0.25, z - 0.08, L + 0.3, H, z + 0.08, MADERA);
+  for (let x = 0; x <= L; x += 0.55) o.caja(Mat.Detalle, x - 0.05, H, -ancho / 2 - 0.45, x + 0.05, H + 0.16, ancho / 2 + 0.45, MADERA);
+}
+
+/** Fuente: vaso exterior bajo, tambor central amarillo con franja azul, corona de chorros en arco y surtidor central. */
+function fuenteConstitucion(o: Obra, c: Ctx, y: number) {
+  const [fx, fz] = FUENTE_PC;
+  const circ = (r: number, n = 40) => Array.from({ length: n }, (_, i) => [fx + Math.cos((i / n) * Math.PI * 2) * r, fz + Math.sin((i / n) * Math.PI * 2) * r] as P2);
+  // Césped circular con bordillo rosa y aro de paso.
+  enMundo(o, c);
+  plano(o, Mat.Detalle, circ(5.8, 40), y + 0.06, C("#5E8F3E"));
+  const aro = circ(5.8, 40);
+  for (let i = 0; i < aro.length; i++) muroRosa(o, c, aro[i], aro[(i + 1) % aro.length], FUENTE_PC, y, y + 0.32, 0.3);
+  enMundo(o, c);
+    // Vaso exterior: pretil de piedra clara.
+  enMundo(o, c, y);
+  torno(o, Mat.Detalle, fx, 0, fz, [[3.75, 0], [3.75, 0.55], [3.45, 0.62], [3.4, 0.2]], C("#E6DFCF"), 40);
+  enMundo(o, c);
+  plano(o, Mat.Cristal, circ(3.45), y + 0.38, C("#3E9AB0"));
+  // Tambor central: azulejo azul abajo, amarillo arriba, borde crema; lámina de agua.
+  enMundo(o, c, y);
+  torno(o, Mat.Detalle, fx, 0.3, fz, [[2.0, 0], [2.0, 0.35]], C("#2E7FB5"), 40);
+  torno(o, Mat.Detalle, fx, 0.65, fz, [[2.0, 0], [2.0, 0.55]], C("#E8CF6A"), 40);
+  torno(o, Mat.Detalle, fx, 1.2, fz, [[2.15, 0], [2.15, 0.1], [1.85, 0.14], [1.75, 0]], C("#F1EBDD"), 40);
+  enMundo(o, c);
+  plano(o, Mat.Cristal, circ(1.8), y + 1.25, C("#5FB4C8"));
+  enMundo(o, c, y);
+  // Surtidor central y anillo de surtidores verticales.
+  const AGUA = C("#EAF6FF");
+  torno(o, Mat.Luz, fx, 1.25, fz, [[0.34, 0], [0.24, 1.2], [0.2, 2.4], [0.34, 2.75], [0.5, 3.0], [0.42, 3.2], [0.18, 3.35], [0.0, 3.4]], AGUA, 10);
+  for (let k = 0; k < 8; k++) {
+    const a = (k / 8) * Math.PI * 2;
+    torno(o, Mat.Luz, fx + Math.cos(a) * 0.95, 1.25, fz + Math.sin(a) * 0.95, [[0.16, 0], [0.12, 0.5], [0.22, 0.7], [0.18, 0.85], [0.0, 0.95]], AGUA, 6);
+  }
+  // Corona de chorros en arco hacia el vaso exterior.
+  if (o.fino) for (let k = 0; k < 20; k++) {
+    const a = (k / 20) * Math.PI * 2;
+    const ca = Math.cos(a);
+    const sa = Math.sin(a);
+    const pt = (t: number): [number, number, number] => {
+      const r = 1.95 + t * 1.45;
+      return [fx + ca * r, 1.3 + 2.0 * t - 2.25 * t * t, fz + sa * r];
+    };
+    for (let s = 0; s < 8; s++) {
+      const p0 = pt(s / 8);
+      const p1 = pt((s + 1) / 8);
+      const w = 0.07;
+      for (const [dx, dy, dz] of [[-sa * w, 0, ca * w], [0, w, 0]] as [number, number, number][]) {
+        o.poli(Mat.Luz, [[p0[0] - dx, p0[1] - dy, p0[2] - dz], [p1[0] - dx, p1[1] - dy, p1[2] - dz], [p1[0] + dx, p1[1] + dy, p1[2] + dz], [p0[0] + dx, p0[1] + dy, p0[2] + dz]], AGUA);
+        o.poli(Mat.Luz, [[p0[0] + dx, p0[1] + dy, p0[2] + dz], [p1[0] + dx, p1[1] + dy, p1[2] + dz], [p1[0] - dx, p1[1] - dy, p1[2] - dz], [p0[0] - dx, p0[1] - dy, p0[2] - dz]], AGUA);
+      }
     }
   }
-  // Jardineras con murete rojo, tierra y naranjos recortados en bola.
-  const ROJO = C("#B5503F");
-  for (const poli of PARTERRES) {
-    for (let i = 0; i < poli.length; i++) {
-      const mc = new Marco(poli[i], poli[(i + 1) % poli.length], interiorArista(poli, i));
-      const L = mc.usar(o, c, 0.36);
-      if (L < 0.2) continue;
-      o.caja(Mat.Muro, -0.15, 0, -0.35, L + 0.15, 0.95, 0, ROJO);
-      o.caja(Mat.Detalle, -0.18, 0.95, -0.38, L + 0.18, 1.02, 0.03, C("#C9C3B8"));
-    }
-    enMundo(o, c);
-    plano(o, Mat.Detalle, poli, 1.2, C("#4E7A3C"));
-    const cx = poli.reduce((a, p) => a + p[0], 0) / poli.length;
-    const cz = poli.reduce((a, p) => a + p[1], 0) / poli.length;
-    enMundo(o, c, 1.2);
-    arbolito(o, cx, 0, cz, 2.6, C("#3F7A36"));
-    enMundo(o, c);
-  }
-  enMundo(o, c, 0.36);
-  // Fuente de la Constitución: vaso circular de piedra con agua.
-  const [fx, fz] = FUENTE_CONSTITUCION;
-  torno(o, Mat.Detalle, fx, 0, fz, [[3.9, 0], [3.9, 0.6], [3.6, 0.65], [3.5, 0.1]], C("#D8D2C4"), 28);
-  enMundo(o, c);
-  const agua: P2[] = [];
-  for (let i = 0; i < 28; i++) agua.push([fx + Math.cos((i / 28) * Math.PI * 2) * 3.55, fz + Math.sin((i / 28) * Math.PI * 2) * 3.55]);
-  plano(o, Mat.Cristal, agua, 0.8, C("#5E8FB0"));
-  enMundo(o, c, 0.36);
-  // Palmera grande tras la primera jardinera y quiosco de prensa.
-  palmera(o, 1256.5, 2185.0, 11);
-  o.caja(Mat.Muro, 1250.6, 0, 2180.6, 1253.4, 2.6, 2183.0, C("#D9DADC"));
-  o.caja(Mat.Detalle, 1250.4, 2.6, 2180.4, 1253.6, 3.1, 2183.2, C("#2B2D31"));
-  // Parada de taxis con marquesina de madera.
-  pergola(o, 1258.5, 2174.6, 1271.0, 2177.2, C("#5A3E2B"), C("#6B4A33"));
-  for (const [x, z] of [[1247.0, 2185.5], [1243.5, 2199.5], [1239.0, 2210.5], [1262.0, 2198.0]] as P2[]) farolaFernandina(o, x, z);
   enMundo(o, c);
 }
+
+/** Comandancia (Museo del Istmo, Biblioteca José Riquelme): dos plantas naranjas, cantería, torre central. */
+function comandancia(o: Obra, c: Ctx) {
+  const NAR = C("#E09B66");
+  const PIEDRA = C("#C6AE80");
+  const H = 9.6;
+  const frente = 3; // arista (1273.9,2188.3)-(1284.2,2189.4)? no: la fachada a la plaza es la oeste
+  void frente;
+  const cen = centroPoli(COMANDANCIA);
+  for (let i = 0; i < COMANDANCIA.length; i++) {
+    const a = COMANDANCIA[i];
+    const b = COMANDANCIA[(i + 1) % COMANDANCIA.length];
+    const mc = new Marco(a, b, cen);
+    const L = mc.usar(o, c, 0.36);
+    const principal = Math.abs(a[0] - 1275.5) < 0.2; // arista oeste, a la plaza
+    muro(o, 0, L, 0, H, NAR, Mat.Muro, 0.8);
+    o.caja(Mat.Detalle, -0.05, 0, 0, L + 0.05, 0.8, 0.12, PIEDRA);
+    moldura(o, -0.05, L + 0.05, 4.5, 4.7, 0.12, PIEDRA);
+    moldura(o, -0.2, L + 0.2, H - 0.7, H, 0.4, PIEDRA);
+    if (o.fino) for (let x = 0.3; x < L - 0.2; x += 0.45) o.caja(Mat.Detalle, x, H - 0.85, 0, x + 0.2, H - 0.7, 0.28, PIEDRA);
+    o.caja(Mat.Muro, -0.1, H, -0.25, L + 0.1, H + 0.7, 0.05, NAR);
+    for (const x of [0.35, L - 0.35]) o.caja(Mat.Detalle, x - 0.35, 0, 0, x + 0.35, H, 0.1, PIEDRA);
+    const m = L / 2;
+    const huecos = vanos(L, 3.0, 1.0).filter((x) => !principal || Math.abs(x - m) > 3.2);
+    for (const x of huecos) {
+      ventana(o, x, 1.3, 1.1, 2.2, { marco: C("#6A4A32"), recercado: PIEDRA, recercadoAncho: 0.22, arco: true });
+      reja(o, x, 1.3, 1.1, 2.0, 0.1, HIERRO);
+      ventana(o, x, 5.6, 1.1, 2.1, { marco: C("#6A4A32"), recercado: PIEDRA, recercadoAncho: 0.22 });
+    }
+    if (!principal) continue;
+    // Torre central: cuerpo saliente, portada en arco con escalones, ventanal con balcón y triple ventana arriba.
+    o.caja(Mat.Muro, m - 2.4, 0, 0, m + 2.4, H + 3.6, 0.35, NAR);
+    for (const x of [m - 2.4, m + 2.4]) o.caja(Mat.Detalle, x - 0.3, 0, 0.3, x + 0.3, H + 3.6, 0.45, NAR);
+    prisma(o, Mat.Detalle, arco(m - 0.75, m + 0.75, 0.6, 3.3), 0.35, 0.42, C("#5A3A26"));
+    prisma(o, Mat.Detalle, arco(m - 1.0, m + 1.0, 0.6, 3.55), 0.36, 0.4, PIEDRA);
+    for (let k = 0; k < 4; k++) o.caja(Mat.Detalle, m - 1.6 + k * 0.1, 0, 0.35 + 1.2 - k * 0.3, m + 1.6 - k * 0.1, 0.15 * (k + 1), 0.35 + 1.5 - k * 0.3, C("#BDB7AA"));
+    o.caja(Mat.Detalle, m - 1.8, 4.6, 0.35, m + 1.8, 8.3, 0.55, PIEDRA);
+    for (const x of [m - 0.75, m + 0.75]) ventana(o, x, 5.4, 1.0, 1.9, { marco: C("#6A4A32") });
+    o.caja(Mat.Detalle, m - 1.9, 4.6, 0.35, m + 1.9, 5.3, 0.95, PIEDRA);
+    for (const x of [m - 1.3, m, m + 1.3]) o.caja(Mat.Detalle, x - 0.15, 4.2, 0.35, x + 0.15, 4.6, 0.8, PIEDRA);
+    o.caja(Mat.Detalle, m - 1.8, 8.4, 0.35, m + 1.8, 9.0, 0.6, PIEDRA);
+    for (const x of [m - 1.1, m, m + 1.1]) {
+      ventana(o, x, H + 0.6, 0.8, 2.0, { marco: C("#6A4A32"), recercado: PIEDRA, recercadoAncho: 0.15 });
+      reja(o, x, H + 0.6, 0.8, 0.8, 0.12, C("#D9D9D4"));
+    }
+    moldura(o, m - 2.75, m + 2.75, H + 3.0, H + 3.6, 0.55, PIEDRA);
+    if (o.fino) for (let x = m - 2.5; x < m + 2.5; x += 0.42) o.caja(Mat.Detalle, x, H + 2.85, 0.35, x + 0.2, H + 3.0, 0.75, PIEDRA);
+    // Mástiles con banderas a la derecha de la portada.
+    const BANDERAS: RGB[][] = [[C("#1F3A93"), C("#1F3A93")], [C("#C8102E"), C("#F1BF00")], [C("#007A3D"), C("#FFFFFF")], [C("#7FB6E0"), C("#FFFFFF")]];
+    BANDERAS.forEach(([b1, b2], k) => {
+      const x = m + 3.6 + k * 0.9;
+      o.caja(Mat.Metal, x - 0.04, 0, 2.2, x + 0.04, 7.5, 2.28, C("#E6E6E2"));
+      o.caja(Mat.Detalle, x + 0.04, 6.2, 2.23, x + 1.1, 6.75, 2.25, b1);
+      o.caja(Mat.Detalle, x + 0.04, 6.75, 2.23, x + 1.1, 7.3, 2.25, b2);
+    });
+  }
+  enMundo(o, c);
+  plano(o, Mat.Muro, COMANDANCIA, H + 0.36, C("#CDBFAE"));
+}
+
+/** Correos: zócalo de granito gris, cuerpo rojo, rótulo amarillo y la escultura sobre la roca. */
+function correos(o: Obra, c: Ctx) {
+  const ROJO = C("#C24E55");
+  const GRANITO = C("#9C9D9F");
+  const H = 8.2;
+  const cen = centroPoli(CORREOS);
+  for (let i = 0; i < CORREOS.length; i++) {
+    const a = CORREOS[i];
+    const b = CORREOS[(i + 1) % CORREOS.length];
+    const mc = new Marco(a, b, cen);
+    const L = mc.usar(o, c, 0.36);
+    muro(o, 0, L, 0, H, ROJO, Mat.Muro, 0.8);
+    o.caja(Mat.Muro, -0.02, 0, 0, L + 0.02, 3.4, 0.06, GRANITO);
+    o.caja(Mat.Detalle, -0.02, 3.4, 0, L + 0.02, 3.55, 0.08, C("#E9E6E0"));
+    o.caja(Mat.Detalle, -0.05, H - 0.1, -0.05, L + 0.05, H + 0.15, 0.1, C("#ECEAE5"));
+    for (const x of vanos(L, 4.5, 1.2)) o.caja(Mat.Cristal, x - 1.4, 0.9, 0.07, x + 1.4, 2.3, 0.09, C("#2A3036"));
+    if (L > 10 && Math.abs(a[0] - 1271.9) < 0.2) {
+      // Fachada a la plaza: entrada y rótulo de Correos.
+      const m = L * 0.7;
+      o.caja(Mat.Cristal, m - 1.6, 0, 0.07, m + 1.6, 2.7, 0.1, C("#3B4650"));
+      o.caja(Mat.Detalle, m - 1.8, 2.7, 0.07, m + 1.8, 3.2, 0.25, C("#F2C200"));
+      o.caja(Mat.Detalle, m - 1.0, 4.6, 0.07, m + 1.0, 7.0, 0.14, C("#F7C800"));
+      disco(o, Mat.Detalle, m, 6.0, 0.15, 0.02, 0.55, C("#1E3A8A"), 16);
+    }
+  }
+  enMundo(o, c);
+  plano(o, Mat.Muro, CORREOS, H + 0.36, C("#BDB8AE"));
+  // Escultura de bronce sobre la roca, en el parterre delante de Correos.
+  enMundo(o, c, 0.36);
+  torno(o, Mat.Detalle, 1262.0, 0.9, 2203.8, [[1.3, 0], [1.2, 0.8], [0.7, 1.5], [0.1, 1.8]], C("#6E6C68"), 7);
+  o.poli(Mat.Metal, [[1260.6, 3.1, 2203.6], [1263.8, 3.6, 2204.0], [1262.2, 2.6, 2203.8]], C("#4A4036"));
+  o.poli(Mat.Metal, [[1262.2, 2.6, 2203.8], [1263.8, 3.6, 2204.0], [1260.6, 3.1, 2203.6]], C("#4A4036"));
+  o.caja(Mat.Metal, 1261.6, 2.5, 2203.6, 1262.8, 3.0, 2204.0, C("#4A4036"));
+  enMundo(o, c);
+}
+
+/** Escalera recta de `n` peldaños de x0..x1 × z0..z1; sube en el sentido `dir` ("+z", "-z", "+x", "-x"). */
+function escalera(o: Obra, c: Ctx, x0: number, z0: number, x1: number, z1: number, y0: number, y1: number, dir: "+z" | "-x", n = 9) {
+  enMundo(o, c);
+  for (let k = 0; k < n; k++) {
+    const h = y0 + ((k + 1) * (y1 - y0)) / n;
+    const f0 = k / n;
+    const f1 = (k + 1) / n;
+    const q: P2[] = dir === "+z" ? [[x0, z0 + (z1 - z0) * f0], [x1, z0 + (z1 - z0) * f0], [x1, z1], [x0, z1]] : [[x0, z0], [x1 - (x1 - x0) * f0, z0], [x1 - (x1 - x0) * f0, z1], [x0, z1]];
+    plano(o, Mat.Suelo, q, h, C("#B7B8BA"), 0.5);
+    if (dir === "+z") o.caja(Mat.Detalle, x0, h - (y1 - y0) / n, z0 + (z1 - z0) * f0, x1, h, z0 + (z1 - z0) * f0 + 0.02, C("#8E8F92"));
+    else o.caja(Mat.Detalle, x1 - (x1 - x0) * f0 - 0.02, h - (y1 - y0) / n, z0, x1 - (x1 - x0) * f0, h, z1, C("#8E8F92"));
+    void f1;
+  }
+}
+
+function plazaConstitucion(o: Obra, c: Ctx) {
+  const yb = 0.36;
+  const ya = ALTO_PC;
+  enMundo(o, c);
+  // Suelos: adoquín gris abajo, losa grande arriba; cada uno en su altura y sin solaparse.
+  for (const p of PC_BAJA) plano(o, Mat.Suelo, p, yb, C("#9E9C98"), 0.55);
+  plano(o, Mat.Suelo, PC_ALTA, ya, C("#AEB0B2"), 0.22);
+  // Círculos oscuros del pavimento frente a Correos y la Comandancia.
+  if (o.fino) for (const R of [6, 8.5, 11, 13.5]) {
+    const n = 72;
+    const [cx, cz] = [1266.0, 2183.0];
+    for (let i = 0; i < n; i++) {
+      const a0 = (i / n) * Math.PI * 2;
+      const a1 = ((i + 1) / n) * Math.PI * 2;
+      const p = (a: number, r: number): P2 => [cx + Math.cos(a) * r, cz + Math.sin(a) * r];
+      const m = p((a0 + a1) / 2, R);
+      if (!PC_BAJA.some((t) => dentroPoli(m, t)) || LENTES.some((l) => dentroPoli(m, lente(l)))) continue;
+      plano(o, Mat.Detalle, [p(a0, R - 0.15), p(a1, R - 0.15), p(a1, R + 0.15), p(a0, R + 0.15)], yb + 0.03, C("#3F4043"));
+    }
+  }
+  // Escalinata oeste, rampa del paseo central y escalera hacia el patio de La Línea.
+  escalera(o, c, 1239.0, 2215.4, 1248.0, 2219.0, yb, ya, "+z");
+  escalera(o, c, 1265.0, 2236.0, 1268.6, 2239.5, yb, ya, "-x");
+  enMundo(o, c);
+  o.poli(Mat.Suelo, [[1250.5, yb, 2207.0], [1250.5, ya, 2219.0], [1260.5, ya, 2219.0], [1260.5, yb, 2207.0]], C("#A7A8AA"), 1, 0.4);
+  for (const x of [1250.5, 1260.5]) {
+    const pts: [number, number, number][] = [[x, 0, 2207.0], [x, 0, 2219.0], [x, ya + 0.45, 2219.0], [x, yb + 0.45, 2207.0]];
+    o.poli(Mat.Muro, pts, ROSA);
+    o.poli(Mat.Muro, [...pts].reverse(), ROSA);
+  }
+  // Muros de contención rosas en el perímetro de la explanada.
+  for (let i = 0; i < PC_ALTA.length; i++) {
+    if (SIN_MURO.has(i)) continue;
+    const a = PC_ALTA[i];
+    const b = PC_ALTA[(i + 1) % PC_ALTA.length];
+    muroRosa(o, c, a, b, interiorArista(PC_ALTA, i), 0, ya + (i >= 9 && i <= 17 ? 0.6 : 0.45));
+  }
+  // Boca del parking bajo la explanada, con dintel, señal y barrera.
+  enMundo(o, c);
+  o.caja(Mat.Detalle, 1259.9, 0, 2247.0, 1263.7, ya - 0.05, 2247.2, C("#15171A"));
+  o.caja(Mat.Detalle, 1259.8, ya - 0.35, 2246.9, 1263.8, ya + 0.6, 2247.4, C("#C94C47"));
+  o.caja(Mat.Detalle, 1260.2, ya - 0.3, 2247.4, 1263.4, ya + 0.5, 2247.45, C("#F3F1EC"));
+  o.caja(Mat.Detalle, 1264.3, 0, 2253.0, 1264.45, 2.4, 2253.15, C("#8A8D90"));
+  o.caja(Mat.Detalle, 1264.0, 2.4, 2253.0, 1264.8, 3.2, 2253.1, C("#1F5EBF"));
+  o.caja(Mat.Detalle, 1260.2, 0.9, 2251.0, 1263.4, 1.0, 2251.08, C("#D63A35"));
+  // Casetones rosas de las salidas peatonales del parking.
+  enMundo(o, c, ya);
+  for (const [x, z] of [[1251.0, 2249.6], [1240.5, 2221.5]] as P2[]) {
+    o.caja(Mat.Muro, x - 1.4, 0, z - 1.3, x + 1.4, 2.5, z + 1.3, ROSA);
+    o.caja(Mat.Detalle, x - 1.5, 2.5, z - 1.4, x + 1.5, 2.65, z + 1.4, ALBARDILLA);
+    o.caja(Mat.Detalle, x - 0.5, 0, z - 1.32, x + 0.5, 2.0, z - 1.3, C("#3A3C40"));
+  }
+  enMundo(o, c);
+  // Parte baja: lentes de césped, caseta rosa, quiosco verde y palmeras.
+  for (const l of LENTES) parterre(o, c, lente(l), yb, 0.4);
+  enMundo(o, c, yb);
+  o.caja(Mat.Muro, 1257.4, 0, 2185.2, 1261.0, 2.5, 2188.5, ROSA);
+  o.caja(Mat.Detalle, 1257.3, 2.5, 2185.1, 1261.1, 2.62, 2188.6, ALBARDILLA);
+  torno(o, Mat.Detalle, 1255.6, 0, 2180.3, [[1.3, 0], [1.3, 2.4], [1.45, 2.5], [1.0, 3.1], [0.2, 3.4]], C("#3E5F4A"), 10);
+  palmera(o, 1255.0, 2184.0, 10.5);
+  palmera(o, 1262.5, 2213.5, 9.0);
+  for (const [x, z] of [[1249.6, 2201.5], [1267.6, 2190.0], [1264.2, 2203.0], [1244.0, 2209.0]] as P2[]) arbolito(o, x, 0.4, z, 2.6, C("#3F7A36"));
+  pergola(o, 1259.0, 2174.8, 1271.0, 2177.2, MADERA, C("#5B2E22"));
+  for (const [x, z] of [[1247.0, 2185.5], [1243.5, 2199.5], [1256.0, 2205.0], [1270.0, 2214.0]] as P2[]) farolaFernandina(o, x, z);
+  enMundo(o, c);
+  // Explanada: fuente, pérgolas, parques infantiles, árboles y farolas de disco.
+  fuenteConstitucion(o, c, ya);
+  pergolaLarga(o, c, [1255.5, 2220.5], [1258.0, 2234.0], ya);
+  pergolaLarga(o, c, [1249.0, 2228.5], [1251.5, 2238.0], ya, 2.6);
+  enMundo(o, c, ya);
+  // Parque infantil 1 (suelo azul) y 2 (suelo rosa), con tobogán rojo.
+  for (const [x0, z0, x1, z1, col] of [[1242.2, 2222.2, 1247.5, 2225.0, "#3F7FC2"], [1237.6, 2238.4, 1242.2, 2242.4, "#E07A86"]] as [number, number, number, number, string][]) {
+    o.caja(Mat.Detalle, x0, 0, z0, x1, 0.05, z1, C(col));
+    o.caja(Mat.Detalle, x0 + 0.8, 0, z0 + 0.8, x0 + 1.2, 1.6, z0 + 1.2, C("#D12E2E"));
+    o.poli(Mat.Detalle, [[x0 + 1.2, 1.5, z0 + 0.8], [x0 + 3.4, 0.1, z0 + 0.8], [x0 + 3.4, 0.1, z0 + 1.4], [x0 + 1.2, 1.5, z0 + 1.4]], C("#D12E2E"));
+  }
+  arbolito(o, 1237.5, 0, 2226.0, 5.0, C("#3B6E30"));
+  arbolito(o, 1268.0, 0, 2251.0, 4.5, C("#3B6E30"));
+  for (const [x, z, h] of [[1238.0, 2249.0, 8.5], [1267.0, 2243.0, 9.5]] as [number, number, number][]) palmera(o, x, z, h);
+  for (const [x, z] of [[1252.5, 2226.0], [1238.0, 2234.0], [1261.0, 2238.0], [1250.0, 2244.0]] as P2[]) {
+    torno(o, Mat.Metal, x, 0, z, [[0.08, 0], [0.06, 5.5]], C("#B9BCBF"), 6);
+    torno(o, Mat.Metal, x, 5.5, z, [[0.75, 0], [0.75, 0.08], [0.1, 0.18]], C("#C9CCCF"), 14);
+  }
+  enMundo(o, c);
+}
+
+/** Huellas de los edificios dibujados a mano en la plaza (colisiones y validador). */
+export const SOLIDOS_CONSTITUCION: P2[][] = [COMANDANCIA, CORREOS];
 
 /** Construye CENTRO-02/03: edificios sobre huellas OSM, Calle Real y Plaza Cruz Herrera. */
 /** Retranquea hacia dentro las caras que dan a la calle (calles más anchas que en el plano). */
@@ -521,6 +777,7 @@ export function solidosCentro02(ocupado: (p: P2) => boolean): P2[][] {
   if (cachePolis) return cachePolis;
   const base = HUELLAS_C02.map((h) => simplificar(h.p));
   cachePolis = base.map((p, i) => (HUELLAS_C02[i].f ? p : retranquear(p, base, ocupado, 2.2)));
+  cachePolis.push(...SOLIDOS_CONSTITUCION);
   return cachePolis;
 }
 
@@ -532,6 +789,8 @@ export function construirCentro02(c: Ctx, ocupado: (p: P2) => boolean, fino: boo
   calleReal(o, c);
   plazaCruzHerrera(o, c);
   plazaConstitucion(o, c);
+  comandancia(o, c);
+  correos(o, c);
   return o;
 }
 

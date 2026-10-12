@@ -2347,8 +2347,8 @@ export class Mundo {
     const lista = [...this.suelos];
     const t = this.trozoDe(x + CX, z + CY);
     if (t.grupo?.userData.suelo) lista.push(t.grupo.userData.suelo);
-    this.rayoSuelo.set(this.tmpV.set(x, SUELO + 1.4, z), new THREE.Vector3(0, -1, 0));
-    this.rayoSuelo.far = 2;
+    this.rayoSuelo.set(this.tmpV.set(x, SUELO + 2.2, z), new THREE.Vector3(0, -1, 0));
+    this.rayoSuelo.far = 2.8;
     const hit = this.rayoSuelo.intersectObjects(lista, false)[0];
     const h = hit ? Math.max(SUELO, hit.point.y) : SUELO;
     if (this.alturas.size > 20000) this.alturas.clear();
