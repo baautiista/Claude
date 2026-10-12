@@ -24,11 +24,11 @@ function editorCorrecciones(): Plugin {
         req.on("data", (c) => (cuerpo += c));
         req.on("end", () => {
           try {
-            const { sector, edificio, cambios, borrar } = JSON.parse(cuerpo);
-            if (!/^[A-Z0-9-]+$/.test(sector) || !/^[A-Z0-9-]+$/.test(edificio)) throw new Error("id no válido");
+            const { edificio, cambios, borrar } = JSON.parse(cuerpo);
+            if (!/^B-[A-Za-z0-9]{2,40}$/.test(edificio)) throw new Error("id no válido");
             const dir = path.resolve(__dirname, "src/datos/correcciones");
             fs.mkdirSync(dir, { recursive: true });
-            const f = path.join(dir, `${sector}.json`);
+            const f = path.join(dir, "ciudad.json");
             const actual = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : {};
             if (borrar) delete actual[edificio];
             else actual[edificio] = { ...actual[edificio], ...cambios, fecha: new Date().toISOString() };

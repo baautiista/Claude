@@ -2,6 +2,7 @@ import { AlmacenMemoria } from "../compartido/almacen.ts";
 import { registrarModulos } from "../compartido/modulos.ts";
 import { datosDesdeLinea, fijarMapa } from "../compartido/hogar/datos.ts";
 import "../compartido/hogar/hogar.ts";
+import "../compartido/ciudad/correcciones.ts";
 import { DATOS } from "../datos/mapa.ts";
 
 fijarMapa(datosDesdeLinea(DATOS));

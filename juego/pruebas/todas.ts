@@ -4,14 +4,17 @@
  */
 import { fase1 } from "./fase1.ts";
 import { fase2 } from "./fase2.ts";
+import { ciudad, EDITOR_PRUEBA } from "./ciudad.ts";
 import { Servidor } from "./utilidades.ts";
 
+process.env.EDITORES = EDITOR_PRUEBA;
 const srv = new Servidor();
 await srv.arrancar();
 const informes = [];
 try {
   informes.push(await fase1(srv));
   informes.push(await fase2(srv));
+  informes.push(await ciudad(srv));
 } finally {
   await srv.parar();
   srv.limpiar();

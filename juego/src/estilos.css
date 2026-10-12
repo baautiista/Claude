@@ -618,3 +618,13 @@ button { transition: transform 0.12s var(--rebote), filter 0.15s, box-shadow 0.1
 .editor-ciudad button { font: inherit; border: 0; border-radius: 8px; padding: 7px 10px; background: #1F5EFF; color: #fff; cursor: pointer; }
 .editor-ciudad .ed-aviso { color: #2E7D4F; font-size: 12px; }
 body.modo-editor #app { max-width: none; }
+.editor-ciudad .ed-estados { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 6px 0; }
+.editor-ciudad .ed-estados button { padding: 4px 8px; font-size: 11px; background: #EEF1F6; color: #14161A; }
+.editor-ciudad .ed-estados button.act { outline: 2px solid #1F5EFF; }
+.editor-ciudad .ed-estados button.rojo { background: #FDE3E6; } .editor-ciudad .ed-estados button.amarillo { background: #FFF4C2; } .editor-ciudad .ed-estados button.verde { background: #DDF3E3; }
+.editor-ciudad .ed-check { display: flex; grid-template-columns: none; gap: 4px; font-size: 11px; margin: 0 0 0 4px; }
+.editor-ciudad .punto { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.editor-ciudad .punto.verde { background: #2E9E4F; } .editor-ciudad .punto.amarillo { background: #E6B800; } .editor-ciudad .punto.rojo { background: #E5243B; }
+.editor-ciudad .conf { font-style: normal; font-size: 10px; padding: 0 5px; border-radius: 4px; background: #eee; }
+.editor-ciudad .conf.alta { background: #DDF3E3; } .editor-ciudad .conf.media { background: #FFF4C2; } .editor-ciudad .conf.baja { background: #FDE3E6; }
+.editor-ciudad .ed-reparado { margin: 4px 0; padding-left: 18px; color: #2E7D4F; font-size: 11.5px; }

@@ -6,7 +6,8 @@
 
 export type Coleccion =
   | "jugadores" | "usuarios" | "sesiones" | "partidas" | "operaciones" | "amistades" | "bloqueos" | "denuncias" | "mensajes"
-  | "invitaciones" | "inmuebles" | "interiores" | "inventarios" | "contratos" | "encargos" | "carreras" | "turnos" | "negocios" | "ofertas";
+  | "invitaciones" | "inmuebles" | "interiores" | "inventarios" | "contratos" | "encargos" | "carreras" | "turnos" | "negocios" | "ofertas"
+  | "correcciones";
 
 export interface Almacen {
   leer<T>(col: Coleccion, id: string): T | null;

@@ -18,6 +18,7 @@ import { ErrorJuego, Servicio, type Contexto } from "../src/compartido/servicio.
 import { registrarModulos } from "../src/compartido/modulos.ts";
 import { datosDesdeLinea, fijarMapa } from "../src/compartido/hogar/datos.ts";
 import "../src/compartido/hogar/hogar.ts";
+import "../src/compartido/ciudad/correcciones.ts";
 
 const RAIZ = dirname(fileURLToPath(import.meta.url));
 const DIST = normalize(join(RAIZ, "..", "dist"));

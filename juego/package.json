@@ -10,7 +10,9 @@
     "servidor": "node --experimental-strip-types --no-warnings servidor/index.ts",
     "pruebas": "node --experimental-strip-types --no-warnings pruebas/todas.ts",
     "fuentes": "python3 scripts/sector/fuentes.py",
-    "sector": "python3 scripts/sector/generar.py"
+    "sector": "python3 scripts/sector/ciudad.py --punto",
+    "ciudad": "python3 scripts/sector/ciudad.py",
+    "importar": "python3 scripts/sector/importar.py"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
