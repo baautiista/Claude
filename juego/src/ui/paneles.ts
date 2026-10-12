@@ -156,6 +156,11 @@ export function abrirMenu(j: Juego) {
       boton,
       nuevaPartida(),
     ),
+    h("div", { class: "seccion-titulo" }, "Ciudad"),
+    h("div", { class: "acciones" }, j.boton({ icono: "lupa", titulo: "Editor de ciudad", sub: "Revisar y corregir los edificios generados", fn: () => {
+      j.cerrar();
+      void import("../editor/editor").then(({ iniciarEditor }) => iniciarEditor(j.mundo, document.getElementById("app") ?? document.body));
+    } })),
     h("div", { class: "seccion-titulo" }, "Créditos"),
     h("p", { class: "desc" }, "Un juego de InfoLinense ambientado en La Línea de la Concepción. Personajes e historias de ficción."),
     h("p", { class: "desc" }, "Mapa: esquema provisional del trazado de la ciudad. La versión final usa datos © colaboradores de OpenStreetMap (ODbL)."),
