@@ -40,7 +40,14 @@ const CONOCIDOS: [P2, Estilo][] = [
   [[1216, 2203], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
   [[1213, 2202], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
   [[1210, 2200], { tipo: "bloque", color: C("#F4F1EA"), plantas: 5 }],
-  [[1239, 2182], { tipo: "bloque", color: C("#E9A98A"), plantas: 8 }],
+  // Plaza de la Constitución, de Calle Real a Av. España (fotos)
+  [[1240, 2177], { tipo: "bloque", color: C("#D8602E"), plantas: 5, remate: C("#EFE3C6") }], // esquina 100 Montaditos
+  [[1239, 2182], { tipo: "porticos", color: C("#E07B39"), plantas: 5 }], // bloque naranja de esquina redondeada
+  [[1237, 2186], { tipo: "casita", color: C("#E9A98A"), plantas: 2, cierros: true }], // casa salmón (Kebab House)
+  [[1235, 2193], { tipo: "historico", color: C("#F4F2EC"), plantas: 4 }], // MONACO
+  [[1227, 2207], { tipo: "bloque", color: C("#EFE3C6"), plantas: 4 }],
+  [[1222, 2215], { tipo: "bloque", color: C("#E8C35A"), plantas: 9, cierros: true }], // torre amarilla
+  [[1217, 2224], { tipo: "moderno", color: C("#F6F4EF"), plantas: 3 }], // esquina art déco, Av. España
   [[1235, 2175], { tipo: "bloque", color: C("#E9A98A"), plantas: 8 }],
   [[1229, 2176], { tipo: "casita", color: C("#F3F1EB"), plantas: 2 }], // Bablú
   [[1224, 2171], { tipo: "bloque", color: C("#A8322E"), plantas: 5, cierros: true }],
