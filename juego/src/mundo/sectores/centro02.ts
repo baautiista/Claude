@@ -426,20 +426,22 @@ function plazaCruzHerrera(o: Obra, c: Ctx) {
  */
 
 /** Parte baja a nivel de calle (recortada para no pisar Calle Real, la explanada, la rampa ni los edificios). */
-const PC_BAJA: P2[][] = [[[1247.0, 2196.0], [1243.0, 2203.0], [1239.5, 2213.0], [1237.6, 2219.0], [1235.0, 2225.0], [1236.0, 2247.0], [1240.0, 2253.5], [1244.4, 2253.8], [1240.0, 2252.0], [1236.5, 2247.0], [1235.5, 2225.0], [1238.5, 2219.0], [1250.5, 2219.0], [1250.5, 2207.0], [1260.5, 2207.0], [1260.5, 2219.0], [1262.5, 2219.0], [1265.0, 2236.0], [1265.0, 2246.0], [1270.0, 2249.0], [1270.0, 2254.0], [1263.8, 2254.0], [1263.8, 2255.0], [1271.0, 2255.5], [1290.0, 2255.0], [1290.2, 2251.9], [1288.6, 2252.8], [1283.8, 2246.0], [1286.4, 2244.8], [1284.6, 2242.0], [1287.0, 2240.5], [1283.7, 2227.4], [1281.9, 2228.4], [1278.7, 2223.4], [1275.9, 2224.8], [1273.0, 2219.8], [1270.6, 2221.2], [1267.4, 2211.7], [1272.0, 2210.8], [1288.5, 2220.6], [1286.0, 2214.0], [1279.6, 2203.0], [1275.1, 2211.5], [1264.8, 2206.3], [1272.7, 2191.2], [1272.6, 2191.0], [1273.0, 2184.5], [1264.7, 2181.1], [1253.5, 2177.2], [1251.8, 2180.8], [1249.7, 2179.8], [1249.0, 2190.0]]];
+const PC_BAJA: P2[][] = [[[1247.0, 2196.0], [1243.0, 2203.0], [1239.5, 2213.0], [1237.6, 2219.0], [1235.0, 2225.0], [1236.0, 2247.0], [1240.0, 2253.5], [1244.4, 2253.8], [1240.0, 2252.0], [1236.5, 2247.0], [1235.5, 2225.0], [1238.8, 2219.0], [1241.0, 2212.5], [1244.3, 2203.6], [1246.5, 2200.0], [1248.5, 2192.0], [1262.5, 2192.0], [1263.5, 2206.5], [1265.5, 2211.0], [1262.5, 2219.0], [1265.0, 2236.0], [1265.0, 2246.0], [1270.0, 2249.0], [1270.0, 2254.0], [1263.8, 2254.0], [1263.8, 2255.0], [1271.0, 2255.5], [1290.0, 2255.0], [1290.2, 2251.9], [1288.6, 2252.8], [1283.8, 2246.0], [1286.4, 2244.8], [1284.6, 2242.0], [1287.0, 2240.5], [1283.7, 2227.4], [1281.9, 2228.4], [1278.7, 2223.4], [1275.9, 2224.8], [1273.0, 2219.8], [1270.6, 2221.2], [1267.4, 2211.7], [1272.0, 2210.8], [1288.5, 2220.6], [1286.0, 2214.0], [1279.6, 2203.0], [1275.1, 2211.5], [1264.8, 2206.3], [1272.7, 2191.2], [1272.6, 2191.0], [1273.0, 2184.5], [1264.7, 2181.1], [1253.5, 2177.2], [1251.8, 2180.8], [1249.7, 2179.8], [1249.0, 2190.0]]];
 /** Explanada sobre el parking (vista cenital del usuario). Aristas sin muro: escaleras, rampa y boca del parking. */
-const PC_ALTA: P2[] = [[1238.5, 2219.0], [1239.0, 2219.0], [1248.0, 2219.0], [1250.5, 2219.0], [1260.5, 2219.0], [1262.5, 2219.0], [1265.0, 2236.0], [1265.0, 2239.5], [1265.0, 2246.0], [1270.0, 2249.0], [1270.0, 2254.0], [1263.8, 2254.0], [1263.8, 2247.0], [1259.8, 2247.0], [1259.8, 2254.0], [1245.0, 2254.0], [1240.0, 2252.0], [1236.5, 2247.0], [1235.5, 2225.0]];
-const SIN_MURO = new Set([1, 3, 6, 12]);
+const PC_ALTA: P2[] = [[1246.5, 2200], [1263, 2200], [1263.5, 2206.5], [1265.5, 2211.0], [1262.5, 2219], [1265, 2236], [1265, 2239.5], [1265, 2246], [1270, 2249], [1270, 2254], [1263.8, 2254], [1263.8, 2247], [1259.8, 2247], [1259.8, 2254], [1245, 2254], [1240, 2252], [1236.5, 2247], [1235.5, 2225], [1238.8, 2219], [1241, 2212.5], [1244.3, 2203.6]];
+const SIN_MURO = new Set([0, 5, 11]);
+/** Rampa de entrada desde Calle Real, al principio del paseo central. */
+const RAMPA_PC: P2[] = [[1248.5, 2192], [1262.5, 2192], [1263, 2200], [1246.5, 2200]];
 const ALTO_PC = 1.5;
 const FUENTE_PC: P2 = [1244.0, 2231.6];
 /** Parterres en lente con bordillo rosa: [centro, semieje largo, semieje corto, ángulo]. */
 const LENTES: [P2, number, number, number][] = [
   [[1257.0, 2185.5], 6.5, 3.6, -0.94],
   [[1268.0, 2191.2], 7.5, 3.0, -1.0],
-  [[1249.8, 2201.3], 4.0, 1.8, -1.14],
-  [[1244.0, 2209.0], 4.5, 2.0, -0.96],
-  [[1264.2, 2203.0], 3.2, 2.2, -0.7],
-  [[1264.0, 2213.0], 4.6, 2.3, -1.06],
+  [[1250.5, 2204.5], 4.0, 1.8, -1.14],
+  [[1245.2, 2210.0], 4.5, 1.9, -0.96],
+  [[1260.8, 2204.5], 3.0, 2.0, -0.7],
+  [[1260.8, 2213.5], 4.4, 2.1, -1.06],
 ];
 const lente = ([c, a, b, ang]: [P2, number, number, number], n = 24): P2[] =>
   Array.from({ length: n }, (_, i) => {
@@ -538,7 +540,7 @@ function fuenteConstitucion(o: Obra, c: Ctx, y: number) {
 
 /** Comandancia (Museo del Istmo, Biblioteca José Riquelme): dos plantas naranjas, cantería, torre central. */
 function comandancia(o: Obra, c: Ctx) {
-  const NAR = C("#E09B66");
+  const NAR = C("#E5965F");
   const PIEDRA = C("#C6AE80");
   const H = 9.6;
   const frente = 3; // arista (1273.9,2188.3)-(1284.2,2189.4)? no: la fachada a la plaza es la oeste
@@ -558,7 +560,8 @@ function comandancia(o: Obra, c: Ctx) {
     o.caja(Mat.Muro, -0.1, H, -0.25, L + 0.1, H + 0.7, 0.05, NAR);
     for (const x of [0.35, L - 0.35]) o.caja(Mat.Detalle, x - 0.35, 0, 0, x + 0.35, H, 0.1, PIEDRA);
     const m = L / 2;
-    const huecos = vanos(L, 3.0, 1.0).filter((x) => !principal || Math.abs(x - m) > 3.2);
+    // Fachada principal: dos huecos a cada lado de la torre (fotos); laterales repartidos.
+    const huecos = principal ? [1.7, 3.9, L - 3.9, L - 1.7] : vanos(L, 2.8, 1.0);
     for (const x of huecos) {
       ventana(o, x, 1.3, 1.1, 2.2, { marco: C("#6A4A32"), recercado: PIEDRA, recercadoAncho: 0.22, arco: true });
       reja(o, x, 1.3, 1.1, 2.0, 0.1, HIERRO);
@@ -580,7 +583,14 @@ function comandancia(o: Obra, c: Ctx) {
       ventana(o, x, H + 0.6, 0.8, 2.0, { marco: C("#6A4A32"), recercado: PIEDRA, recercadoAncho: 0.15 });
       reja(o, x, H + 0.6, 0.8, 0.8, 0.12, C("#D9D9D4"));
     }
+    // Friso de rombos de cantería entre el balcón y la ventana triple.
+    o.caja(Mat.Detalle, m - 2.1, 9.0, 0.35, m + 2.1, 9.7, 0.42, PIEDRA);
+    if (o.fino) for (let x = m - 1.8; x <= m + 1.8; x += 0.6) o.poli(Mat.Detalle, [[x, 9.08, 0.44], [x + 0.26, 9.35, 0.44], [x, 9.62, 0.44], [x - 0.26, 9.35, 0.44]], C("#A8916A"));
     moldura(o, m - 2.75, m + 2.75, H + 3.0, H + 3.6, 0.55, PIEDRA);
+    // Palmeras a ambos lados de la escalinata y chimeneas blancas en la azotea.
+    palmera(o, m - 3.0, 2.4, 8.5);
+    palmera(o, m + 3.0, 2.4, 8.0);
+    for (const x of [1.6, L - 1.6]) o.caja(Mat.Muro, x - 0.45, H + 0.7, -2.8, x + 0.45, H + 2.6, -1.9, C("#EEEBE4"));
     if (o.fino) for (let x = m - 2.5; x < m + 2.5; x += 0.42) o.caja(Mat.Detalle, x, H + 2.85, 0.35, x + 0.2, H + 3.0, 0.75, PIEDRA);
     // Mástiles con banderas a la derecha de la portada.
     const BANDERAS: RGB[][] = [[C("#1F3A93"), C("#1F3A93")], [C("#C8102E"), C("#F1BF00")], [C("#007A3D"), C("#FFFFFF")], [C("#7FB6E0"), C("#FFFFFF")]];
@@ -667,12 +677,12 @@ function plazaConstitucion(o: Obra, c: Ctx) {
     }
   }
   // Escalinata oeste, rampa del paseo central y escalera hacia el patio de La Línea.
-  escalera(o, c, 1239.0, 2215.4, 1248.0, 2219.0, yb, ya, "+z");
   escalera(o, c, 1265.0, 2236.0, 1268.6, 2239.5, yb, ya, "-x");
   enMundo(o, c);
-  o.poli(Mat.Suelo, [[1250.5, yb, 2207.0], [1250.5, ya, 2219.0], [1260.5, ya, 2219.0], [1260.5, yb, 2207.0]], C("#A7A8AA"), 1, 0.4);
-  for (const x of [1250.5, 1260.5]) {
-    const pts: [number, number, number][] = [[x, 0, 2207.0], [x, 0, 2219.0], [x, ya + 0.45, 2219.0], [x, yb + 0.45, 2207.0]];
+  const [r0, r1, r2, r3] = RAMPA_PC;
+  o.poli(Mat.Suelo, [[r0[0], yb, r0[1]], [r3[0], ya, r3[1]], [r2[0], ya, r2[1]], [r1[0], yb, r1[1]]], C("#A7A8AA"), 1, 0.4);
+  for (const [a, b] of [[r0, r3], [r1, r2]]) {
+    const pts: [number, number, number][] = [[a[0], 0, a[1]], [b[0], 0, b[1]], [b[0], ya + 0.45, b[1]], [a[0], yb + 0.45, a[1]]];
     o.poli(Mat.Muro, pts, ROSA);
     o.poli(Mat.Muro, [...pts].reverse(), ROSA);
   }
@@ -700,16 +710,17 @@ function plazaConstitucion(o: Obra, c: Ctx) {
   }
   enMundo(o, c);
   // Parte baja: lentes de césped, caseta rosa, quiosco verde y palmeras.
-  for (const l of LENTES) parterre(o, c, lente(l), yb, 0.4);
+  LENTES.forEach((l, i) => parterre(o, c, lente(l), i < 2 ? yb : ya, 0.4));
   enMundo(o, c, yb);
   o.caja(Mat.Muro, 1257.4, 0, 2185.2, 1261.0, 2.5, 2188.5, ROSA);
   o.caja(Mat.Detalle, 1257.3, 2.5, 2185.1, 1261.1, 2.62, 2188.6, ALBARDILLA);
   torno(o, Mat.Detalle, 1255.6, 0, 2180.3, [[1.3, 0], [1.3, 2.4], [1.45, 2.5], [1.0, 3.1], [0.2, 3.4]], C("#3E5F4A"), 10);
   palmera(o, 1255.0, 2184.0, 10.5);
-  palmera(o, 1262.5, 2213.5, 9.0);
-  for (const [x, z] of [[1249.6, 2201.5], [1267.6, 2190.0], [1264.2, 2203.0], [1244.0, 2209.0]] as P2[]) arbolito(o, x, 0.4, z, 2.6, C("#3F7A36"));
+    arbolito(o, 1267.6, 0.4, 2190.0, 2.6, C("#3F7A36"));
+  for (const [x, z] of [[1250.5, 2204.5], [1260.8, 2204.5], [1245.2, 2210.0]] as P2[]) arbolito(o, x, ya - yb + 0.4, z, 2.6, C("#3F7A36"));
+  palmera(o, 1260.8, 2213.5, 9.0);
   pergola(o, 1259.0, 2174.8, 1271.0, 2177.2, MADERA, C("#5B2E22"));
-  for (const [x, z] of [[1247.0, 2185.5], [1243.5, 2199.5], [1256.0, 2205.0], [1270.0, 2214.0]] as P2[]) farolaFernandina(o, x, z);
+  for (const [x, z] of [[1247.0, 2185.5], [1245.0, 2192.5], [1266.5, 2207.5], [1270.0, 2214.0]] as P2[]) farolaFernandina(o, x, z);
   enMundo(o, c);
   // Explanada: fuente, pérgolas, parques infantiles, árboles y farolas de disco.
   fuenteConstitucion(o, c, ya);
