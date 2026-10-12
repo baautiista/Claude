@@ -1,0 +1,1268 @@
+{
+ "id": "CENTRO-T01",
+ "nombre": "Manzana de prueba: Calle Doctor Villar (Edificio Iberia), Centro",
+ "generado": "2026-10-12T13:31:04",
+ "manzana": [
+  [
+   1181.97,
+   2114.29
+  ],
+  [
+   1174.11,
+   2088.72
+  ],
+  [
+   1172.97,
+   2088.68
+  ],
+  [
+   1156.45,
+   2088.16
+  ],
+  [
+   1156.48,
+   2089.64
+  ],
+  [
+   1157.27,
+   2122.2
+  ],
+  [
+   1157.43,
+   2130.55
+  ],
+  [
+   1158.92,
+   2130.54
+  ],
+  [
+   1184.5,
+   2128.69
+  ],
+  [
+   1185.91,
+   2128.59
+  ]
+ ],
+ "calles": [
+  "Calle Doctor Villar",
+  "Calle Isabel La Católica",
+  "Calle Jardines",
+  "Calle de las Flores",
+  "Calle del Sol"
+ ],
+ "fuentes": {
+  "huellas": "Overture Maps (OSM + IGN), release 2026-09-23.1",
+  "calles": "OpenStreetMap (fuentes/la-linea.geojson)",
+  "catastro": "no accesible (<urlopen error Tunnel connection failed: 403 Forbidden>)",
+  "lidar": "no accesible (<urlopen error Tunnel connection failed: 403 Forbidden>)"
+ },
+ "edificios": [
+  {
+   "id": "CENTRO-T01-001",
+   "overture": "116dcaff-fb01-4718-a21e-11e5efc3b2d2",
+   "osm": "w877673091",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1167.75,
+     2127.47
+    ],
+    [
+     1163.72,
+     2127.75
+    ],
+    [
+     1163.46,
+     2124.73
+    ],
+    [
+     1163.99,
+     2124.69
+    ],
+    [
+     1163.96,
+     2124.34
+    ],
+    [
+     1167.32,
+     2123.92
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "calles": [
+    "Calle del Sol",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 13.6,
+   "frente": 4.0,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#E6CFA0",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-002",
+   "overture": "95d4f05f-ea39-4090-8638-2094dbac0184",
+   "osm": "w877673087",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1179.39,
+     2123.12
+    ],
+    [
+     1179.36,
+     2126.72
+    ],
+    [
+     1175.21,
+     2126.92
+    ],
+    [
+     1175.1,
+     2123.22
+    ],
+    [
+     1176.97,
+     2122.88
+    ],
+    [
+     1177.14,
+     2123.48
+    ]
+   ],
+   "caras": [
+    "medianera",
+    "calle",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "Calle del Sol",
+    "",
+    "",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 15.3,
+   "frente": 4.8,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "encalado",
+   "color": "#F6F3EC",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-003",
+   "overture": "3b9972d6-2234-4fbd-8a6e-35782fd7fdaf",
+   "osm": "w877673089",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1171.78,
+     2124.18
+    ],
+    [
+     1171.86,
+     2127.16
+    ],
+    [
+     1167.75,
+     2127.47
+    ],
+    [
+     1167.32,
+     2123.92
+    ],
+    [
+     1168.11,
+     2123.81
+    ],
+    [
+     1167.68,
+     2122.28
+    ],
+    [
+     1169.12,
+     2122.36
+    ],
+    [
+     1171.2,
+     2122.02
+    ]
+   ],
+   "caras": [
+    "medianera",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "Calle del Sol",
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 20.6,
+   "frente": 7.7,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "encalado",
+   "color": "#F6F3EC",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-004",
+   "overture": "1abe30c7-1280-40e2-99b7-694b7ade215b",
+   "osm": "w877673090",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1159.11,
+     2122.69
+    ],
+    [
+     1167.68,
+     2122.28
+    ],
+    [
+     1168.11,
+     2123.81
+    ],
+    [
+     1163.96,
+     2124.34
+    ],
+    [
+     1163.99,
+     2124.69
+    ],
+    [
+     1163.46,
+     2124.73
+    ],
+    [
+     1163.72,
+     2127.75
+    ],
+    [
+     1160.13,
+     2128.09
+    ],
+    [
+     1159.41,
+     2127.37
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle"
+   ],
+   "calles": [
+    "Calle Doctor Villar",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar"
+   ],
+   "area": 30.5,
+   "frente": 17.9,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#E9B38F",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-005",
+   "overture": "92271538-53c3-40a0-8066-0d00985e8ee9",
+   "osm": "w877673088",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1175.11,
+     2123.7
+    ],
+    [
+     1175.21,
+     2126.92
+    ],
+    [
+     1171.86,
+     2127.16
+    ],
+    [
+     1171.78,
+     2124.18
+    ],
+    [
+     1170.94,
+     2120.66
+    ],
+    [
+     1172.85,
+     2120.28
+    ],
+    [
+     1173.41,
+     2123.81
+    ]
+   ],
+   "caras": [
+    "medianera",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "Calle del Sol",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 17.1,
+   "frente": 3.4,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#E8C35A",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-006",
+   "overture": "80a50a81-202f-46b9-9f32-e309f04a7502",
+   "osm": "w877673086",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1179.22,
+     2123.17
+    ],
+    [
+     1179.22,
+     2121.84
+    ],
+    [
+     1182.53,
+     2120.84
+    ],
+    [
+     1184.08,
+     2126.46
+    ],
+    [
+     1179.36,
+     2126.72
+    ],
+    [
+     1179.39,
+     2123.12
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "calle",
+    "calle",
+    "medianera",
+    "patio"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "",
+    "Calle de las Flores",
+    "Calle del Sol",
+    "",
+    ""
+   ],
+   "area": 21.4,
+   "frente": 11.9,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#EFE3C6",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "avisos": [
+    "recortado 4% (paso mínimo de la calle o solape con otra huella)",
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-007",
+   "overture": "1445d57b-61e3-42ba-9121-d7c076fd5915",
+   "osm": "w877673085",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1159.15,
+     2121.13
+    ],
+    [
+     1158.85,
+     2116.0
+    ],
+    [
+     1168.19,
+     2115.69
+    ],
+    [
+     1169.14,
+     2120.53
+    ],
+    [
+     1167.31,
+     2120.83
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "patio",
+    "calle",
+    "calle"
+   ],
+   "calles": [
+    "Calle Doctor Villar",
+    "",
+    "",
+    "Calle del Sol",
+    "Calle Doctor Villar"
+   ],
+   "area": 49.4,
+   "frente": 15.2,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "bloque",
+   "material": "revoco",
+   "color": "#E3CFA8",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-008",
+   "overture": "b6297288-f635-4527-979c-84ad927faaec",
+   "osm": "w877673075",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1174.15,
+     2123.36
+    ],
+    [
+     1173.44,
+     2120.17
+    ],
+    [
+     1171.42,
+     2120.56
+    ],
+    [
+     1169.84,
+     2113.33
+    ],
+    [
+     1171.85,
+     2112.79
+    ],
+    [
+     1171.81,
+     2112.5
+    ],
+    [
+     1173.33,
+     2111.97
+    ],
+    [
+     1172.83,
+     2110.54
+    ],
+    [
+     1178.76,
+     2108.65
+    ],
+    [
+     1182.53,
+     2120.84
+    ],
+    [
+     1176.84,
+     2122.56
+    ],
+    [
+     1176.97,
+     2122.88
+    ]
+   ],
+   "caras": [
+    "medianera",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "",
+    "Calle de las Flores",
+    ""
+   ],
+   "area": 117.9,
+   "frente": 22.4,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "bloque",
+   "material": "revoco",
+   "color": "#F1EDE4",
+   "zocalo": false,
+   "pb": "portal",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-009",
+   "overture": "2e6f50f1-a196-4bf1-b3c0-22bd6e74d39d",
+   "osm": "w877673084",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1158.85,
+     2116.0
+    ],
+    [
+     1158.76,
+     2110.04
+    ],
+    [
+     1160.23,
+     2110.11
+    ],
+    [
+     1160.27,
+     2110.37
+    ],
+    [
+     1167.16,
+     2110.49
+    ],
+    [
+     1167.55,
+     2112.38
+    ],
+    [
+     1165.91,
+     2112.47
+    ],
+    [
+     1165.9,
+     2113.92
+    ],
+    [
+     1167.82,
+     2113.82
+    ],
+    [
+     1168.19,
+     2115.69
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "patio",
+    "medianera"
+   ],
+   "calles": [
+    "Calle Doctor Villar",
+    "",
+    "",
+    "",
+    "",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "",
+    ""
+   ],
+   "area": 46.1,
+   "frente": 11.0,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "burguesa",
+   "material": "revoco",
+   "color": "#EBC9B8",
+   "zocalo": false,
+   "pb": "vivienda",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-010",
+   "overture": "650df70d-208a-4d8c-88fe-1c8ab70b2b43",
+   "osm": "w877673083",
+   "fuente": "OpenStreetMap",
+   "nombre": "Edificio Iberia",
+   "huella": [
+    [
+     1158.76,
+     2110.04
+    ],
+    [
+     1158.68,
+     2106.05
+    ],
+    [
+     1166.26,
+     2106.1
+    ],
+    [
+     1166.61,
+     2107.82
+    ],
+    [
+     1165.28,
+     2107.77
+    ],
+    [
+     1165.18,
+     2109.26
+    ],
+    [
+     1166.92,
+     2109.32
+    ],
+    [
+     1167.16,
+     2110.49
+    ],
+    [
+     1160.27,
+     2110.37
+    ],
+    [
+     1160.23,
+     2110.11
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "calles": [
+    "Calle Doctor Villar",
+    "",
+    "",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 31.9,
+   "frente": 8.6,
+   "plantas": 6,
+   "alturaM": 18.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "bloque",
+   "material": "revoco",
+   "color": "#E3CFA8",
+   "zocalo": false,
+   "pb": "portal",
+   "nivel": "B",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-011",
+   "overture": "ce71081b-9b01-4690-8385-c2d3bd025f70",
+   "osm": "w877673082",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1158.68,
+     2106.05
+    ],
+    [
+     1158.47,
+     2102.14
+    ],
+    [
+     1165.81,
+     2103.94
+    ],
+    [
+     1166.26,
+     2106.1
+    ],
+    [
+     1164.26,
+     2106.07
+    ],
+    [
+     1164.26,
+     2104.63
+    ],
+    [
+     1162.79,
+     2104.58
+    ],
+    [
+     1162.74,
+     2106.03
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "Calle Doctor Villar",
+    "",
+    "",
+    "",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    ""
+   ],
+   "area": 20.0,
+   "frente": 8.3,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#E8C35A",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "B",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-012",
+   "overture": "fa67fe7d-ce33-403f-a6ce-15f8c241e58d",
+   "osm": "w877673077",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1171.52,
+     2103.58
+    ],
+    [
+     1169.8,
+     2104.14
+    ],
+    [
+     1171.81,
+     2110.65
+    ],
+    [
+     1167.45,
+     2111.88
+    ],
+    [
+     1163.81,
+     2094.22
+    ],
+    [
+     1169.19,
+     2094.37
+    ],
+    [
+     1169.32,
+     2093.39
+    ],
+    [
+     1170.09,
+     2093.48
+    ],
+    [
+     1171.68,
+     2093.04
+    ],
+    [
+     1172.32,
+     2094.61
+    ],
+    [
+     1174.3,
+     2093.91
+    ],
+    [
+     1175.65,
+     2098.06
+    ],
+    [
+     1171.76,
+     2099.25
+    ],
+    [
+     1171.92,
+     2099.82
+    ],
+    [
+     1170.44,
+     2100.18
+    ]
+   ],
+   "caras": [
+    "calle",
+    "calle",
+    "patio",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle de las Flores",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 112.7,
+   "frente": 13.0,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "burguesa",
+   "material": "revoco",
+   "color": "#EFE3C6",
+   "zocalo": false,
+   "pb": "vivienda",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-013",
+   "overture": "1354bfdc-35d1-49c3-9bdf-3ffd70389225",
+   "osm": "w877673078",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1174.83,
+     2098.39
+    ],
+    [
+     1175.6,
+     2101.05
+    ],
+    [
+     1171.22,
+     2102.64
+    ],
+    [
+     1170.44,
+     2100.18
+    ],
+    [
+     1171.92,
+     2099.82
+    ],
+    [
+     1171.76,
+     2099.25
+    ]
+   ],
+   "caras": [
+    "calle",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 12.9,
+   "frente": 7.4,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#D9A37A",
+   "zocalo": true,
+   "pb": "vivienda",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-014",
+   "overture": "05949325-ac25-4db5-a7c8-f56dd3fc04ee",
+   "osm": "w877673079",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1162.91,
+     2090.05
+    ],
+    [
+     1165.81,
+     2103.94
+    ],
+    [
+     1158.47,
+     2102.14
+    ],
+    [
+     1157.81,
+     2094.94
+    ],
+    [
+     1157.68,
+     2089.67
+    ]
+   ],
+   "caras": [
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "Calle Isabel La Católica"
+   ],
+   "area": 82.1,
+   "frente": 17.7,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "bloque",
+   "material": "revoco",
+   "color": "#F2F0EA",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-015",
+   "overture": "33cd5b0a-c6c7-46c0-a347-06f257b0e4d1",
+   "osm": "w877673081",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1173.01,
+     2090.78
+    ],
+    [
+     1174.06,
+     2093.99
+    ],
+    [
+     1172.32,
+     2094.61
+    ],
+    [
+     1171.68,
+     2093.04
+    ],
+    [
+     1170.09,
+     2093.48
+    ],
+    [
+     1169.32,
+     2093.39
+    ],
+    [
+     1169.19,
+     2094.37
+    ],
+    [
+     1168.13,
+     2094.34
+    ],
+    [
+     1168.38,
+     2090.44
+    ]
+   ],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle Isabel La Católica"
+   ],
+   "area": 17.0,
+   "frente": 8.0,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#F2EBDD",
+   "zocalo": false,
+   "pb": "vivienda",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  },
+  {
+   "id": "CENTRO-T01-016",
+   "overture": "1f7df10a-c093-4d94-a926-6664ed4e27df",
+   "osm": "w877673080",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "huella": [
+    [
+     1168.38,
+     2090.44
+    ],
+    [
+     1168.13,
+     2094.34
+    ],
+    [
+     1163.81,
+     2094.22
+    ],
+    [
+     1162.91,
+     2090.05
+    ]
+   ],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Isabel La Católica"
+   ],
+   "area": 19.6,
+   "frente": 5.5,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "origenAltura": "estimada (reglas: huella, frente y nombre)",
+   "cubierta": "azotea",
+   "tipologia": "casa_dos",
+   "material": "revoco",
+   "color": "#E6CFA0",
+   "zocalo": true,
+   "pb": "vivienda",
+   "nivel": "A",
+   "avisos": [
+    "altura estimada: sin plantas en OSM/Overture; Catastro y LiDAR no accesibles"
+   ]
+  }
+ ],
+ "avisos": []
+}

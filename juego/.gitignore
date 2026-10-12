@@ -1,4 +1,8 @@
 node_modules
 dist
 fuentes/*.geojson
-datos/
+/datos/
+fuentes/overture/
+fuentes/catastro/
+fuentes/estado.json
+__pycache__/

@@ -26,6 +26,8 @@ import * as T from "./texturas";
 import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
 import { construirCentro02, CENTRO_C02, SUSTITUYE_C02, solidosCentro02 } from "./sectores/centro02";
 import { solidosCentro01 } from "./sectores/centro01";
+import { construirSector, solidosSector, type InformeGeneracion } from "./sectores/generador";
+import { SECTORES, correccionesDe, enSectorGenerado } from "./sectores/registro";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
 /** Otro jugador conectado (multijugador). */
@@ -192,7 +194,11 @@ const PUESTO: Punto = sumar(NODOS[LUGARES.mercado.nodo], 6, -6);
 const TABLON: Punto = TABLON_CENTRO01;
 /** Huellas OSM sustituidas por los sectores reconstruidos a mano (barrio a barrio). */
 const SUSTITUIDAS: Punto[] = [...SUSTITUYE_CENTRO01, ...SUSTITUYE_C02];
-const sustituida = (x: number, y: number) => SUSTITUIDAS.some(([sx, sy]) => Math.abs(sx - x) < 0.6 && Math.abs(sy - y) < 0.6);
+const sustituida = (x: number, y: number) => SUSTITUIDAS.some(([sx, sy]) => Math.abs(sx - x) < 0.6 && Math.abs(sy - y) < 0.6) || enSectorGenerado(x, y);
+/** Huellas de las manzanas generadas automáticamente (con sus correcciones). */
+const HUELLAS_GENERADAS = () => SECTORES.flatMap((s) => solidosSector(s, correccionesDe(s.id)));
+/** Tramos estrechos sin sitio para acera: la calzada llega a las fachadas reales. */
+const SIN_ACERA = new Set<Tramo>();
 const PUERTO_CENTRO: Punto = (() => {
   const r = DATOS.puerto.flat();
   return [r.reduce((s, p) => s + p[0], 0) / r.length, r.reduce((s, p) => s + p[1], 0) / r.length];
@@ -272,6 +278,44 @@ function calcularAnchos() {
     const p20 = libres[Math.floor(libres.length * 0.05)];
     const media = Math.max(1.6, Math.min(ANCHO_VIA[t.clase] / 2, p20 + CORTE_MAX - ACERA));
     ANCHO_TRAMO.set(t, media * 2);
+  }
+  // Manzanas generadas con huellas reales: la calle se ajusta a sus fachadas (no al revés).
+  const huellas = HUELLAS_GENERADAS();
+  if (!huellas.length) return;
+  const distPoli = (px: number, py: number, p: readonly (readonly [number, number])[]) => {
+    let d = Infinity;
+    for (let i = 0; i < p.length; i++) {
+      const [ax, ay] = p[i];
+      const [bx, by] = p[(i + 1) % p.length];
+      const dx = bx - ax;
+      const dy = by - ay;
+      const k = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy || 1)));
+      d = Math.min(d, Math.hypot(px - ax - k * dx, py - ay - k * dy));
+    }
+    return d;
+  };
+  for (const t of TRAMOS) {
+    if (t.clase > 4) continue;
+    const ds: number[] = [];
+    for (let i = 1; i < t.puntos.length; i++) {
+      const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+      const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      for (let s = 0; s <= L; s += 1) {
+        const px = a[0] + ((b[0] - a[0]) * s) / L;
+        const py = a[1] + ((b[1] - a[1]) * s) / L;
+        let d = 99;
+        for (const h of huellas) d = Math.min(d, distPoli(px, py, h));
+        if (d < 8) ds.push(d);
+      }
+    }
+    if (!ds.length) continue;
+    const d = Math.min(...ds);
+    const actual = anchoDe(t) / 2;
+    if (t.clase <= 3 && d - 1.5 >= 1.6) ANCHO_TRAMO.set(t, Math.min(actual, d - 1.5) * 2);
+    else {
+      if (t.clase <= 3) SIN_ACERA.add(t);
+      ANCHO_TRAMO.set(t, Math.max(2.0, Math.min(actual, d - 0.1) * 2));
+    }
   }
 }
 
@@ -918,7 +962,7 @@ export class Mundo {
     for (const t of TRAMOS) {
       const w = anchoDe(t);
       grupos[grupoDe(t.clase)].push(cinta(t.puntos, w, altoDe(t.clase)));
-      if (t.clase <= 3) grupos.acera.push(cinta(t.puntos, w + 3, 0.22));
+      if (t.clase <= 3 && !SIN_ACERA.has(t)) grupos.acera.push(cinta(t.puntos, w + 3, 0.22));
       if (t.clase <= 1 && t.largo > 30) grupos.raya.push(...rayas(t.puntos, altoDe(t.clase) + 0.02));
       for (const n of [t.a, t.b]) {
         const a = anchoNodo.get(n) ?? { w: 0, c: 9, grado: 0 };
@@ -1314,7 +1358,7 @@ export class Mundo {
       }
     }
     for (const t of TRAMOS) {
-      if (t.clase > 3) continue;
+      if (t.clase > 3 || SIN_ACERA.has(t)) continue;
       const recorte = (n: string) => ((nodo.get(n)?.grado ?? 0) >= 2 ? nodo.get(n)!.ancho / 2 + 1.8 : 0);
       const ultimo = t.puntos.length - 2;
       for (let i = 0; i <= ultimo; i++) {
@@ -1887,7 +1931,64 @@ export class Mundo {
   /** Huellas de los sectores reconstruidos (obstáculos para el validador y las colisiones). */
   private sectoresSolidos(): Punto[][] {
     const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
-    return [...solidosCentro01(), ...solidosCentro02(ocupado)] as Punto[][];
+    return [...solidosCentro01(), ...solidosCentro02(ocupado), ...HUELLAS_GENERADAS()] as Punto[][];
+  }
+
+  /** Sectores generados en escena (para reconstruirlos al corregir en el editor). */
+  readonly sectoresGenerados = new Map<string, { lod: THREE.LOD; informe: InformeGeneracion }>();
+  /** Si está activo, tocar la ciudad selecciona edificios generados en vez de jugar. */
+  editorCiudad: ((x: number, y: number) => void) | null = null;
+
+  /** Encuadra la cámara sobre un punto del mapa (editor de ciudad). */
+  enfocarMapa(x: number, y: number, alto = 90) {
+    this.modoDemo = false;
+    this.jugador.position.set(x - CX, SUELO, y - CY);
+    this.objetivoCam.set(x - CX, SUELO, y - CY);
+    this.alto = alto;
+    this.altoMeta = null;
+    this.destinoCam = null;
+    this.foco = null;
+  }
+  /** Objetos auxiliares del editor (contorno de selección). */
+  ayudaEditor(o: THREE.Object3D, poner: boolean) {
+    if (poner) this.escena.add(o);
+    else this.escena.remove(o);
+  }
+  get origenMapa() {
+    return { cx: CX, cy: CY, suelo: SUELO };
+  }
+
+  construirSectorGenerado(id: string) {
+    const s = SECTORES.find((q) => q.id === id);
+    if (!s) return;
+    const previo = this.sectoresGenerados.get(id);
+    if (previo) {
+      this.escena.remove(previo.lod);
+      previo.lod.traverse((o) => (o as THREE.Mesh).geometry?.dispose());
+    }
+    const ctx = { cx: CX, cy: CY, suelo: SUELO };
+    const corr = correccionesDe(id);
+    const cx = s.manzana.reduce((a, p) => a + p[0], 0) / s.manzana.length;
+    const cy = s.manzana.reduce((a, p) => a + p[1], 0) / s.manzana.length;
+    const centro = p3([cx, cy]);
+    const lod = new THREE.LOD();
+    lod.position.copy(centro);
+    let informe: InformeGeneracion | null = null;
+    for (const [fino, dist] of [[true, 0], [false, 260]] as const) {
+      const r = construirSector(s, corr, ctx, fino);
+      if (fino) informe = r.informe;
+      const g = this.mallasObra(r.obra);
+      g.position.copy(centro).negate();
+      for (const m of g.children) m.renderOrder = 30;
+      const nivel = new THREE.Group();
+      nivel.add(g);
+      lod.addLevel(nivel, dist);
+    }
+    lod.userData.sectorGenerado = id;
+    this.escena.add(lod);
+    this.sectoresGenerados.set(id, { lod, informe: informe! });
+    (globalThis as unknown as { __sectores: Record<string, InformeGeneracion> }).__sectores = Object.fromEntries([...this.sectoresGenerados].map(([k, v]) => [k, v.informe]));
+    this.alturas.clear();
   }
 
   /** Malla de una obra (una por material), con sombras. */
@@ -1943,6 +2044,8 @@ export class Mundo {
       }
       this.escena.add(lod);
     }
+    // Manzanas generadas automáticamente desde datos reales (scripts/sector/generar.py).
+    for (const s of SECTORES) this.construirSectorGenerado(s.id);
     // Personajes de referencia del nuevo estilo, charlando junto al monumento.
     const pareja: [Aspecto, Punto, Punto][] = [
       [REFERENCIA_HOMBRE, [1103.6, 2142.2], [1105.0, 2143.6]],
@@ -2376,7 +2479,7 @@ export class Mundo {
       meter(b.x - r, b.y - r, b.x + r, b.y + r, { r: [b.x, b.y, b.w / 2, b.d / 2, b.ang] });
     }
     const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
-    for (const poli of [...solidosCentro01(), ...solidosCentro02(ocupado)]) {
+    for (const poli of [...solidosCentro01(), ...solidosCentro02(ocupado), ...HUELLAS_GENERADAS()]) {
       const xs = poli.map((p) => p[0]);
       const ys = poli.map((p) => p[1]);
       meter(Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys), { p: poli as Punto[] });
@@ -2715,6 +2818,13 @@ export class Mundo {
     const r = this.canvas.getBoundingClientRect();
     const ndc = new THREE.Vector2(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
     this.ray.setFromCamera(ndc, this.camara);
+    if (this.editorCiudad) {
+      const lods = [...this.sectoresGenerados.values()].map((v) => v.lod);
+      const g = this.ray.intersectObjects(lods, true)[0];
+      const p = g ? g.point.clone().addScaledVector(this.ray.ray.direction, 0.05) : this.alSuelo(cx, cy);
+      if (p) this.editorCiudad(p.x + CX, p.z + CY);
+      return;
+    }
     const golpes = this.ray.intersectObjects(this.tocables.filter((o) => o.visible), true);
     for (const g of golpes) {
       let o: THREE.Object3D | null = g.object;

@@ -183,4 +183,7 @@ async function jugar(e: Estado, nueva = false) {
 }
 
 window.addEventListener("mi-linea:portada", () => location.reload());
-void arrancar();
+if (new URLSearchParams(location.search).has("editor")) {
+  // Editor de ciudad: revisión de los sectores generados, sin portada ni partida.
+  void import("./editor/editor").then(({ iniciarEditor }) => iniciarEditor(mundo, app));
+} else void arrancar();

@@ -8,7 +8,9 @@
     "preview": "vite preview --host",
     "mapa": "node scripts/geojson-a-mapa.mjs",
     "servidor": "node --experimental-strip-types --no-warnings servidor/index.ts",
-    "pruebas": "node --experimental-strip-types --no-warnings pruebas/todas.ts"
+    "pruebas": "node --experimental-strip-types --no-warnings pruebas/todas.ts",
+    "fuentes": "python3 scripts/sector/fuentes.py",
+    "sector": "python3 scripts/sector/generar.py"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
