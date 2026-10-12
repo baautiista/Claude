@@ -541,3 +541,59 @@ button { transition: transform 0.12s var(--rebote), filter 0.15s, box-shadow 0.1
 .joystick { position: absolute; left: 18px; bottom: calc(118px + var(--abajo)); width: 112px; height: 112px; border-radius: 50%; background: rgba(255,255,255,0.28); border: 3px solid rgba(255,255,255,0.75); box-shadow: 0 6px 20px rgba(6,30,92,0.25); backdrop-filter: blur(4px); touch-action: none; z-index: 5; display: grid; place-items: center; }
 .joystick-bola { width: 50px; height: 50px; border-radius: 50%; background: var(--blanco); box-shadow: 0 4px 10px rgba(6,30,92,0.35); pointer-events: none; transition: transform 0.06s; }
 .con-taller .joystick, .en-interior .joystick { display: none; }
+
+/* ══ Interfaz limpia: jerarquía en tres niveles ══════════════════════════
+   Nivel 1 (siempre): perfil compacto, dinero + hora, 4 indicadores, objetivo en una línea,
+   dock de 4 botones y un único botón de cámara. Nivel 2: nombres del mapa solo cerca del
+   jugador, seleccionados o en modo información. Nivel 3: el resto, dentro de «Más» y paneles. */
+.hud { padding: calc(12px + var(--arriba)) 14px 0; align-items: center; }
+.avatar { width: 46px; height: 46px; border-width: 3px; }
+.avatar .estrella { width: 22px; height: 22px; right: -6px; bottom: -4px; font-size: 11px; border-width: 2px; }
+.perfil-datos { margin-left: -10px; padding: 0 8px 0 14px; min-width: 0; height: 18px; display: grid; align-items: center; background: rgba(6,30,92,0.6); border-width: 2px; border-radius: 0 10px 10px 0; box-shadow: none; }
+.perfil-datos .xp { width: 64px; height: 6px; margin: 0; }
+.recursos { display: block; }
+.pill.estado { height: 36px; padding: 0 12px 0 0; gap: 8px; background: rgba(6,30,92,0.72); border-width: 1.5px; }
+.pill.estado .pill.dinero { height: auto; padding: 0 0 0 4px; background: none; border: 0; box-shadow: none; backdrop-filter: none; }
+.pill.estado .sep { width: 1px; height: 18px; background: rgba(255,255,255,0.35); }
+.pill.estado .hora { font: 600 13px var(--display); opacity: 0.95; }
+.necesidades { left: 14px; top: calc(66px + var(--arriba)); gap: 6px; }
+.necesidad .anillo { width: 30px; height: 30px; }
+.necesidad .anillo::before { inset: 3px; }
+.necesidad .anillo svg { width: 15px; height: 15px; }
+.necesidad .valor { display: none; }
+.necesidad.baja .valor { display: block; font-size: 9px; line-height: 13px; margin-top: -4px; }
+
+/* Objetivo: una sola línea bajo el HUD, sin tapar el mapa ni el joystick. */
+.objetivo { left: 50%; right: auto; transform: translateX(-50%); top: calc(108px + var(--arriba)); bottom: auto; max-width: min(360px, calc(100% - 28px)); padding: 6px 14px 6px 6px; gap: 8px; border-radius: 999px; background: rgba(255,255,255,0.92); box-shadow: 0 2px 10px rgba(6,30,92,0.18); animation: none; }
+.objetivo .icono { width: 26px; height: 26px; border-radius: 50%; }
+.objetivo .texto { font: 600 12.5px/1.2 var(--texto); color: var(--marino); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+/* Cámara: un botón; sus opciones se despliegan hacia arriba. */
+.controles-mapa { top: auto; right: 14px; bottom: calc(96px + var(--abajo)); display: grid; justify-items: end; gap: 8px; }
+.controles-mapa .boton-camara { order: 2; width: 44px; height: 44px; }
+.camara-opciones { order: 1; display: none; grid-template-columns: repeat(3, 40px); gap: 8px; padding: 8px; border-radius: 18px; background: rgba(255,255,255,0.75); backdrop-filter: blur(6px); box-shadow: var(--sombra); }
+.camara-opciones.abierto { display: grid; animation: emerger 0.2s var(--rebote); }
+.camara-opciones button { width: 40px; height: 40px; }
+
+/* Dock de 4 botones, más bajo y con más aire. */
+.dock { justify-content: center; gap: 26px; padding-bottom: calc(10px + var(--abajo)); }
+.dock::before { height: 64px; background: linear-gradient(transparent, rgba(6,30,92,0.35)); }
+.dock .bola { width: 48px; height: 48px; border-width: 2px; }
+.dock .principal .bola { width: 64px; height: 64px; }
+.dock button { font-size: 11px; }
+.dock .punto { min-width: 14px; height: 14px; padding: 0; font-size: 9px; line-height: 10px; top: -1px; right: -1px; animation: none; }
+.menu-mas { position: absolute; right: 12px; bottom: calc(86px + var(--abajo)); display: none; flex-direction: column; gap: 4px; padding: 8px; min-width: 180px; border-radius: 18px; background: var(--blanco); box-shadow: 0 10px 30px rgba(6,30,92,0.3); pointer-events: auto; }
+.menu-mas.abierto { display: flex; animation: emerger 0.2s var(--rebote); }
+.opcion-mas { display: flex; align-items: center; gap: 10px; padding: 6px 10px 6px 6px; border-radius: 12px; color: var(--marino); font: 600 14px var(--display); text-shadow: none; }
+.opcion-mas:hover { background: #eef2fc; }
+.opcion-mas .bola { position: relative; width: 34px; height: 34px; border: 0; background: #eef2fc; box-shadow: none; }
+.dock .opcion-mas { display: flex; justify-items: initial; }
+
+/* Joystick solo en pantallas táctiles; discreto. */
+.joystick { width: 96px; height: 96px; left: 16px; bottom: calc(96px + var(--abajo)); background: rgba(255,255,255,0.18); border-width: 2px; box-shadow: none; }
+.joystick-bola { width: 42px; height: 42px; opacity: 0.9; }
+@media (pointer: fine) { .joystick { display: none; } }
+
+/* Nombres del mundo: más pequeños y discretos. */
+.rotulo3d.lugar { font-size: 11.5px; }
+.rotulo3d.npc, .rotulo3d.vecino { font-size: 10.5px; opacity: 0.92; }

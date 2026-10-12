@@ -226,6 +226,11 @@ export interface Edificio {
   /** Lado que da a la calle: 0 z+, 1 x+, 2 z−, 3 x−. */
   frente: number;
   semilla: number;
+  /**
+   * Caras ciegas (bit `1 << lado`): medianeras pegadas a otro edificio. En ellas no se abren
+   * huecos ni se cuelgan balcones, toldos o aparatos (nada puede quedar flotando o atravesar al vecino).
+   */
+  ciegas?: number;
 }
 
 function azar(s: number) {
@@ -461,18 +466,25 @@ function residencial(o: Obra, b: Edificio, r: () => number) {
   };
   const FH = (b.h - (b.teja ? 0 : 0.2)) / Math.max(1, b.pl);
   const H = b.h;
+  // Vuelo de molduras por lado: cero en las medianeras (no invaden al vecino).
+  const vuelo = (lado: number, v: number) => ((b.ciegas ?? 0) & (1 << lado) ? 0 : v);
+  const banda = (y0: number, y1: number, v: number, color: RGB, ao = 1, sin = "") =>
+    o.caja(Mat.Detalle, -hw - vuelo(3, v), y0, -hd - vuelo(2, v), hw + vuelo(1, v), y1, hd + vuelo(0, v), color, ao, sin);
   // Cuerpo con oclusión en la base, zócalo y cornisa.
   o.caja(e.mat, -hw, 0, -hd, hw, H, hd, e.muro, 0.62, "y+");
-  if (e.zocalo) o.caja(Mat.Detalle, -hw - 0.05, 0, -hd - 0.05, hw + 0.05, 0.85, hd + 0.05, e.zocalo, 0.7, "y+");
-  if (bloque || publico) for (let p = 1; p < b.pl; p++) o.caja(Mat.Detalle, -hw - 0.06, p * FH - 0.12, -hd - 0.06, hw + 0.06, p * FH + 0.1, hd + 0.06, e.cornisa, 1, "y+");
-  o.caja(Mat.Detalle, -hw - 0.22, H - 0.3, -hd - 0.22, hw + 0.22, H, hd + 0.22, e.cornisa);
-  if (encalada && r() < 0.4) {
+  if (e.zocalo) banda(0, 0.85, 0.05, e.zocalo, 0.7, "y+");
+  if (bloque || publico) for (let p = 1; p < b.pl; p++) banda(p * FH - 0.12, p * FH + 0.1, 0.06, e.cornisa, 1, "y+");
+  banda(H - 0.3, H, 0.22, e.cornisa);
+  const ciega = (lado: number) => !!((b.ciegas ?? 0) & (1 << lado));
+  if (encalada && r() < 0.4 && !b.ciegas) {
     // Pilastras de esquina en albero.
     const c = rgb(elegir(r, OCRES));
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) o.caja(Mat.Detalle, sx * hw - 0.25, 0.85, sz * hd - 0.25, sx * hw + 0.25, H - 0.3, sz * hd + 0.25, c, 1, "y+");
   }
   const paso = bloque ? 2.9 : 2.7;
   for (let lado = 0; lado < 4; lado++) {
+    // Medianera: pared lisa y continua, sin huecos ni piezas salientes.
+    if (ciega(lado)) continue;
     const f = new Fachada(o, lado, hw, hd);
     const L = f.largo;
     const pos = huecos(L, paso);
@@ -504,7 +516,7 @@ function residencial(o: Obra, b: Edificio, r: () => number) {
     }
   }
   // Pórtico y banderas en los edificios públicos.
-  if (publico) {
+  if (publico && !ciega(b.frente)) {
     const f = new Fachada(o, b.frente, hw, hd);
     const pw = Math.min(f.largo * 0.4, 6);
     f.caja(Mat.Detalle, -pw / 2, pw / 2, Math.min(FH, 3.6), Math.min(FH, 3.6) + 0.35, 0, 2.4, e.cornisa);
@@ -523,14 +535,15 @@ function residencial(o: Obra, b: Edificio, r: () => number) {
     const tejaC = tinte(rgb("#FFFFFF"), 0.88 + r() * 0.14);
     const largoX = b.w >= b.d;
     const alto = Math.min(b.w, b.d) * (0.28 + r() * 0.1);
-    if (largoX) o.tejado(-hw - ov, hw + ov, -hd - ov, hd + ov, H, alto, tejaC, e.muro, r() < 0.5);
+    if (largoX) o.tejado(-hw - vuelo(3, ov), hw + vuelo(1, ov), -hd - vuelo(2, ov), hd + vuelo(0, ov), H, alto, tejaC, e.muro, r() < 0.5);
     else {
       // Cumbrera a lo largo de z: giramos el sistema local 90°.
       const g = o;
       const [ca, sa] = [g.ca, g.sa];
       g.ca = -sa;
       g.sa = ca;
-      o.tejado(-hd - ov, hd + ov, -hw - ov, hw + ov, H, alto, tejaC, e.muro, r() < 0.5);
+      // En el sistema girado: x nueva = z antigua; z nueva = −x antigua.
+      o.tejado(-hd - vuelo(2, ov), hd + vuelo(0, ov), -hw - vuelo(1, ov), hw + vuelo(3, ov), H, alto, tejaC, e.muro, r() < 0.5);
       g.ca = ca;
       g.sa = sa;
     }

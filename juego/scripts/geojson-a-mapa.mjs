@@ -112,6 +112,49 @@ function rectangulo(pts) {
   return mejor;
 }
 
+/**
+ * Zona de prueba del nuevo sistema de construcción (igual que ZONA_PRUEBA en src/mundo/mundo.ts).
+ * Ahí el rectángulo de cada edificio se ajusta a su huella real en lugar de envolverla.
+ */
+const ZONA_PRUEBA = { c: [1165, 2045], r: 95 };
+
+/**
+ * Ajusta el rectángulo envolvente a la huella: cada lado entra hacia dentro mientras
+ * menos del 70 % de su borde quede apoyado sobre la huella real. Así un edificio en L o
+ * trapezoidal no proyecta esquinas sobre la calle.
+ */
+function ajustarAHuella(rc, pts) {
+  const c = Math.cos(rc.ang);
+  const s = Math.sin(rc.ang);
+  const aMundo = (u, v) => [rc.x + u * c - v * s, rc.y + u * s + v * c];
+  let [u0, u1, v0, v1] = [-rc.w / 2, rc.w / 2, -rc.d / 2, rc.d / 2];
+  const cubierto = (pa, pb) => {
+    let n = 0;
+    for (let k = 1; k < 10; k++) {
+      const t = k / 10;
+      if (dentroPoli(aMundo(pa[0] + (pb[0] - pa[0]) * t, pa[1] + (pb[1] - pa[1]) * t), pts)) n++;
+    }
+    return n / 9;
+  };
+  const paso = 0.25;
+  for (let it = 0; it < 200; it++) {
+    const lados = [
+      ["u0", cubierto([u0 + 0.05, v0], [u0 + 0.05, v1])],
+      ["u1", cubierto([u1 - 0.05, v0], [u1 - 0.05, v1])],
+      ["v0", cubierto([u0, v0 + 0.05], [u1, v0 + 0.05])],
+      ["v1", cubierto([u0, v1 - 0.05], [u1, v1 - 0.05])],
+    ].sort((a, b) => a[1] - b[1]);
+    const [lado, f] = lados[0];
+    if (f >= 0.7 || u1 - u0 < 2 || v1 - v0 < 2) break;
+    if (lado === "u0") u0 += paso;
+    else if (lado === "u1") u1 -= paso;
+    else if (lado === "v0") v0 += paso;
+    else v1 -= paso;
+  }
+  const [x, y] = aMundo((u0 + u1) / 2, (v0 + v1) / 2);
+  return { ...rc, x, y, w: u1 - u0, d: v1 - v0 };
+}
+
 const dentroPoli = (p, r) => {
   let c = false;
   for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
@@ -266,8 +309,9 @@ for (const f of features) {
       const ar = Math.abs(area(ext));
       const tipo = tipoEdificio(t, ar);
       if (tipo === null) continue;
-      const rc = rectangulo(ext);
+      let rc = rectangulo(ext);
       if (!rc || rc.w < 1 || rc.d < 1) continue;
+      if (Math.hypot(rc.x - ZONA_PRUEBA.c[0], rc.y - ZONA_PRUEBA.c[1]) < ZONA_PRUEBA.r + 20) rc = ajustarAHuella(rc, ext);
       const plantas = Number(t["building:levels"]) || 0;
       edificios.push([r1(rc.x), r1(rc.y), r1(rc.w), r1(rc.d), Math.round(rc.ang * 100) / 100, tipo, plantas]);
       continue;

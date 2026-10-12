@@ -20,13 +20,13 @@ const BLANCO = C("#F6F3EC");
 
 /** Huellas OSM sustituidas por modelos propios (centro aproximado de su rectángulo en linea.json). */
 export const SUSTITUYE_CENTRO01: P2[] = [
-  [1111.8, 2118.6], // Santuario
-  [1094.8, 2119.2], // Casa de Ruperto Toledano
+  [1111.8, 2119.3], // Santuario
+  [1095, 2119.3], // Casa de Ruperto Toledano
   [1093.4, 2135.8], // edificio verde de la esquina
   [1091.6, 2143.4], // edificio crema de cierros
-  [1119.2, 2141.2], // edificio blanco del tejado a cuatro aguas
-  [1126.2, 2124.8], // torre de ladrillo
-  [1127.1, 2129.9], // torre de ladrillo (anexo)
+  [1119.6, 2141.1], // edificio blanco del tejado a cuatro aguas
+  [1126.5, 2122.7], // torre de ladrillo
+  [1126.9, 2130], // torre de ladrillo (anexo)
   [1110.4, 2160.7], // queda dentro del edificio rosa (huella estimada)
 ];
 

@@ -228,6 +228,258 @@ function aspectoJugador(piel: string, ropa: string, id = "yo"): Aspecto {
   return { ...base, piel, ropa };
 }
 
+/* ── Zona de prueba del nuevo sistema de construcción ─────────────────── */
+
+/** Manzanas alrededor del Mercado de la Concepción: aquí rigen las reglas nuevas de colocación. */
+export const ZONA_PRUEBA = { c: [1165, 2045] as Punto, r: 95 };
+const enZonaPrueba = (x: number, y: number) => Math.hypot(x - ZONA_PRUEBA.c[0], y - ZONA_PRUEBA.c[1]) < ZONA_PRUEBA.r;
+
+/**
+ * Anchura de calzada de cada tramo. Fuera de la zona de prueba, la de su clase. Dentro, la que
+ * cabe de verdad entre las fachadas reales (medida sobre las huellas de OSM, contando el
+ * retranqueo máximo y la acera), para que calle, acera y fachada no se pisen.
+ */
+const ANCHO_TRAMO = new Map<Tramo, number>();
+const anchoDe = (t: Tramo) => ANCHO_TRAMO.get(t) ?? ANCHO_VIA[t.clase];
+function calcularAnchos() {
+  const rects = DATOS.edificios.filter(([x, y]) => enZonaPrueba(x, y) || Math.hypot(x - ZONA_PRUEBA.c[0], y - ZONA_PRUEBA.c[1]) < ZONA_PRUEBA.r + 30);
+  for (const t of TRAMOS) {
+    if (t.clase > 4 || !t.puntos.some(([x, y]) => enZonaPrueba(x, y))) continue;
+    const libres: number[] = [];
+    for (let i = 1; i < t.puntos.length; i++) {
+      const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+      const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      for (let s = 0; s <= L; s += 2) {
+        const px = a[0] + ((b[0] - a[0]) * s) / L;
+        const py = a[1] + ((b[1] - a[1]) * s) / L;
+        let d = 99;
+        for (const [x, y, w, dd, ang] of rects) {
+          if (Math.abs(x - px) > 30 || Math.abs(y - py) > 30) continue;
+          const [lx, lz] = local({ x, y, w, d: dd, ang }, px, py);
+          const gx = Math.abs(lx) - w / 2;
+          const gz = Math.abs(lz) - dd / 2;
+          if (gx < 0 && gz < 0) continue; // la calle cruza la huella: lo resolverá el validador
+          d = Math.min(d, Math.hypot(Math.max(0, gx), Math.max(0, gz)));
+        }
+        libres.push(d);
+      }
+    }
+    if (!libres.length) continue;
+    libres.sort((p, q) => p - q);
+    const p20 = libres[Math.floor(libres.length * 0.05)];
+    const media = Math.max(1.6, Math.min(ANCHO_VIA[t.clase] / 2, p20 + CORTE_MAX - ACERA));
+    ANCHO_TRAMO.set(t, media * 2);
+  }
+}
+
+/** Acera mínima entre el borde de la calzada y la fachada (m). */
+const ACERA = 1.2;
+/** Lado mínimo de un edificio tras los recortes; por debajo, no se construye. */
+const LADO_MIN = 3.0;
+/** Retranqueo máximo por cara para ganar acera (más rompería la manzana real). */
+const CORTE_MAX = 2.2;
+
+export interface InformeValidacion {
+  revisados: number;
+  recortadosCalle: number;
+  descartadosCalle: number;
+  calleAtraviesa: number;
+  solapesCorregidos: number;
+  descartadosSolape: number;
+  carasCiegas: number;
+  descartados: { x: number; y: number; motivo: string }[];
+}
+
+type Rect = { x: number; y: number; w: number; d: number; ang: number };
+const ejes = (r: Rect) => ({ ux: [Math.cos(r.ang), Math.sin(r.ang)], uz: [-Math.sin(r.ang), Math.cos(r.ang)] });
+function local(r: Rect, px: number, py: number) {
+  const dx = px - r.x;
+  const dy = py - r.y;
+  return [dx * Math.cos(r.ang) + dy * Math.sin(r.ang), -dx * Math.sin(r.ang) + dy * Math.cos(r.ang)];
+}
+function dentroRect(r: Rect, px: number, py: number, margen = 0) {
+  const [lx, lz] = local(r, px, py);
+  return Math.abs(lx) < r.w / 2 + margen && Math.abs(lz) < r.d / 2 + margen;
+}
+/** Recorta una cara (0 z+, 1 x+, 2 z−, 3 x−) hacia dentro `m` metros. */
+function recortar(r: Rect, lado: number, m: number) {
+  const { ux, uz } = ejes(r);
+  const [e, s] = lado % 2 === 0 ? [uz, lado === 0 ? 1 : -1] : [ux, lado === 1 ? 1 : -1];
+  if (lado % 2 === 0) r.d -= m;
+  else r.w -= m;
+  r.x -= (e[0] * s * m) / 2;
+  r.y -= (e[1] * s * m) / 2;
+}
+/** Puntos de muestra de una cara, a `fuera` metros de la pared. */
+function muestrasCara(r: Rect, lado: number, fuera: number, n = 5) {
+  const { ux, uz } = ejes(r);
+  const [nrm, tg, L, h] = lado % 2 === 0 ? [uz, ux, r.w, r.d / 2] : [ux, uz, r.d, r.w / 2];
+  const s = lado === 0 || lado === 1 ? 1 : -1;
+  const pts: Punto[] = [];
+  for (let i = 0; i < n; i++) {
+    const t = (i / (n - 1) - 0.5) * (L - 0.6);
+    pts.push([r.x + nrm[0] * s * (h + fuera) + tg[0] * t, r.y + nrm[1] * s * (h + fuera) + tg[1] * t]);
+  }
+  return pts;
+}
+
+/**
+ * Validador de la colocación (orden: parcela → calle → solapes → medianeras):
+ * 1. Ningún edificio pisa la calzada ni la acera: las caras que invaden se recortan hasta dejar acera.
+ * 2. Si una calle atraviesa la huella, o el recorte deja el edificio sin volumen, no se construye.
+ * 3. Los solapes entre edificios se resuelven recortando el menor; si no cabe, se descarta.
+ * 4. Las caras pegadas a otro edificio se marcan ciegas: ahí no hay ventanas, balcones ni vuelos.
+ */
+function validarEdificios(lista: EdificioDet[], enZona: (x: number, y: number) => boolean, obstaculos: Punto[][]): EdificioDet[] {
+  const inf: InformeValidacion = { revisados: 0, recortadosCalle: 0, descartadosCalle: 0, calleAtraviesa: 0, solapesCorregidos: 0, descartadosSolape: 0, carasCiegas: 0, descartados: [] };
+  const zona = lista.filter((b) => enZona(b.x, b.y) && b.estilo <= 10);
+  // Segmentos de calle cercanos (calzadas y peatonales; no senderos ni pasos).
+  const segs: { a: Punto; b: Punto; calzada: number; libre: number }[] = [];
+  for (const t of TRAMOS) {
+    // Calles de verdad (0-4). Las vías de servicio (5) de OSM son accesos a patios y garajes que
+    // cruzan manzanas: no definen alineación de fachada.
+    if (t.clase > 4) continue;
+    for (let i = 1; i < t.puntos.length; i++) {
+      const a = t.puntos[i - 1];
+      const b = t.puntos[i];
+      if (!enZona(a[0], a[1]) && !enZona(b[0], b[1]) && !enZona((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)) continue;
+      segs.push({ a, b, calzada: anchoDe(t) / 2, libre: anchoDe(t) / 2 + ACERA });
+    }
+  }
+  const fuera = new Set<EdificioDet>();
+  const descartar = (b: EdificioDet, motivo: string) => {
+    fuera.add(b);
+    inf.descartados.push({ x: Math.round(b.x), y: Math.round(b.y), motivo });
+  };
+  // 1-2. Calle y acera.
+  for (const b of zona) {
+    inf.revisados++;
+    const r: Rect = { x: b.x, y: b.y, w: b.w, d: b.d, ang: b.ang };
+    const corte = [0, 0, 0, 0];
+    /** Lo que la cara invade de calzada (no solo de acera). */
+    const invade = [0, 0, 0, 0];
+    let atraviesa = false;
+    for (const sg of segs) {
+      const L = Math.hypot(sg.b[0] - sg.a[0], sg.b[1] - sg.a[1]);
+      for (let s = 0; s <= L; s += 0.75) {
+        const px = sg.a[0] + ((sg.b[0] - sg.a[0]) * s) / L;
+        const py = sg.a[1] + ((sg.b[1] - sg.a[1]) * s) / L;
+        const [lx, lz] = local(r, px, py);
+        const gx = Math.abs(lx) - r.w / 2;
+        const gz = Math.abs(lz) - r.d / 2;
+        if (gx >= sg.libre || gz >= sg.libre) continue;
+        if (gx < 0 && gz < 0) {
+          atraviesa = true;
+          continue;
+        }
+        if (gz >= gx) {
+          const lado = lz > 0 ? 0 : 2;
+          corte[lado] = Math.max(corte[lado], sg.libre - gz);
+          invade[lado] = Math.max(invade[lado], sg.calzada - gz);
+        } else {
+          const lado = lx > 0 ? 1 : 3;
+          corte[lado] = Math.max(corte[lado], sg.libre - gx);
+          invade[lado] = Math.max(invade[lado], sg.calzada - gx);
+        }
+      }
+    }
+    if (atraviesa) {
+      inf.calleAtraviesa++;
+      descartar(b, "una calle atraviesa la huella");
+      continue;
+    }
+    if (corte.some((c) => c > 0)) {
+      // Se retranquea la fachada lo necesario para dejar acera, sin bajar del volumen mínimo;
+      // si ni así deja libre la calzada, el edificio no se construye.
+      let invadeCalzada = false;
+      // 1) Obligatorio: liberar la calzada (repartido entre caras opuestas sin bajar del mínimo).
+      for (const [l1, l2] of [[0, 2], [1, 3]] as const) {
+        const lateral = l1 === 0 ? r.d : r.w;
+        const n1 = Math.max(0, invade[l1]);
+        const n2 = Math.max(0, invade[l2]);
+        if (lateral - n1 - n2 < LADO_MIN) {
+          if (n1 + n2 > 0.05) invadeCalzada = true;
+          continue;
+        }
+        if (n1 > 0) recortar(r, l1, n1);
+        if (n2 > 0) recortar(r, l2, n2);
+        // 2) Deseable: acera, hasta el retranqueo máximo y sin bajar del mínimo.
+        for (const [l, n] of [[l1, n1], [l2, n2]] as const) {
+          const lat = l % 2 === 0 ? r.d : r.w;
+          const extra = Math.max(0, Math.min(corte[l] - n, CORTE_MAX - n, lat - LADO_MIN));
+          if (extra > 0.05) recortar(r, l, extra);
+        }
+      }
+      if (invadeCalzada) {
+        inf.descartadosCalle++;
+        descartar(b, "invade la calzada");
+        continue;
+      }
+      inf.recortadosCalle++;
+      Object.assign(b, { x: r.x, y: r.y, w: r.w, d: r.d });
+    }
+  }
+  // 3. Solapes con otros edificios y con los sectores reconstruidos.
+  const vivos = lista.filter((b) => !fuera.has(b));
+  const dentroObstaculo = (px: number, py: number) => obstaculos.some((p) => dentroPoliMapa([px, py], p));
+  for (const b of zona) {
+    if (fuera.has(b)) continue;
+    const vecinos = vivos.filter((o) => o !== b && Math.abs(o.x - b.x) < 40 && Math.abs(o.y - b.y) < 40);
+    const ocupa = (px: number, py: number) => dentroObstaculo(px, py) || vecinos.some((o) => (o.w * o.d > b.w * b.d || !enZona(o.x, o.y)) && dentroRect(o, px, py, -0.15));
+    let tocado = false;
+    for (let it = 0; it < 24; it++) {
+      let peor = -1;
+      let cuenta = 0;
+      for (let lado = 0; lado < 4; lado++) {
+        const n = muestrasCara(b, lado, -0.1).filter(([px, py]) => ocupa(px, py)).length;
+        if (n > cuenta) (cuenta = n), (peor = lado);
+      }
+      if (peor < 0) break;
+      const r: Rect = { x: b.x, y: b.y, w: b.w, d: b.d, ang: b.ang };
+      recortar(r, peor, 0.5);
+      Object.assign(b, { x: r.x, y: r.y, w: r.w, d: r.d });
+      tocado = true;
+      if (b.w < LADO_MIN || b.d < LADO_MIN) break;
+    }
+    if (b.w < LADO_MIN || b.d < LADO_MIN) {
+      inf.descartadosSolape++;
+      descartar(b, "solapa con otro edificio");
+    } else if (tocado) inf.solapesCorregidos++;
+  }
+  // 4. Medianeras: caras con otro edificio pegado.
+  const finales = lista.filter((b) => !fuera.has(b));
+  for (const b of zona) {
+    if (fuera.has(b)) continue;
+    let ciegas = 0;
+    const vecinos = finales.filter((o) => o !== b && Math.abs(o.x - b.x) < 40 && Math.abs(o.y - b.y) < 40);
+    for (let lado = 0; lado < 4; lado++) {
+      const pegadas = muestrasCara(b, lado, 0.9).filter(([px, py]) => dentroObstaculo(px, py) || vecinos.some((o) => dentroRect(o, px, py, 0.6))).length;
+      if (pegadas >= 3) ciegas |= 1 << lado;
+    }
+    b.ciegas = ciegas;
+    inf.carasCiegas += [0, 1, 2, 3].filter((l) => ciegas & (1 << l)).length;
+    // La puerta y el escaparate van a una cara abierta que dé a la calle.
+    if (ciegas & (1 << b.frente)) {
+      const abierta = [0, 1, 2, 3].find((l) => !(ciegas & (1 << l)));
+      if (abierta !== undefined) b.frente = abierta;
+      else b.tienda = false;
+    }
+  }
+  (globalThis as { __validacion?: InformeValidacion }).__validacion = inf;
+  console.info("[validación de edificios]", JSON.stringify({ ...inf, descartados: inf.descartados.length }));
+  return finales;
+}
+
+function dentroPoliMapa(p: Punto, poli: readonly Punto[]) {
+  let c = false;
+  for (let i = 0, j = poli.length - 1; i < poli.length; j = i++) {
+    const [xi, yi] = poli[i];
+    const [xj, yj] = poli[j];
+    if (yi > p[1] !== yj > p[1] && p[0] < ((xj - xi) * (p[1] - yi)) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+}
+
 interface Etiqueta {
   el: HTMLElement;
   pos: THREE.Vector3;
@@ -312,6 +564,8 @@ export class Mundo {
   private figurantes: Personaje[] = [];
   /** Vista a pie de calle detrás del personaje. */
   modoPOV = false;
+  /** Modo información: muestra todos los nombres (lugares, calles, barrios, vecinos). */
+  modoInfo = false;
   private povYaw = 0;
   private povPitch = 0.08;
   private altoAntesPOV = 110;
@@ -396,6 +650,7 @@ export class Mundo {
 
     this.construirTerreno();
     this.construirCapas();
+    calcularAnchos();
     this.construirCalles();
     this.construirEdificios();
     this.construirVegetacion();
@@ -635,7 +890,7 @@ export class Mundo {
     const altoDe = (c: number) => 0.3 + (7 - c) * 0.012;
     const anchoNodo = new Map<string, { w: number; c: number; grado: number }>();
     for (const t of TRAMOS) {
-      const w = ANCHO_VIA[t.clase];
+      const w = anchoDe(t);
       grupos[grupoDe(t.clase)].push(cinta(t.puntos, w, altoDe(t.clase)));
       if (t.clase <= 3) grupos.acera.push(cinta(t.puntos, w + 3, 0.22));
       if (t.clase <= 1 && t.largo > 30) grupos.raya.push(...rayas(t.puntos, altoDe(t.clase) + 0.02));
@@ -691,7 +946,7 @@ export class Mundo {
         for (let s = 18; s < l - 6; s += 46) {
           const nx = -(b[1] - a[1]) / l;
           const ny = (b[0] - a[0]) / l;
-          const off = ANCHO_VIA[t.clase] / 2 + 2;
+          const off = anchoDe(t) / 2 + 2;
           pts.push([a[0] + ((b[0] - a[0]) * s) / l + nx * off, a[1] + ((b[1] - a[1]) * s) / l + ny * off]);
         }
       }
@@ -750,7 +1005,7 @@ export class Mundo {
           const nx = -(b[1] - a[1]) / l;
           const ny = (b[0] - a[0]) / l;
           for (const lado of [-1, 1]) {
-            const off = (ANCHO_VIA[t.clase] / 2 + 3) * lado;
+            const off = (anchoDe(t) / 2 + 3) * lado;
             const p: Punto = [a[0] + ((b[0] - a[0]) * s) / l + nx * off, a[1] + ((b[1] - a[1]) * s) / l + ny * off];
             if (arbolado.length < 2600 && libre(p) && !enDeporte(p)) arbolado.push(p);
           }
@@ -768,9 +1023,9 @@ export class Mundo {
         const pts = t.a === n ? t.puntos : [...t.puntos].reverse();
         const q = pts[1];
         const l = Math.hypot(q[0] - c[0], q[1] - c[1]);
-        const dist = ANCHO_VIA[t.clase] / 2 + 5;
+        const dist = anchoDe(t) / 2 + 5;
         if (l < dist + 4) continue;
-        cebras.push({ p: [c[0] + ((q[0] - c[0]) * dist) / l, c[1] + ((q[1] - c[1]) * dist) / l], rot: Math.atan2(q[0] - c[0], q[1] - c[1]), w: ANCHO_VIA[t.clase] });
+        cebras.push({ p: [c[0] + ((q[0] - c[0]) * dist) / l, c[1] + ((q[1] - c[1]) * dist) / l], rot: Math.atan2(q[0] - c[0], q[1] - c[1]), w: anchoDe(t) });
       }
     }
     const rayasCebra = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.7, 3).rotateX(-Math.PI / 2), this.capaSuelo(M.mat("#FFFFFF")), cebras.length * 6);
@@ -857,8 +1112,10 @@ export class Mundo {
     for (const [x, y, w0, d0, ang, tipo, plantas] of DATOS.edificios) {
       idx++;
       if (reservado(x, y) || sustituida(x, y)) continue;
-      const w = Math.max(3.2, w0 * 0.9);
-      const d = Math.max(3.2, d0 * 0.9);
+      const prueba = enZonaPrueba(x, y);
+      // En la zona de prueba la parcela es la huella real; fuera se mantiene el sistema anterior.
+      const w = prueba ? w0 : Math.max(3.2, w0 * 0.9);
+      const d = prueba ? d0 : Math.max(3.2, d0 * 0.9);
       const r = rand();
       let pl = Math.min(9, plantas || (tipo === 1 ? 3 + Math.floor(rand() * 5) : 1 + (rand() < 0.4 ? 1 : 0)));
       let estilo: number;
@@ -874,7 +1131,9 @@ export class Mundo {
       let [bx, by, bw, bd] = [x, y, w, d];
       const RET = 2.6;
       // Ejes locales en el mapa: +x = (cos, sin), +z = (−sin, cos). El centro se aleja de la calle medio retranqueo.
-      if (frente % 2 === 0 && bd > RET + 4) {
+      if (prueba) {
+        // Sin retranqueo fijo: lo decide el validador según la calle real.
+      } else if (frente % 2 === 0 && bd > RET + 4) {
         const s = frente === 0 ? -1 : 1;
         bd -= RET;
         bx += (s * -Math.sin(ang) * RET) / 2;
@@ -887,7 +1146,7 @@ export class Mundo {
       }
       lista.push({ x: bx, y: by, w: bw, d: bd, ang, h, estilo, teja: (estilo <= 3 && rand() < 0.5) || estilo === 8, tono: Math.floor(rand() * 5), pl, tienda, frente, semilla: idx * 7919 + 17, idx });
     }
-    this.edificios = lista;
+    this.edificios = validarEdificios(lista, enZonaPrueba, this.sectoresSolidos());
     this.prepararTrozos();
     const o = new THREE.Object3D();
     const caja = new RoundedBoxGeometry(1, 1, 1, 1, 0.06);
@@ -1022,7 +1281,7 @@ export class Mundo {
       if (t.clase > 3) continue;
       for (const n of [t.a, t.b]) {
         const v = nodo.get(n) ?? { ancho: 0, grado: 0 };
-        nodo.set(n, { ancho: Math.max(v.ancho, ANCHO_VIA[t.clase]), grado: v.grado + 1 });
+        nodo.set(n, { ancho: Math.max(v.ancho, anchoDe(t)), grado: v.grado + 1 });
       }
     }
     for (const t of TRAMOS) {
@@ -1031,7 +1290,7 @@ export class Mundo {
       const ultimo = t.puntos.length - 2;
       for (let i = 0; i <= ultimo; i++) {
         const [a, b] = [t.puntos[i], t.puntos[i + 1]];
-        const seg = { a, b, clase: t.clase, ancho: ANCHO_VIA[t.clase], r0: i === 0 ? recorte(t.a) : 0, r1: i === ultimo ? recorte(t.b) : 0 };
+        const seg = { a, b, clase: t.clase, ancho: anchoDe(t), r0: i === 0 ? recorte(t.a) : 0, r1: i === ultimo ? recorte(t.b) : 0 };
         trozo((a[0] + b[0]) / 2, (a[1] + b[1]) / 2).segs.push(seg);
         // Rejilla para saber si un punto cae en alguna calzada (celdas de 20 que toca el segmento).
         const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 10));
@@ -1437,7 +1696,7 @@ export class Mundo {
     const palmas: Punto[] = [];
     for (const t of TRAMOS) {
       if (t.nombre !== "Avenida Príncipe de Asturias" || t.puntos.every((p) => p[0] < 1600)) continue;
-      const off = ANCHO_VIA[t.clase] / 2 + 4;
+      const off = anchoDe(t) / 2 + 4;
       const lado: Punto[] = t.puntos.map((p, i) => {
         const a = t.puntos[Math.max(0, i - 1)];
         const b = t.puntos[Math.min(t.puntos.length - 1, i + 1)];
@@ -1591,6 +1850,12 @@ export class Mundo {
       if (Math.abs(lx) < w / 2 && Math.abs(lz) < d / 2) return true;
     }
     return false;
+  }
+
+  /** Huellas de los sectores reconstruidos (obstáculos para el validador y las colisiones). */
+  private sectoresSolidos(): Punto[][] {
+    const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
+    return [...solidosCentro01(), ...solidosCentro02(ocupado)] as Punto[][];
   }
 
   /** Malla de una obra (una por material), con sombras. */
@@ -1832,7 +2097,7 @@ export class Mundo {
       m.t = sig;
       m.s = m.dir === 1 ? sobra : sig.largo - sobra;
     }
-    return sobreTramo(m.t, Math.max(0, Math.min(m.t.largo, m.s)), m.dir, m.lado * (ANCHO_VIA[m.t.clase] / 4 + 0.2), m.red === "pie" ? ANCHO_VIA[m.t.clase] / 2 + 1.6 : 0);
+    return sobreTramo(m.t, Math.max(0, Math.min(m.t.largo, m.s)), m.dir, m.lado * (anchoDe(m.t) / 4 + 0.2), m.red === "pie" ? anchoDe(m.t) / 2 + 1.6 : 0);
   }
 
   /** Viaje en autobús: el jugador sube y el bus recorre las calles reales hasta la parada. */
@@ -2921,7 +3186,18 @@ export class Mundo {
       const c = e.el.classList;
       if (e.el.style.display === "none") continue;
       v.copy(e.pos).project(this.camara);
+      // Nivel 2 (contextual): sin el modo información, cada nombre solo aparece cerca del jugador,
+      // si es el objetivo o si está seleccionado. Los avisos (burbujas, gestos) siempre.
+      const cerca = (m: number) => e.pos.distanceTo(this.jugador.position) < m;
+      const contextual = c.contains("meta") || c.contains("burbuja") || c.contains("emote") || c.contains("seleccionado");
+      const permitido = this.modoInfo || contextual || c.contains("zona-lejos")
+        || (c.contains("lugar") && cerca(70))
+        || (c.contains("npc") && cerca(22))
+        || (c.contains("vecino") && cerca(40))
+        || (c.contains("pin-hogar") && cerca(60))
+        || (c.contains("candado") && cerca(120));
       let ocultar = v.z > 1 || Math.abs(v.x) > 1.1 || Math.abs(v.y) > 1.1
+        || !permitido
         || (c.contains("npc") && a > 420)
         || (c.contains("vecino") && a > 900)
         || (c.contains("calle") && (a < 110 || a > 330))
@@ -2943,7 +3219,7 @@ export class Mundo {
         const h = Number(e.el.dataset.h);
         const caja: [number, number, number, number] = [x - w / 2 - 3, y - h - 3, x + w / 2 + 3, y + 3];
         // Fuera de las franjas del HUD y del dock.
-        if (!this.modoDemo && (caja[1] < 118 || caja[3] > r.height - 96) && !c.contains("meta")) ocultar = true;
+        if (!this.modoDemo && (caja[1] < 96 || caja[3] > r.height - 92) && !c.contains("meta")) ocultar = true;
         else if (ocupado.some((o) => caja[0] < o[2] && caja[2] > o[0] && caja[1] < o[3] && caja[3] > o[1])) ocultar = true;
         else ocupado.push(caja);
       }

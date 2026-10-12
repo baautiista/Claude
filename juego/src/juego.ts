@@ -32,6 +32,8 @@ export class Juego {
   private objetivoEl: HTMLButtonElement;
   private capa: HTMLElement;
   private botonMovil!: HTMLButtonElement;
+  private botonMas!: HTMLButtonElement;
+  private menuMas!: HTMLElement;
   /** Hay una hoja, diálogo o pantalla abierta: el mapa no responde a toques. */
   ocupado = false;
   /** Diálogo, minijuego o pantalla completa: el reloj se para. */
@@ -66,23 +68,28 @@ export class Juego {
     this.mundo.zonaAbierta = (z) => this.zonaAbierta(z);
     this.mundo.sincronizar(e);
     const ico = (d: string) => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-    this.capa.before(h(
-      "div", { class: "controles-mapa" },
+    // Cámara: un solo botón que despliega girar, zoom, vista a pie de calle y modo información.
+    const panelCam = h("div", { class: "camara-opciones" });
+    const botonCam = h("button", {
+      class: "relieve boton-camara",
+      "aria-label": "Cámara y vista",
+      "aria-expanded": "false",
+      onclick: () => {
+        const abierto = panelCam.classList.toggle("abierto");
+        botonCam.setAttribute("aria-expanded", String(abierto));
+      },
+      html: ico('<path d="M3 7h3l2-3h8l2 3h3v13H3z"/><circle cx="12" cy="13" r="4"/>'),
+    });
+    const alternar = (b: HTMLElement, activo: boolean) => b.classList.toggle("activo", activo);
+    panelCam.append(
       h("button", { class: "relieve", "aria-label": "Girar a la izquierda", onclick: () => this.mundo.girar(-1), html: ico('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>') }),
       h("button", { class: "relieve", "aria-label": "Girar a la derecha", onclick: () => this.mundo.girar(1), html: ico('<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>') }),
       h("button", { class: "relieve", "aria-label": "Acercar", onclick: () => this.mundo.zoom(0.75) }, "+"),
       h("button", { class: "relieve", "aria-label": "Alejar", onclick: () => this.mundo.zoom(1.33) }, "−"),
-      h("button", {
-        class: "relieve boton-pov",
-        "aria-label": "Vista a pie de calle",
-        title: "Vista a pie de calle",
-        onclick: (ev: Event) => {
-          this.mundo.alternarPOV();
-          (ev.currentTarget as HTMLElement).classList.toggle("activo", this.mundo.modoPOV);
-        },
-        html: ico('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
-      }),
-    ));
+      h("button", { class: "relieve", "aria-label": "Vista a pie de calle", title: "Vista a pie de calle", onclick: (ev: Event) => { this.mundo.alternarPOV(); alternar(ev.currentTarget as HTMLElement, this.mundo.modoPOV); }, html: ico('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>') }),
+      h("button", { class: "relieve", "aria-label": "Mostrar todos los nombres", title: "Modo información: todos los nombres del mapa", onclick: (ev: Event) => { this.mundo.modoInfo = !this.mundo.modoInfo; alternar(ev.currentTarget as HTMLElement, this.mundo.modoInfo); }, html: ico('<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>') }),
+    );
+    this.capa.before(h("div", { class: "controles-mapa" }, botonCam, panelCam));
     this.controlesLibres();
     this.conectarRed();
     this.arrancarReloj();
@@ -248,8 +255,8 @@ export class Juego {
     const emote = this.emote && Date.now() - this.emote.t < 4000 ? this.emote : null;
     con.mover(x, y, v ? v.escena.rot : this.mundo.rotJugador, anim, { nombre: this.e.nombre, ropa: this.e.ropa, piel: this.e.piel, nivel: nivel(this.e), gesto: emote?.e, gestoT: emote?.t });
     this.botonVecinos.querySelector(".punto")?.remove();
-    const n = this.sinLeer || con.remotos.length;
-    if (n) this.botonVecinos.querySelector(".bola")!.append(h("span", { class: `punto${this.sinLeer ? " rosa" : ""}` }, n));
+    if (this.sinLeer) this.botonVecinos.querySelector(".bola")!.append(h("span", { class: "punto rosa" }, this.sinLeer));
+    this.avisosMas();
   }
 
   saludar(emote: string) {
@@ -361,21 +368,40 @@ export class Juego {
 
   /* ── HUD ──────────────────────────────────────────────────────────── */
 
+  /** Dock: solo lo esencial (Mochila, Autobús, Hogar) y «Más» para el resto. */
   private barra() {
     const boton = (icono: Parameters<typeof iconoSvg>[0], texto: string, fn: () => void, principal = false) =>
       h("button", { class: principal ? "principal" : "", onclick: () => !this.mundo.andando && !this.mundo.enBus && fn(), "aria-label": texto },
-        h("span", { class: "bola relieve" }, html(iconoSvg(icono, principal ? 34 : 26))), texto);
-    this.botonMovil = boton("movil", "InfoLinense", () => abrirMovil(this));
-    this.botonVecinos = boton("gente", "Vecinos", () => abrirVecinos(this));
+        h("span", { class: "bola relieve" }, html(iconoSvg(icono, principal ? 32 : 24))), texto);
+    const cerrarMas = () => this.menuMas.classList.remove("abierto");
+    const opcion = (icono: Parameters<typeof iconoSvg>[0], texto: string, fn: () => void) =>
+      h("button", { class: "opcion-mas", onclick: () => { cerrarMas(); if (!this.mundo.andando && !this.mundo.enBus) fn(); } },
+        h("span", { class: "bola" }, html(iconoSvg(icono, 20))), h("span", { class: "texto" }, texto));
+    this.botonMovil = opcion("movil", "InfoLinense", () => abrirMovil(this));
+    this.botonVecinos = opcion("gente", "Vecinos", () => abrirVecinos(this));
+    this.menuMas = h("div", { class: "menu-mas", role: "menu" },
+      opcion("diario", "Diario", () => abrirDiario(this)),
+      this.botonMovil,
+      this.botonVecinos,
+      opcion("ajustes", "Ajustes", () => abrirMenu(this)),
+    );
+    this.botonMas = h("button", { "aria-label": "Más opciones", onclick: () => this.menuMas.classList.toggle("abierto") },
+      h("span", { class: "bola relieve" }, html('<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/></svg>')), "Más");
     return h(
       "nav", { class: "dock" },
       boton("mochila", "Mochila", () => abrirMochila(this)),
-      boton("diario", "Diario", () => abrirDiario(this)),
       boton("bus", "Autobús", () => this.abrirBus(), true),
       boton("casa", "Hogar", () => void import("./ui/hogar").then((m) => m.abrirHogar(this))),
-      this.botonMovil,
-      this.botonVecinos,
+      this.botonMas,
+      this.menuMas,
     );
+  }
+
+  /** Avisos sin leer de las opciones de «Más», sumados en su botón. */
+  private avisosMas() {
+    const n = this.menuMas.querySelectorAll(".punto").length;
+    this.botonMas.querySelector(".punto")?.remove();
+    if (n) this.botonMas.querySelector(".bola")!.append(h("span", { class: "punto" }, "•"));
   }
 
   refrescar() {
@@ -389,8 +415,8 @@ export class Juego {
     this.refrescarHud();
     const obj = historia.objetivo(e);
     this.objetivoEl.replaceChildren(
-      h("span", { class: "icono" }, html(iconoSvg("objetivo", 22))),
-      h("div", {}, h("small", {}, obj.titulo.toUpperCase()), h("span", {}, obj.texto)),
+      h("span", { class: "icono" }, html(iconoSvg("objetivo", 16))),
+      h("span", { class: "texto", title: `${obj.titulo}: ${obj.texto}` }, obj.texto),
     );
     this.objetivoEl.style.display = this.ocupado || this.mundo.enBus ? "none" : "";
     this.mundo.objetivo = obj.lugar ?? null;
@@ -398,6 +424,7 @@ export class Juego {
     const n = sinLeer(e);
     this.botonMovil.querySelector(".punto")?.remove();
     if (n > 0) this.botonMovil.querySelector(".bola")!.append(h("span", { class: "punto" }, n));
+    this.avisosMas();
     guardar(e);
   }
 
@@ -421,16 +448,16 @@ export class Juego {
       h(
         "div", { class: "perfil" },
         h("button", { class: `avatar${subeXP ? " brilla" : ""}`, "aria-label": "Tu diario", onclick: () => !this.mundo.andando && abrirDiario(this), html: retrato({ piel: e.piel, pelo: "#2B1B12", ropa: e.ropa }) }, h("span", { class: "estrella" }, n)),
-        h("div", { class: "perfil-datos" }, h("b", {}, e.nombre), h("div", { class: "xp" }, h("i", { style: `width:${Math.round(progresoNivel(e) * 100)}%` }), h("span", {}, `${e.xp ?? 0} / ${sig} XP`))),
+        h("div", { class: "perfil-datos", title: `${e.nombre} · ${e.xp ?? 0} / ${sig} XP` }, h("div", { class: "xp" }, h("i", { style: `width:${Math.round(progresoNivel(e) * 100)}%` }))),
       ),
       h("span", { class: "espacio" }),
       h(
         "div", { class: "recursos" },
-        dinero,
-        h("button", { class: `pill${e.viento === "levanteFuerte" ? " rosa" : ""}`, onclick: () => this.verTiempo(), "aria-label": "Hora y tiempo" }, h("span", { class: "reloj", html: iconoJuego("reloj", 22) }), `Día ${e.dia} · ${hora(e)}`),
-        h("span", { class: "pill fina", title: "Jugadores conectados" }, h("span", { class: "reloj", html: iconoJuego("gente", 20) }), `${con.remotos.length + 1} en línea`),
+        h("button", { class: `pill estado${e.viento === "levanteFuerte" ? " rosa" : ""}`, onclick: () => this.verTiempo(), "aria-label": "Dinero, día y hora" },
+          dinero,
+          h("span", { class: "sep" }),
+          h("span", { class: "hora" }, `Día ${e.dia} · ${hora(e)}`)),
       ),
-      h("button", { class: "ajustes relieve", "aria-label": "Ajustes", onclick: () => !this.mundo.andando && abrirMenu(this) }, html(iconoSvg("ajustes", 20))),
     );
     this.necesidadesEl.replaceChildren(
       necesidad("rayo", "Energía", e.energia), necesidad("cubiertos", "Comida", e.comida), necesidad("cara", "Ánimo", e.animo), necesidad("gente", "Gente", e.social),
