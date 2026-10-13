@@ -26,6 +26,7 @@ import * as T from "./texturas";
 import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
 import { construirCentro02, CENTRO_C02, SUSTITUYE_C02, solidosCentro02 } from "./sectores/centro02";
 import { solidosCentro01 } from "./sectores/centro01";
+import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
 import { conectarBackend } from "./ciudad/correcciones";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
@@ -655,7 +656,7 @@ export class Mundo {
   private tocables: THREE.Object3D[] = [];
   private etiquetas: Etiqueta[] = [];
   private flotantes: { el: HTMLElement; pos: THREE.Vector3; t: number }[] = [];
-  private marcador: THREE.Group;
+  private marcas: Marcadores;
   private plantas: { grupo: THREE.Group; clave: string }[] = [];
   private npcs = new Map<PersonajeId, Personaje>();
   private barca!: THREE.Group;
@@ -738,8 +739,7 @@ export class Mundo {
     this.busJugador = autobusUrbano();
     this.busJugador.visible = false;
     this.escena.add(this.busJugador);
-    this.marcador = this.crearMarcador();
-    this.escena.add(this.marcador);
+    this.marcas = new Marcadores(this.escena, this.capaEtiquetas);
     this.nubePenon = M.nube(2.2);
     this.nubePenon.position.copy(v3(PENON.x, PENON.yNorte + 120, 230));
     this.escena.add(this.nubePenon);
@@ -2396,20 +2396,6 @@ export class Mundo {
     this.tocables.push(obj);
   }
 
-  private crearMarcador() {
-    const g = new THREE.Group();
-    const m = M.mat(M.PALETA.lima, { emissive: "#6E8A00", emissiveIntensity: 0.6 });
-    const flecha = new THREE.Mesh(new THREE.ConeGeometry(2, 3.6, 4), m);
-    flecha.rotation.x = Math.PI;
-    g.add(flecha);
-    const aro = new THREE.Mesh(new THREE.TorusGeometry(5, 0.5, 6, 28), m);
-    aro.rotation.x = Math.PI / 2;
-    aro.position.y = 0.6;
-    g.add(aro);
-    g.visible = false;
-    return g;
-  }
-
   /* ── Etiquetas HTML sobre el mundo ──────────────────────────────────── */
 
   /** Chinchetas de Hogar Linense en el mapa (tus casas y las que se venden). */
@@ -2925,8 +2911,6 @@ export class Mundo {
   /* ── Selección de edificios ──────────────────────────────────────────── */
 
   private rejillaEdif = new Map<string, EdificioDet[]>();
-  private seleccion: THREE.Group | null = null;
-  private tSeleccion = 0;
 
   /** Edificio que atraviesa el rayo primero (caja orientada de cada edificio cercano a su recorrido). */
   private edificioBajo(rayo: THREE.Ray) {
@@ -2988,31 +2972,16 @@ export class Mundo {
 
   /** Contorno animado y anillo en el suelo sobre el edificio elegido. */
   seleccionar(b: EdificioDet | null) {
-    if (this.seleccion) {
-      this.escena.remove(this.seleccion);
-      this.seleccion.traverse((o) => (o as THREE.Mesh).geometry?.dispose());
-      this.seleccion = null;
+    if (!b) {
+      this.marcas.calco("seleccion", null);
+      this.marcas.marcar("seleccion", null);
+      return;
     }
-    if (!b) return;
-    const g = new THREE.Group();
+    // Calco con la huella del edificio en el suelo y un pin de interfaz sobre la cubierta.
+    const c = v3(b.x, b.y, SUELO);
     const alto = b.h + (b.teja ? Math.min(b.w, b.d) * 0.3 : 1);
-    const caja = new THREE.BoxGeometry(b.w + 0.8, alto + 0.6, b.d + 0.8);
-    caja.translate(0, (alto + 0.6) / 2, 0);
-    const bordes = new THREE.LineSegments(new THREE.EdgesGeometry(caja), new THREE.LineBasicMaterial({ color: "#C4E910", transparent: true, depthTest: false }));
-    bordes.renderOrder = 999;
-    g.add(bordes);
-    const relleno = new THREE.Mesh(caja, new THREE.MeshBasicMaterial({ color: "#C4E910", transparent: true, opacity: 0.12, depthWrite: false }));
-    g.add(relleno);
-    const r = Math.max(b.w, b.d) * 0.75 + 2;
-    const anillo = new THREE.Mesh(new THREE.RingGeometry(r, r + 0.9, 40).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: "#C4E910", transparent: true, opacity: 0.85, depthWrite: false }));
-    anillo.position.y = 0.6;
-    anillo.renderOrder = 60;
-    g.add(anillo);
-    g.position.copy(v3(b.x, b.y, SUELO));
-    g.rotation.y = -b.ang;
-    this.escena.add(g);
-    this.seleccion = g;
-    this.tSeleccion = 0;
+    this.marcas.calco("seleccion", { x: c.x, y: this.alturaSuelo(c.x, c.z) + 0.12, z: c.z, ancho: b.w + 3.2, fondo: b.d + 3.2, giro: -b.ang });
+    this.marcas.marcar("seleccion", c.clone().setY(SUELO + alto + 3));
   }
 
   private ficha(b: EdificioDet): FichaEdificio {
@@ -3328,12 +3297,7 @@ export class Mundo {
       h.scale.setScalar(0.6 + f * 1.6);
       (h.material as THREE.MeshStandardMaterial).opacity = 0.7 * (1 - f);
     }
-    this.marcador.visible = !!this.objetivo;
-    if (this.objetivo) {
-      this.marcador.position.copy(nodo3(LUGARES[this.objetivo].nodo));
-      this.marcador.children[0].position.y = 12 + Math.sin(t * 3) * 1.5;
-      this.marcador.rotation.y = t;
-    }
+    this.actualizarMarcas(dt);
     // La nube del levante sobre el Peñón.
     const nube = this.viento === "levanteFuerte" ? 1.5 : this.viento === "levante" ? 1.1 : 0;
     this.nubePenon.visible = nube > 0;
@@ -3365,16 +3329,6 @@ export class Mundo {
     for (const r of this.vecinos.values()) animar(r.g, i++);
     for (const g of this.figurantes) animar(g, i++);
 
-    if (this.seleccion) {
-      // Aparece con un pequeño rebote y luego late suave.
-      this.tSeleccion += dt;
-      const e = Math.min(1, this.tSeleccion * 4);
-      const rebote = 1 + Math.sin(e * Math.PI) * 0.12;
-      this.seleccion.scale.set(rebote, e * rebote, rebote);
-      const anillo = this.seleccion.children[2] as THREE.Mesh;
-      anillo.scale.setScalar(1 + Math.sin(this.tSeleccion * 4) * 0.04);
-      ((this.seleccion.children[1] as THREE.Mesh).material as THREE.MeshBasicMaterial).opacity = 0.08 + Math.sin(this.tSeleccion * 4) * 0.05;
-    }
     this.luz();
     viento.tiempo.value = performance.now() / 1000;
     viento.fuerza.value = this.viento === "levanteFuerte" ? 2.4 : this.viento === "levante" ? 1.5 : this.viento === "calma" ? 0.35 : 0.85;
@@ -3405,6 +3359,27 @@ export class Mundo {
     if (matLuz) matLuz.emissiveIntensity = Math.pow(1 - dia, 1.5) * 1.8;
     this.cielo.color.copy(C_HEMI_NOCHE).lerp(C_HEMI, dia);
     for (const f of this.faroles) (f as THREE.MeshStandardMaterial).emissiveIntensity = 0.25 + (1 - dia) * 2.2;
+  }
+
+  /** Marcadores gráficos: dónde estás, a dónde vas, el objetivo y lo seleccionado. */
+  private actualizarMarcas(dt: number) {
+    const m = this.marcas;
+    const suelo = (p: THREE.Vector3) => this.alturaSuelo(p.x, p.z) + 0.1;
+    if (this.objetivo) {
+      const p = nodo3(LUGARES[this.objetivo].nodo);
+      m.calco("objetivo", { x: p.x, y: suelo(p), z: p.z, ancho: 11 });
+      m.marcar("objetivo", p.setY(SUELO + 9));
+    } else {
+      m.calco("objetivo", null);
+      m.marcar("objetivo", null);
+    }
+    const j = this.jugador.position;
+    const aPie = !this.enBus && !this.modoDemo && this.jugador.visible;
+    m.calco("jugador", aPie && !this.modoPOV ? { x: j.x, y: suelo(j), z: j.z, ancho: 2.8 } : null);
+    const fin = this.camino[this.camino.length - 1];
+    m.calco("destino", aPie && fin ? { x: fin.x, y: suelo(fin), z: fin.z, ancho: 3.4 } : null);
+    const r = this.canvas.getBoundingClientRect();
+    m.actualizar(dt, this.camara, r.width, r.height, { arriba: 96, abajo: 110 }, j, this.modoDemo || this.pausado);
   }
 
   /**
