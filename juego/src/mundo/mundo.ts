@@ -632,6 +632,8 @@ export class Mundo {
   modoInfo = false;
   private povYaw = 0;
   private povPitch = 0.08;
+  /** Distancia de la cámara detrás del personaje a pie de calle (pellizco o rueda). Por debajo de 1 m, primera persona. */
+  private povDist = 3.6;
   private altoAntesPOV = 110;
   private velJug = 0;
   private cuadro = 0;
@@ -2706,6 +2708,7 @@ export class Mundo {
     } else {
       this.alto = this.altoAntesPOV;
       this.camara.near = 2;
+      this.jugador.visible = true;
     }
     this.proyeccion();
   }
@@ -2716,29 +2719,39 @@ export class Mundo {
     const fx = Math.sin(yaw);
     const fz = Math.cos(yaw);
     const ojos = 1.62 * ESCALA_PERSONAJE;
-    let atras = this.enBus ? 16 : 3.6;
+    let atras = this.enBus ? 16 : this.povDist;
+    // Primera persona: el personaje no tapa la vista.
+    const primera = !this.enBus && atras < 1;
+    if (primera) atras = 0;
+    j.visible = !primera;
     // En calles estrechas la cámara se acerca al jugador antes de meterse en una fachada.
     if (!this.enBus) {
       const px = j.position.x + CX;
       const pz = j.position.z + CY;
-      for (let d = 0.4; d <= atras; d += 0.3) {
+      for (let d = 0.4; atras > 0 && d <= atras; d += 0.3) {
         if (this.choca(px - fx * (d + 0.3), pz - fz * (d + 0.3))) {
           atras = Math.max(0.25, d - 0.2);
           break;
         }
       }
     }
-    const deseada = new THREE.Vector3(j.position.x - fx * atras, j.position.y + ojos + (this.enBus ? 5 : 0.45) + this.povPitch * 2.5, j.position.z - fz * atras);
+    // Por encima del hombro derecho: el personaje queda a un lado y no tapa la calle.
+    const hombro = this.enBus || primera ? 0 : Math.min(0.75, atras * 0.2);
+    const deseada = new THREE.Vector3(j.position.x - fx * atras - fz * hombro, j.position.y + ojos + (this.enBus ? 5 : 0.45) + this.povPitch * 2.5, j.position.z - fz * atras + fx * hombro);
     if (this.camara.position.distanceTo(deseada) > 40) this.camara.position.copy(deseada);
     else this.camara.position.lerp(deseada, 0.18);
-    this.camara.lookAt(j.position.x + fx * 6, j.position.y + ojos * 0.9 - this.povPitch * 6, j.position.z + fz * 6);
+    this.camara.lookAt(j.position.x + fx * 6 - fz * hombro, j.position.y + ojos * 0.9 - this.povPitch * 6, j.position.z + fz * 6 + fx * hombro);
     this.objetivoCam.set(j.position.x, SUELO, j.position.z);
     if (this.camara.fov !== 60 || this.camara.near !== 0.1) {
       this.camara.fov = 60;
       this.camara.near = 0.1;
-      this.camara.far = 3000;
+      this.camara.far = 1400;
       this.camara.updateProjectionMatrix();
     }
+    // Calima a pie de calle: da profundidad y oculta el final de la ciudad cargada.
+    const niebla = this.escena.fog as THREE.Fog;
+    niebla.near = 160;
+    niebla.far = 1200;
     this.tiltH.uniforms.h.value = 0;
     this.tiltV.uniforms.v.value = 0;
   }
@@ -2855,7 +2868,10 @@ export class Mundo {
 
   /** Zoom progresivo: fija una altura objetivo y la cámara llega con suavidad. */
   zoom(f: number) {
-    if (this.modoPOV) return;
+    if (this.modoPOV) {
+      this.povDist = Math.max(0, Math.min(9, this.povDist * f + (f > 1 ? 0.15 : -0.15)));
+      return;
+    }
     this.altoMeta = Math.max(18, Math.min(2600, (this.altoMeta ?? this.alto) * f));
   }
 
