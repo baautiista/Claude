@@ -3,7 +3,9 @@ import { definirModulo, type Extra } from "../modulos.ts";
 import { ErrorJuego, nivelDe, type Contexto, type Servicio } from "../servicio.ts";
 import { CATEGORIAS, MUEBLES, PINTURAS, PLANTAS_JARDIN, precioCaja, precioReventa, PRECIO_PINTURA, SUELOS } from "./catalogo.ts";
 import { azar, hashTexto, mapa } from "./datos.ts";
-import { generarPlano, habitacionEn, pasoLibre, type Plano, type TipoVivienda } from "./plano.ts";
+import { amueblar } from "./amueblar.ts";
+import { perfilDe, type Perfil } from "./perfil.ts";
+import { DE_PASO, esExterior, habitacionEn, pasoLibre, trazarPlano, type Plano, type TipoVivienda } from "./plano.ts";
 import { comprobarPuzle, generarPuzle, girar, type Puzle } from "./puzles.ts";
 
 /**
@@ -83,6 +85,8 @@ export interface InteriorDoc {
   jardin: { x: number; z: number; planta: string | null; plantado: number; regado: number; mala?: boolean; cavado?: boolean }[];
   /** Historial de reformas hechas (para encargos y valor). */
   hechas: Record<string, number>;
+  /** Gama, programa, estilo y acabados con los que se generó (los interiores antiguos no lo tienen). */
+  perfil?: Perfil;
 }
 
 /* ── Catálogo de unidades ──────────────────────────────────────────── */
@@ -159,58 +163,53 @@ export function unidad(id: string): Unidad {
 
 /* ── Interiores ───────────────────────────────────────────────────── */
 
-const NOMBRES_MUEBLES_INICIALES: Record<string, string[]> = {
-  salon: ["sofa", "mesaCentro", "muebleTele", "estanteria", "sillon"],
-  cocina: ["cocina", "frigorifico", "mesaComedor", "silla", "silla"],
-  dormitorio: ["camaDoble", "armario", "mesitaNoche"],
-  bano: ["lavabo", "inodoro", "ducha"],
-  estudio: ["escritorio", "sillaOficina", "estanteria"],
-};
+/** Perfil de una unidad (gama, programa, estilo y acabados). */
+export const perfilUnidad = (u: Unidad) => perfilDe(u);
 
-/** Plano y estado inicial de una vivienda, según su estado de conservación. */
+/**
+ * Plano, acabados y amueblado inicial de una vivienda. Todo sale de su perfil
+ * (precio, superficie, tipo, barrio y conservación): la distribución, la altura
+ * de techos, los suelos y pinturas de cada zona y los muebles colocados por reglas.
+ * La conservación añade el desgaste (pintura vieja, suelos rotos, trastos, suciedad).
+ */
 export function crearInterior(u: Unidad): InteriorDoc {
   const r = azar(u.semilla);
-  const plano = generarPlano(u.semilla, u.superficie, u.dormitorios, u.tipo);
+  const perfil = perfilDe(u);
+  const ac = perfil.acabados;
+  const plano = trazarPlano(perfil, u.superficie, u.tipo, u.semilla);
   const deterioro = (100 - u.estadoBase) / 100;
   const doc: InteriorDoc = {
     v: 1, unidad: u.id, plano, pintura: {}, pinturaVieja: {}, suelo: {}, sueloRoto: {}, muebles: [], manchas: [], basura: [], grietas: [],
     electricidad: { semilla: u.semilla + 11, resuelto: u.estadoBase > 70 },
     fontaneria: { semilla: u.semilla + 23, resuelto: u.estadoBase > 60 },
-    jardin: [], hechas: {},
+    jardin: [], hechas: {}, perfil,
   };
-  let n = 0;
-  const uid = () => `m${(n++).toString(36)}`;
+  const zona = (t: string) => (["cocina", "bano", "despensa"].includes(t) ? "humedo" : ["dormitorio", "vestidor"].includes(t) ? "noche" : "dia");
   for (const h of plano.habitaciones) {
-    const exterior = h.tipo === "patio" || h.tipo === "terraza";
-    doc.pintura[h.id] = exterior ? "#FBFAF6" : ["#F2EBDD", "#E9E2D3", "#EFE6D2", "#E6E0D8"][Math.floor(r() * 4)];
-    doc.pinturaVieja[h.id] = !exterior && r() < deterioro * 1.2;
-    doc.suelo[h.id] = exterior ? (h.tipo === "patio" ? "barro" : "terrazo") : h.tipo === "bano" || h.tipo === "cocina" ? "hidraulico" : r() < 0.5 ? "terrazo" : "barro";
-    doc.sueloRoto[h.id] = !exterior && r() < deterioro * 0.6;
-    // Muebles de partida: los de una casa vieja; algunos rotos (trastos).
-    if (!exterior) {
-      for (const tipo of NOMBRES_MUEBLES_INICIALES[h.tipo] ?? []) {
-        if (r() < 0.25) continue;
-        const def = MUEBLES[tipo];
-        for (let intento = 0; intento < 25; intento++) {
-          const rot = Math.floor(r() * 4);
-          const [w, d] = rot % 2 ? [def.d, def.w] : [def.w, def.d];
-          const x = h.x0 * 2 + Math.floor(r() * Math.max(1, (h.x1 - h.x0) * 2 - w + 1));
-          const z = h.z0 * 2 + Math.floor(r() * Math.max(1, (h.z1 - h.z0) * 2 - d + 1));
-          const m: MuebleColocado = { uid: uid(), tipo, x, z, rot, color: def.colores[Math.floor(r() * def.colores.length)], roto: r() < deterioro * 0.7 };
-          if (!errorColocacion(doc, m)) {
-            doc.muebles.push(m);
-            break;
-          }
-        }
-      }
-    }
+    const exterior = esExterior(h.tipo);
+    const z = zona(h.tipo);
+    doc.pintura[h.id] = exterior ? "#FBFAF6" : ac.pintura[z];
+    doc.suelo[h.id] = exterior ? (h.tipo === "patio" ? (perfil.gama === "alta" ? "porcelanico" : "barro") : perfil.gama === "alta" ? "porcelanico" : "terrazo")
+      : z === "humedo" ? ac.sueloHumedo : z === "noche" ? ac.sueloNoche : ac.sueloDia;
+    // Desgaste según la conservación (una vivienda de gama alta está mejor cuidada).
+    const cuidado = perfil.gama === "alta" ? 0.5 : 1;
+    doc.pinturaVieja[h.id] = !exterior && r() < deterioro * 1.2 * cuidado;
+    doc.sueloRoto[h.id] = !exterior && !DE_PASO.includes(h.tipo) && r() < deterioro * 0.6 * cuidado;
+  }
+  let n = 0;
+  // Se amuebla sobre la propia lista del documento: cada pieza se valida contra las ya puestas.
+  amueblar(plano, perfil, r, (m) => errorColocacion(doc, m as MuebleColocado), () => `m${(n++).toString(36)}`, deterioro, doc.muebles);
+  // Los trastos de las casas descuidadas (no en las de estilo antiguo, que ya los marca el amueblado).
+  if (perfil.estilo !== "antiguo") for (const m of doc.muebles) if (MUEBLES[m.tipo].capa === "suelo" && r() < deterioro * 0.35 * (perfil.gama === "alta" ? 0.3 : 1)) m.roto = true;
+  for (const h of plano.habitaciones) {
     // Suciedad, basura y grietas.
     const area = (h.x1 - h.x0) * (h.z1 - h.z0);
     const nm = Math.round(area * deterioro * 0.35);
     for (let i = 0; i < nm; i++) doc.manchas.push({ id: `s${doc.manchas.length}`, x: h.x0 + 0.4 + r() * (h.x1 - h.x0 - 0.8), z: h.z0 + 0.4 + r() * (h.z1 - h.z0 - 0.8), r: 0.3 + r() * 0.35 });
     const nb = Math.round(area * deterioro * 0.18);
     for (let i = 0; i < nb; i++) doc.basura.push({ id: `b${doc.basura.length}`, x: h.x0 + 0.3 + r() * (h.x1 - h.x0 - 0.6), z: h.z0 + 0.3 + r() * (h.z1 - h.z0 - 0.6), tipo: Math.floor(r() * 4) });
-    if (!exterior && r() < deterioro * 1.3) {
+    const exterior = esExterior(h.tipo);
+    if (!exterior && !DE_PASO.includes(h.tipo) && r() < deterioro * 1.3) {
       const lado = (["n", "s", "e", "o"] as const)[Math.floor(r() * 4)];
       const largo = lado === "n" || lado === "s" ? h.x1 - h.x0 : h.z1 - h.z0;
       const u0 = 0.4 + r() * Math.max(0.2, largo - 1.6);
@@ -225,10 +224,14 @@ export function crearInterior(u: Unidad): InteriorDoc {
       }
       doc.grietas.push({ id: `g${doc.grietas.length}`, hab: h.id, lado, u: u0, puntos });
     }
-    if (h.tipo === "patio" || h.tipo === "terraza") {
-      // Arriates del patio: casillas de tierra a lo largo de las tapias.
+    if (exterior) {
+      // Arriates del patio: casillas de tierra a lo largo de las tapias (donde no hay muebles).
       for (let x = h.x0; x < h.x1; x++) {
-        doc.jardin.push({ x, z: h.z1 - 1, planta: null, plantado: 0, regado: 0, mala: r() < deterioro });
+        const libre = !doc.muebles.some((m) => {
+          const f = huella(m);
+          return f.x0 < (x + 1) * 2 && f.x1 > x * 2 && f.z0 < h.z1 * 2 && f.z1 > (h.z1 - 1) * 2 && MUEBLES[m.tipo].capa === "suelo";
+        });
+        if (libre) doc.jardin.push({ x, z: h.z1 - 1, planta: null, plantado: 0, regado: 0, mala: r() < deterioro });
       }
     }
   }
@@ -360,6 +363,17 @@ definirModulo((s: Servicio) => {
 
   function interior(id: string): InteriorDoc {
     let doc = bd.leer<InteriorDoc>("interiores", id);
+    // Interiores del generador anterior: si nadie los ha tocado (sin dueño y sin reformas),
+    // se regeneran con el sistema por gama; si tienen dueño, conservan su plano y lo suyo
+    // y reciben el perfil para los acabados.
+    if (doc && !doc.perfil) {
+      const intacto = !titularidad(id) && !Object.keys(doc.hechas ?? {}).length;
+      if (intacto) doc = null;
+      else {
+        doc.perfil = perfilUnidad(unidad(id));
+        bd.escribir("interiores", id, doc);
+      }
+    }
     if (!doc) {
       doc = crearInterior(unidad(id));
       bd.escribir("interiores", id, doc);

@@ -264,7 +264,273 @@ const MODELOS: Record<string, Fab> = {
       bola(g, 0.06, x + 0.03, 0.42, 0.02, c);
     }
   },
+
+  /* ── Cocina por módulos (fondo real 0,62 m pegado a la pared) ───────── */
+  moduloBajo: (g, w, d, _a, c) => {
+    const z = -d / 2 + 0.31;
+    bloque(g, w - 0.01, 0.1, 0.56, 0, 0, z - 0.03, "#2B2D31", 0); // zócalo
+    bloque(g, w - 0.01, 0.76, 0.6, 0, 0.1, z, c, 0.01);
+    encimera(g, w, z);
+    // Tres cajones con tirador corrido.
+    for (let i = 0; i < 3; i++) {
+      bloque(g, w - 0.04, 0.22, 0.012, 0, 0.13 + i * 0.245, z + 0.305, shade(c, 0.97), 0.006);
+      bloque(g, w * 0.5, 0.012, 0.012, 0, 0.32 + i * 0.245, z + 0.315, matI(METAL, 0.3, { metalness: 0.7 }), 0);
+    }
+  },
+  fregadero: (g, w, d, a, c) => {
+    MODELOS.moduloBajo(g, w, d, a, c);
+    const z = -d / 2 + 0.31;
+    // Cubeta encastrada y grifo de caño alto.
+    bloque(g, w * 0.62, 0.012, 0.4, 0, 0.9, z, matI("#C8CDD3", 0.15, { metalness: 0.8 }), 0.01);
+    bloque(g, w * 0.54, 0.01, 0.32, 0, 0.905, z, matI("#8E959E", 0.2, { metalness: 0.8 }), 0.005);
+    cil(g, 0.018, 0.022, 0.3, 0, 0.91, z - 0.24, METAL);
+    const cano = cil(g, 0.012, 0.012, 0.18, 0, 1.2, z - 0.16, METAL);
+    cano.rotation.x = Math.PI / 2;
+    cano.position.set(0, 1.2, z - 0.16);
+  },
+  placa: (g, w, d, a, c) => {
+    MODELOS.moduloBajo(g, w, d, a, c);
+    const z = -d / 2 + 0.31;
+    // Placa de vitrocerámica/inducción con zonas y horno integrado.
+    bloque(g, w * 0.78, 0.008, 0.5, 0, 0.9, z, matI("#141518", 0.12, { metalness: 0.3 }), 0.004);
+    for (const [x, zz, r] of [[-0.18, -0.1, 0.11], [0.18, -0.1, 0.09], [-0.18, 0.13, 0.08], [0.18, 0.13, 0.11]] as const) {
+      const anillo = new THREE.Mesh(new THREE.RingGeometry(r - 0.012, r, 24), matI("#55595F", 0.4));
+      anillo.rotation.x = -Math.PI / 2;
+      anillo.position.set(x, 0.91, z + zz);
+      g.add(anillo);
+    }
+    bloque(g, w - 0.06, 0.5, 0.02, 0, 0.18, z + 0.3, matI("#1C1D21", 0.2, { metalness: 0.4 }), 0.01);
+    bloque(g, w - 0.18, 0.3, 0.008, 0, 0.26, z + 0.312, matI("#2D3A48", 0.05, { metalness: 0.2 }), 0);
+    // Campana extractora.
+    bloque(g, w * 0.8, 0.08, 0.5, 0, 1.6, z, matI(METAL, 0.25, { metalness: 0.8 }), 0.01);
+    bloque(g, 0.26, 0.8, 0.24, 0, 1.68, -d / 2 + 0.13, matI(METAL, 0.25, { metalness: 0.8 }), 0.01);
+  },
+  columnaHorno: (g, w, d, a, c) => {
+    const z = -d / 2 + 0.31;
+    bloque(g, w - 0.01, a, 0.6, 0, 0, z, c, 0.01);
+    bloque(g, w - 0.08, 0.58, 0.02, 0, 0.75, z + 0.3, matI("#1C1D21", 0.2, { metalness: 0.4 }), 0.01);
+    bloque(g, w - 0.2, 0.36, 0.008, 0, 0.84, z + 0.312, matI("#2D3A48", 0.05, { metalness: 0.2 }), 0);
+    bloque(g, w - 0.08, 0.38, 0.02, 0, 1.4, z + 0.3, matI("#1C1D21", 0.2, { metalness: 0.4 }), 0.01);
+    for (const y of [0.35, 1.95]) bloque(g, w * 0.5, 0.012, 0.012, 0, y, z + 0.315, matI(METAL, 0.3, { metalness: 0.7 }), 0);
+  },
+  muebleAlto: (g, w, d, _a, c) => {
+    // Colgado a 1,45 m, fondo de 35 cm, con luz bajo mueble.
+    const z = -d / 2 + 0.175;
+    bloque(g, w - 0.01, 0.7, 0.35, 0, 1.45, z, c, 0.01);
+    bloque(g, 0.012, 0.66, 0.01, 0, 1.47, z + 0.176, shade(c, 0.85), 0);
+    bloque(g, w * 0.4, 0.012, 0.012, 0, 1.5, z + 0.18, matI(METAL, 0.3, { metalness: 0.7 }), 0);
+    bloque(g, w - 0.1, 0.012, 0.03, 0, 1.44, z + 0.12, matI("#FFF4D6", 0.4, { emissive: new THREE.Color("#FFE2A8"), emissiveIntensity: 0.5 }), 0);
+  },
+  frigoAmericano: (g, w, d, a) => {
+    const z = -d / 2 + 0.36;
+    const inox = matI("#B9BEC4", 0.22, { metalness: 0.85 });
+    bloque(g, w * 0.96, a, 0.7, 0, 0, z, inox, 0.03);
+    bloque(g, 0.008, a - 0.1, 0.01, 0, 0.05, z + 0.351, matI("#6B7077", 0.3), 0);
+    for (const s of [-1, 1]) bloque(g, 0.025, 0.9, 0.04, s * 0.06, a * 0.45, z + 0.37, matI("#E3E6EA", 0.15, { metalness: 0.9 }), 0.01);
+    bloque(g, 0.16, 0.24, 0.006, -w * 0.22, a * 0.55, z + 0.352, matI("#20262E", 0.1), 0.01);
+  },
+  isla: (g, w, d, _a, c) => {
+    bloque(g, w - 0.1, 0.1, d * 0.62, 0, 0, -0.05, "#2B2D31", 0);
+    bloque(g, w - 0.1, 0.8, d * 0.66, 0, 0.1, -0.05, c, 0.01);
+    // Encimera volada para la barra.
+    bloque(g, w, 0.04, d * 0.94, 0, 0.9, 0.04, matI("#E8E4DC", 0.2), 0.008);
+    for (let i = 0; i < 3; i++) bloque(g, (w - 0.2) / 3 - 0.02, 0.7, 0.012, -w / 3 + (i * w) / 3, 0.15, -d * 0.35 - 0.06, shade(c, 0.96), 0.006);
+  },
+  taburete: (g, w, d, _a, c) => {
+    cil(g, w * 0.36, w * 0.36, 0.05, 0, 0.72, 0, c, 20);
+    cil(g, 0.02, 0.02, 0.72, 0, 0, 0, METAL);
+    const aro = new THREE.Mesh(new THREE.TorusGeometry(0.15, 0.01, 6, 20), matI(METAL, 0.3, { metalness: 0.7 }));
+    aro.rotation.x = Math.PI / 2;
+    aro.position.y = 0.3;
+    g.add(aro);
+    cil(g, 0.18, 0.2, 0.02, 0, 0, 0, METAL, 20);
+    void d;
+  },
+  mesaCocina: (g, w, d, _a, c) => {
+    bloque(g, w - 0.08, 0.04, d - 0.2, 0, 0.72, 0, c, 0.015);
+    patas(g, w - 0.08, d - 0.2, 0.72, shade(c, 0.85), 0.04, 0.05);
+  },
+
+  /* ── Baño ─────────────────────────────────────────────────────────── */
+  muebleLavabo: (g, w, d, _a, c) => {
+    const z = -d / 2 + 0.23;
+    bloque(g, w * 0.9, 0.5, 0.44, 0, 0.32, z, c, 0.02);
+    for (const s of [-1, 1]) bloque(g, w * 0.43, 0.46, 0.01, s * w * 0.225, 0.34, z + 0.22, shade(c, 0.95), 0.004);
+    bloque(g, w * 0.92, 0.06, 0.46, 0, 0.82, z, "#FFFFFF", 0.02);
+    bloque(g, w * 0.5, 0.02, 0.3, 0, 0.865, z + 0.02, matI("#E9EEF2", 0.1), 0.02);
+    cil(g, 0.014, 0.014, 0.18, 0, 0.88, z - 0.16, METAL);
+    bloque(g, w * 0.8, 0.7, 0.025, 0, 1.08, -d / 2 + 0.015, matI("#DCEBF5", 0.03, { metalness: 0.9 }), 0.01);
+    bloque(g, w * 0.82, 0.03, 0.06, 0, 1.8, -d / 2 + 0.04, matI("#FFF4D6", 0.4, { emissive: new THREE.Color("#FFE2A8"), emissiveIntensity: 0.6 }), 0.01);
+  },
+  lavaboDoble: (g, w, d, _a, c) => {
+    const z = -d / 2 + 0.25;
+    // Encimera de madera o piedra volada, dos senos sobre encimera y grifería empotrada.
+    bloque(g, w * 0.96, 0.06, 0.5, 0, 0.82, z, c, 0.01);
+    bloque(g, w * 0.96, 0.32, 0.46, 0, 0.5, z - 0.01, shade(c, 0.9), 0.01);
+    for (const s of [-1, 1]) {
+      cil(g, 0.2, 0.17, 0.12, s * w * 0.24, 0.88, z + 0.03, "#FFFFFF", 24);
+      bloque(g, 0.02, 0.12, 0.02, s * w * 0.24, 1.0, z - 0.22, METAL, 0.005);
+      bloque(g, 0.02, 0.02, 0.12, s * w * 0.24, 1.1, z - 0.17, METAL, 0.005);
+      bloque(g, w * 0.4, 0.75, 0.025, s * w * 0.24, 1.12, -d / 2 + 0.015, matI("#DCEBF5", 0.03, { metalness: 0.9 }), 0.01);
+    }
+  },
+  duchaObra: (g, w, d, a, c) => {
+    // Plato enrasado de resina, mampara fija de cristal, rociador de techo y hornacina.
+    bloque(g, w, 0.025, d, 0, 0, 0, c, 0.01);
+    const cristal = matI("#DDEFF7", 0.03, { transparent: true, opacity: 0.25, metalness: 0.2 });
+    bloque(g, w * 0.55, 1.95, 0.012, -w * 0.2, 0.025, d / 2 - 0.02, cristal, 0);
+    bloque(g, 0.02, 1.95, 0.02, w * 0.075, 0.025, d / 2 - 0.02, matI("#2B2D31", 0.3, { metalness: 0.6 }), 0);
+    bloque(g, w * 0.55, 0.02, 0.02, -w * 0.2, 1.97, d / 2 - 0.02, matI("#2B2D31", 0.3, { metalness: 0.6 }), 0);
+    cil(g, 0.15, 0.15, 0.015, -w * 0.25, Math.min(a, 2.2), -d / 2 + 0.35, matI("#2B2D31", 0.3, { metalness: 0.6 }), 24);
+    cil(g, 0.01, 0.01, 0.3, -w * 0.25, Math.min(a, 2.2), -d / 2 + 0.2, matI("#2B2D31", 0.3, { metalness: 0.6 }));
+    bloque(g, 0.5, 0.3, 0.02, w * 0.2, 1.2, -d / 2 + 0.01, matI("#C9C3B8", 0.4), 0);
+    bloque(g, 0.08, 0.2, 0.06, w * 0.12, 1.24, -d / 2 + 0.04, "#E9E2D3", 0.01);
+  },
+  baneraExenta: (g, w, d, _a, c) => {
+    // Bañera exenta de bordes redondeados con grifería de pie.
+    const cuerpo = new THREE.Mesh(new RoundedBoxGeometry(w * 0.92, 0.58, d * 0.82, 4, 0.22), matI(c, 0.2));
+    cuerpo.position.y = 0.29;
+    g.add(cuerpo);
+    bloque(g, w * 0.78, 0.04, d * 0.62, 0, 0.5, 0, matI("#CFE8F2", 0.05, { transparent: true, opacity: 0.85 }), 0.1);
+    cil(g, 0.018, 0.018, 0.95, w / 2 - 0.05, 0, 0, matI("#2B2D31", 0.3, { metalness: 0.6 }));
+    const cano = cil(g, 0.012, 0.012, 0.22, w / 2 - 0.15, 0.94, 0, matI("#2B2D31", 0.3, { metalness: 0.6 }));
+    cano.rotation.z = Math.PI / 2;
+    cano.position.set(w / 2 - 0.15, 0.94, 0);
+  },
+  toallero: (g, w, d, _a, c) => {
+    const z = -d / 2 + 0.06;
+    cil(g, 0.01, 0.01, w * 0.8, 0, 1.0, z, METAL).rotation.z = Math.PI / 2;
+    bloque(g, w * 0.5, 0.55, 0.04, 0, 0.52, z + 0.01, c, 0.02);
+  },
+
+  /* ── Dormitorio ───────────────────────────────────────────────────── */
+  camaTapizada: (g, w, d, _a, c) => {
+    // Canapé tapizado, colchón grueso, cabecero alto capitoné, nórdico y cojines.
+    bloque(g, w, 0.32, d - 0.1, 0, 0.04, 0.05, shade(c, 0.9), 0.04);
+    bloque(g, w - 0.06, 0.26, d - 0.18, 0, 0.36, 0.08, "#FBFAF6", 0.08);
+    bloque(g, w - 0.02, 0.07, d * 0.66, 0, 0.62, d * 0.15, "#F4F1EA", 0.04);
+    bloque(g, w + 0.02, 0.03, d * 0.3, 0, 0.66, d * 0.3, c, 0.015);
+    bloque(g, w + 0.3, 1.25, 0.12, 0, 0, -d / 2 + 0.06, c, 0.05);
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 2; j++) bola(g, 0.018, -w / 2 + 0.2 + (i * (w - 0.4)) / 3, 0.8 + j * 0.25, -d / 2 + 0.125, shade(c, 0.8));
+    for (const x of [-w / 4, w / 4]) bloque(g, w * 0.38, 0.2, 0.14, x, 0.66, -d / 2 + 0.3, "#FFFFFF", 0.07);
+    for (const x of [-w / 5, w / 5]) bloque(g, w * 0.26, 0.16, 0.1, x, 0.68, -d / 2 + 0.42, shade(c, 1.1), 0.05);
+  },
+  banqueta: (g, w, d, _a, c) => {
+    bloque(g, w * 0.9, 0.12, d * 0.8, 0, 0.32, 0, c, 0.04);
+    patas(g, w * 0.9, d * 0.8, 0.32, "#C9A06A", 0.035, 0.05);
+  },
+  armarioEmpotrado: (g, w, d, a, c) => {
+    // De suelo a techo, enrasado con la pared: puertas lisas con tirador de uñero.
+    const z = -d / 2 + 0.3;
+    bloque(g, w, a, 0.6, 0, 0, z, c, 0.005);
+    const n = Math.round(w / 0.5);
+    for (let i = 0; i < n; i++) {
+      const x = -w / 2 + (i + 0.5) * (w / n);
+      bloque(g, w / n - 0.008, a - 0.04, 0.01, x, 0.02, z + 0.3, shade(c, 0.98), 0.003);
+      bloque(g, 0.012, 0.3, 0.012, x + (i % 2 ? -1 : 1) * (w / n / 2 - 0.04), a * 0.45, z + 0.31, shade(c, 0.8), 0);
+    }
+  },
+  vestidor: (g, w, d, a, c) => {
+    // Módulos abiertos: barra con ropa colgada, baldas con cajas y zapatero.
+    const z = -d / 2 + 0.25;
+    for (const s of [-1, 0, 1]) bloque(g, 0.03, a, 0.5, s * (w / 2 - 0.015), 0, z, c, 0.005);
+    bloque(g, w, 0.03, 0.5, 0, a - 0.03, z, c, 0.005);
+    bloque(g, w, 0.03, 0.5, 0, 1.75, z, c, 0.005);
+    const ropa = ["#2F4A6B", "#E9E4DA", "#7E8B6A", "#9C3B32", "#2B2D31", "#C9B48C"];
+    for (const s of [-1, 1]) {
+      cil(g, 0.01, 0.01, w / 2 - 0.08, s * w / 4, 1.65, z, METAL).rotation.z = Math.PI / 2;
+      for (let k = 0; k < 6; k++) bloque(g, 0.05, 0.75 + (k % 3) * 0.1, 0.4, s * w / 4 - w / 4 + 0.12 + k * ((w / 2 - 0.24) / 5), 1.62 - (0.75 + (k % 3) * 0.1), z, ropa[(k + (s > 0 ? 2 : 0)) % ropa.length], 0.02);
+    }
+    for (const s of [-1, 1]) for (let k = 0; k < 3; k++) bloque(g, 0.22, 0.06, 0.28, s * w / 4 - 0.15 + k * 0.15, 0.08, z, ["#2B2D31", "#8A5A35", "#E9E4DA"][k], 0.02);
+  },
+
+  /* ── Salón y comedor ──────────────────────────────────────────────── */
+  sofaChaise: (g, w, d, a, c) => {
+    // Sofá de tres plazas con chaise longue a la derecha.
+    const fondo = 0.95;
+    const z = -d / 2 + fondo / 2;
+    bloque(g, w, 0.42, fondo, 0, 0.06, z, c, 0.1);
+    bloque(g, w, a - 0.06, 0.24, 0, 0.06, -d / 2 + 0.12, c, 0.1);
+    bloque(g, 0.2, 0.62, fondo, -w / 2 + 0.1, 0.06, z, c, 0.1);
+    bloque(g, 0.95, 0.42, d - fondo, w / 2 - 0.475, 0.06, -d / 2 + fondo + (d - fondo) / 2, c, 0.1);
+    for (let i = 0; i < 3; i++) bloque(g, (w - 1.2) / 3 - 0.04, 0.16, fondo - 0.3, -w / 2 + 0.25 + (i + 0.5) * ((w - 1.2) / 3), 0.48, z + 0.1, shade(c, 1.08), 0.07);
+    bloque(g, 0.85, 0.16, d - 0.35, w / 2 - 0.475, 0.48, 0.15, shade(c, 1.08), 0.07);
+    for (const [x, col] of [[-w / 2 + 0.45, "#E9E4DA"], [w / 2 - 0.7, "#C9A06A"]] as const) bloque(g, 0.4, 0.36, 0.14, x, 0.62, -d / 2 + 0.3, col, 0.08);
+    patas(g, w, d, 0.06, "#2A2C31");
+  },
+  aparador: (g, w, d, a, c) => {
+    const z = -d / 2 + 0.22;
+    bloque(g, w, a - 0.18, 0.44, 0, 0.18, z, c, 0.015);
+    for (let i = 0; i < 4; i++) bloque(g, w / 4 - 0.02, a - 0.26, 0.012, -w / 2 + (i + 0.5) * (w / 4), 0.22, z + 0.22, shade(c, 0.94), 0.005);
+    for (const s of [-1, 1]) bloque(g, 0.04, 0.18, 0.04, s * (w / 2 - 0.1), 0, z, "#2B2D31", 0.005);
+  },
+  mesaComedorGrande: (g, w, d, _a, c) => {
+    bloque(g, w - 0.1, 0.05, d - 0.16, 0, 0.72, 0, c, 0.02);
+    // Patas en trineo de madera maciza.
+    for (const s of [-1, 1]) {
+      bloque(g, 0.08, 0.72, d - 0.5, s * (w / 2 - 0.4), 0, 0, shade(c, 0.85), 0.01);
+      bloque(g, 0.1, 0.05, d - 0.4, s * (w / 2 - 0.4), 0, 0, shade(c, 0.8), 0.01);
+    }
+    bloque(g, w - 0.9, 0.06, 0.06, 0, 0.55, 0, shade(c, 0.85), 0.01);
+    // Centro de mesa.
+    cil(g, 0.2, 0.16, 0.06, 0, 0.77, 0, "#E9E4DA", 20);
+    for (let i = 0; i < 3; i++) bola(g, 0.05, -0.08 + i * 0.08, 0.86, (i % 2) * 0.04, ["#F2C230", "#7FB23E", "#E8853D"][i]);
+  },
+  sillaTapizada: (g, w, d, _a, c) => {
+    bloque(g, w * 0.84, 0.1, d * 0.82, 0, 0.42, 0.02, c, 0.04);
+    bloque(g, w * 0.84, 0.48, 0.08, 0, 0.5, -d * 0.38, c, 0.04);
+    patas(g, w * 0.84, d * 0.82, 0.42, "#6B4A2E", 0.03, 0.04);
+  },
+  plantaGrande: (g, w, _d, a, c) => {
+    // Olivo en macetero alto.
+    cil(g, w * 0.3, w * 0.24, 0.5, 0, 0, 0, c, 20);
+    cil(g, 0.04, 0.05, a - 0.9, 0, 0.5, 0, "#6E5A44", 6);
+    for (let i = 0; i < 9; i++) {
+      const ang = i * 2.39;
+      bola(g, 0.22 + (i % 3) * 0.04, Math.cos(ang) * 0.28, a - 0.4 + Math.sin(i * 1.7) * 0.2, Math.sin(ang) * 0.28, i % 2 ? "#7D8F5A" : "#94A56E");
+    }
+  },
+  cuadroGrande: (g, w, d, _a, c) => {
+    // Lienzo abstracto con marco fino.
+    bloque(g, w * 0.92, 0.95, 0.03, 0, 1.15, -d / 2 + 0.02, "#2B2D31", 0.005);
+    bloque(g, w * 0.88, 0.91, 0.01, 0, 1.17, -d / 2 + 0.04, "#F2EEE6", 0);
+    bloque(g, w * 0.5, 0.35, 0.005, -w * 0.12, 1.45, -d / 2 + 0.047, c, 0);
+    bloque(g, w * 0.3, 0.5, 0.005, w * 0.2, 1.24, -d / 2 + 0.048, shade(c, 0.6), 0);
+  },
+
+  /* ── Recibidor y servicio ─────────────────────────────────────────── */
+  consola: (g, w, d, a, c) => {
+    const z = -d / 2 + 0.17;
+    bloque(g, w - 0.1, 0.04, 0.34, 0, a - 0.04, z, c, 0.01);
+    bloque(g, w - 0.2, 0.12, 0.3, 0, a - 0.16, z, shade(c, 0.95), 0.01);
+    patas(g, w - 0.1, 0.34, a - 0.04, shade(c, 0.8), 0.03, 0.04);
+  },
+  perchero: (g, _w, _d, a, c) => {
+    cil(g, 0.02, 0.02, a, 0, 0, 0, c);
+    for (let k = 0; k < 3; k++) cil(g, 0.13 - k * 0.02, 0.16 - k * 0.02, 0.01, 0, 0, 0, c);
+    for (let k = 0; k < 4; k++) {
+      const brazo = cil(g, 0.01, 0.01, 0.16, Math.cos(k * 1.57) * 0.06, a - 0.12, Math.sin(k * 1.57) * 0.06, c);
+      brazo.rotation.z = Math.cos(k * 1.57) * 0.8;
+      brazo.rotation.x = -Math.sin(k * 1.57) * 0.8;
+    }
+    bloque(g, 0.22, 0.5, 0.12, 0.08, a - 0.75, 0.05, "#3E4A5C", 0.04);
+  },
+  estanteDespensa: (g, w, d, a, c) => {
+    const z = -d / 2 + 0.2;
+    for (const s of [-1, 1]) bloque(g, 0.03, a, 0.4, s * (w / 2 - 0.015), 0, z, c, 0.005);
+    const frascos = ["#E8853D", "#F2C230", "#B23A2E", "#7FB23E", "#E9E4DA"];
+    for (let i = 0; i < 5; i++) {
+      const y = 0.05 + i * ((a - 0.1) / 4.4);
+      bloque(g, w, 0.025, 0.4, 0, y, z, c, 0.005);
+      if (i < 4) for (let k = 0; k < 5; k++) cil(g, 0.045, 0.045, 0.14 + (k % 2) * 0.05, -w / 2 + 0.1 + k * ((w - 0.2) / 4), y + 0.025, z + ((k % 2) - 0.5) * 0.1, frascos[(k + i) % 5], 10);
+    }
+  },
 };
+
+/** Encimera con canto (piedra clara). */
+function encimera(g: THREE.Group, w: number, z: number) {
+  bloque(g, w, 0.04, 0.63, 0, 0.86, z + 0.01, matI("#E8E4DC", 0.25), 0.006);
+}
 
 /** Aclara u oscurece un color hex. */
 export function shade(c: string, f: number) {

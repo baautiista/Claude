@@ -183,7 +183,10 @@ async function jugar(e: Estado, nueva = false) {
 }
 
 window.addEventListener("mi-linea:portada", () => location.reload());
-if (new URLSearchParams(location.search).has("editor")) {
+if (new URLSearchParams(location.search).has("comparar")) {
+  // Comparación de interiores por gama (sin partida).
+  void import("./interior/comparar").then(({ iniciarComparacion }) => iniciarComparacion(app));
+} else if (new URLSearchParams(location.search).has("editor")) {
   // Editor de ciudad: revisión de los sectores generados, sin portada ni partida.
   void import("./editor/editor").then(({ iniciarEditor }) => iniciarEditor(mundo, app));
 } else void arrancar();

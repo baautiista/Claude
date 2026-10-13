@@ -1,7 +1,10 @@
 import * as THREE from "three";
 import { MUEBLES, SUELOS } from "../compartido/hogar/catalogo";
 import type { InteriorDoc, MuebleColocado } from "../compartido/hogar/hogar";
-import { habitacionEn, type Habitacion, type Lado, type Plano } from "../compartido/hogar/plano";
+import type { Acabados } from "../compartido/hogar/perfil";
+import { esExterior, esPaso, habitacionEn, type Habitacion, type Lado, type Plano, type TipoHueco } from "../compartido/hogar/plano";
+import { ACABADOS_POR_DEFECTO, altoPuerta, GROSOR, hueco as huecoPuerta, LUZ_GAMA, luminaria, panoAlicatado, rodapieYMoldura, vanoVentana, ventana } from "./acabados";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { persona } from "../mundo/modelos";
 import { matI, modeloBasura, modeloMueble, shade } from "./modelos";
 
@@ -37,9 +40,6 @@ export interface Herramienta {
 const ALTO_PARED = 2.7;
 /** ?fps=N limita los fotogramas (pruebas con varios navegadores en un equipo). */
 const LIMITE_FPS = Number(new URLSearchParams(location.search).get("fps")) || 0;
-const GROSOR = 0.12;
-const ALTO_PUERTA = 2.1;
-const VENTANA = [0.9, 2.1] as const;
 const DIRS: Record<Lado, [number, number]> = { n: [0, -1], s: [0, 1], e: [1, 0], o: [-1, 0] };
 
 /* ── Texturas de suelo (lienzo) ─────────────────────────────────────── */
@@ -115,6 +115,38 @@ function texSuelo(material: string, roto = false) {
         x.fillRect(r(i + 1) * 128, r(i + 2) * 128, 3, 3);
       }
       break;
+    case "gres":
+      // Baldosa de gres de 33 cm, juntas marcadas y tono algo irregular.
+      for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) {
+        x.fillStyle = shade(color, 0.95 + r(i * 3 + j) * 0.08);
+        x.fillRect(i * 42.7 + 1, j * 42.7 + 1, 40.7, 40.7);
+      }
+      break;
+    case "porcelanico":
+      // Gran formato: una pieza por metro, junta fina y veteado muy suave.
+      x.strokeStyle = "#00000010";
+      for (let i = 0; i < 4; i++) {
+        x.beginPath();
+        x.moveTo(r(i + 20) * 128, 0);
+        x.bezierCurveTo(r(i + 23) * 128, 50, r(i + 26) * 128, 80, r(i + 29) * 128, 128);
+        x.stroke();
+      }
+      x.strokeStyle = "#0000001E";
+      x.strokeRect(0.5, 0.5, 127, 127);
+      break;
+    case "espiga": {
+      // Parquet en espiga: tablillas a 45° alternas.
+      x.save();
+      x.translate(64, 64);
+      x.rotate(Math.PI / 4);
+      for (let i = -6; i < 6; i++) for (let j = -6; j < 6; j++) {
+        x.fillStyle = shade(color, 0.82 + r(i * 13 + j * 7 + 99) * 0.3);
+        if ((i + j) % 2 === 0) x.fillRect(i * 16 + 1, j * 16 + 1, 30, 14);
+        else x.fillRect(i * 16 + 1, j * 16 + 1, 14, 30);
+      }
+      x.restore();
+      break;
+    }
     case "cesped":
       for (let i = 0; i < 700; i++) {
         x.fillStyle = shade(color, 0.8 + r(i) * 0.4);
@@ -169,10 +201,12 @@ export class EscenaInterior {
   private gSucio = new THREE.Group();
   private gJardin = new THREE.Group();
   private gExtra = new THREE.Group();
-  readonly muebles = new Map<string, { g: THREE.Group; clave: string; m: MuebleColocado }>();
+  readonly muebles = new Map<string, { g: THREE.Group; clave: string; m: MuebleColocado; colgado?: { piezas: { o: THREE.Object3D; y: number }[]; normal: THREE.Vector2; fachada: boolean } }>();
   private manchas = new Map<string, THREE.Mesh>();
   private basuras = new Map<string, THREE.Group>();
-  private luces: { luz: THREE.PointLight; bombilla: THREE.Mesh }[] = [];
+  private luces: { luz: THREE.PointLight; bombilla: THREE.Object3D; mat: THREE.MeshStandardMaterial; intensidad: number }[] = [];
+  /** Vivienda en planta baja (rejas en las ventanas) o en altura (barandillas en las balconeras). */
+  plantaBaja = true;
   private claveCasco = "";
   private sol = new THREE.DirectionalLight("#FFF3DF", 2.2);
   private hemi = new THREE.HemisphereLight("#E9F1FF", "#B59E80", 0.9);
@@ -223,6 +257,11 @@ export class EscenaInterior {
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.02;
     this.escena.background = new THREE.Color("#1A2A4A");
+    // Entorno de interior para los reflejos (espejos, grifería, inox, cristal).
+    const pm = new THREE.PMREMGenerator(this.renderer);
+    this.escena.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+    this.escena.environmentIntensity = 0.35;
+    pm.dispose();
     this.sol.castShadow = true;
     this.sol.shadow.mapSize.set(1024, 1024);
     this.sol.shadow.bias = -0.0005;
@@ -278,6 +317,18 @@ export class EscenaInterior {
     this.dist = Math.max(13, Math.max(this.plano.ancho, this.plano.fondo) * 1.7);
   }
 
+  /** Cámara sobre una habitación (vistas de detalle y comparaciones). */
+  enfocarHabitacion(h: Habitacion, cerca = 1.45) {
+    this.libre = true;
+    this.objetivo.set((h.x0 + h.x1) / 2, 0, (h.z0 + h.z1) / 2);
+    this.dist = Math.max(5.5, Math.max(h.x1 - h.x0, h.z1 - h.z0) * cerca);
+  }
+  /** Inclinación de la cámara (rad sobre el horizonte). */
+  inclinacion = 0.95;
+  orientar(yaw: number) {
+    this.yaw = this.yawMeta = yaw;
+  }
+
   /** Fracción de la altura del lienzo tapada por un panel inferior. */
   private tapadoAbajo = 0;
   tapar(fraccion: number) {
@@ -315,6 +366,14 @@ export class EscenaInterior {
     }
   }
 
+  /** Acabados de la vivienda (los interiores antiguos usan los de por defecto). */
+  get acabados(): Acabados {
+    return this.doc?.perfil?.acabados ?? ACABADOS_POR_DEFECTO;
+  }
+  get altoTecho() {
+    return this.plano?.techo ?? ALTO_PARED;
+  }
+
   private construirCasco() {
     for (const o of [...this.casco.children]) {
       this.casco.remove(o);
@@ -324,8 +383,11 @@ export class EscenaInterior {
     this.luces = [];
     const p = this.plano;
     const doc = this.doc;
-    const huecos = new Map<string, "puerta" | "ventana" | "entrada">();
-    for (const hu of p.huecos) huecos.set(arista(hu.x, hu.z, hu.lado), hu.tipo);
+    const ac = this.acabados;
+    const techo = this.altoTecho;
+    // Huecos por arista (se ven desde las dos habitaciones); `desde` = celda en la que se apuntó.
+    const huecos = new Map<string, { tipo: TipoHueco; desde: string }>();
+    for (const hu of p.huecos) huecos.set(arista(hu.x, hu.z, hu.lado), { tipo: hu.tipo, desde: `${hu.x},${hu.z}` });
 
     // Solar de alrededor y zócalo exterior.
     const base = new THREE.Mesh(new THREE.BoxGeometry(p.ancho + 1.2, 0.3, p.fondo + 1.2), matI("#D9CFBD", 0.95));
@@ -336,43 +398,51 @@ export class EscenaInterior {
     acera.position.set(p.ancho / 2, -0.2, -2.1);
     acera.receiveShadow = true;
     this.casco.add(acera);
+    const luzGama = LUZ_GAMA[ac.luz];
 
     for (const hab of p.habitaciones) {
-      const exterior = hab.tipo === "patio" || hab.tipo === "terraza";
+      const exterior = esExterior(hab.tipo);
       const w = hab.x1 - hab.x0;
       const d = hab.z1 - hab.z0;
       // Suelo con su material.
-      const tex = texSuelo(doc.suelo[hab.id] ?? "terrazo", !!doc.sueloRoto[hab.id]).clone();
+      const nombreSuelo = doc.suelo[hab.id] ?? "terrazo";
+      const tex = texSuelo(nombreSuelo, !!doc.sueloRoto[hab.id]).clone();
       tex.needsUpdate = true;
       tex.repeat.set(w, d);
-      const suelo = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshStandardMaterial({ map: tex, roughness: doc.suelo[hab.id] === "marmol" ? 0.25 : 0.8 }));
+      const brillo = nombreSuelo === "marmol" || nombreSuelo === "porcelanico" ? 0.22 : nombreSuelo === "parquet" || nombreSuelo === "espiga" ? 0.55 : nombreSuelo === "microcemento" ? 0.45 : 0.8;
+      const suelo = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshStandardMaterial({ map: tex, roughness: brillo }));
       suelo.rotation.x = -Math.PI / 2;
       suelo.position.set(hab.x0 + w / 2, 0, hab.z0 + d / 2);
       suelo.receiveShadow = true;
       suelo.userData = { tipo: "suelo", hab: hab.id };
       this.casco.add(suelo);
-      // Techo: solo visible desde dentro (la cámara mira desde arriba).
       if (!exterior) {
-        const techo = new THREE.Mesh(new THREE.PlaneGeometry(w, d), matI("#FBFAF6", 1, { side: THREE.BackSide }));
-        techo.rotation.x = -Math.PI / 2;
-        techo.position.set(hab.x0 + w / 2, ALTO_PARED, hab.z0 + d / 2);
-        this.casco.add(techo);
-        // Lámpara de techo.
-        const bombilla = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 8), new THREE.MeshStandardMaterial({ color: "#FFF6DA", emissive: new THREE.Color("#FFD98A"), emissiveIntensity: 0 }));
-        bombilla.position.set(hab.x0 + w / 2, ALTO_PARED - 0.35, hab.z0 + d / 2);
-        const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.3, 4), matI("#2A2C31"));
-        cable.position.set(0, 0.2, 0);
-        bombilla.add(cable);
-        const luz = new THREE.PointLight("#FFD9A0", 0, Math.max(w, d) * 1.6, 1.6);
-        luz.position.copy(bombilla.position);
-        this.casco.add(bombilla, luz);
-        this.luces.push({ luz, bombilla });
+        // Techo: solo visible desde dentro (la cámara mira desde arriba).
+        const techoM = new THREE.Mesh(new THREE.PlaneGeometry(w, d), matI("#FBFAF6", 1, { side: THREE.BackSide }));
+        techoM.rotation.x = -Math.PI / 2;
+        techoM.position.set(hab.x0 + w / 2, techo, hab.z0 + d / 2);
+        this.casco.add(techoM);
+        // Luminarias según la gama; los salones y estancias grandes llevan más de un punto de luz.
+        const grande = w * d >= 18 && hab.tipo !== "pasillo";
+        const puntos: [number, number][] = hab.tipo === "pasillo" && Math.max(w, d) > 4
+          ? Array.from({ length: Math.ceil(Math.max(w, d) / 4) }, (_, k) => (w >= d ? [hab.x0 + ((k + 0.5) * w) / Math.ceil(w / 4), hab.z0 + d / 2] : [hab.x0 + w / 2, hab.z0 + ((k + 0.5) * d) / Math.ceil(d / 4)]) as [number, number])
+          : grande && ac.luz !== "bombilla" ? [[hab.x0 + w * 0.3, hab.z0 + d / 2], [hab.x0 + w * 0.7, hab.z0 + d / 2]] : [[hab.x0 + w / 2, hab.z0 + d / 2]];
+        puntos.forEach(([lx, lz], k) => {
+          const tipoLuz = ac.luz === "diseno" && (hab.tipo === "bano" || hab.tipo === "pasillo" || hab.tipo === "despensa" || hab.tipo === "vestidor") ? "plafon" : ac.luz;
+          const { g: lum, luzMat } = luminaria(tipoLuz, techo, k === 0 ? Math.min(w, d) : 0.0001, this.doc.perfil?.estilo ?? "basico");
+          lum.position.set(lx, 0, lz);
+          this.casco.add(lum);
+          const luz = new THREE.PointLight(luzGama.color, 0, Math.max(w, d) * 1.6 / puntos.length + 2, 1.6);
+          luz.position.set(lx, techo - (tipoLuz === "diseno" ? 1.1 : 0.4), lz);
+          this.casco.add(luz);
+          this.luces.push({ luz, bombilla: lum, mat: luzMat, intensidad: luzGama.intensidad / Math.sqrt(puntos.length) });
+        });
       }
       // Paredes: cada habitación pinta la cara que da hacia dentro.
       const color = exterior ? "#F4EFE4" : doc.pintura[hab.id] ?? "#EFE6D2";
       const vieja = !exterior && doc.pinturaVieja[hab.id];
       const matPared = vieja ? this.matViejo(color) : matI(color, 0.9);
-      const alto = exterior ? 1.3 : ALTO_PARED;
+      const alto = exterior ? 1.3 : techo;
       for (const lado of ["n", "s", "e", "o"] as Lado[]) {
         const horizontal = lado === "n" || lado === "s";
         const largo = horizontal ? w : d;
@@ -382,10 +452,19 @@ export class EscenaInterior {
           // ¿Hay otra habitación al otro lado? Entonces la pared es interior.
           const [dx, dz] = DIRS[lado];
           const vecina = habitacionEn(p, cx + dx, cz + dz);
-          const hueco = huecos.get(arista(cx, cz, lado));
+          const hu = huecos.get(arista(cx, cz, lado));
           // Muro entre interior y patio: si la vecina es el patio, el patio no pinta su cara (la pinta la casa).
-          if (exterior && vecina && vecina.tipo !== "patio" && vecina.tipo !== "terraza") continue;
-          this.tramoPared(hab, lado, cx, cz, alto, matPared, hueco, !vecina);
+          if (exterior && vecina && !esExterior(vecina.tipo)) continue;
+          // Puerta doble: cada celda es una mitad (izquierda o derecha según la vecina en el muro).
+          let tipoHueco: string | undefined = hu?.tipo;
+          if (tipoHueco === "doble") {
+            const [ax, az] = horizontal ? [1, 0] : [0, 1];
+            const siguiente = huecos.get(arista(cx + ax, cz + az, lado))?.tipo === "doble";
+            // El eje x local del tramo recorre la pared en sentido distinto según el lado.
+            const invertido = lado === "s" || lado === "o";
+            tipoHueco = siguiente !== invertido ? "dobleI" : "dobleD";
+          }
+          this.tramoPared(hab, lado, cx, cz, alto, matPared, tipoHueco, !vecina, hu?.desde === `${cx},${cz}`);
         }
       }
       // Grietas de esta habitación.
@@ -412,72 +491,58 @@ export class EscenaInterior {
     return new THREE.MeshStandardMaterial({ map: t, roughness: 1 });
   }
 
-  /** Un metro de pared, con puerta, ventana o macizo. La cara está en el borde de la celda, hacia dentro. */
-  private tramoPared(hab: Habitacion, lado: Lado, cx: number, cz: number, alto: number, mat: THREE.Material, hueco: string | undefined, fachada: boolean) {
+  /**
+   * Un metro de pared, con su hueco (puerta, doble, arco, ventana, abierto) o macizo, y sus
+   * acabados: rodapié, moldura, alicatado de cocina y baño. La cara está en el borde de la
+   * celda, hacia dentro. `propio`: el hueco se apuntó desde esta habitación (lleva la hoja).
+   */
+  private tramoPared(hab: Habitacion, lado: Lado, cx: number, cz: number, alto: number, mat: THREE.Material, hueco: string | undefined, fachada: boolean, propio: boolean) {
+    if (hueco === "abierto") return;
     const g = new THREE.Group();
     const [dx, dz] = DIRS[lado];
+    const ac = this.acabados;
     // Centro del borde de la celda y orientación (el eje local x recorre la pared).
     const ex = cx + 0.5 + dx * 0.5;
     const ez = cz + 0.5 + dz * 0.5;
     g.position.set(ex - dx * (GROSOR / 2), 0, ez - dz * (GROSOR / 2));
-    const pieza = (w: number, h: number, x: number, y: number, m: THREE.Material = mat) => {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, GROSOR), m);
-      b.position.set(x, y + h / 2, 0);
-      b.castShadow = fachada;
-      b.receiveShadow = true;
-      b.userData = { tipo: "pared", hab: hab.id, lado };
-      g.add(b);
-    };
-    if (hueco === "puerta" || hueco === "entrada") {
-      pieza(0.1, alto, -0.45, 0);
-      pieza(0.1, alto, 0.45, 0);
-      if (alto > ALTO_PUERTA) pieza(1, alto - ALTO_PUERTA, 0, ALTO_PUERTA);
-      // Marco de madera.
-      const marco = matI(hueco === "entrada" ? "#2E5A3C" : "#8A5A35");
-      pieza(0.06, ALTO_PUERTA, -0.37, 0, marco);
-      pieza(0.06, ALTO_PUERTA, 0.37, 0, marco);
-      pieza(0.8, 0.06, 0, ALTO_PUERTA - 0.06, marco);
-      if (hueco === "entrada") {
-        // Puerta de la calle entreabierta y felpudo.
-        const hoja = new THREE.Mesh(new THREE.BoxGeometry(0.72, ALTO_PUERTA - 0.08, 0.05), matI("#2E5A3C"));
-        hoja.position.set(-0.36, (ALTO_PUERTA - 0.08) / 2, 0);
-        const bisagra = new THREE.Group();
-        bisagra.position.set(0.36, 0, 0);
-        bisagra.rotation.y = -1.2;
-        bisagra.add(hoja);
-        g.add(bisagra);
+    const interior = alto >= 2;
+    const humeda = hab.tipo === "cocina" || hab.tipo === "bano";
+    // Alicatado de cocina y baño; zócalo de azulejo sevillano en los salones tradicionales.
+    const alic = humeda ? Math.min(ac.alicatado.alto, alto) : ac.alicatado.pieza === "sevillano" && (hab.tipo === "salon" || hab.tipo === "recibidor" || hab.tipo === "pasillo") ? 1.1 : 0;
+    const marcar = () => g.traverse((o) => {
+      if ((o as THREE.Mesh).isMesh && o.userData.esPared) o.userData = { tipo: "pared", hab: hab.id, lado };
+    });
+    if (hueco === "puerta" || hueco === "entrada" || hueco === "dobleI" || hueco === "dobleD" || hueco === "arco") {
+      huecoPuerta(g, hueco, alto, ac, propio || hueco === "entrada", mat);
+      if (hueco === "entrada" && propio) {
         const felpudo = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.02, 0.45), matI("#B08A4E", 1));
-        felpudo.position.set(0, 0.01, -0.4);
+        felpudo.position.set(0, 0.01, 0.4);
         g.add(felpudo);
       }
-    } else if (hueco === "ventana" && alto >= ALTO_PARED) {
-      pieza(1, VENTANA[0], 0, 0);
-      pieza(1, alto - VENTANA[1], 0, VENTANA[1]);
-      pieza(0.15, VENTANA[1] - VENTANA[0], -0.425, VENTANA[0]);
-      pieza(0.15, VENTANA[1] - VENTANA[0], 0.425, VENTANA[0]);
-      const cristal = new THREE.Mesh(new THREE.BoxGeometry(0.7, VENTANA[1] - VENTANA[0], 0.02), matI("#BFE0F7", 0.05, { transparent: true, opacity: 0.35, metalness: 0.3 }));
-      cristal.position.set(0, (VENTANA[0] + VENTANA[1]) / 2, 0);
-      g.add(cristal);
-      const marco = matI("#FFFFFF", 0.6);
-      pieza(0.7, 0.05, 0, VENTANA[0], marco);
-      pieza(0.04, VENTANA[1] - VENTANA[0], 0, VENTANA[0], marco);
-      // Reja andaluza por fuera en planta baja.
-      if (fachada) {
-        for (let i = -3; i <= 3; i++) {
-          const barra = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, VENTANA[1] - VENTANA[0], 5), matI("#2A2C31"));
-          barra.position.set(i * 0.1, (VENTANA[0] + VENTANA[1]) / 2, -0.12);
-          g.add(barra);
-        }
-      }
+      if (alic > 0) for (const [x0, x1] of [[-0.5, -0.4], [0.4, 0.5]]) panoAlicatado(g, x0, x1, 0, Math.min(alic, altoPuerta(ac)), ac);
+    } else if (hueco === "ventana" && interior) {
+      const v = vanoVentana(ac, hab.tipo);
+      ventana(g, alto, v, ac, hab.tipo, fachada, mat, this.plantaBaja);
+      if (alic > 0) {
+        const l = (1 - v.ancho) / 2;
+        panoAlicatado(g, -0.5, 0.5, 0, Math.min(alic, v.y0), ac);
+        if (alic > v.y0) for (const [x0, x1] of [[-0.5, -0.5 + l], [0.5 - l, 0.5]]) panoAlicatado(g, x0, x1, v.y0, Math.min(alic, v.y1), ac);
+        if (alic > v.y1) panoAlicatado(g, -0.5, 0.5, v.y1, alic, ac);
+      } else if (v.y0 > 0.2) rodapieYMoldura(g, -0.5, 0.5, ac, alto, false);
+      else rodapieYMoldura(g, -0.5, 0.5, { ...ac, rodapie: 0 }, alto, false);
     } else {
-      pieza(1, alto, 0, 0);
-      // Rodapié.
-      if (alto >= ALTO_PARED) {
-        const r = new THREE.Mesh(new THREE.BoxGeometry(1, 0.1, 0.02), matI("#D8CDB8"));
-        r.position.set(0, 0.05, GROSOR / 2 + 0.01);
-        g.add(r);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(1, alto, GROSOR), mat);
+      b.position.set(0, alto / 2, 0);
+      b.castShadow = fachada;
+      b.receiveShadow = true;
+      b.userData.esPared = true;
+      g.add(b);
+      if (interior) {
+        if (alic > 0) panoAlicatado(g, -0.5, 0.5, 0, alic, ac);
+        rodapieYMoldura(g, -0.5, 0.5, ac, alto, alic > 0.3);
       }
     }
+    marcar();
     // El eje z local apunta hacia dentro de la habitación (x local recorre la pared).
     g.rotation.y = { n: 0, s: Math.PI, o: Math.PI / 2, e: -Math.PI / 2 }[lado];
     this.casco.add(g);
@@ -520,13 +585,38 @@ export class EscenaInterior {
       this.colocarModelo(g, m);
       g.userData = { tipo: "mueble", id: m.uid };
       this.gMuebles.add(g);
-      this.muebles.set(m.uid, { g, clave, m });
+      this.muebles.set(m.uid, { g, clave, m, colgado: this.piezasColgadas(g, m) });
     }
     for (const [uid, v] of this.muebles) {
       if (vistos.has(uid)) continue;
       this.gMuebles.remove(v.g);
       this.muebles.delete(uid);
     }
+  }
+
+  /**
+   * Lo que cuelga de la pared trasera de un mueble (muebles altos, campanas, espejos, cuadros):
+   * se oculta cuando esa pared está recortada para no verlo flotando.
+   */
+  private piezasColgadas(g: THREE.Group, m: MuebleColocado) {
+    const def = MUEBLES[m.tipo];
+    const piezas: { o: THREE.Object3D; y: number }[] = [];
+    g.updateMatrixWorld(true);
+    const caja = new THREE.Box3();
+    g.traverse((o) => {
+      if (!(o as THREE.Mesh).isMesh) return;
+      caja.setFromObject(o);
+      if (def.capa === "pared" || caja.min.y - g.position.y >= 1.1) piezas.push({ o, y: caja.min.y });
+    });
+    if (!piezas.length) return undefined;
+    const lado = (["n", "e", "s", "o"] as Lado[])[m.rot];
+    const [dx, dz] = DIRS[lado];
+    const [w, d] = m.rot % 2 ? [def.d, def.w] : [def.w, def.d];
+    const cx = Math.floor((m.x + w / 2) / 2);
+    const cz = Math.floor((m.z + d / 2) / 2);
+    const borde = lado === "n" ? [cx, Math.floor(m.z / 2)] : lado === "s" ? [cx, Math.floor((m.z + d - 1) / 2)] : lado === "o" ? [Math.floor(m.x / 2), cz] : [Math.floor((m.x + w - 1) / 2), cz];
+    const fachada = !habitacionEn(this.plano, borde[0] + dx, borde[1] + dz);
+    return { piezas, normal: new THREE.Vector2(-dx, -dz), fachada };
   }
 
   /** Pone un modelo en su huella (medias celdas) y altura (encima de mesas). */
@@ -546,7 +636,7 @@ export class EscenaInterior {
   }
 
   private altoSuperficie(tipo: string) {
-    return ({ mesitaNoche: 0.5, comoda: 0.8, mesaCentro: 0.4, muebleTele: 0.5, mesaComedor: 0.78, cocina: 0.9, escritorio: 0.77, mesaPatio: 0.74 } as Record<string, number>)[tipo] ?? 0.75;
+    return ({ mesitaNoche: 0.5, comoda: 0.8, mesaCentro: 0.4, muebleTele: 0.5, mesaComedor: 0.78, cocina: 0.9, escritorio: 0.77, mesaPatio: 0.74, moduloBajo: 0.9, isla: 0.94, aparador: 0.8, consola: 0.8, mesaCocina: 0.76, mesaComedorGrande: 0.77 } as Record<string, number>)[tipo] ?? 0.75;
   }
 
   private sincronizarSuciedad() {
@@ -646,9 +736,9 @@ export class EscenaInterior {
     this.hemi.color.set(dia > 0.2 ? "#E9F1FF" : "#6E7FAF");
     this.escena.background = new THREE.Color(dia > 0.2 ? "#2B4C80" : "#0E1730");
     const encendidas = this.doc?.electricidad.resuelto && dia < 0.55;
-    for (const { luz, bombilla } of this.luces) {
-      luz.intensity = encendidas ? 2.4 : 0;
-      (bombilla.material as THREE.MeshStandardMaterial).emissiveIntensity = encendidas ? 2 : 0;
+    for (const { luz, mat, intensidad } of this.luces) {
+      luz.intensity = encendidas ? intensidad : 0;
+      mat.emissiveIntensity = encendidas ? 2 : 0;
     }
     for (const { g } of this.muebles.values()) g.traverse((m) => {
       if (m.name === "pantallaLuz") ((m as THREE.Mesh).material as THREE.MeshStandardMaterial).emissiveIntensity = encendidas ? 0.8 : 0;
@@ -682,7 +772,7 @@ export class EscenaInterior {
     if (ha === hb) return true;
     const lado: Lado = cb[0] > ca[0] ? "e" : cb[0] < ca[0] ? "o" : cb[1] > ca[1] ? "s" : "n";
     const k = arista(ca[0], ca[1], lado);
-    return this.plano.huecos.some((h) => h.tipo === "puerta" && arista(h.x, h.z, h.lado) === k);
+    return this.plano.huecos.some((h) => esPaso(h.tipo) && arista(h.x, h.z, h.lado) === k);
   }
 
   ruta(destino: THREE.Vector2) {
@@ -1074,7 +1164,7 @@ export class EscenaInterior {
     // Cámara: sigue al jugador salvo que se haya movido a mano.
     if (!this.libre) this.objetivo.lerp(new THREE.Vector3(this.pos.x, 0, this.pos.y), Math.min(1, dt * 3));
     this.yaw += (this.yawMeta - this.yaw) * Math.min(1, dt * 6);
-    const inclinacion = 0.95;
+    const inclinacion = this.inclinacion;
     const cam = new THREE.Vector3(
       this.objetivo.x + Math.sin(this.yaw) * Math.cos(inclinacion) * this.dist,
       Math.sin(inclinacion) * this.dist,
@@ -1089,6 +1179,13 @@ export class EscenaInterior {
     for (const p of this.paredes) {
       const meta = p.normal.dot(vista) > 0.3 ? 0.12 : p.fachada ? 1 : this.tabiques;
       p.mesh.scale.y += (meta - p.mesh.scale.y) * Math.min(1, dt * 8);
+    }
+    // Lo colgado de una pared recortada se esconde con ella.
+    const techo = this.altoTecho;
+    for (const v of this.muebles.values()) {
+      if (!v.colgado) continue;
+      const corte = v.colgado.normal.dot(vista) > 0.3 ? 0.12 : v.colgado.fachada ? 1 : this.tabiques;
+      for (const p of v.colgado.piezas) p.o.visible = p.y < corte * techo - 0.05;
     }
     // Las lámparas de techo solo se ven con los tabiques enteros (si no, flotan).
     for (const l of this.luces) l.bombilla.visible = this.tabiques > 0.5;

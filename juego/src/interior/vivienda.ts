@@ -47,6 +47,7 @@ export class Vivienda {
     raiz.querySelector(".capa3d")!.after(marco);
     this.escena = new EscenaInterior(marco);
     this.escena.aspecto(j.e.ropa, j.e.piel);
+    this.escena.plantaBaja = unidad.tipo === "casa" || unidad.planta === 0;
     this.escena.cargar(interior);
     this.escena.aplicarHora((j.e.minuto % 1440) / 60);
     this.escena.onTocar = (t) => this.tocar(t);

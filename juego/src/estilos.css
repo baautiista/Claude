@@ -658,3 +658,13 @@ body.modo-editor #app { max-width: none; }
 .marca-pin.borde .marca-flecha::after { content: ""; position: absolute; right: -2px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-right: 0; border-left: 11px solid var(--lima); filter: drop-shadow(0 1px 1px rgba(6,30,92,0.4)); }
 .marca-pin.borde .marca-dist { display: block; position: absolute; left: -30px; top: 23px; width: 60px; text-align: center; font: 700 11px var(--display); color: var(--blanco); text-shadow: 0 1px 2px rgba(6,30,92,0.9); }
 @keyframes marcaPulso { 0% { transform: scale(0.7); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
+
+/* Comparación de viviendas por gama */
+.modo-comparar .portada, .modo-comparar .capa3d:not(.capa-interior) { display: none; }
+.comparar { position: fixed; inset: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; background: var(--marino); z-index: 50; }
+.comparar-col { position: relative; display: flex; flex-direction: column; min-height: 0; }
+.comparar-col header { display: grid; gap: 2px; padding: 10px 14px; background: var(--azul, #1F5EFF); color: #fff; font: 500 13px var(--texto, Inter, system-ui, sans-serif); }
+.comparar-col header b { font: 700 22px var(--display); }
+.comparar-col header .etiqueta { justify-self: start; background: var(--lima); color: var(--marino); padding: 2px 8px; border-radius: 6px; font: 700 11px var(--display); letter-spacing: 0.05em; }
+.comparar-marco { position: relative; flex: 1; min-height: 0; }
+.comparar-marco canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }

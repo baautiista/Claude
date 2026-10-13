@@ -6,6 +6,7 @@ import { fase1 } from "./fase1.ts";
 import { fase2 } from "./fase2.ts";
 import { ciudad, EDITOR_PRUEBA } from "./ciudad.ts";
 import { Servidor } from "./utilidades.ts";
+import { viviendas } from "./viviendas.ts";
 
 process.env.EDITORES = EDITOR_PRUEBA;
 const srv = new Servidor();
@@ -15,6 +16,7 @@ try {
   informes.push(await fase1(srv));
   informes.push(await fase2(srv));
   informes.push(await ciudad(srv));
+  informes.push(await viviendas());
 } finally {
   await srv.parar();
   srv.limpiar();
