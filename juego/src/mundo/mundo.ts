@@ -211,7 +211,37 @@ type P2Lista = { t: string; p: Punto[] };
 type Seccion = "convencional" | "acera_estrecha" | "plataforma" | "peatonal";
 const SECCION = new Map<Tramo, Seccion>();
 const ACERA_TRAMO = new Map<Tramo, number>();
-const anchosReales = import.meta.glob<{ tramos: Record<number, [number, number]> }>("../datos/ciudad/anchos.json", { eager: true, import: "default" });
+/** Desplazamiento del centro de la calle respecto al eje de OSM (hacia la normal (−dy, dx)). */
+const DESPLAZ = new Map<Tramo, number>();
+const ejesCache = new WeakMap<Tramo, Punto[]>();
+/** Eje por el que se dibuja y circula cada calle: el de OSM, centrado en el corredor libre. */
+function eje(t: Tramo): Punto[] {
+  const off = DESPLAZ.get(t) ?? 0;
+  if (Math.abs(off) < 0.05) return t.puntos as Punto[];
+  let e = ejesCache.get(t);
+  if (e) return e;
+  const p = t.puntos;
+  const nor = (a: Punto, b: Punto): Punto => {
+    const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+    return [-(b[1] - a[1]) / l, (b[0] - a[0]) / l];
+  };
+  e = p.map((q, i) => {
+    const n0 = i > 0 ? nor(p[i - 1], q) : null;
+    const n1 = i < p.length - 1 ? nor(q, p[i + 1]) : null;
+    let nx = (n0?.[0] ?? 0) + (n1?.[0] ?? 0);
+    let ny = (n0?.[1] ?? 0) + (n1?.[1] ?? 0);
+    const l = Math.hypot(nx, ny) || 1;
+    nx /= l;
+    ny /= l;
+    // Inglete: en los giros el desplazamiento se alarga para mantener el ancho (con tope).
+    const ref = n0 ?? n1!;
+    const k = 1 / Math.max(0.5, nx * ref[0] + ny * ref[1]);
+    return [q[0] + nx * off * k, q[1] + ny * off * k] as Punto;
+  });
+  ejesCache.set(t, e);
+  return e;
+}
+const anchosReales = import.meta.glob<{ tramos: Record<number, [number, number, number]> }>("../datos/ciudad/anchos.json", { eager: true, import: "default" });
 const PUERTO_CENTRO: Punto = (() => {
   const r = DATOS.puerto.flat();
   return [r.reduce((s, p) => s + p[0], 0) / r.length, r.reduce((s, p) => s + p[1], 0) / r.length];
@@ -289,7 +319,7 @@ function calcularAnchos() {
     if (!libres.length) continue;
     libres.sort((p, q) => p - q);
     const p20 = libres[Math.floor(libres.length * 0.05)];
-    const media = Math.max(1.6, Math.min(ANCHO_VIA[t.clase] / 2, p20 + CORTE_MAX - ACERA));
+    const media = Math.max(1.8, Math.min(ANCHO_VIA[t.clase] / 2, p20 + CORTE_MAX - ACERA));
     ANCHO_TRAMO.set(t, media * 2);
   }
   // Calles junto a manzanas generadas: sección según el ancho libre real hasta las fachadas
@@ -297,26 +327,26 @@ function calcularAnchos() {
   const reales = Object.values(anchosReales)[0]?.tramos ?? {};
   TRAMOS.forEach((t, i) => {
     const r = reales[i];
-    if (!r || t.clase > 4) return;
-    const [d, tipo] = r;
-    const nominal = ANCHO_VIA[t.clase] / 2;
-    if (t.clase === 4 || tipo === 2) {
+    if (!r || t.clase > 5) return;
+    // Corredor libre entre fachadas a cada lado del eje (izquierda = normal (−dy, dx) de a→b).
+    const [di, dd, tipo] = r;
+    const W = di + dd;
+    const nominal = ANCHO_VIA[t.clase];
+    // La calle se centra en el corredor real (el eje de OSM no siempre va por el medio).
+    DESPLAZ.set(t, Math.max(-6, Math.min(6, (di - dd) / 2)));
+    // Peatonales (OSM) y callejones sin sitio para un carril y dos aceras mínimas: adoquín de fachada a fachada.
+    if (t.clase === 4 || tipo === 2 || W < 4.6) {
       SECCION.set(t, "peatonal");
-      ANCHO_TRAMO.set(t, 2 * Math.min(nominal, Math.max(0.35, d - 0.08)));
-    } else if (tipo === 1) {
-      SECCION.set(t, "plataforma");
-      ANCHO_TRAMO.set(t, 2 * Math.min(nominal + 1.5, Math.max(0.35, d - 0.08)));
-    } else if (d >= nominal + 1.5) {
-      SECCION.set(t, "convencional");
-    } else if (d - 0.6 >= 1.6) {
-      const calzada = Math.min(nominal, Math.max(1.6, d - 1.5));
-      SECCION.set(t, "acera_estrecha");
-      ANCHO_TRAMO.set(t, 2 * calzada);
-      ACERA_TRAMO.set(t, Math.max(0.6, Math.min(1.5, d - calzada - 0.08)));
-    } else {
-      SECCION.set(t, "plataforma");
-      ANCHO_TRAMO.set(t, 2 * Math.max(0.35, d - 0.08));
+      ANCHO_TRAMO.set(t, Math.max(0.7, Math.min(nominal, W - 0.1)));
+      return;
     }
+    // Calzada y acera a cada lado: primero un carril y aceras de 1,5 m; con más sitio, más calzada
+    // (hasta la de su clase) y aceras hasta 2,5 m.
+    const calzada = Math.max(3.0, Math.min(nominal, W - 3.0));
+    const acera = Math.max(0.8, Math.min(2.5, (W - calzada) / 2 - 0.05));
+    SECCION.set(t, acera >= 1.5 ? "convencional" : "acera_estrecha");
+    ANCHO_TRAMO.set(t, calzada);
+    ACERA_TRAMO.set(t, acera);
   });
 }
 
@@ -335,6 +365,14 @@ const CONSERVADOS = () => edificiosConservados(DATOS.edificios.map(([x, y, w, d,
 
 /** Acera mínima entre el borde de la calzada y la fachada (m). */
 const ACERA = 1.2;
+/** Nivel único del viario (calzada, bordillo, acera, peatonales): nada de escalones. */
+const ALTO_CALLE = SUELO + 0.15;
+/** ¿Circulan coches por el tramo? Calles rodadas con calzada de al menos 3,6 m (ni peatonales ni plataforma única). */
+const esCalzada = (t: Tramo) => t.clase <= 3 && SECCION.get(t) !== "peatonal" && SECCION.get(t) !== "plataforma" && anchoDe(t) >= 3.0;
+/** ¿Lleva calzada con bordillo y aceras? Calles rodadas y vías de servicio medidas (no las peatonales). */
+const conAceras = (t: Tramo) => (t.clase <= 3 || (t.clase === 5 && DESPLAZ.has(t))) && SECCION.get(t) !== "peatonal" && anchoDe(t) >= 3.0;
+/** Ancho de la acera de cada lado (m). */
+const aceraDe = (t: Tramo) => ACERA_TRAMO.get(t) ?? (t.clase <= 1 ? 2.6 : t.clase <= 2 ? 2.0 : 1.6);
 /** Lado mínimo de un edificio tras los recortes; por debajo, no se construye. */
 const LADO_MIN = 3.0;
 /** Retranqueo máximo por cara para ganar acera (más rompería la manzana real). */
@@ -652,6 +690,8 @@ export class Mundo {
   private solidos = new Map<string, ({ r: [number, number, number, number, number] } | { p: Punto[] })[]>();
   private tmpV = new THREE.Vector3();
   private camino: THREE.Vector3[] = [];
+  /** Última posición de cada coche (x, y del mapa y rumbo), para las distancias y los choques. */
+  private posCoches: [number, number, number][] = [];
   private alLlegar: (() => void) | null = null;
   private tocables: THREE.Object3D[] = [];
   private etiquetas: Etiqueta[] = [];
@@ -957,47 +997,54 @@ export class Mundo {
   /* ── Calles reales convertidas en caminos ───────────────────────────── */
 
   private construirCalles() {
-    const grupos: Record<string, THREE.BufferGeometry[]> = { acera: [], asfalto: [], peatonal: [], sendero: [], pista: [], raya: [] };
-    const grupoDe = (c: number) => (c <= 3 || c === 5 ? "asfalto" : c === 4 ? "peatonal" : c === 6 ? "sendero" : "pista");
-    const altoDe = (c: number) => 0.3 + (7 - c) * 0.012;
-    const anchoNodo = new Map<string, { w: number; c: number; grado: number }>();
+    // Todo el viario a un mismo nivel (ALTO_CALLE): acera, bordillo pintado y calzada son capas
+    // planas superpuestas; el orden de dibujo decide qué se ve (la calzada tapa a la acera en los
+    // cruces). Así no hay escalones, ni trozos de acera sueltos, ni discos en los cruces.
+    const grupos: Record<string, THREE.BufferGeometry[]> = { acera: [], bordillo: [], asfalto: [], peatonal: [], sendero: [], pista: [], raya: [] };
+    const y = ALTO_CALLE;
+    const anchoNodo = new Map<string, { w: number; c: number; grado: number; peatonal: boolean }>();
     for (const t of TRAMOS) {
       const w = anchoDe(t);
-      grupos[grupoDe(t.clase)].push(cinta(t.puntos, w, altoDe(t.clase)));
       const sec = SECCION.get(t);
-      if (sec === "plataforma") grupos.peatonal.push(cinta(t.puntos, w + 0.02, altoDe(4) + 0.005));
-      else if (t.clase <= 3) grupos.acera.push(cinta(t.puntos, w + 2 * (ACERA_TRAMO.get(t) ?? 1.5), 0.22));
-      if (t.clase <= 1 && t.largo > 30) grupos.raya.push(...rayas(t.puntos, altoDe(t.clase) + 0.02));
+      if (conAceras(t)) {
+        // Calle: calzada de asfalto, bordillo y acera a cada lado.
+        const acera = aceraDe(t);
+        grupos.acera.push(cinta(eje(t), w + 2 * acera, y));
+        grupos.bordillo.push(cinta(eje(t), w + 0.36, y));
+        grupos.asfalto.push(cinta(eje(t), w, y));
+        if (t.clase <= 1 && t.largo > 30) grupos.raya.push(...rayas(eje(t), y + 0.01));
+      } else if (t.clase === 5 && SECCION.get(t) !== "peatonal") {
+        // Vía de servicio sin medir (aparcamientos, accesos): asfalto estrecho, sin aceras ni tráfico.
+        grupos.asfalto.push(cinta(eje(t), Math.min(w, 3.5), y));
+      } else if (t.clase <= 4 || sec === "peatonal") {
+        // Peatonal (o sin sitio para calzada): adoquín de fachada a fachada.
+        grupos.peatonal.push(cinta(eje(t), w, y));
+      } else grupos[t.clase === 6 ? "sendero" : "pista"].push(cinta(eje(t), w, y));
       for (const n of [t.a, t.b]) {
-        const a = anchoNodo.get(n) ?? { w: 0, c: 9, grado: 0 };
-        anchoNodo.set(n, { w: Math.max(a.w, w), c: Math.min(a.c, t.clase), grado: a.grado + 1 });
+        const a = anchoNodo.get(n) ?? { w: 0, c: 9, grado: 0, peatonal: true };
+        anchoNodo.set(n, { w: Math.max(a.w, w + 2 * Math.abs(DESPLAZ.get(t) ?? 0)), c: Math.min(a.c, t.clase), grado: a.grado + 1, peatonal: a.peatonal && !esCalzada(t) });
       }
     }
-    // Cruces: discos para que las calles casen sin huecos.
+    // Cruces: un disco del ancho de la calzada (sin acera) para que las calles casen sin huecos.
     for (const [n, a] of anchoNodo) {
-      // Solo en cruces y giros, no en los finales de calle (quedaban como manchas).
-      if (a.c > 5 || a.c === 4 || a.grado < 2) continue;
-      const g = new THREE.CircleGeometry(a.w / 2 + (a.c <= 3 ? 1.5 : 0), 14);
+      if (a.c > 5 || a.grado < 2) continue;
+      const g = new THREE.CircleGeometry(a.w / 2, 16);
       g.rotateX(-Math.PI / 2);
       const p = NODOS[n];
-      g.translate(p[0] - CX, SUELO + (a.c <= 3 ? 0.22 : altoDe(a.c)) - 0.004, p[1] - CY);
-      grupos[a.c <= 3 ? "acera" : "asfalto"].push(g);
-      if (a.c <= 3) {
-        const h = new THREE.CircleGeometry(a.w / 2, 14);
-        h.rotateX(-Math.PI / 2);
-        h.translate(p[0] - CX, SUELO + altoDe(a.c) - 0.004, p[1] - CY);
-        grupos.asfalto.push(h);
-      }
+      g.translate(p[0] - CX, y, p[1] - CY);
+      grupos[a.peatonal ? "peatonal" : "asfalto"].push(g);
     }
     const mats: Record<string, THREE.Material> = {
-      acera: M.mat("#F4EEE2"),
+      acera: M.matTex(T.acera(), 1, 1, "#F1EADC"),
+      bordillo: M.mat("#C9C4BA"),
       asfalto: M.matTex(T.asfalto(), 1, 1),
       peatonal: M.matTex(T.adoquin(), 1, 1),
       sendero: M.mat("#EBDDBF"),
       pista: M.mat("#C9A77A"),
       raya: M.mat("#FFFFFF"),
     };
-    const ordenCalle: Record<string, number> = { acera: 20, asfalto: 21, peatonal: 22, sendero: 23, pista: 24, raya: 25 };
+    // Por encima de todos los usos del suelo (plazas, parques, solares), por debajo del agua y los calcos.
+    const ordenCalle: Record<string, number> = { sendero: 40, pista: 40, acera: 41, bordillo: 42, peatonal: 43, asfalto: 44, raya: 45 };
     for (const [k, geos] of Object.entries(grupos)) {
       if (!geos.length) continue;
       const geo = mergeGeometries(geos.map((g) => (g.index ? g.toNonIndexed() : g)).map((g) => {
@@ -1015,13 +1062,15 @@ export class Mundo {
     const pts: Punto[] = [];
     for (const t of TRAMOS) {
       if (t.clase > 2) continue;
-      for (let i = 1; i < t.puntos.length; i++) {
-        const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+      for (let i = 1; i < eje(t).length; i++) {
+        const [a, b] = [eje(t)[i - 1], eje(t)[i]];
         const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
         for (let s = 18; s < l - 6; s += 46) {
           const nx = -(b[1] - a[1]) / l;
           const ny = (b[0] - a[0]) / l;
-          const off = anchoDe(t) / 2 + 2;
+          // Farola en la acera, cerca del bordillo (no en las aceras estrechas).
+          if (!esCalzada(t) || aceraDe(t) < 1.2) continue;
+          const off = anchoDe(t) / 2 + Math.min(0.7, aceraDe(t) * 0.4);
           pts.push([a[0] + ((b[0] - a[0]) * s) / l + nx * off, a[1] + ((b[1] - a[1]) * s) / l + ny * off]);
         }
       }
@@ -1047,7 +1096,7 @@ export class Mundo {
     const farolas = new THREE.InstancedMesh(pieza(new THREE.CylinderGeometry(0.5, 0.32, 0.95, 6), 7.05), farolMat, pts.length);
     const o = new THREE.Object3D();
     pts.forEach((p, i) => {
-      o.position.copy(p3(p, SUELO + 0.3));
+      o.position.copy(p3(p, ALTO_CALLE));
       o.updateMatrix();
       postes.setMatrixAt(i, o.matrix);
       farolas.setMatrixAt(i, o.matrix);
@@ -1073,14 +1122,16 @@ export class Mundo {
     const arbolado: Punto[] = [];
     for (const t of TRAMOS) {
       if (t.clase > 2 || t.largo < 30) continue;
-      for (let i = 1; i < t.puntos.length; i++) {
-        const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+      for (let i = 1; i < eje(t).length; i++) {
+        const [a, b] = [eje(t)[i - 1], eje(t)[i]];
         const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
         for (let s = 10; s < l - 8; s += 15) {
           const nx = -(b[1] - a[1]) / l;
           const ny = (b[0] - a[0]) / l;
           for (const lado of [-1, 1]) {
-            const off = (anchoDe(t) / 2 + 3) * lado;
+            // Alcorques en la acera, solo donde es ancha.
+            if (!esCalzada(t) || aceraDe(t) < 1.9) continue;
+            const off = (anchoDe(t) / 2 + aceraDe(t) * 0.45) * lado;
             const p: Punto = [a[0] + ((b[0] - a[0]) * s) / l + nx * off, a[1] + ((b[1] - a[1]) * s) / l + ny * off];
             if (arbolado.length < 2600 && libre(p) && !enDeporte(p)) arbolado.push(p);
           }
@@ -1091,11 +1142,11 @@ export class Mundo {
 
     // Pasos de cebra en los cruces de las vías principales.
     const cebras: { p: Punto; rot: number; w: number }[] = [];
-    for (const [n, adj] of ADY_COCHE) {
+    for (const [n, adj] of adyCoche()) {
       if (adj.length < 3 || !adj.some((t) => t.clase <= 2)) continue;
       const c = NODOS[n];
       for (const t of adj) {
-        const pts = t.a === n ? t.puntos : [...t.puntos].reverse();
+        const pts = t.a === n ? eje(t) : [...eje(t)].reverse();
         const q = pts[1];
         const l = Math.hypot(q[0] - c[0], q[1] - c[1]);
         const dist = anchoDe(t) / 2 + 5;
@@ -1103,18 +1154,18 @@ export class Mundo {
         cebras.push({ p: [c[0] + ((q[0] - c[0]) * dist) / l, c[1] + ((q[1] - c[1]) * dist) / l], rot: Math.atan2(q[0] - c[0], q[1] - c[1]), w: anchoDe(t) });
       }
     }
-    const rayasCebra = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.7, 3).rotateX(-Math.PI / 2), this.capaSuelo(M.mat("#FFFFFF")), cebras.length * 6);
-    rayasCebra.renderOrder = 26;
+    // Rayas de 0,5 m cada metro a lo ancho de la calzada (dejando medio metro a cada lado).
+    const total = cebras.reduce((n, z) => n + Math.max(2, Math.floor(z.w - 1)), 0);
+    const rayasCebra = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.5, 3).rotateX(-Math.PI / 2), this.capaSuelo(M.mat("#FFFFFF")), Math.max(1, total));
+    rayasCebra.renderOrder = 46;
     const ob = new THREE.Object3D();
     let k = 0;
     for (const z of cebras) {
-      for (let j = 0; j < 6; j++) {
-        ob.position.copy(p3(z.p, SUELO + 0.4));
-        ob.rotation.set(0, z.rot + Math.PI / 2, 0);
-        ob.translateX(0);
-        ob.translateZ(0);
-        ob.rotateY(-Math.PI / 2);
-        ob.translateX(((j - 2.5) * z.w) / 6.5);
+      const n = Math.max(2, Math.floor(z.w - 1));
+      for (let j = 0; j < n; j++) {
+        ob.position.copy(p3(z.p, ALTO_CALLE + 0.01));
+        ob.rotation.set(0, z.rot, 0);
+        ob.translateX(j - (n - 1) / 2);
         ob.updateMatrix();
         rayasCebra.setMatrixAt(k++, ob.matrix);
       }
@@ -1364,9 +1415,9 @@ export class Mundo {
     for (const t of TRAMOS) {
       if (t.clase > 3 || (SECCION.has(t) && SECCION.get(t) !== "convencional")) continue;
       const recorte = (n: string) => ((nodo.get(n)?.grado ?? 0) >= 2 ? nodo.get(n)!.ancho / 2 + 1.8 : 0);
-      const ultimo = t.puntos.length - 2;
+      const ultimo = eje(t).length - 2;
       for (let i = 0; i <= ultimo; i++) {
-        const [a, b] = [t.puntos[i], t.puntos[i + 1]];
+        const [a, b] = [eje(t)[i], eje(t)[i + 1]];
         const seg = { a, b, clase: t.clase, ancho: anchoDe(t), r0: i === 0 ? recorte(t.a) : 0, r1: i === ultimo ? recorte(t.b) : 0 };
         trozo((a[0] + b[0]) / 2, (a[1] + b[1]) / 2).segs.push(seg);
         // Rejilla para saber si un punto cae en alguna calzada (celdas de 20 que toca el segmento).
@@ -1977,14 +2028,18 @@ export class Mundo {
       const xs = e.huella.map((q) => q[0]);
       const ys = e.huella.map((q) => q[1]);
       for (const t of TRAMOS) {
-        if (t.clase > 4) continue;
+        // Solo la calzada de asfalto (las peatonales van de fachada a fachada a propósito).
+        if (!conAceras(t)) continue;
         if (!t.puntos.some(([x, y]) => x > Math.min(...xs) - 30 && x < Math.max(...xs) + 30 && y > Math.min(...ys) - 30 && y < Math.max(...ys) + 30)) continue;
         const mitad = anchoDe(t) / 2;
         let peor = 0;
-        for (let i = 1; i < t.puntos.length; i++) {
-          const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+        let recorrido = 0;
+        for (let i = 1; i < eje(t).length; i++) {
+          const [a, b] = [eje(t)[i - 1], eje(t)[i]];
           const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
           for (let k = 0; k <= L; k += 0.5) {
+            // Dentro del cruce manda el disco del cruce, no la cinta del tramo.
+            if (recorrido + k < 4 || recorrido + k > t.largo - 4) continue;
             const px = a[0] + ((b[0] - a[0]) * k) / L;
             const py = a[1] + ((b[1] - a[1]) * k) / L;
             if (dentroPoli([px, py], e.huella as Punto[])) peor = Math.max(peor, mitad);
@@ -2001,6 +2056,7 @@ export class Mundo {
               if (d < mitad - 0.05) peor = Math.max(peor, mitad - d);
             }
           }
+          recorrido += L;
         }
         if (peor > 0.1) calzada.push({ id: e.id, calle: t.nombre || `tramo ${t.clase}`, invade: Math.round(peor * 100) / 100 });
       }
@@ -2208,14 +2264,15 @@ export class Mundo {
 
   private construirTrafico() {
     const rand = azar(91);
-    const conducibles = TRAMOS.filter((t) => t.clase <= 3 && t.largo > 6);
+    // Los coches solo circulan por calzada de asfalto (nunca por peatonales ni plataformas únicas).
+    const conducibles = TRAMOS.filter((t) => esCalzada(t) && t.largo > 6 && (adyCoche().get(t.a)?.length ?? 0) + (adyCoche().get(t.b)?.length ?? 0) > 2);
     const principales = conducibles.filter((t) => t.clase <= 2);
     const aceras = TRAMOS.filter((t) => (t.clase <= 4 || t.clase === 6) && t.largo > 6);
     const nuevo = (lista: Tramo[], v: number, lado: number): Movil => {
       const t = lista[Math.floor(rand() * lista.length)];
       return { t, dir: rand() < 0.5 ? 1 : -1, s: rand() * t.largo, v: v * (0.8 + rand() * 0.4), lado, red: lista === aceras ? "pie" : "coche" };
     };
-    for (let i = 0; i < 170; i++) this.coches.push(nuevo(rand() < 0.65 ? principales : conducibles, 16, 1));
+    for (let i = 0; i < 170; i++) this.coches.push(nuevo(rand() < 0.65 && principales.length ? principales : conducibles, 16, 1));
     for (let i = 0; i < 240; i++) this.peatones.push(nuevo(aceras, 2.6, 0));
     const colores = ["#E8423C", "#FFFFFF", "#2F6DB5", "#F2C230", "#2B2D31", "#9AA4B2", "#3FA046", "#F28C28", "#C4E910"].map((c) => new THREE.Color(c));
     const [carroceria, oscuro] = geometriaCoche();
@@ -2267,14 +2324,19 @@ export class Mundo {
     while ((m.s > m.t.largo || m.s < 0) && vueltas++ < 4) {
       const nodo = m.dir === 1 ? m.t.b : m.t.a;
       const sobra = m.dir === 1 ? m.s - m.t.largo : -m.s;
-      const opciones = (m.red === "pie" ? ADY_PIE : ADY_COCHE).get(nodo) ?? [];
+      const opciones = (m.red === "pie" ? ADY_PIE : adyCoche()).get(nodo) ?? [];
       const otras = opciones.filter((t) => t !== m.t);
       const sig = (otras.length ? otras : opciones)[Math.floor(Math.random() * Math.max(1, (otras.length ? otras : opciones).length))] ?? m.t;
       m.dir = sig.a === nodo ? 1 : -1;
       m.t = sig;
       m.s = m.dir === 1 ? sobra : sig.largo - sobra;
     }
-    return sobreTramo(m.t, Math.max(0, Math.min(m.t.largo, m.s)), m.dir, m.lado * (anchoDe(m.t) / 4 + 0.2), m.red === "pie" ? anchoDe(m.t) / 2 + 1.6 : 0);
+    // Carril derecho dentro de la calzada (en calles de un carril, por el centro); los peatones,
+    // por el centro de la acera o, en las peatonales, a un lado de la calle.
+    const w = anchoDe(m.t);
+    const carril = m.lado ? Math.max(0, Math.min(w / 4 + 0.2, w / 2 - 1.15)) : 0;
+    const acera = m.red === "pie" ? (conAceras(m.t) ? w / 2 + aceraDe(m.t) / 2 : w * 0.28) : 0;
+    return sobreTramo(m.t, Math.max(0, Math.min(m.t.largo, m.s)), m.dir, carril, acera);
   }
 
   /** Viaje en autobús: el jugador sube y el bus recorre las calles reales hasta la parada. */
@@ -2523,9 +2585,23 @@ export class Mundo {
         const lx = dx * Math.cos(ang) + dy * Math.sin(ang);
         const lz = -dx * Math.sin(ang) + dy * Math.cos(ang);
         if (Math.abs(lx) < hw + R && Math.abs(lz) < hd + R) return true;
-      } else if (dentroPoli([x, y], s.p)) return true;
+      } else if (dentroPoli([x, y], s.p) || cercaPoli([x, y], s.p, R)) return true;
     }
-    for (const s of this.solidosTeselas.get(`${Math.floor(x / 20)},${Math.floor(y / 20)}`) ?? []) if (dentroPoli([x, y], s.p)) return true;
+    for (const s of this.solidosTeselas.get(`${Math.floor(x / 20)},${Math.floor(y / 20)}`) ?? []) if (dentroPoli([x, y], s.p) || cercaPoli([x, y], s.p, R)) return true;
+    return false;
+  }
+
+  /** ¿Choca el jugador con un coche o un autobús? (rectángulos orientados de cada vehículo) */
+  private chocaVehiculo(x: number, y: number) {
+    const R = 0.35;
+    const dentro = (cx: number, cy: number, rot: number, largo: number, ancho: number) => {
+      const dx = x - cx, dy = y - cy;
+      const f = dx * Math.sin(rot) + dy * Math.cos(rot);
+      const l = dx * Math.cos(rot) - dy * Math.sin(rot);
+      return Math.abs(f) < largo / 2 + R && Math.abs(l) < ancho / 2 + R;
+    };
+    for (const [cx, cy, rot] of this.posCoches) if (Math.abs(cx - x) < 4 && Math.abs(cy - y) < 4 && dentro(cx, cy, rot, 4.4, 1.8)) return true;
+    for (const b of this.autobuses) if (dentro(b.g.position.x + CX, b.g.position.z + CY, b.g.rotation.y, 10.2, 3.1)) return true;
     return false;
   }
 
@@ -2560,9 +2636,10 @@ export class Mundo {
     const py = j.z + CY;
     const nx = px + dx * vel * dt;
     const ny = py + dz * vel * dt;
-    if (!this.choca(nx, ny)) j.set(nx - CX, SUELO, ny - CY);
-    else if (!this.choca(nx, py)) j.x = nx - CX;
-    else if (!this.choca(px, ny)) j.z = ny - CY;
+    const bloquea = (a: number, b: number) => this.choca(a, b) || this.chocaVehiculo(a, b);
+    if (!bloquea(nx, ny)) j.set(nx - CX, SUELO, ny - CY);
+    else if (!bloquea(nx, py)) j.x = nx - CX;
+    else if (!bloquea(px, ny)) j.z = ny - CY;
     const objetivo = Math.atan2(dx, dz);
     let giro = objetivo - this.jugador.rotation.y;
     giro = Math.atan2(Math.sin(giro), Math.cos(giro));
@@ -3168,9 +3245,50 @@ export class Mundo {
 
     // Tráfico, autobuses y peatones por las calles reales.
     const o = this.ayudante;
+    // Coches con distancia de seguridad: frenan si tienen delante otro coche, un autobús o al
+    // jugador, y arrancan suave. Si llevan mucho parados (cruce trabado), se ceden el paso.
+    const rejilla = new Map<string, number[]>();
+    const celda = (x: number, y: number) => `${Math.floor(x / 8)},${Math.floor(y / 8)}`;
+    const meter = (x: number, y: number, k: number) => {
+      const c = celda(x, y);
+      if (!rejilla.has(c)) rejilla.set(c, []);
+      rejilla.get(c)!.push(k);
+    };
+    this.posCoches.forEach(([x, y], k) => meter(x, y, k));
+    this.autobuses.forEach((b, k) => meter(b.g.position.x + CX, b.g.position.z + CY, -1 - k));
+    const yo = this.jugador.position;
+    const jx = yo.x + CX, jy = yo.z + CY;
     this.coches.forEach((c, i) => {
-      const p = this.avanzar(c, dt);
-      o.position.set(p.x - CX, SUELO + 1, p.y - CY);
+      const prev = this.posCoches[i];
+      if (prev) {
+        const [px, py, rot] = prev;
+        const fx = Math.sin(rot), fy = Math.cos(rot);
+        let bloqueado = false;
+        // Punto a 4,5 m por delante del morro: ¿hay alguien?
+        for (const dd of [3, 5.5]) {
+          const ax = px + fx * dd, ay = py + fy * dd;
+          if (!this.enBus && Math.hypot(jx - ax, jy - ay) < 2.2) bloqueado = true;
+          for (let ox = -1; ox <= 1 && !bloqueado; ox++) for (let oy = -1; oy <= 1 && !bloqueado; oy++) {
+            for (const k of rejilla.get(`${Math.floor(ax / 8) + ox},${Math.floor(ay / 8) + oy}`) ?? []) {
+              if (k === i) continue;
+              const q = k >= 0 ? this.posCoches[k] : null;
+              const qx = q ? q[0] : this.autobuses[-1 - k].g.position.x + CX;
+              const qy = q ? q[1] : this.autobuses[-1 - k].g.position.z + CY;
+              if (Math.hypot(qx - ax, qy - ay) < (k >= 0 ? 1.8 : 3.2)) {
+                bloqueado = true;
+                break;
+              }
+            }
+          }
+        }
+        c.espera = bloqueado ? (c.espera ?? 0) + dt : 0;
+        const cede = (c.espera ?? 0) > 4 && (c.espera ?? 0) < 6;
+        const meta = bloqueado && !cede ? 0 : 1;
+        c.marcha = (c.marcha ?? 1) + (meta - (c.marcha ?? 1)) * Math.min(1, dt * (meta ? 1.2 : 6));
+      }
+      const p = this.avanzar(c, dt * (c.marcha ?? 1));
+      this.posCoches[i] = [p.x, p.y, p.rot];
+      o.position.set(p.x - CX, ALTO_CALLE + 1, p.y - CY);
       o.rotation.set(0, p.rot, 0);
       o.scale.set(1, 1, 1);
       o.updateMatrix();
@@ -3191,7 +3309,7 @@ export class Mundo {
     for (const m of [this.mallaCoches, this.mallaCabinas, this.mallaPeatones, this.mallaCabezas]) m.instanceMatrix.needsUpdate = true;
     for (const b of this.autobuses) {
       const p = this.avanzar(b.m, dt);
-      b.g.position.set(p.x - CX, SUELO + 0.3, p.y - CY);
+      b.g.position.set(p.x - CX, ALTO_CALLE, p.y - CY);
       b.g.rotation.y = p.rot;
     }
     for (const gv of this.gaviotas) {
@@ -3456,6 +3574,10 @@ interface Movil {
   dir: number;
   s: number;
   v: number;
+  /** Fracción de la velocidad de crucero (frenadas y arranques). */
+  marcha?: number;
+  /** Segundos que lleva bloqueado. */
+  espera?: number;
   /** 1: carril derecho (coches); 0: acera (peatones). */
   lado: number;
   red: "coche" | "pie";
@@ -3472,7 +3594,9 @@ function adyacencia(filtro: (t: Tramo) => boolean) {
   }
   return m;
 }
-const ADY_COCHE = adyacencia((t) => t.clase <= 3);
+/** Red de los coches: se calcula tras medir las secciones de las calles. */
+let ADY_COCHE: Map<string, Tramo[]> | null = null;
+const adyCoche = () => (ADY_COCHE ??= adyacencia(esCalzada));
 const ADY_PIE = adyacencia((t) => t.clase <= 4 || t.clase === 6);
 
 const longitudes = new WeakMap<Tramo, number[]>();
@@ -3481,12 +3605,12 @@ function sobreTramo(t: Tramo, s: number, dir: number, carril: number, acera: num
   let acc = longitudes.get(t);
   if (!acc) {
     acc = [0];
-    for (let i = 1; i < t.puntos.length; i++) acc.push(acc[i - 1] + Math.hypot(t.puntos[i][0] - t.puntos[i - 1][0], t.puntos[i][1] - t.puntos[i - 1][1]));
+    for (let i = 1; i < eje(t).length; i++) acc.push(acc[i - 1] + Math.hypot(eje(t)[i][0] - eje(t)[i - 1][0], eje(t)[i][1] - eje(t)[i - 1][1]));
     longitudes.set(t, acc);
   }
   let i = 1;
   while (i < acc.length - 1 && acc[i] < s) i++;
-  const [a, b] = [t.puntos[i - 1], t.puntos[i]];
+  const [a, b] = [eje(t)[i - 1], eje(t)[i]];
   const l = acc[i] - acc[i - 1] || 1;
   const k = (s - acc[i - 1]) / l;
   let dx = (b[0] - a[0]) / l;
@@ -3579,6 +3703,19 @@ function rayas(pts: readonly Punto[], alto: number) {
     }
   }
   return out;
+}
+
+/** ¿Está el punto a menos de `r` de algún lado del polígono? (choques con grosor) */
+function cercaPoli(p: Punto, poli: readonly Punto[], r: number) {
+  for (let i = 0, j = poli.length - 1; i < poli.length; j = i++) {
+    const [ax, ay] = poli[j];
+    const [bx, by] = poli[i];
+    const vx = bx - ax, vy = by - ay;
+    const l2 = vx * vx + vy * vy || 1;
+    const t = Math.max(0, Math.min(1, ((p[0] - ax) * vx + (p[1] - ay) * vy) / l2));
+    if (Math.hypot(p[0] - ax - t * vx, p[1] - ay - t * vy) < r) return true;
+  }
+  return false;
 }
 
 function dentroPoli(p: Punto, r: readonly Punto[]) {

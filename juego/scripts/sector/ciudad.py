@@ -43,10 +43,14 @@ def main():
     ap.add_argument("--punto")
     ap.add_argument("--todo", action="store_true")
     ap.add_argument("--forzar", action="store_true")
+    ap.add_argument("--anchos", action="store_true", help="solo recalcula el corredor de las calles")
     a = ap.parse_args()
     t0 = time.time()
 
     calles, pois, etiquetas = N.cargar_osm()
+    if a.anchos:
+        anchos_calles(calles)
+        return
     overture = N.cargar_overture()
     catastro = N.cargar_catastro()
     alturas = N.cargar_alturas()
@@ -197,10 +201,13 @@ def conflictos_ejes(teselas):
 
 
 def anchos_calles(calles):
-    """Ancho libre real de cada tramo de calle del juego (red de src/datos/linea.json) junto a
-    las manzanas generadas: distancia mínima, muestreada cada metro sobre el mismo eje que dibuja
-    el juego, hasta la fachada más cercana. El juego elige con esto la sección (con aceras, acera
-    estrecha, plataforma única o peatonal) sin recortar ningún edificio."""
+    """Corredor libre real de cada tramo de calle del juego (red de src/datos/linea.json) junto a
+    las manzanas generadas, medido a CADA LADO del eje: cada metro, un rayo perpendicular hasta la
+    primera fachada (sin contar los 4 m de cada extremo, donde están las esquinas del cruce).
+    Se guarda el percentil 10 de cada lado. El juego centra la calzada en el corredor y reparte
+    las aceras, sin recortar ningún edificio.
+    Salida por tramo: [libre lado izquierdo, libre lado derecho, tipo OSM], con izquierda en la
+    normal (-dy, dx) del sentido a→b."""
     huellas = []
     for f in os.listdir(DIR_T):
         for e in json.load(open(os.path.join(DIR_T, f)))["edificios"]:
@@ -211,22 +218,57 @@ def anchos_calles(calles):
     osm_idx = STRtree([c["linea"] for c in calles])
     TIPO = {"living_street": 1, "pedestrian": 2}
     red = json.load(open(os.path.join(N.RAIZ, "src", "datos", "linea.json")))["red"]
+    ALCANCE = 14.0
     out = {}
+
+    def rayo(px, py, nx, ny):
+        r = N.LineString([(px, py), (px + nx * ALCANCE, py + ny * ALCANCE)])
+        mejor = ALCANCE
+        for j in idx.query(r):
+            h = huellas[j]
+            if h.contains(N.Point(px, py)):
+                return 0.0
+            x = h.boundary.intersection(r)
+            if not x.is_empty:
+                mejor = min(mejor, N.Point(px, py).distance(x))
+        return mejor
+
     for i, (a, b, clase, _nombre, medio) in enumerate(red["tramos"]):
-        if clase > 4:
+        if clase > 5:
             continue
         pts = [red["nodos"][a]] + [medio[k:k + 2] for k in range(0, len(medio), 2)] + [red["nodos"][b]]
         L = N.LineString(pts)
-        if not len(idx.query(L.buffer(10))):
+        if not len(idx.query(L.buffer(ALCANCE))):
             continue
-        # Distancia exacta del eje a la fachada más cercana (no muestreada).
-        d = min([huellas[j].distance(L) for j in idx.query(L.buffer(10))] or [99.0])
-        if d >= 10:
+        izq, der = [], []
+        total = L.length
+        acc = 0.0
+        for (x0, y0), (x1, y1) in zip(pts[:-1], pts[1:]):
+            l = ((x1 - x0) ** 2 + (y1 - y0) ** 2) ** 0.5
+            if l < 1e-6:
+                continue
+            dx, dy = (x1 - x0) / l, (y1 - y0) / l
+            s = 0.5
+            while s < l:
+                g = acc + s
+                if 4 <= g <= total - 4 or total < 10:
+                    px, py = x0 + dx * s, y0 + dy * s
+                    izq.append(rayo(px, py, -dy, dx))
+                    der.append(rayo(px, py, dy, -dx))
+                s += 1.0
+            acc += l
+        if not izq:
+            continue
+        izq.sort()
+        der.sort()
+        di = izq[int(len(izq) * 0.1)]
+        dd = der[int(len(der) * 0.1)]
+        if di >= ALCANCE and dd >= ALCANCE:
             continue
         m = L.interpolate(0.5, normalized=True)
         cerca = [calles[j] for j in osm_idx.query(m.buffer(4))]
         tipo = TIPO.get(min(cerca, key=lambda c: c["linea"].distance(m))["highway"], 0) if cerca else 0
-        out[i] = [round(d, 2), tipo]
+        out[i] = [round(di, 2), round(dd, 2), tipo]
     json.dump({"generado": datetime.datetime.now().isoformat(timespec="seconds"), "tramos": out},
               open(os.path.join(N.RAIZ, "src", "datos", "ciudad", "anchos.json"), "w"), separators=(",", ":"))
     print(f"anchos: {len(out)} tramos junto a manzanas generadas")

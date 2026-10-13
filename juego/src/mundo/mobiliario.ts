@@ -15,8 +15,6 @@ export interface Segmento {
   ancho: number;
 }
 
-const BORDILLO = rgb("#E4E1DA");
-const BALDOSA = rgb("#E9E2D3");
 const HIERRO = rgb("#2A2D33");
 const MADERA = rgb("#8A5A35");
 const VERDE = rgb("#4E9A3A");
@@ -148,7 +146,8 @@ export function coche(o: Obra, x: number, z: number, r: () => number) {
  */
 export function urbanizar(o: Obra, segs: (Segmento & { r0: number; r1: number })[], tiendas: Edificio[], cx: number, cy: number, suelo: number, semilla: number, enCalzada: (p: Punto, propio: Segmento) => boolean) {
   const r = azar(semilla);
-  const yAcera = suelo + 0.2;
+  // Calzada y acera están al mismo nivel (ALTO_CALLE): el mobiliario se apoya directamente.
+  const yAcera = suelo + 0.15;
   for (const s of segs) {
     const L = alinear(o, s.a, s.b, cx, cy, yAcera);
     const x0 = s.r0;
@@ -164,17 +163,14 @@ export function urbanizar(o: Obra, segs: (Segmento & { r0: number; r1: number })
       const off = lado * (hw + 0.9);
       const pisa = [x0 + 0.5, (x0 + x1) / 2, x1 - 0.5].some((x) => enCalzada([s.a[0] + dx * x - dy * off, s.a[1] + dy * x + dx * off], s));
       if (pisa) continue;
-      // Acera elevada con su bordillo.
-      const z0 = lado * hw;
-      const z1 = lado * (hw + 1.6);
-      o.caja(Mat.Suelo, x0, 0, Math.min(z0, z1), x1, 0.32, Math.max(z0, z1), BALDOSA, 1, lado > 0 ? "z+" : "z-");
-      o.caja(Mat.Detalle, x0, 0, lado > 0 ? z0 - 0.02 : z0 - 0.25, x1, 0.36, lado > 0 ? z0 + 0.25 : z0 + 0.02, BORDILLO, 0.75, lado > 0 ? "z+" : "z-");
+      // La acera es la del trazado general de calles (continua y al nivel de la calzada);
+      // aquí solo se pone el mobiliario.
       if (!o.fino) continue;
       // Mobiliario a lo largo de la acera.
       const zm = lado * (hw + 1.1);
       for (let x = x0 + 4 + r() * 6; x < x1 - 3; x += 9 + r() * 10) {
         const t = r();
-        const y = 0.32;
+        const y = 0;
         const g = o;
         g.oy = yAcera + y;
         if (t < 0.22) banco(o, x, zm, lado);
@@ -189,7 +185,7 @@ export function urbanizar(o: Obra, segs: (Segmento & { r0: number; r1: number })
       // Coches aparcados en un lado de las calles de barrio.
       if (coches && lado === -1 && s.ancho >= 6) {
         const g = o;
-        g.oy = suelo + 0.36;
+        g.oy = yAcera;
         for (let x = x0 + 3; x < x1 - 3; x += 5 + r() * 2) if (r() < 0.55) coche(o, x, -hw + 1.25, r);
         g.oy = yAcera;
       }
