@@ -31,7 +31,7 @@ let abierto: HTMLElement | null = null;
 /** Muestra el siguiente consejo pendiente, si toca y la pantalla está libre. */
 export function revisarConsejos(j: Juego) {
   const e = j.e;
-  if (abierto || e.flags.consejosNo || j.ocupado || j.mundo.enBus || j.mundo.andando) return;
+  if (abierto || e.flags.consejosNo || j.ocupado || j.mundo.enBus || j.mundo.andando || j.mundo.modoPOV) return;
   const c = CONSEJOS.find((k) => !e.flags[`consejo_${k.id}`] && k.cuando(j));
   if (!c) return;
   const ancla = c.ancla ? document.querySelector<HTMLElement>(c.ancla) : null;
