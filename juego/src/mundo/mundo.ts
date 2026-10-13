@@ -2032,7 +2032,9 @@ export class Mundo {
     o.geometrias().forEach((geo, m) => {
       if (!geo) return;
       const malla = new THREE.Mesh(geo, mats[m]);
-      malla.castShadow = true;
+      // Proyectan sombra el volumen y, en calidad media/alta, los relieves; barrotes y cristales no
+      // (apenas se notan y duplicaban los triángulos en la pasada de sombras).
+      malla.castShadow = m === Mat.Muro || m === Mat.Ladrillo || m === Mat.Teja || m === Mat.Suelo || (m === Mat.Detalle && this.ajustesCalidad.sombrasDetalle);
       malla.receiveShadow = true;
       // Después de las láminas de calle (que no escriben profundidad), para que el pavimento propio se vea.
       malla.renderOrder = 30;

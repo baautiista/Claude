@@ -178,28 +178,41 @@ export interface OpVentana {
 export function ventana(o: Obra, x: number, y: number, w: number, h: number, op: OpVentana) {
   const a = w / 2;
   const rc = op.recercadoAncho ?? 0.16;
+  const vidrio = op.luz ? Mat.Luz : Mat.Cristal;
+  const cristal: RGB = [0.42, 0.55, 0.66];
+  if (!o.fino && !op.arco) {
+    // Lejos el relieve no se aprecia: recercado y marco como planos (12 triángulos en vez de ~60);
+    // en el volumen lejano, solo el hueco.
+    const q = (m: Mat, x0: number, y0: number, x1: number, y1: number, z: number, c: RGB) => o.poli(m, [[x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z]], c);
+    if (o.lejano) return q(vidrio, x - a, y, x + a, y + h, 0.04, cristal);
+    if (op.recercado) q(Mat.Detalle, x - a - rc, y - rc, x + a + rc, y + h + rc, 0.03, op.recercado);
+    q(Mat.Detalle, x - a, y, x + a, y + h, 0.05, op.marco);
+    q(vidrio, x - a + 0.07, y + 0.07, x + a - 0.07, y + h - 0.07, 0.06, cristal);
+    if (op.persiana && (op.bajada ?? 0) > 0.02) q(Mat.Detalle, x - a + 0.07, y + h - h * (op.bajada ?? 0.3), x + a - 0.07, y + h - 0.07, 0.07, op.persiana);
+    if (op.alfeizar) q(Mat.Detalle, x - a - 0.08, y - 0.1, x + a + 0.08, y, 0.07, op.alfeizar);
+    return;
+  }
   if (op.recercado) {
     if (op.arco) prisma(o, Mat.Detalle, arco(x - a - rc, x + a + rc, y - rc, y + h - a), 0, 0.05, op.recercado, false);
     else o.caja(Mat.Detalle, x - a - rc, y - rc, 0, x + a + rc, y + h + rc, 0.05, op.recercado, 1, "z-");
   }
-  const vidrio = op.luz ? Mat.Luz : Mat.Cristal;
-  const cristal: RGB = [0.42, 0.55, 0.66];
   if (op.arco) prisma(o, vidrio, arco(x - a, x + a, y, y + h - a), 0.055, 0.06, cristal, false);
   else o.poli(vidrio, [[x - a, y, 0.06], [x + a, y, 0.06], [x + a, y + h, 0.06], [x - a, y + h, 0.06]], cristal);
   const z1 = 0.11;
   const t = 0.07;
   const top = op.arco ? y + h - a : y + h;
-  o.caja(Mat.Detalle, x - a, y, 0.05, x - a + t, top, z1, op.marco);
-  o.caja(Mat.Detalle, x + a - t, y, 0.05, x + a, top, z1, op.marco);
-  o.caja(Mat.Detalle, x - a, y, 0.05, x + a, y + t, z1, op.marco);
-  if (!op.arco) o.caja(Mat.Detalle, x - a, y + h - t, 0.05, x + a, y + h, z1, op.marco);
+  // Marco y carpintería: sin la cara trasera (pegada al cristal) y sin las que tapa el propio marco.
+  o.caja(Mat.Detalle, x - a, y, 0.05, x - a + t, top, z1, op.marco, 1, "z-x-");
+  o.caja(Mat.Detalle, x + a - t, y, 0.05, x + a, top, z1, op.marco, 1, "z-x+");
+  o.caja(Mat.Detalle, x - a, y, 0.05, x + a, y + t, z1, op.marco, 1, "z-");
+  if (!op.arco) o.caja(Mat.Detalle, x - a, y + h - t, 0.05, x + a, y + h, z1, op.marco, 1, "z-y+");
   if (o.fino) {
-    o.caja(Mat.Detalle, x - 0.025, y, 0.05, x + 0.025, top, z1, op.marco);
-    if (op.cuarterones) for (const f of [0.33, 0.66]) o.caja(Mat.Detalle, x - a, y + h * f - 0.02, 0.05, x + a, y + h * f + 0.02, z1, op.marco);
+    o.caja(Mat.Detalle, x - 0.025, y, 0.05, x + 0.025, top, z1, op.marco, 1, "z-y+");
+    if (op.cuarterones) for (const f of [0.33, 0.66]) o.caja(Mat.Detalle, x - a, y + h * f - 0.02, 0.05, x + a, y + h * f + 0.02, z1, op.marco, 1, "z-x-x+");
   }
   if (op.persiana && (op.bajada ?? 0) > 0.02) {
     const yb = y + h - h * (op.bajada ?? 0.3);
-    o.caja(Mat.Detalle, x - a, yb, 0.06, x + a, y + h, 0.09, op.persiana);
+    o.caja(Mat.Detalle, x - a, yb, 0.06, x + a, y + h, 0.09, op.persiana, 1, "z-y+");
   }
   if (op.alfeizar) o.caja(Mat.Detalle, x - a - 0.08, y - 0.1, 0, x + a + 0.08, y, 0.16, op.alfeizar, 1, "z-");
 }
@@ -210,7 +223,13 @@ export function verja(o: Obra, ax: number, az: number, bx: number, bz: number, y
   if (L < 0.01) return;
   const ux = (bx - ax) / L;
   const uz = (bz - az) / L;
-  const barra = (x: number, z: number, y0: number, y1: number, g: number) => o.caja(Mat.Metal, x - g, y0, z - g, x + g, y1, z + g, color);
+  // Barrote: dos planos enfrentados (delante y detrás del tramo). 4 triángulos en vez de los 10 de una caja.
+  const barra = (x: number, z: number, y0: number, y1: number, g: number) => {
+    const dx = ux * g;
+    const dz = uz * g;
+    o.poli(Mat.Metal, [[x - dx, y0, z - dz], [x + dx, y0, z + dz], [x + dx, y1, z + dz], [x - dx, y1, z - dz]], color);
+    o.poli(Mat.Metal, [[x + dx, y0, z + dz], [x - dx, y0, z - dz], [x - dx, y1, z - dz], [x + dx, y1, z + dz]], color);
+  };
   // Pasamanos y travesaño inferior como tiras finas a lo largo del tramo.
   const tramo = (y0: number, y1: number, g: number) => {
     const nx = -uz * g;

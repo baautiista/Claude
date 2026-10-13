@@ -9,6 +9,7 @@ import { ruta } from "./mapa/rutas";
 import { conectarEconomia, pagar, sincronizarSaldo } from "./economia";
 import { con } from "./red/conexion";
 import { Mundo, type FichaEdificio, type Tocable } from "./mundo/mundo";
+import { revisarConsejos } from "./ui/consejos";
 import { h, html, esc } from "./ui/dom";
 import { abrirBancal, abrirBarca, abrirCocina, abrirPuesto, accionesLugar, tablon, type Accion } from "./ui/lugares";
 import { abrirMovil } from "./ui/movil";
@@ -298,6 +299,7 @@ export class Juego {
           this.refrescarHud();
           ++this.segundos;
           this.vivo?.();
+          revisarConsejos(this);
           if (esMadrugada(this.e)) void this.revisarHora();
         }
         if (guardado >= 5) {

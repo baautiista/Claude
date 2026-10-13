@@ -50,6 +50,8 @@ export class Obra {
   sa = 0;
   /** Detalle fino (rejas, macetas, barrotes…): solo en los trozos más cercanos. */
   fino = true;
+  /** Volumen lejano (LOD2): huecos reducidos a un plano, sin marcos ni relieves. */
+  lejano = false;
   /** Escala de UV (unidades del mundo por repetición de textura). */
   uvEsc = 0.25;
 

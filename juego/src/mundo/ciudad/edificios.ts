@@ -86,6 +86,7 @@ function planoHuecos(o: Obra, m: Mat, ext: P2[], huecos: P2[][], y: number, colo
 export function construirEdificios(lista: Efectivo[], ctx: Ctx, lod: 0 | 1 | 2, inf?: InformeEdificios) {
   const o = new Obra();
   o.fino = lod === 0;
+  o.lejano = lod === 2;
   const informe = inf ?? { edificios: 0, modulos: 0, rechazados: [], carasSinFachada: 0, huellasInvalidas: [] };
   for (const e of lista) {
     if (e.modelo === "oculto") continue;
