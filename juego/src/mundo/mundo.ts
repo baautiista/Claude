@@ -365,8 +365,9 @@ const CONSERVADOS = () => edificiosConservados(DATOS.edificios.map(([x, y, w, d,
 
 /** Acera mínima entre el borde de la calzada y la fachada (m). */
 const ACERA = 1.2;
-/** Nivel único del viario (calzada, bordillo, acera, peatonales): nada de escalones. */
+/** Nivel de la calzada y de las peatonales; la acera va 12 cm por encima. */
 const ALTO_CALLE = SUELO + 0.15;
+const ALTO_ACERA = ALTO_CALLE + 0.12;
 /** ¿Circulan coches por el tramo? Calles rodadas con calzada de al menos 3,6 m (ni peatonales ni plataforma única). */
 const esCalzada = (t: Tramo) => t.clase <= 3 && SECCION.get(t) !== "peatonal" && SECCION.get(t) !== "plataforma" && anchoDe(t) >= 3.0;
 /** ¿Lleva calzada con bordillo y aceras? Calles rodadas y vías de servicio medidas (no las peatonales). */
@@ -967,7 +968,7 @@ export class Mundo {
 
   private construirCapas() {
     const c = DATOS.capas;
-    let orden = 10;
+    let orden = 1;
     const poner = (nombre: string, material: THREE.Material, alto: number, uv = 1 / 30) => {
       orden++;
       if (!c[nombre]?.length) return;
@@ -997,43 +998,47 @@ export class Mundo {
   /* ── Calles reales convertidas en caminos ───────────────────────────── */
 
   private construirCalles() {
-    // Todo el viario a un mismo nivel (ALTO_CALLE): acera, bordillo pintado y calzada son capas
-    // planas superpuestas; el orden de dibujo decide qué se ve (la calzada tapa a la acera en los
-    // cruces). Así no hay escalones, ni trozos de acera sueltos, ni discos en los cruces.
+    // Calzada de asfalto en tiras rectas que siguen la dirección de la calle (cada tramo se alarga
+    // medio ancho en los cruces para cerrarlos); aceras a cada lado, 12 cm más altas, con su
+    // bordillo; peatonales a ras. Nada de discos ni ingletes en punta.
     const grupos: Record<string, THREE.BufferGeometry[]> = { acera: [], bordillo: [], asfalto: [], peatonal: [], sendero: [], pista: [], raya: [] };
-    const y = ALTO_CALLE;
-    const anchoNodo = new Map<string, { w: number; c: number; grado: number; peatonal: boolean }>();
+    const cantos: THREE.BufferGeometry[] = [];
+    // Cruces: ancho máximo de calzada que llega a cada nodo (para no poner bordillos dentro).
+    const cruce = new Map<string, { w: number; grado: number }>();
+    for (const t of TRAMOS) {
+      if (t.clase > 5) continue;
+      for (const n of [t.a, t.b]) {
+        const c = cruce.get(n) ?? { w: 0, grado: 0 };
+        cruce.set(n, { w: Math.max(c.w, anchoDe(t) + 2 * Math.abs(DESPLAZ.get(t) ?? 0)), grado: c.grado + 1 });
+      }
+    }
+    const radioCruce = (n: string) => ((cruce.get(n)?.grado ?? 0) >= 2 ? cruce.get(n)!.w / 2 + 0.4 : 0);
     for (const t of TRAMOS) {
       const w = anchoDe(t);
       const sec = SECCION.get(t);
+      const e = eje(t);
+      const fin0 = (cruce.get(t.a)?.grado ?? 0) >= 2;
+      const fin1 = (cruce.get(t.b)?.grado ?? 0) >= 2;
       if (conAceras(t)) {
-        // Calle: calzada de asfalto, bordillo y acera a cada lado.
         const acera = aceraDe(t);
-        grupos.acera.push(cinta(eje(t), w + 2 * acera, y));
-        grupos.bordillo.push(cinta(eje(t), w + 0.36, y));
-        grupos.asfalto.push(cinta(eje(t), w, y));
-        if (t.clase <= 1 && t.largo > 30) grupos.raya.push(...rayas(eje(t), y + 0.01));
-      } else if (t.clase === 5 && SECCION.get(t) !== "peatonal") {
+        grupos.acera.push(tiras(e, w + 2 * acera, ALTO_ACERA, 0, 0, w / 2 + acera));
+        grupos.bordillo.push(tiras(e, w + 0.36, ALTO_ACERA + 0.002, 0, 0, w / 2));
+        grupos.asfalto.push(tiras(e, w, ALTO_CALLE, fin0 ? w / 2 : 0, fin1 ? w / 2 : 0, w / 2));
+        cantos.push(bordillos(e, w, ALTO_CALLE, ALTO_ACERA, radioCruce(t.a), radioCruce(t.b)));
+        if (t.clase <= 1 && t.largo > 30) grupos.raya.push(...rayas(e, ALTO_CALLE + 0.01 - SUELO));
+      } else if (t.clase === 5 && sec !== "peatonal") {
         // Vía de servicio sin medir (aparcamientos, accesos): asfalto estrecho, sin aceras ni tráfico.
-        grupos.asfalto.push(cinta(eje(t), Math.min(w, 3.5), y));
+        const ws = Math.min(w, 3.5);
+        grupos.asfalto.push(tiras(e, ws, ALTO_CALLE, fin0 ? ws / 2 : 0, fin1 ? ws / 2 : 0, ws / 2));
       } else if (t.clase <= 4 || sec === "peatonal") {
-        // Peatonal (o sin sitio para calzada): adoquín de fachada a fachada.
-        grupos.peatonal.push(cinta(eje(t), w, y));
-      } else grupos[t.clase === 6 ? "sendero" : "pista"].push(cinta(eje(t), w, y));
-      for (const n of [t.a, t.b]) {
-        const a = anchoNodo.get(n) ?? { w: 0, c: 9, grado: 0, peatonal: true };
-        anchoNodo.set(n, { w: Math.max(a.w, w + 2 * Math.abs(DESPLAZ.get(t) ?? 0)), c: Math.min(a.c, t.clase), grado: a.grado + 1, peatonal: a.peatonal && !esCalzada(t) });
-      }
+        // Peatonal: adoquín de fachada a fachada, a ras.
+        grupos.peatonal.push(tiras(e, w, ALTO_CALLE, fin0 ? w / 2 : 0, fin1 ? w / 2 : 0, w / 2));
+      } else grupos[t.clase === 6 ? "sendero" : "pista"].push(tiras(e, w, ALTO_CALLE - 0.02, 0.5, 0.5, w / 2));
     }
-    // Cruces: un disco del ancho de la calzada (sin acera) para que las calles casen sin huecos.
-    for (const [n, a] of anchoNodo) {
-      if (a.c > 5 || a.grado < 2) continue;
-      const g = new THREE.CircleGeometry(a.w / 2, 16);
-      g.rotateX(-Math.PI / 2);
-      const p = NODOS[n];
-      g.translate(p[0] - CX, y, p[1] - CY);
-      grupos[a.peatonal ? "peatonal" : "asfalto"].push(g);
-    }
+    // Bordillos: caras verticales sólidas entre calzada y acera.
+    const canto = new THREE.Mesh(mergeGeometries(cantos.filter((g) => g.attributes.position.count)), M.mat("#D3CEC4", { roughness: 0.85 }));
+    canto.receiveShadow = true;
+    this.escena.add(canto);
     const mats: Record<string, THREE.Material> = {
       acera: M.matTex(T.acera(), 1, 1, "#F1EADC"),
       bordillo: M.mat("#C9C4BA"),
@@ -1044,7 +1049,8 @@ export class Mundo {
       raya: M.mat("#FFFFFF"),
     };
     // Por encima de todos los usos del suelo (plazas, parques, solares), por debajo del agua y los calcos.
-    const ordenCalle: Record<string, number> = { sendero: 40, pista: 40, acera: 41, bordillo: 42, peatonal: 43, asfalto: 44, raya: 45 };
+    // Encima de los usos del suelo (2–18) y antes que los edificios: los edificios y árboles tapan la calle.
+    const ordenCalle: Record<string, number> = { sendero: 19, pista: 19, acera: 20, bordillo: 21, peatonal: 22, asfalto: 23, raya: 24 };
     for (const [k, geos] of Object.entries(grupos)) {
       if (!geos.length) continue;
       const geo = mergeGeometries(geos.map((g) => (g.index ? g.toNonIndexed() : g)).map((g) => {
@@ -1052,7 +1058,12 @@ export class Mundo {
         if (!g.attributes.normal) g.computeVertexNormals();
         return g;
       }));
-      const m = new THREE.Mesh(geo, this.capaSuelo(mats[k]));
+      // Sin desplazamiento de profundidad: las capas están a su altura real y no deben adelantarse
+      // a troncos, fachadas ni coches.
+      const mat = mats[k].clone();
+      mat.depthWrite = false;
+      const m = new THREE.Mesh(geo, mat);
+      m.userData.calzada = k === "asfalto" || k === "peatonal";
       if (k !== "raya") this.suelos.push(m);
       m.renderOrder = ordenCalle[k];
       m.receiveShadow = true;
@@ -1096,7 +1107,7 @@ export class Mundo {
     const farolas = new THREE.InstancedMesh(pieza(new THREE.CylinderGeometry(0.5, 0.32, 0.95, 6), 7.05), farolMat, pts.length);
     const o = new THREE.Object3D();
     pts.forEach((p, i) => {
-      o.position.copy(p3(p, ALTO_CALLE));
+      o.position.copy(p3(p, ALTO_ACERA));
       o.updateMatrix();
       postes.setMatrixAt(i, o.matrix);
       farolas.setMatrixAt(i, o.matrix);
@@ -1157,7 +1168,7 @@ export class Mundo {
     // Rayas de 0,5 m cada metro a lo ancho de la calzada (dejando medio metro a cada lado).
     const total = cebras.reduce((n, z) => n + Math.max(2, Math.floor(z.w - 1)), 0);
     const rayasCebra = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.5, 3).rotateX(-Math.PI / 2), this.capaSuelo(M.mat("#FFFFFF")), Math.max(1, total));
-    rayasCebra.renderOrder = 46;
+    rayasCebra.renderOrder = 25;
     const ob = new THREE.Object3D();
     let k = 0;
     for (const z of cebras) {
@@ -2541,7 +2552,9 @@ export class Mundo {
     if (t.grupo?.userData.suelo) lista.push(t.grupo.userData.suelo);
     this.rayoSuelo.set(this.tmpV.set(x, SUELO + 2.2, z), new THREE.Vector3(0, -1, 0));
     this.rayoSuelo.far = 2.8;
-    const hit = this.rayoSuelo.intersectObjects(lista, false)[0];
+    // En los cruces la calzada manda sobre la acera que queda debajo de ella.
+    const hits = this.rayoSuelo.intersectObjects(lista, false);
+    const hit = hits.find((h) => h.object.userData.calzada) ?? hits[0];
     const h = hit ? Math.max(SUELO, hit.point.y) : SUELO;
     if (this.alturas.size > 20000) this.alturas.clear();
     this.alturas.set(k, h);
@@ -3685,6 +3698,78 @@ function cinta(pts: readonly Punto[], ancho: number, alto: number) {
   g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
   g.setAttribute("normal", new THREE.Float32BufferAttribute(nor, 3));
   g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  return g;
+}
+
+/**
+ * Tiras rectas a lo largo de una polilínea, una por segmento (sin ingletes en punta): cada tira se
+ * alarga `junta` en las uniones internas para cerrar los giros, y `ext0`/`ext1` en los extremos
+ * (cruces). Altura absoluta.
+ */
+function tiras(pts: readonly Punto[], ancho: number, y: number, ext0: number, ext1: number, junta: number) {
+  const pos: number[] = [];
+  const uv: number[] = [];
+  const n = pts.length;
+  for (let i = 0; i < n - 1; i++) {
+    const [a, b] = [pts[i], pts[i + 1]];
+    const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    if (l < 0.05) continue;
+    const dx = (b[0] - a[0]) / l;
+    const dy = (b[1] - a[1]) / l;
+    const e0 = i === 0 ? ext0 : Math.min(junta, l);
+    const e1 = i === n - 2 ? ext1 : Math.min(junta, l);
+    const ax = a[0] - dx * e0, ay = a[1] - dy * e0;
+    const bx = b[0] + dx * e1, by = b[1] + dy * e1;
+    const nx = -dy * (ancho / 2), ny = dx * (ancho / 2);
+    const izqA: Punto = [ax + nx, ay + ny], derA: Punto = [ax - nx, ay - ny];
+    const izqB: Punto = [bx + nx, by + ny], derB: Punto = [bx - nx, by - ny];
+    for (const [x, z] of [izqA, derB, derA, izqA, izqB, derB]) {
+      pos.push(x - CX, y, z - CY);
+      uv.push(x / 12, z / 12);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setAttribute("normal", new THREE.Float32BufferAttribute(new Array(pos.length).fill(0).map((_, k) => (k % 3 === 1 ? 1 : 0)), 3));
+  return g;
+}
+
+/** Caras verticales del bordillo a ambos lados de la calzada, sin entrar en los cruces. */
+function bordillos(pts: readonly Punto[], ancho: number, y0: number, y1: number, r0: number, r1: number) {
+  const pos: number[] = [];
+  const nor: number[] = [];
+  let total = 0;
+  const largos = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1]));
+  const L = largos.reduce((s, v) => s + v, 0);
+  for (let i = 0; i < pts.length - 1; i++) {
+    const l = largos[i];
+    if (l < 0.05) continue;
+    // Recorte en los cruces: el bordillo empieza y acaba fuera del área del cruce.
+    const s0 = Math.max(0, r0 - total);
+    const s1 = Math.min(l, L - r1 - total);
+    total += l;
+    if (s1 - s0 < 0.2) continue;
+    const [a, b] = [pts[i], pts[i + 1]];
+    const dx = (b[0] - a[0]) / l, dy = (b[1] - a[1]) / l;
+    for (const lado of [1, -1]) {
+      const nx = -dy * lado, ny = dx * lado;
+      const o = ancho / 2;
+      const p0: Punto = [a[0] + dx * s0 + nx * o, a[1] + dy * s0 + ny * o];
+      const p1: Punto = [a[0] + dx * s1 + nx * o, a[1] + dy * s1 + ny * o];
+      // Cara mirando a la calzada (hacia −n).
+      const quad = lado > 0
+        ? [[p0, y0], [p1, y0], [p1, y1], [p0, y0], [p1, y1], [p0, y1]]
+        : [[p0, y0], [p0, y1], [p1, y1], [p0, y0], [p1, y1], [p1, y0]];
+      for (const [[x, z], y] of quad as [Punto, number][]) {
+        pos.push(x - CX, y, z - CY);
+        nor.push(-nx, 0, -ny);
+      }
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("normal", new THREE.Float32BufferAttribute(nor, 3));
   return g;
 }
 

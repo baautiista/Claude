@@ -146,8 +146,9 @@ export function coche(o: Obra, x: number, z: number, r: () => number) {
  */
 export function urbanizar(o: Obra, segs: (Segmento & { r0: number; r1: number })[], tiendas: Edificio[], cx: number, cy: number, suelo: number, semilla: number, enCalzada: (p: Punto, propio: Segmento) => boolean) {
   const r = azar(semilla);
-  // Calzada y acera están al mismo nivel (ALTO_CALLE): el mobiliario se apoya directamente.
-  const yAcera = suelo + 0.15;
+  // La acera va 12 cm por encima de la calzada (calzada a +0,15 sobre el suelo).
+  const yAcera = suelo + 0.27;
+  const yCalzada = suelo + 0.15;
   for (const s of segs) {
     const L = alinear(o, s.a, s.b, cx, cy, yAcera);
     const x0 = s.r0;
@@ -185,7 +186,7 @@ export function urbanizar(o: Obra, segs: (Segmento & { r0: number; r1: number })
       // Coches aparcados en un lado de las calles de barrio.
       if (coches && lado === -1 && s.ancho >= 6) {
         const g = o;
-        g.oy = yAcera;
+        g.oy = yCalzada;
         for (let x = x0 + 3; x < x1 - 3; x += 5 + r() * 2) if (r() < 0.55) coche(o, x, -hw + 1.25, r);
         g.oy = yAcera;
       }
