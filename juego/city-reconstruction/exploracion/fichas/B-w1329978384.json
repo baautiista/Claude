@@ -49,7 +49,7 @@
    "confianza": 0.89,
    "fuente": "catastro:ES.SDGC.BU.8749015TF8084N_part1",
    "autor": "Catastro",
-   "fecha": "2026-10-18 20:17:57"
+   "fecha": "2026-10-18 20:53:35"
   },
   "alturaM": {
    "valor": 9.6,
@@ -103,11 +103,11 @@
  "fotos": [],
  "consultas": {
   "Catastro": "ok",
-  "Mapillary": "sin_token",
+  "Mapillary": "vacia (radio)",
   "Wikimedia Commons": "ok",
   "Fotos propias": "sin_fotos"
  },
- "estado": "SIN_REFERENCIAS",
- "actualizada": "2026-10-18 20:17:57",
+ "estado": "VALIDANDO",
+ "actualizada": "2026-10-18 20:53:35",
  "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
 }

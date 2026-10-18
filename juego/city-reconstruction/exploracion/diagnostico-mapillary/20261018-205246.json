@@ -1,0 +1,574 @@
+{
+ "fecha": "2026-10-18 20:52:46",
+ "variable_token": "MMAPILLARY_TOKEN",
+ "centro": [
+  36.16397761111111,
+  -5.350323555555556
+ ],
+ "coordenadas": {
+  "edificios": 18,
+  "lon_lat_en_la_linea": true,
+  "ejemplo": {
+   "id": "B-r18344388",
+   "juego": [
+    2305.4975,
+    4055.3058333333333
+   ],
+   "wgs84": [
+    -5.350538310589702,
+    36.16394924891092
+   ],
+   "epsg25830": [
+    288572.8,
+    4004693.1
+   ]
+  },
+  "partes_catastro": 450,
+  "iou_huella_juego_vs_catastro": [
+   [
+    "B-r18344388",
+    0.55
+   ],
+   [
+    "B-r16846406",
+    0.62
+   ],
+   [
+    "B-w1259462231",
+    0.65
+   ],
+   [
+    "B-w1259462235",
+    0.57
+   ],
+   [
+    "B-w1259462249",
+    0.26
+   ],
+   [
+    "B-w1259462234",
+    0.67
+   ],
+   [
+    "B-w1259462233",
+    0.54
+   ],
+   [
+    "B-w1259462232",
+    0.65
+   ],
+   [
+    "B-w1259462248",
+    0.3
+   ],
+   [
+    "B-w1259462243",
+    0.59
+   ],
+   [
+    "B-w1259462230",
+    0.39
+   ],
+   [
+    "B-w1259462247",
+    0.35
+   ],
+   [
+    "B-w1259462241",
+    0.71
+   ],
+   [
+    "B-w1259462244",
+    0.31
+   ],
+   [
+    "B-w1329978385",
+    0.08
+   ],
+   [
+    "B-w1259462240",
+    0.52
+   ],
+   [
+    "B-w1259462242",
+    0.6
+   ],
+   [
+    "B-w1329978384",
+    0.44
+   ]
+  ],
+  "iou_mediana": 0.55,
+  "error_max_distancias_m": 0.08
+ },
+ "resumen": {
+  "consulta_mal_construida": 4,
+  "error_servidor": 1,
+  "error_autenticacion": 1,
+  "vacia": 36
+ },
+ "pruebas": [
+  {
+   "prueba": "token: /me",
+   "tipo": "token",
+   "url": "https://graph.mapillary.com/me?fields=id%2Cusername&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 400,
+   "ms": 638,
+   "imagenes": 0,
+   "clase": "consulta_mal_construida",
+   "error_red": null,
+   "respuesta": "{\"error\":{\"message\":\"An active access token must be used to query information about the current user.\",\"type\":\"MLYApiException\",\"code\":2500,\"fbtrace_id\":\"ACyWebrrxQBLAonEb47OJqY\"}}"
+  },
+  {
+   "prueba": "token: ID inexistente (espera error 100, no 190)",
+   "tipo": "token",
+   "url": "https://graph.mapillary.com/1?fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 400,
+   "ms": 150,
+   "imagenes": 0,
+   "clase": "consulta_mal_construida",
+   "error_red": null,
+   "respuesta": "{\"error\":{\"message\":\"Unsupported get request. Object with ID '1' does not exist, cannot be loaded due to missing permissions, or does not support this operation\",\"type\":\"MLYApiException\",\"code\":100,\"error_subcode\":33,\"fbtrace_id\":\"AAE2w4UhGoXzqaHgG8Ct3ZN\"}}"
+  },
+  {
+   "prueba": "token: inventado (espera error 190)",
+   "tipo": "token",
+   "url": "https://graph.mapillary.com/images?access_token=MLY%7C0%7C0&bbox=-5.350880%2C36.163528%2C-5.349767%2C36.164427&fields=id",
+   "http": 500,
+   "ms": 145,
+   "imagenes": 0,
+   "clase": "error_servidor",
+   "error_red": null,
+   "respuesta": "{\"error\":{\"message\":\"Service temporarily unavailable\",\"type\":\"MLYApiException\",\"is_transient\":true,\"code\":2,\"fbtrace_id\":\"AR31EKSW8t39Ebxn5RQxL6h\"}}"
+  },
+  {
+   "prueba": "token: en cabecera Authorization: OAuth",
+   "tipo": "token",
+   "url": "https://graph.mapillary.com/images?bbox=-5.350880%2C36.163528%2C-5.349767%2C36.164427&fields=id&limit=10",
+   "http": 500,
+   "ms": 149,
+   "imagenes": 0,
+   "clase": "error_autenticacion",
+   "error_red": null,
+   "respuesta": "{\"error\":{\"message\":\"Invalid OAuth 2.0 Access Token\",\"type\":\"MLYApiException\",\"code\":190,\"error_data\":{},\"fbtrace_id\":\"AzTf9lk9p3JRk_wqz5anKZI\"}}"
+  },
+  {
+   "prueba": "radio 50 m, fields=id · AURORA-01 (centro de 18 edificios)",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.16397761111111&lng=-5.350323555555556&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 327,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=10, campos completos · AURORA-01 (centro de 18 edificios)",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.16397761111111&lng=-5.350323555555556&radius=50&limit=10&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 267,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=100, campos completos · AURORA-01 (centro de 18 edificios)",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.16397761111111&lng=-5.350323555555556&radius=50&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 200,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±50 m, limit=100 · AURORA-01 (centro de 18 edificios)",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-5.350880%2C36.163528%2C-5.349767%2C36.164427&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 240,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±150 m, limit=100 · AURORA-01 (centro de 18 edificios)",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-5.351993%2C36.162630%2C-5.348655%2C36.165325&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 277,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, fields=id · La Línea, Calle Real",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.1625&lng=-5.348&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 887,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=10, campos completos · La Línea, Calle Real",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.1625&lng=-5.348&radius=50&limit=10&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 228,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=100, campos completos · La Línea, Calle Real",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.1625&lng=-5.348&radius=50&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 234,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±50 m, limit=100 · La Línea, Calle Real",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-5.348556%2C36.162051%2C-5.347444%2C36.162949&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 267,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±150 m, limit=100 · La Línea, Calle Real",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-5.349669%2C36.161153%2C-5.346331%2C36.163847&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 169,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, fields=id · La Línea, frontera",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.153&lng=-5.347&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 328,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=10, campos completos · La Línea, frontera",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.153&lng=-5.347&radius=50&limit=10&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 208,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=100, campos completos · La Línea, frontera",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=36.153&lng=-5.347&radius=50&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 195,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±50 m, limit=100 · La Línea, frontera",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-5.347556%2C36.152551%2C-5.346444%2C36.153449&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 240,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±150 m, limit=100 · La Línea, frontera",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-5.348669%2C36.151653%2C-5.345331%2C36.154347&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 224,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, fields=id · Madrid, Puerta del Sol",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=40.4169&lng=-3.7035&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 278,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=10, campos completos · Madrid, Puerta del Sol",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=40.4169&lng=-3.7035&radius=50&limit=10&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 196,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=100, campos completos · Madrid, Puerta del Sol",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=40.4169&lng=-3.7035&radius=50&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 208,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±50 m, limit=100 · Madrid, Puerta del Sol",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-3.704090%2C40.416451%2C-3.702910%2C40.417349&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 404,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±150 m, limit=100 · Madrid, Puerta del Sol",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-3.705270%2C40.415553%2C-3.701730%2C40.418247&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 262,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, fields=id · Barcelona, Pl. Catalunya",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=41.387&lng=2.17&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 510,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=10, campos completos · Barcelona, Pl. Catalunya",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=41.387&lng=2.17&radius=50&limit=10&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 235,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=100, campos completos · Barcelona, Pl. Catalunya",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=41.387&lng=2.17&radius=50&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 263,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±50 m, limit=100 · Barcelona, Pl. Catalunya",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=2.169401%2C41.386551%2C2.170599%2C41.387449&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 185,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±150 m, limit=100 · Barcelona, Pl. Catalunya",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=2.168204%2C41.385653%2C2.171796%2C41.388347&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 261,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, fields=id · Malmö, Stortorget",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=55.6059&lng=13.0007&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 310,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=10, campos completos · Malmö, Stortorget",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=55.6059&lng=13.0007&radius=50&limit=10&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 225,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=100, campos completos · Malmö, Stortorget",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=55.6059&lng=13.0007&radius=50&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 217,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±50 m, limit=100 · Malmö, Stortorget",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=12.999905%2C55.605451%2C13.001495%2C55.606349&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 268,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±150 m, limit=100 · Malmö, Stortorget",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=12.998315%2C55.604553%2C13.003085%2C55.607247&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 467,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, fields=id · San Francisco, Market St",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=37.789&lng=-122.401&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 441,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=10, campos completos · San Francisco, Market St",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=37.789&lng=-122.401&radius=50&limit=10&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 6861,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "radio 50 m, limit=100, campos completos · San Francisco, Market St",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?lat=37.789&lng=-122.401&radius=50&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 2902,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±50 m, limit=100 · San Francisco, Market St",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-122.401568%2C37.788551%2C-122.400432%2C37.789449&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 1193,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "bbox ±150 m, limit=100 · San Francisco, Market St",
+   "tipo": "busqueda",
+   "url": "https://graph.mapillary.com/images?bbox=-122.402705%2C37.787653%2C-122.399295%2C37.790347&limit=100&fields=id%2Ccomputed_geometry%2Ccaptured_at%2Ccomputed_compass_angle%2Cis_pano&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 3579,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  },
+  {
+   "prueba": "mal: radio sin lng",
+   "tipo": "control",
+   "url": "https://graph.mapillary.com/images?lat=36.16397761111111&radius=50&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 500,
+   "ms": 177,
+   "imagenes": 0,
+   "clase": "consulta_mal_construida",
+   "error_red": null,
+   "respuesta": "{\"error\":{\"message\":\"The 'lng' parameter is required when 'lat' is provided.\",\"type\":\"MLYApiException\",\"code\":100,\"error_subcode\":5,\"fbtrace_id\":\"AWUwlcfJNn4TH_gjFNrCBW6\"}}"
+  },
+  {
+   "prueba": "mal: lat/lng + bbox juntos",
+   "tipo": "control",
+   "url": "https://graph.mapillary.com/images?lat=36.16397761111111&lng=-5.350323555555556&radius=50&bbox=-5.350880%2C36.163528%2C-5.349767%2C36.164427&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 500,
+   "ms": 189,
+   "imagenes": 0,
+   "clase": "consulta_mal_construida",
+   "error_red": null,
+   "respuesta": "{\"error\":{\"message\":\"Incompatible filters: bbox, lat\",\"type\":\"MLYApiException\",\"code\":100,\"error_subcode\":3,\"fbtrace_id\":\"AFEbKZ2IjCacVSMoqP79rXh\"}}"
+  },
+  {
+   "prueba": "mal: bbox con lat/lon invertidos",
+   "tipo": "control",
+   "url": "https://graph.mapillary.com/images?bbox=36.16297761111111%2C-5.351323555555556%2C36.164977611111105%2C-5.349323555555555&fields=id&access_token=MLY%7C39966272326297126%7C8d588d932ab456084a4ec321bb6e4e21",
+   "http": 200,
+   "ms": 175,
+   "imagenes": 0,
+   "clase": "vacia",
+   "error_red": null,
+   "respuesta": "{\"data\":[]}"
+  }
+ ]
+}

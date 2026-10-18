@@ -86,6 +86,9 @@ def conectar():
         CREATE TABLE IF NOT EXISTS eventos (fecha TEXT, edificio TEXT, de TEXT, a TEXT, nota TEXT);
         """
     )
+    for tabla, col in (("fotos", "pano INTEGER"), ("foto_edificio", "confianza REAL"), ("foto_edificio", "fachada INTEGER")):
+        if col.split()[0] not in [r[1] for r in c.execute(f"PRAGMA table_info({tabla})")]:
+            c.execute(f"ALTER TABLE {tabla} ADD COLUMN {col}")
     return c
 
 
@@ -199,30 +202,109 @@ def descargar(url, destino):
     return destino
 
 
-def fuente_mapillary(c, cuad, bbox_lonlat):
-    """Fotos a pie de calle de Mapillary (CC BY-SA 4.0) en la cuadrícula."""
-    token = os.environ.get("MAPILLARY_TOKEN")
-    if not token:
+MAPILLARY_API = "https://graph.mapillary.com"
+MAPILLARY_CAMPOS = "id,computed_geometry,geometry,captured_at,computed_compass_angle,compass_angle,is_pano,thumb_1024_url,creator"
+MAPILLARY_RADIO = 50  # metros; la API no admite más de 50 en la búsqueda por radio
+
+
+def mapillary_token():
+    # MMAPILLARY_TOKEN: nombre con la errata con que está guardado en el entorno actual.
+    return os.environ.get("MAPILLARY_TOKEN") or os.environ.get("MMAPILLARY_TOKEN")
+
+
+class MapillaryError(Exception):
+    def __init__(self, clase, detalle):
+        super().__init__(f"{clase}: {detalle}")
+        self.clase = clase
+
+
+def mapillary_clasificar(codigo, cuerpo, red=None):
+    """Distingue: ok_con_fotos · vacia · ok_objeto · error_autenticacion · consulta_mal_construida ·
+    bloqueo_proxy · error_servidor · error_red. Devuelve (clase, datos JSON o None)."""
+    if red:
+        return ("bloqueo_proxy" if ("403" in red or "Tunnel" in red or "CONNECT" in red) else "error_red"), None
+    try:
+        d = json.loads(cuerpo)
+    except ValueError:
+        # Respuesta que no es JSON de Mapillary: la da el proxy de salida («upstream request failed», 403, 502…).
+        return ("bloqueo_proxy" if codigo in (403, 407, 502, 503) or "upstream" in cuerpo else "error_servidor"), None
+    if isinstance(d, dict) and "error" in d:
+        err = d["error"]
+        if err.get("code") in (190, 102, 10, 200) or err.get("type") == "OAuthException":
+            return "error_autenticacion", d
+        if err.get("code") in (100, 2500) or codigo == 400:
+            return "consulta_mal_construida", d
+        return "error_servidor", d
+    if isinstance(d, dict) and "data" in d:
+        return ("ok_con_fotos" if d["data"] else "vacia"), d
+    if isinstance(d, dict) and "id" in d:
+        return "ok_objeto", d
+    return "error_servidor", d
+
+
+def mapillary_get(ruta, params, intentos=3):
+    """GET a la API Graph de Mapillary. Devuelve (clase, datos, http, ms). Sin caché: una respuesta vacía
+    no es prueba de que no haya fotos y debe poder repetirse. Nunca registra el token."""
+    import ssl
+    import urllib.error
+    tok = mapillary_token()
+    url = f"{MAPILLARY_API}/{ruta}?" + urllib.parse.urlencode({**params, "access_token": tok or ""})
+    for i in range(intentos):
+        t0 = time.time()
+        codigo, cuerpo, red = None, "", None
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "LaLineaCity/1.0 (juego de InfoLinense)"})
+            with urllib.request.urlopen(req, timeout=40, context=ssl.create_default_context()) as r:
+                codigo, cuerpo = r.status, r.read().decode("utf-8", "replace")
+        except urllib.error.HTTPError as e:
+            codigo, cuerpo = e.code, e.read().decode("utf-8", "replace")
+        except Exception as e:  # noqa: BLE001
+            red = f"{type(e).__name__}: {e}"
+        ms = round((time.time() - t0) * 1000)
+        clase, d = mapillary_clasificar(codigo, cuerpo, red)
+        transitorio = clase == "error_servidor" and isinstance(d, dict) and d.get("error", {}).get("is_transient")
+        if not transitorio:
+            break
+        time.sleep(2 ** i)
+    return clase, d, codigo, ms
+
+
+def _mapillary_foto(im):
+    g = (im.get("computed_geometry") or im.get("geometry") or {}).get("coordinates")
+    if not g:
+        return None
+    rumbo = im.get("computed_compass_angle")
+    if rumbo is None:
+        rumbo = im.get("compass_angle")
+    return {
+        "id": f"mapillary:{im['id']}", "fuente": "Mapillary", "url": im.get("thumb_1024_url"),
+        "pagina": f"https://www.mapillary.com/app/?pKey={im['id']}", "licencia": "CC BY-SA 4.0",
+        "autor": (im.get("creator") or {}).get("username", ""),
+        "fecha": time.strftime("%Y-%m-%d", time.gmtime(im["captured_at"] / 1000)) if im.get("captured_at") else "",
+        "lon": g[0], "lat": g[1], "rumbo": rumbo, "pano": 1 if im.get("is_pano") else 0,
+    }
+
+
+def fuente_mapillary(c, e):
+    """Fotos a pie de calle de Mapillary (CC BY-SA 4.0) en un radio de 50 m alrededor del edificio.
+    Conector principal: búsqueda por radio (lat, lng, radius). Si la API rechaza la consulta por radio,
+    se repite con un bbox pequeño (lon mín, lat mín, lon máx, lat máx) de ±60 m."""
+    if not mapillary_token():
         return "sin_token", []
-    x0, y0, x1, y1 = bbox_lonlat
-    url = "https://graph.mapillary.com/images?" + urllib.parse.urlencode({
-        "access_token": token, "bbox": f"{x0},{y0},{x1},{y1}", "limit": 400,
-        "fields": "id,captured_at,compass_angle,computed_geometry,thumb_1024_url,creator",
-    })
-    d = http_json(url)
-    out = []
-    for im in d.get("data", []):
-        g = (im.get("computed_geometry") or {}).get("coordinates")
-        if not g:
-            continue
-        out.append({
-            "id": f"mapillary:{im['id']}", "fuente": "Mapillary", "url": im.get("thumb_1024_url"),
-            "pagina": f"https://www.mapillary.com/app/?pKey={im['id']}", "licencia": "CC BY-SA 4.0",
-            "autor": (im.get("creator") or {}).get("username", ""),
-            "fecha": time.strftime("%Y-%m-%d", time.gmtime(im.get("captured_at", 0) / 1000)) if im.get("captured_at") else "",
-            "lon": g[0], "lat": g[1], "rumbo": im.get("compass_angle"),
-        })
-    return "ok", out
+    clase, d, http, _ms = mapillary_get("images", {"lat": f"{e['lat']:.6f}", "lng": f"{e['lon']:.6f}",
+                                                    "radius": MAPILLARY_RADIO, "limit": 100, "fields": MAPILLARY_CAMPOS})
+    metodo = "radio"
+    if clase == "consulta_mal_construida":
+        dlat, dlon = 60 / KY, 60 / KX
+        bbox = f"{e['lon'] - dlon:.6f},{e['lat'] - dlat:.6f},{e['lon'] + dlon:.6f},{e['lat'] + dlat:.6f}"
+        clase, d, http, _ms = mapillary_get("images", {"bbox": bbox, "limit": 100, "fields": MAPILLARY_CAMPOS})
+        metodo = "bbox"
+    if clase in ("error_autenticacion", "bloqueo_proxy", "error_red", "error_servidor", "consulta_mal_construida"):
+        msg = (d or {}).get("error", {}).get("message", "") if isinstance(d, dict) else ""
+        raise MapillaryError(clase, f"http {http} {msg}"[:120])
+    fotos = [f for f in (_mapillary_foto(im) for im in d.get("data", [])) if f]
+    # «vacia» no se da por consultada (no queda en caché): se repetirá en la siguiente investigación.
+    return ("ok" if fotos else f"vacia ({metodo})"), fotos
 
 
 def fuente_commons(c, cuad, centro_lonlat, radio=250):
@@ -264,8 +346,19 @@ def fuente_catastro(cuad, bbox_lonlat):
     url = ("https://ovc.catastro.meh.es/INSPIRE/wfsBU.aspx?service=WFS&version=2.0.0&request=GetFeature"
            f"&typeNames=BU:BuildingPart&srsName=EPSG::25830&bbox={x0:.0f},{y0:.0f},{x1:.0f},{y1:.0f}")
     req = urllib.request.Request(url, headers={"User-Agent": "LaLineaCity/1.0 (https://github.com/baautiista/claude)"})
-    with urllib.request.urlopen(req, timeout=90) as r:
-        xml = r.read()
+    # La salida a internet cambia de IP: a veces el Catastro bloquea una (403) o el proxy falla (502). Se reintenta.
+    for i in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=90) as r:
+                xml = r.read()
+            if b"ExceptionReport" not in xml[:400]:
+                break
+            err = xml[:300].decode("latin-1")
+        except Exception as ex:  # noqa: BLE001
+            err = str(ex)
+        time.sleep(2 + 2 * i)
+    else:
+        raise RuntimeError(f"Catastro sin respuesta válida tras 5 intentos: {err[:120]}")
     time.sleep(1.5)
     ns = {"gml": "http://www.opengis.net/gml/3.2", "bu-ext2d": "http://inspire.jrc.ec.europa.eu/schemas/bu-ext2d/2.0"}
     raiz = ET.fromstring(xml)
@@ -340,30 +433,121 @@ def consultar(c, clave, fuente, fn):
     try:
         res, fotos = fn()
     except Exception as e:  # noqa: BLE001 — red bloqueada, cuota, etc.: se registra y se sigue
-        res, fotos = f"sin_acceso: {str(e)[:120]}", []
+        res, fotos = f"sin_acceso: {str(e)[:140]}", []
     c.execute("INSERT OR REPLACE INTO consultas VALUES (?,?,?,?,?)", (clave, fuente, ahora(), res, len(fotos)))
     for f in fotos:
-        c.execute("INSERT OR IGNORE INTO fotos (id, fuente, url, pagina, licencia, autor, fecha, lon, lat, rumbo, archivo) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-                  (f["id"], f["fuente"], f["url"], f["pagina"], f["licencia"], f["autor"], f["fecha"], f["lon"], f["lat"], f["rumbo"], f.get("archivo")))
+        c.execute("INSERT OR IGNORE INTO fotos (id, fuente, url, pagina, licencia, autor, fecha, lon, lat, rumbo, archivo, pano) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (f["id"], f["fuente"], f["url"], f["pagina"], f["licencia"], f["autor"], f["fecha"], f["lon"], f["lat"], f["rumbo"], f.get("archivo"), f.get("pano")))
     return res, fotos
 
 
-def asociar_fotos(c, e):
-    """Fotos a menos de 35 m del edificio y que miran hacia él (si hay rumbo)."""
+def _fachadas(huella, caras):
+    """Aristas de la huella con su punto medio y normal hacia fuera; solo las que dan a la calle
+    (las medianeras no se ven desde la calle). Si no hay datos de caras, se usan todas."""
     import math
-    n = 0
-    for f in c.execute("SELECT id, lon, lat, rumbo FROM fotos WHERE lon BETWEEN ? AND ? AND lat BETWEEN ? AND ?", (e["lon"] - 0.0005, e["lon"] + 0.0005, e["lat"] - 0.0004, e["lat"] + 0.0004)):
-        fx, fy = (f["lon"] - L0) * KX, (A0 - f["lat"]) * KY
-        d = math.hypot(fx - e["x"], fy - e["y"])
-        if d > 35:
+    n = len(huella)
+    area2 = sum(huella[i][0] * huella[(i + 1) % n][1] - huella[(i + 1) % n][0] * huella[i][1] for i in range(n))
+    out = []
+    for i in range(n):
+        if caras and i < len(caras) and caras[i] != "calle":
             continue
-        encara = None
-        if f["rumbo"] is not None:
-            ang = math.degrees(math.atan2(e["x"] - fx, -(e["y"] - fy))) % 360  # 0 = norte
-            encara = abs((ang - f["rumbo"] + 180) % 360 - 180)
-            if encara > 70:
+        (x0, y0), (x1, y1) = huella[i], huella[(i + 1) % n]
+        lx, ly = x1 - x0, y1 - y0
+        lar = math.hypot(lx, ly)
+        if lar < 1.5:
+            continue
+        # normal exterior: depende del sentido de giro del anillo
+        nx, ny = (ly / lar, -lx / lar) if area2 > 0 else (-ly / lar, lx / lar)
+        out.append({"i": i, "a": (x0, y0), "b": (x1, y1), "m": ((x0 + x1) / 2, (y0 + y1) / 2), "n": (nx, ny), "largo": lar})
+    return out
+
+
+ASOC_MAX_M = 45      # más lejos, la fachada ocupa poco en la foto y el detalle no sirve
+ASOC_MEDIO_FOV = 40  # semiángulo horizontal de una cámara normal (~80° de campo); las 360° lo ven todo
+
+
+def evaluar_foto(cam, rumbo, pano, ed, obstaculos):
+    """Confianza (0–1) de que la foto tomada en `cam` (coords del juego) con `rumbo` (0 = norte) muestre
+    alguna fachada a la calle del edificio `ed` ({id, huella, caras}). Criterios: distancia, la fachada
+    mira a la cámara, la cámara apunta a la fachada (salvo 360°) y no hay otro edificio en medio.
+    Devuelve (confianza, distancia, desvío angular, índice de fachada) o None."""
+    import math
+    from shapely.geometry import LineString
+    mejor = None
+    for f in _fachadas(ed["huella"], ed.get("caras")):
+        # Punto de la fachada más cercano a la cámara (no solo el medio: en fachadas largas importa).
+        ax, ay = f["a"]
+        bx, by = f["b"]
+        t = max(0.1, min(0.9, ((cam[0] - ax) * (bx - ax) + (cam[1] - ay) * (by - ay)) / (f["largo"] ** 2)))
+        px, py = ax + t * (bx - ax), ay + t * (by - ay)
+        vx, vy = px - cam[0], py - cam[1]
+        dist = math.hypot(vx, vy)
+        if dist > ASOC_MAX_M or dist < 0.5:
+            continue
+        incid = -(vx * f["n"][0] + vy * f["n"][1]) / dist  # 1 = de frente, 0 = rasante, <0 = por detrás
+        if incid < 0.12:
+            continue
+        # ¿Algún otro edificio tapa la línea de visión? (se recorta 0,4 m al final para no tocar la propia fachada)
+        k = (dist - 0.4) / dist
+        rayo = LineString([cam, (cam[0] + vx * k, cam[1] + vy * k)])
+        if any(o.intersects(rayo) for o in obstaculos):
+            continue
+        if pano:
+            desvio, w_ang = 0.0, 1.0
+        elif rumbo is None:
+            desvio, w_ang = None, 0.35  # sin orientación: posible, pero poco fiable
+        else:
+            # Desvío entre el rumbo y la parte más cercana de la fachada (punto medio y extremos).
+            def rumbo_a(x, y):
+                return math.degrees(math.atan2(x - cam[0], -(y - cam[1]))) % 360  # y del juego crece hacia el sur
+            desvio = min(abs((rumbo_a(x, y) - rumbo + 180) % 360 - 180) for x, y in (f["a"], f["b"], f["m"], (px, py)))
+            if desvio > ASOC_MEDIO_FOV:
                 continue
-        c.execute("INSERT OR REPLACE INTO foto_edificio VALUES (?,?,?,?)", (f["id"], e["id"], round(d, 1), encara))
+            w_ang = 1 - 0.6 * desvio / ASOC_MEDIO_FOV
+            # Ángulo entre el eje de la cámara y la fachada: mirando a lo largo de la calle se ve muy
+            # en escorzo aunque la cámara esté pegada a ella.
+            dx, dy = math.sin(math.radians(rumbo)), -math.cos(math.radians(rumbo))
+            incid = min(incid, max(0.0, -(dx * f["n"][0] + dy * f["n"][1])))
+        w_dist = 1 - (max(dist, 6) - 6) / (ASOC_MAX_M - 6) * 0.7
+        conf = round(max(0.0, min(1.0, w_ang * w_dist * (0.3 + 0.7 * incid))), 2)
+        if not mejor or conf > mejor[0]:
+            mejor = (conf, round(dist, 1), None if desvio is None else round(desvio, 1), f["i"])
+    return mejor
+
+
+def asociar_fotos(c, e):
+    """Asocia al edificio cada foto cercana que probablemente muestre una de sus fachadas a la calle,
+    con una confianza por asociación. No se asigna cada foto solo al edificio más cercano: una misma foto
+    puede servir para varios edificios (o para el de enfrente y no para el de al lado), y un edificio
+    puede tener varias fotos."""
+    from shapely.geometry import Polygon
+    datos = json.loads(e["datos"])
+    ed = {"id": e["id"], "huella": datos.get("huella") or [], "caras": datos.get("caras")}
+    if len(ed["huella"]) < 3:
+        return 0
+    r = 0.0009  # ~80–100 m
+    vecinos = []
+    for v in c.execute("SELECT id, datos FROM edificios WHERE id!=? AND lon BETWEEN ? AND ? AND lat BETWEEN ? AND ?",
+                       (e["id"], e["lon"] - r, e["lon"] + r, e["lat"] - r, e["lat"] + r)):
+        h = json.loads(v["datos"]).get("huella") or []
+        if len(h) >= 3:
+            try:
+                vecinos.append(Polygon(h).buffer(-0.3))  # se encoge un poco: el ruido de la huella no debe tapar la calle
+            except Exception:  # noqa: BLE001
+                pass
+    n = 0
+    c.execute("DELETE FROM foto_edificio WHERE edificio=?", (e["id"],))
+    for f in c.execute("SELECT id, lon, lat, rumbo, pano FROM fotos WHERE lon IS NOT NULL AND lon BETWEEN ? AND ? AND lat BETWEEN ? AND ?",
+                       (e["lon"] - 0.0007, e["lon"] + 0.0007, e["lat"] - 0.0006, e["lat"] + 0.0006)).fetchall():
+        cam = ((f["lon"] - L0) * KX, (A0 - f["lat"]) * KY)
+        if any(o.contains(Polygon([(cam[0] - .1, cam[1] - .1), (cam[0] + .1, cam[1] - .1), (cam[0], cam[1] + .1)])) for o in vecinos):
+            continue  # cámara dentro de otro edificio (posición mal calculada o foto de interior)
+        res = evaluar_foto(cam, f["rumbo"], bool(f["pano"]), ed, vecinos)
+        if not res or res[0] < 0.2:
+            continue
+        conf, dist, desvio, fachada = res
+        c.execute("INSERT OR REPLACE INTO foto_edificio (foto, edificio, distancia, encara, confianza, fachada) VALUES (?,?,?,?,?,?)",
+                  (f["id"], e["id"], dist, desvio, conf, fachada))
         n += 1
     return n
 
@@ -391,7 +575,7 @@ def investigar(a):
             bb = indice[cuad]["bbox"]
             lo0, la1 = a_lonlat(bb[0], bb[1])
             lo1, la0 = a_lonlat(bb[2], bb[3])
-            r1, _ = consultar(c, f"mapillary:{cuad}", "Mapillary", lambda: fuente_mapillary(c, cuad, (lo0, la0, lo1, la1)))
+            r1, _ = consultar(c, f"mapillary:{e['id']}", "Mapillary", lambda: fuente_mapillary(c, e))
             r2, _ = consultar(c, f"commons:{cuad}", "Wikimedia Commons", lambda: fuente_commons(c, cuad, ((lo0 + lo1) / 2, (la0 + la1) / 2)))
             calles = [r[0] for r in c.execute("SELECT calle FROM edificio_calle WHERE edificio=?", (e["id"],))]
             r3, _ = consultar(c, f"propias:{e['id']}", "Foto propia", lambda: fuente_propias(c, e["id"], calles))
@@ -409,7 +593,13 @@ def investigar(a):
             except Exception as ex:  # noqa: BLE001
                 c.execute("INSERT OR REPLACE INTO consultas VALUES (?,?,?,?,?)", (f"catastro:{cuad}", "Catastro INSPIRE BU", ahora(), f"sin_acceso: {str(ex)[:120]}", 0))
             n = asociar_fotos(c, e)
-            mover(c, e["id"], "REFERENCIAS_ENCONTRADAS" if n else "SIN_REFERENCIAS", f"{n} fotos")
+            if n:
+                mover(c, e["id"], "REFERENCIAS_ENCONTRADAS", f"{n} fotos")
+            elif e["estado"] in ("MODELANDO", "VALIDANDO", "INTEGRADO"):
+                # Sin fotos nuevas no se retrocede un edificio ya modelado: sigue la generación procedural.
+                mover(c, e["id"], e["estado"], "investigado de nuevo: 0 fotos")
+            else:
+                mover(c, e["id"], "SIN_REFERENCIAS", "0 fotos")
             rcat = c.execute("SELECT resultado FROM consultas WHERE clave=?", (f"catastro:{cuad}",)).fetchone()
             ficha(c, e["id"], {"Catastro": rcat[0] if rcat else None, "Mapillary": r1, "Wikimedia Commons": r2, "Fotos propias": r3})
         except Exception as ex:  # noqa: BLE001
@@ -445,7 +635,7 @@ def ficha(c, eid, consultas=None):
             atributos[k] = {"valor": d.get(k), "estado": "inferido", "confianza": conf.get(k, "baja"), "fuente": "reglas del generador (scripts/sector/nucleo.py)"}
         else:
             atributos[k] = {"valor": None, "estado": "desconocido"}
-    fotos = [dict(r) for r in c.execute("SELECT f.*, fe.distancia, fe.encara FROM foto_edificio fe JOIN fotos f ON f.id=fe.foto WHERE fe.edificio=? ORDER BY fe.distancia", (eid,))]
+    fotos = [dict(r) for r in c.execute("SELECT f.*, fe.distancia, fe.encara, fe.confianza, fe.fachada FROM foto_edificio fe JOIN fotos f ON f.id=fe.foto WHERE fe.edificio=? ORDER BY fe.confianza DESC, fe.distancia", (eid,))]
     previa = {}
     fp = os.path.join(FICHAS, f"{eid}.json")
     if os.path.exists(fp):
@@ -456,7 +646,7 @@ def ficha(c, eid, consultas=None):
         "coordenadas": {"juego": [round(e["x"], 1), round(e["y"], 1)], "lon": round(e["lon"], 6), "lat": round(e["lat"], 6)},
         "geometria": {"huella": d.get("huella"), "area_m2": e["area"], "caras": d.get("caras")},
         "atributos": atributos,
-        "fotos": [{k: f[k] for k in ("id", "fuente", "pagina", "licencia", "autor", "fecha", "distancia", "encara", "archivo")} for f in fotos],
+        "fotos": [{k: f[k] for k in ("id", "fuente", "pagina", "licencia", "autor", "fecha", "distancia", "encara", "confianza", "fachada", "archivo")} for f in fotos],
         "consultas": consultas or previa.get("consultas", {}),
         "estado": c.execute("SELECT estado FROM edificios WHERE id=?", (eid,)).fetchone()[0],
         "actualizada": ahora(),
@@ -643,22 +833,25 @@ def panel(a):
 
 def fuentes(_a):
     import ssl  # noqa: F401
+    tok = mapillary_token()
+    print(f"  Token de Mapillary: {'definido' if tok else 'no definido'}" + ("" if os.environ.get("MAPILLARY_TOKEN") or not tok else " (como MMAPILLARY_TOKEN)"))
+    if tok:
+        clase, _d, http, ms = mapillary_get("images", {"lat": 36.1644, "lng": -5.3506, "radius": 50, "limit": 10, "fields": "id"})
+        print(f"  Mapillary (radio 50 m): {clase} · http {http} · {ms} ms")
+        clase2, _d, http2, _ = mapillary_get("1", {"fields": "id"})
+        print(f"  Mapillary (token por ID): {'token aceptado' if clase2 == 'consulta_mal_construida' else clase2} · http {http2}")
     pruebas = {
-        "Mapillary": "https://graph.mapillary.com/images?fields=id&limit=1&bbox=-5.35,36.16,-5.349,36.161",
         "Wikimedia Commons": "https://commons.wikimedia.org/w/api.php?action=query&meta=siteinfo&format=json",
         "Overpass (OSM)": "https://overpass-api.de/api/status",
         "IGN/CNIG": "https://www.ign.es/wms-inspire/pnoa-ma?SERVICE=WMS&REQUEST=GetCapabilities",
         "Catastro": "https://ovc.catastro.meh.es/INSPIRE/wfsBU.aspx?service=WFS&request=GetCapabilities",
     }
-    if os.environ.get("MAPILLARY_TOKEN"):
-        pruebas["Mapillary"] += "&" + urllib.parse.urlencode({"access_token": os.environ["MAPILLARY_TOKEN"]})
     for k, u in pruebas.items():
         try:
             with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "LaLineaCity/1.0"}), timeout=15) as r:
                 print(f"  {k}: responde ({r.status})")
         except Exception as e:  # noqa: BLE001
             print(f"  {k}: no accesible ({str(e)[:90]})")
-    print(f"  MAPILLARY_TOKEN: {'definido' if os.environ.get('MAPILLARY_TOKEN') else 'no definido'}")
 
 
 def main():
