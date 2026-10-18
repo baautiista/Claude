@@ -140,7 +140,8 @@ export class GestorCiudad {
       e.lod.position.copy(c);
       e.lod.userData.tesela = e.id;
       this.anadir(e.lod);
-      e.solidos = e.datos.edificios.map((q) => q.huella);
+      // Los ocultos (sustituidos por un modelo propio) no ocupan: el sector pone sus propios sólidos.
+      e.solidos = e.datos.edificios.filter((q) => correccionDe(q.id)?.modelo !== "oculto").map((q) => q.huella);
       this.colisiones(e.id, e.solidos);
       // Del más ligero al más detallado, cada uno en su fotograma.
       const lod = e.lod;

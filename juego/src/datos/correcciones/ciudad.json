@@ -1,1 +1,14 @@
-{}
+{
+ "B-r19040558": {
+  "modelo": "oculto",
+  "nota": "Sustituido por el modelo propio del Museo Cruz Herrera (src/mundo/sectores/saccone.ts)."
+ },
+ "B-r17017391": {
+  "modelo": "oculto",
+  "nota": "Sustituido por el modelo propio del Colegio Providencia del Sagrado Corazón (src/mundo/sectores/saccone.ts)."
+ },
+ "B-w1229253734": {
+  "modelo": "oculto",
+  "nota": "Sustituido por el modelo propio de la Sociedad Musical Linense (src/mundo/sectores/saccone.ts)."
+ }
+}

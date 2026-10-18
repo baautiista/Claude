@@ -10,8 +10,10 @@ import { mergeGeometries, mergeVertices } from "three/examples/jsm/utils/BufferG
  * Dos niveles: «hi» para los trozos cercanos y «lo» (muy ligero) para el resto.
  */
 
-export const enum Especie { Pino, Ficus, Sombra, Naranjo, Palmera, Arbusto, Cipres }
-export const N_ESPECIES = 7;
+export const enum Especie { Pino, Ficus, Sombra, Naranjo, Palmera, Arbusto, Cipres, Araucaria, Drago }
+export const N_ESPECIES = 9;
+/** Especies con hojas de doble cara sin recorte (frondas de palmera, rosetas de drago). */
+export const conFrondas = (e: Especie) => e === Especie.Palmera || e === Especie.Drago;
 export const VARIANTES = 3;
 
 function azar(s: number) {
@@ -174,6 +176,7 @@ const T_SOMBRA = ["#5E9E45", "#6FAE4C", "#4F8F3E", "#7DBB55"].map((c) => new THR
 const T_NARANJO = ["#3E7F36", "#4A8B3A", "#356F30"].map((c) => new THREE.Color(c));
 const T_ARBUSTO = ["#5C9A40", "#4C8A3A", "#6FAA4A"].map((c) => new THREE.Color(c));
 const T_CIPRES = ["#2C5A2E", "#32653A", "#27522A"].map((c) => new THREE.Color(c));
+const T_ARAUCARIA = ["#2F5A2C", "#3A6834", "#28502A", "#447238"].map((c) => new THREE.Color(c));
 const T_PALMA = ["#4F9A3E", "#5FAA45", "#468C38"].map((c) => new THREE.Color(c));
 
 /** Hoja de palmera: tira curvada con foliolos, en forma de V abierta. */
@@ -343,6 +346,55 @@ export function geometriaArbol(e: Especie, v: number, hi: boolean): THREE.Buffer
       piezas.push(tronco(0.25, 0.2, 1.2, 0, 0, 0, 0, "#5B3B24", 4));
       const n = hi ? 4 : 1;
       for (let k = 0; k < n; k++) piezas.push(mata(hi ? 1.25 - k * 0.15 : 1.3, 0, 2.2 + k * 2.1, 0, hi ? 1.6 : 4.2, T_CIPRES, d, r, 1, 9));
+      break;
+    }
+    case Especie.Araucaria: {
+      // Araucaria excelsa (pino de Norfolk), la seña de los Jardines Saccone: fuste recto muy alto,
+      // pelado abajo, y pisos de ramas horizontales cada vez más cortas hacia la copa.
+      const h = 22 + r() * 5;
+      piezas.push(tronco(0.55, 0.12, h, 0, 0, 0, 0, "#6E5240", hi ? 8 : 5));
+      const base = h * (0.32 + r() * 0.08);
+      if (!hi) {
+        piezas.push(mata(3.4, 0, base + (h - base) * 0.42, 0, 2.4, T_ARAUCARIA, 0, r, base, h - base));
+        piezas.push(mata(2.0, 0, h - 2.2, 0, 1.8, T_ARAUCARIA, 0, r, base, h - base));
+        break;
+      }
+      for (let y = base; y < h - 0.6; y += 1.5 + r() * 0.4) {
+        const t = (y - base) / (h - base);
+        const largo = 4.6 * (1 - t * 0.78) + r() * 0.6;
+        const n = 5;
+        const giro = r() * Math.PI;
+        for (let k = 0; k < n; k++) {
+          const a = giro + (k / n) * Math.PI * 2;
+          const dx = Math.cos(a);
+          const dz = Math.sin(a);
+          // Rama casi horizontal (algo caída en la punta) y su follaje en cordón aplastado.
+          piezas.push(tronco(0.09, 0.04, largo, 0, 0, 0, 0, "#6E5240", 3).rotateZ(-(Math.PI / 2 - 0.1)).rotateY(-a).translate(0, y, 0));
+          for (const f of [0.45, 0.8]) piezas.push(mata(0.55 + largo * 0.11, dx * largo * f, y + 0.15 - f * 0.35, dz * largo * f, 0.42, T_ARAUCARIA, 0, r, base, h - base));
+        }
+      }
+      piezas.push(mata(0.9, 0, h, 0, 1.6, T_ARAUCARIA, 1, r, base, h - base));
+      break;
+    }
+    case Especie.Drago: {
+      // Drago / yuca de jardín: varios troncos grises que se abren desde la base, cada uno
+      // rematado por una roseta de hojas en espada.
+      const brazos = hi ? 3 + Math.floor(r() * 3) : 3;
+      for (let k = 0; k < brazos; k++) {
+        const a = (k / brazos) * Math.PI * 2 + r();
+        const inc = 0.25 + r() * 0.3;
+        const l = 3.2 + r() * 2.4;
+        piezas.push(tronco(0.24, 0.16, l, 0, 0, 0, 0, "#8D8577", hi ? 5 : 3).rotateZ(-inc).rotateY(-a));
+        const tx = Math.sin(inc) * l * Math.cos(a);
+        const ty = l * Math.cos(inc);
+        const tz = Math.sin(inc) * l * Math.sin(a);
+        const nh = hi ? 9 : 5;
+        for (let j = 0; j < nh; j++) {
+          const f = fronda(1.1 + r() * 0.4, (j / nh) * Math.PI * 2, -0.35 + r() * 0.4, r);
+          f.translate(tx, ty, tz);
+          piezas.push(f);
+        }
+      }
       break;
     }
   }

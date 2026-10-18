@@ -6,7 +6,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { urbanizar, type Segmento } from "./mobiliario";
-import { Especie, geoArbol, materialesArbol, N_ESPECIES, VARIANTES, viento } from "./vegetacion";
+import { conFrondas, Especie, geoArbol, materialesArbol, N_ESPECIES, VARIANTES, viento } from "./vegetacion";
 import { edificar, Mat, materialesArquitectura, matLuz, Obra, type Edificio } from "./arquitectura";
 import { GTAOPass } from "three/examples/jsm/postprocessing/GTAOPass.js";
 import { HorizontalTiltShiftShader } from "three/examples/jsm/shaders/HorizontalTiltShiftShader.js";
@@ -26,6 +26,7 @@ import * as T from "./texturas";
 import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
 import { construirCentro02, CENTRO_C02, SUSTITUYE_C02, solidosCentro02 } from "./sectores/centro02";
 import { solidosCentro01 } from "./sectores/centro01";
+import { arbolesSaccone, CENTRO_SACCONE, construirSaccone, enJardinesSaccone, solidosSaccone } from "./sectores/saccone";
 import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
 import { conectarBackend } from "./ciudad/correcciones";
@@ -1520,7 +1521,7 @@ export class Mundo {
     const ob = new THREE.Object3D();
     for (const [k, lista] of porTipo) {
       const e = Math.floor(k / VARIANTES) as Especie;
-      const im = new THREE.InstancedMesh(geoArbol(e, k % VARIANTES, fino), e === Especie.Palmera ? matP : matA, lista.length);
+      const im = new THREE.InstancedMesh(geoArbol(e, k % VARIANTES, fino), conFrondas(e) ? matP : matA, lista.length);
       lista.forEach((i, n) => {
         const a = this.arboles[i];
         ob.position.copy(v3(a.x, a.y, SUELO));
@@ -1620,6 +1621,8 @@ export class Mundo {
     const arbustos: Punto[] = [];
     for (const [x, y, t] of DATOS.arboles) {
       if (enDeporte([x, y])) continue;
+      // Jardines Saccone: arbolado propio según las fotos (araucarias, ficus, palmeras, dragos).
+      if (enJardinesSaccone(x, y)) continue;
       // Plaza de la Iglesia: plátanos de sombra altos, como en las fotos.
       if (t === 0 && Math.hypot(x - ZONA_CENTRO01.c[0], y - ZONA_CENTRO01.c[1]) < ZONA_CENTRO01.r) {
         this.plantar([x, y], Especie.Sombra, rand, 1.12 + rand() * 0.15);
@@ -1627,6 +1630,7 @@ export class Mundo {
       }
       (t === 2 ? arbustos : t === 1 ? pinos : frondosos).push([x, y]);
     }
+    for (const a of arbolesSaccone()) this.plantar(a.p as Punto, a.e, rand, a.esc);
     this.bosque(frondosos, rand, "jardin");
     this.bosque(pinos, rand, "pino");
     for (const p of arbustos) this.plantar(p, Especie.Arbusto, rand, 0.9 + rand() * 0.6);
@@ -1667,7 +1671,7 @@ export class Mundo {
     for (let e = 0; e < N_ESPECIES; e++) {
       const idx = this.arboles.map((a, i) => (a.e === e ? i : -1)).filter((i) => i >= 0);
       if (!idx.length) continue;
-      const im = new THREE.InstancedMesh(geoArbol(e, 0, false), e === Especie.Palmera ? matP : matA, idx.length);
+      const im = new THREE.InstancedMesh(geoArbol(e, 0, false), conFrondas(e) ? matP : matA, idx.length);
       idx.forEach((i, k) => {
         const a = this.arboles[i];
         o.position.copy(v3(a.x, a.y, SUELO));
@@ -1997,7 +2001,7 @@ export class Mundo {
   /** Huellas de los sectores reconstruidos (obstáculos para el validador y las colisiones). */
   private sectoresSolidos(): Punto[][] {
     const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
-    return [...solidosCentro01(), ...solidosCentro02(ocupado)] as Punto[][];
+    return [...solidosCentro01(), ...solidosCentro02(ocupado), ...solidosSaccone()] as Punto[][];
   }
 
   /** Ciudad generada automáticamente: teselas que se cargan y descargan según la cámara. */
@@ -2143,6 +2147,20 @@ export class Mundo {
       for (const [obra, dist] of [[construirCentro02(ctx, ocupado, true), 0], [construirCentro02(ctx, ocupado, false), 260]] as const) {
         const g = this.mallasObra(obra);
         g.position.copy(centro2).negate();
+        const nivel = new THREE.Group();
+        nivel.add(g);
+        lod.addLevel(nivel, dist);
+      }
+      this.escena.add(lod);
+    }
+    // SACCONE · Jardines Saccone, Museo Cruz Herrera y Colegio Providencia del Sagrado Corazón.
+    {
+      const lod = new THREE.LOD();
+      const c3 = p3(CENTRO_SACCONE);
+      lod.position.copy(c3);
+      for (const [obra, dist] of [[construirSaccone(ctx, true), 0], [construirSaccone(ctx, false), 260]] as const) {
+        const g = this.mallasObra(obra);
+        g.position.copy(c3).negate();
         const nivel = new THREE.Group();
         nivel.add(g);
         lod.addLevel(nivel, dist);
