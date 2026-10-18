@@ -289,10 +289,10 @@ function entorno(o: Obra, c: Ctx) {
 /** Árboles jóvenes en hileras sobre el albero y uno grande junto al parterre (fotos). */
 export function arbolesToros(): ArbolSector[] {
   const res: ArbolSector[] = [];
-  for (let y = 3658; y < 3696; y += 5)
-    for (let x = 2577; x < 2606; x += 5.5) {
+  for (let y = 3660; y < 3696; y += 7.5)
+    for (let x = 2578; x < 2606; x += 7) {
       const p: P2 = [x + ((y * 7) % 3) * 0.4, y];
-      if (dentro(p, ALBERO_SUR)) res.push({ p, e: Especie.Sombra, esc: 0.5 });
+      if (dentro(p, ALBERO_SUR)) res.push({ p, e: Especie.Naranjo, esc: 0.6 });
     }
   res.push({ p: [2622, 3680], e: Especie.Sombra, esc: 1.15 });
   res.push({ p: [2645, 3660], e: Especie.Sombra, esc: 0.9 });

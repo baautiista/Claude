@@ -472,12 +472,18 @@ function monumento(o: Obra, p: P2) {
   const [x, z] = p;
   const PIE = C("#E4DFD3");
   // Parterre de flores alrededor.
-  for (let k = 0; k < 24; k++) {
-    const a = (k / 24) * Math.PI * 2;
-    const r = 3.0;
-    const f = [C("#D8314A"), C("#F3C3D3"), C("#7B3E8E"), C("#F28C28")][k % 4];
-    o.caja(Mat.Detalle, x + Math.cos(a) * r - 0.25, 0.1, z + Math.sin(a) * r - 0.25, x + Math.cos(a) * r + 0.25, 0.42, z + Math.sin(a) * r + 0.25, f);
-  }
+  const verdes: P2[] = [];
+  for (let k = 0; k < 20; k++) verdes.push([x + Math.cos((k / 20) * Math.PI * 2) * 3.3, z + Math.sin((k / 20) * Math.PI * 2) * 3.3]);
+  plano(o, Mat.Detalle, verdes, 0.2, C("#4E7F36"));
+  if (o.fino)
+    for (let k = 0; k < 60; k++) {
+      const a = (k / 60) * Math.PI * 2 + (k % 3) * 0.05;
+      const r = 2.15 + (k % 3) * 0.4;
+      const f = [C("#D8314A"), C("#F3C3D3"), C("#7B3E8E"), C("#F28C28")][k % 4];
+      const fx = x + Math.cos(a) * r;
+      const fz = z + Math.sin(a) * r;
+      o.caja(Mat.Detalle, fx - 0.09, 0.2, fz - 0.09, fx + 0.09, 0.38, fz + 0.09, f);
+    }
   for (let k = 0; k < 3; k++) {
     const s = 1.9 - k * 0.42;
     o.caja(Mat.Detalle, x - s, 0.1 + k * 0.28, z - s, x + s, 0.38 + k * 0.28, z + s, PIE, 0.9);

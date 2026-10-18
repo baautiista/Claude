@@ -171,6 +171,15 @@ function interior(o: Obra, c: Ctx) {
     const L = mc.usar(o, c);
     prisma(o, Mat.Muro, [[0, 0], [L, 0], [L, H], [0, H]], 0, 0.01, C("#F1EFEA"), false);
   }
+  // Piñón del testero norte visto desde dentro.
+  {
+    const a = mp(0, FONDO - ESP);
+    const b = mp(ANCHO, FONDO - ESP);
+    const mc = new Marco(a, b, mp(ANCHO / 2, FONDO + 5));
+    mc.usar(o, c);
+    const inv = Math.hypot(mc.g(0, 0)[0] - a[0], mc.g(0, 0)[1] - a[1]) > 1;
+    prisma(o, Mat.Muro, pinon().map(([x, y]) => [inv ? ANCHO - x : x, y] as P2), 0, 0.01, C("#F1EFEA"), false);
+  }
   // Cara interior del muro sur, con los huecos de los portones.
   marcoSur(o, c, ESP);
   {
