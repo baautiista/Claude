@@ -4,6 +4,22 @@ import fs from "node:fs";
 import path from "node:path";
 
 /**
+ * Los artefactos publicados no sirven .glb: al compilar, cada modelo de Blender se copia también
+ * como <nombre>.glb.json ({"glb": base64}), que el cargador usa en producción.
+ */
+function modelosJson(): Plugin {
+  return {
+    name: "modelos-json",
+    apply: "build",
+    closeBundle() {
+      const raiz = path.resolve(__dirname, "dist/modelos");
+      const recorrer = (d: string): string[] => (fs.existsSync(d) ? fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? recorrer(path.join(d, e.name)) : [path.join(d, e.name)])) : []);
+      for (const f of recorrer(raiz).filter((f) => f.endsWith(".glb"))) fs.writeFileSync(f + ".json", JSON.stringify({ glb: fs.readFileSync(f).toString("base64") }));
+    },
+  };
+}
+
+/**
  * Editor de ciudad (solo en desarrollo): guarda las correcciones manuales en
  * src/datos/correcciones/<sector>.json, una capa aparte de los datos generados.
  */
@@ -49,6 +65,6 @@ function editorCorrecciones(): Plugin {
 // incluidos), listo para publicarse en la web o envolverse con Capacitor.
 export default defineConfig({
   base: "./",
-  plugins: [viteSingleFile(), editorCorrecciones()],
+  plugins: [modelosJson(), viteSingleFile(), editorCorrecciones()],
   build: { assetsInlineLimit: 100_000_000 },
 });

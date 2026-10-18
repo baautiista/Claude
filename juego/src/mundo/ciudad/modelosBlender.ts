@@ -51,9 +51,7 @@ export class ModelosBlender {
     this.cargados.set(nombre, "cargando");
     const t0 = performance.now();
     const url = new URL(l.glb, document.baseURI).href;
-    this.loader.load(
-      url,
-      (gltf) => {
+    const alCargar = (gltf: { scene: THREE.Group }) => {
         const grupo = new THREE.Group();
         grupo.name = `blender:${nombre}`;
         grupo.position.set(l.origen[0] - this.ctx.cx, this.ctx.suelo, l.origen[1] - this.ctx.cy);
@@ -95,13 +93,20 @@ export class ModelosBlender {
         this.anadir(grupo);
         this.cargados.set(nombre, grupo);
         this.estado[nombre] = { edificios: porId.size, triangulos: Math.round(tri), ms: Math.round(performance.now() - t0) };
-      },
-      undefined,
-      (err) => {
-        this.cargados.set(nombre, "error");
-        this.estado[nombre] = { edificios: 0, triangulos: 0, ms: 0, error: String(err) };
-        console.error("Modelo de Blender no cargado", nombre, err);
-      },
-    );
+    };
+    const fallo = (err: unknown) => {
+      this.cargados.set(nombre, "error");
+      this.estado[nombre] = { edificios: 0, triangulos: 0, ms: 0, error: String(err) };
+      console.error("Modelo de Blender no cargado", nombre, err);
+    };
+    if (!import.meta.env.PROD) return void this.loader.load(url, alCargar, undefined, fallo);
+    // En la versión publicada el GLB va dentro de un .json (los artefactos no sirven .glb).
+    fetch(url + ".json")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then(({ glb }: { glb: string }) => {
+        const bin = Uint8Array.from(atob(glb), (c) => c.charCodeAt(0));
+        this.loader.parse(bin.buffer, "", alCargar, fallo);
+      })
+      .catch(fallo);
   }
 }
