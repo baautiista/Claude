@@ -27,6 +27,18 @@
     "B-w1329978384"
    ],
    "generador": 1
+  },
+  "AYUNTAMIENTO": {
+   "glb": "modelos/singulares/ayuntamiento.glb",
+   "origen": [
+    2277.0,
+    4528.0
+   ],
+   "edificios": [
+    "B-w257431100"
+   ],
+   "generador": 1,
+   "singular": true
   }
  }
 }

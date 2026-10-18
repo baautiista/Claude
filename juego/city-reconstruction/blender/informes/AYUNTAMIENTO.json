@@ -1,0 +1,101 @@
+{
+ "lote": "AYUNTAMIENTO",
+ "edificio": "B-w257431100",
+ "nombre": "Ayuntamiento de La Línea de la Concepción",
+ "origen": [
+  2277.0,
+  4528.0
+ ],
+ "generador": "scripts/blender/singulares/ayuntamiento.py",
+ "geometria": {
+  "centro_arco": [
+   2277.2271,
+   4528.2984
+  ],
+  "radio": 18.84,
+  "arco_grados": [
+   61.4,
+   218.5
+  ],
+  "vanos_muro_cortina": 32,
+  "columnas": 12,
+  "alturas_m": {
+   "planta_baja": 4.4,
+   "muro_cortina": [
+    5.0,
+    12.2
+   ],
+   "cornisa": 13.7,
+   "cuerpo_lateral": 13.9
+  }
+ },
+ "lod0": {
+  "triangulos": 8354,
+  "z_min": -0.01,
+  "z_max": 14.0,
+  "problemas": []
+ },
+ "lod1": {
+  "triangulos": 253,
+  "z_min": 0.0,
+  "z_max": 13.9,
+  "problemas": []
+ },
+ "entorno_suelo": {
+  "triangulos": 972,
+  "z_min": 0.0,
+  "z_max": 0.62,
+  "problemas": []
+ },
+ "entorno_mobiliario": {
+  "triangulos": 3249,
+  "z_min": 0.0,
+  "z_max": 9.11,
+  "problemas": []
+ },
+ "piezas": [
+  "Ayto_columnas",
+  "Ayto_cornisa",
+  "Ayto_cubierta",
+  "Ayto_detalle",
+  "Ayto_estructura",
+  "Ayto_fachada",
+  "Ayto_perfil",
+  "Ayto_planta_baja",
+  "Ayto_vidrio",
+  "Ayto_volumen_lejos",
+  "Entorno_adoquin",
+  "Entorno_barandilla",
+  "Entorno_bolardos",
+  "Entorno_bordillo",
+  "Entorno_cesped",
+  "Entorno_farolas",
+  "Entorno_jardin",
+  "Entorno_losas",
+  "Entorno_maceteros",
+  "Entorno_mastiles",
+  "Entorno_muro_piedra",
+  "Entorno_rampa",
+  "Entorno_valla",
+  "Rotulo_0",
+  "Rotulo_1",
+  "Rotulo_P"
+ ],
+ "triangulos_lod0": 8354,
+ "problemas": [],
+ "blend": "city-reconstruction/blender/blend/singulares/ayuntamiento.blend",
+ "glb": "public/modelos/singulares/ayuntamiento.glb",
+ "glb_kb": 726,
+ "render": [
+  "city-reconstruction/blender/render/singulares/ayuntamiento-frente.png",
+  "city-reconstruction/blender/render/singulares/ayuntamiento-sureste.png",
+  "city-reconstruction/blender/render/singulares/ayuntamiento-porche.png",
+  "city-reconstruction/blender/render/singulares/ayuntamiento-aerea.png",
+  "city-reconstruction/blender/render/singulares/ayuntamiento-lateral.png",
+  "city-reconstruction/blender/render/singulares/ayuntamiento-rotulo.png"
+ ],
+ "render_lejos": [
+  "city-reconstruction/blender/render/singulares/ayuntamiento-lod1-lejos.png"
+ ],
+ "segundos": 9.9
+}

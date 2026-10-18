@@ -1,0 +1,1006 @@
+{
+ "meta": {
+  "generated": "2026-10-18",
+  "place": "La Línea de la Concepción, Cádiz",
+  "entities": 93,
+  "sourced_photos": 35,
+  "entities_with_photos": 23,
+  "by_category": {
+   "Iglesias y templos": 15,
+   "Solo ubicación, sin contorno": 4,
+   "Colegios y centros educativos": 28,
+   "Edificios públicos": 17,
+   "Cultura y sociedades": 8,
+   "Patrimonio histórico": 10,
+   "Deporte": 11
+  },
+  "notes": {
+   "centros": "Nombres tomados de listados oficiales de la Junta y de información municipal. Un edificio OSM puede pertenecer a un centro, pabellón o anexo: comprobar antes de fusionar.",
+   "geometria": "Los elementos de \"Solo ubicación\" no deben llevar polígono 3D. Hermandades: comprobar que se trata de la casa de hermandad, no su sede canónica.",
+   "licencia": "Las fotos siguen alojadas por sus titulares. La posibilidad de verlas NO implica que se permita copiarlas, redistribuirlas o usarlas en un juego comercial."
+  }
+ },
+ "sites": [
+  {
+   "category": "Iglesias y templos",
+   "name": "Parroquia Nuestra Señora del Carmen",
+   "photos": [
+    {
+     "url": "https://riosautocares.com/wp-content/uploads/2023/07/que-ver-en-la-linea-iglesia-virgen-del-carmen.jpg",
+     "label": "Fachada frontal, acabados amarillos",
+     "credit": "Autocares Ríos"
+    },
+    {
+     "url": "https://diariodelalinea.es/upload/images/01_2024/6628_parroquia-virgen-del-carmen-mu.jpg",
+     "label": "Fachada azul y explanada",
+     "credit": "Diario de La Línea"
+    },
+    {
+     "url": "https://www.8directo.com/uploads/s1/30/56/60/5/482228155-1038535514963448-6648431591590039659-n.jpeg",
+     "label": "Entrada con procesión",
+     "credit": "8Directo"
+    },
+    {
+     "url": "https://static.grupojoly.com/clip/82db60a8-c027-4bf4-a06a-7d71ec554648_source-aspect-ratio_1600w_0.jpg",
+     "label": "Fachada azul en restauración",
+     "credit": "Europa Sur"
+    },
+    {
+     "url": "https://static.grupojoly.com/clip/c08c54bf-47cf-4c1f-bed6-b2771b878f84_source-aspect-ratio_1600w_0.jpg",
+     "label": "Fachada lateral, acabados amarillos",
+     "credit": "Europa Sur"
+    },
+    {
+     "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Parroquia_Virgen_del_Carmen_%28La_L%C3%ADnea_de_la_Concepci%C3%B3n%29.jpg",
+     "label": "Fachada histórica (2007)",
+     "credit": "Wikimedia Commons"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://commons.wikimedia.org/wiki/File:Parroquia_Virgen_del_Carmen_(La_L%C3%ADnea_de_la_Concepci%C3%B3n).jpg",
+     "label": "Fotografía histórica en Wikimedia Commons (2007)"
+    },
+    {
+     "url": "https://campaners.com/php/fotos_campanar.php?numer=9745",
+     "label": "Archivo fotográfico campanario"
+    }
+   ],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Parroquia de Santiago Apóstol",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/977874cc-ddc4-4887-b682-be50a479873c_source-aspect-ratio_1600w_0.jpg",
+     "label": "Interior",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Iglesia de San Miguel Arcángel (La Colonia)",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/35a4b469-6e19-456e-b2d2-19396970eb27_source-aspect-ratio_1600w_0.jpg",
+     "label": "Fachada exterior",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Parroquia San Pío X",
+   "photos": [],
+   "sources": [],
+   "note": "Cuidado con los resultados que corresponden a San Pío X de Murcia.",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Parroquia San José",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/546f60cf-ccc0-4af3-9a01-6a56b141c04f_source-aspect-ratio_1600w_0.jpg",
+     "label": "Interior de la parroquia",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Parroquia San Bernardo Abad",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Parroquia San Pedro Apóstol",
+   "photos": [],
+   "sources": [],
+   "note": "Cuidado con las fotos de la Inmaculada Concepción atribuidas erróneamente a San Pedro.",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Santuario del Sagrado Corazón de Jesús",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/143f4217-0b05-4d3e-a5a0-a37df28ad786_source-aspect-ratio_1600w_0.jpg",
+     "label": "Exterior",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Ermita de la Virgen de Fátima",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Hermandad de la Amargura (sede)",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Hermandad del Amor y Esperanza (sede)",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Hermandad del Rocío (sede)",
+   "photos": [],
+   "sources": [],
+   "note": "Buscar la sede física, no fotografías de pasos o celebraciones.",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Iglesia evangélica Filadelfia",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Iglesia evangélica Esperanza de Vida",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Iglesias y templos",
+   "name": "Otra iglesia evangélica (pendiente de identificar)",
+   "photos": [],
+   "sources": [],
+   "note": "No hay nombre concreto aportado: no adjudicar ninguna foto.",
+   "point_only": false
+  },
+  {
+   "category": "Solo ubicación, sin contorno",
+   "name": "Mezquita Badr",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": true
+  },
+  {
+   "category": "Solo ubicación, sin contorno",
+   "name": "Mezquita Al-Takwa",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": true
+  },
+  {
+   "category": "Solo ubicación, sin contorno",
+   "name": "Iglesia Adventista del Séptimo Día",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": true
+  },
+  {
+   "category": "Solo ubicación, sin contorno",
+   "name": "Capilla de María Auxiliadora",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": true
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Isabel La Católica",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Nuestra Señora de las Mercedes",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Velada",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Carlos V",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Inmaculada Concepción",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Pedro Simón Abril",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP La Atunara",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Santa Ana",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Huerta Fava",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP San Felipe",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEPR Andalucía",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Santiago",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Gibraltar",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Pablo Picasso",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEIP Buenos Aires",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "Escuela Infantil El Rocío",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEEE Virgen del Amparo",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "IES Antonio Machado",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "IES Virgen de la Esperanza",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "IES Mar de Poniente",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "IES Mediterráneo",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "IES Menéndez Tolosa",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "Colegio San Juan Bosco (Salesianos)",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "Colegio Providencia Sagrado Corazón",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "Colegio Juan Pablo II - San Pedro",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEPER Juan Ramón Jiménez",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "CEPER Almadraba",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Colegios y centros educativos",
+   "name": "Conservatorio de Música (anexo, pendiente de precisar)",
+   "photos": [],
+   "sources": [],
+   "note": "Confirmar que es el edificio anexo antes de adjuntar fotos.",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Ayuntamiento de La Línea",
+   "photos": [
+    {
+     "url": "https://lalinea.es/wp-content/uploads/2025/09/Edificio_Ayuntamiento_de_La_Linea.jpg",
+     "label": "Fachada y entrada",
+     "credit": "Ayuntamiento de La Línea"
+    },
+    {
+     "url": "https://www.lalinea.es/portal/images/Noticias_corporacion_2023/Ayuntamiento_LL.jpg",
+     "label": "Fachada con jardines",
+     "credit": "Ayuntamiento de La Línea"
+    },
+    {
+     "url": "https://static.grupojoly.com/clip/b57a3616-58d3-45e6-9276-589dda9e1dd2_source-aspect-ratio_1600w_0.jpg",
+     "label": "Entrada en perspectiva",
+     "credit": "Europa Sur"
+    },
+    {
+     "url": "https://lalinea.es/wp-content/uploads/2025/08/Ayuntamiento-ext-1.jpeg",
+     "label": "Vista lateral desde plaza",
+     "credit": "Ayuntamiento de La Línea"
+    },
+    {
+     "url": "https://www.8directo.com/uploads/s1/27/21/03/2/seta-municipal.jpeg",
+     "label": "Fachada en perspectiva general",
+     "credit": "8Directo"
+    },
+    {
+     "url": "https://www.8directo.com/uploads/s1/31/40/30/8/672063205-1404290311738232-1326075512370564807-n.jpeg",
+     "label": "Vista desde jardín",
+     "credit": "8Directo"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://lalinea.es/el-ayuntamiento/",
+     "label": "Portal municipal"
+    }
+   ],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Palacio de Congresos y Exposiciones",
+   "photos": [
+    {
+     "url": "https://d3fphkxyf5o5bm.cloudfront.net/image-resize/format%3Dwebp%2Cw%3D1200/QwRY54Li1HMwD7oNfqdEHZ5KGQ25nHLvgsg299jcQ9",
+     "label": "Fachada frontal",
+     "credit": "Mindtrip"
+    },
+    {
+     "url": "https://www.campogibraltar24h.es/asset/thumbnail%2C1280%2C720%2Ccenter%2Ccenter/media/gib24/images/2025/01/30/2025013011595699888.jpg",
+     "label": "Escalinata y fachada",
+     "credit": "Campo de Gibraltar 24h"
+    },
+    {
+     "url": "https://www.portaldecadiz.com/fotonoticias/2024/08/03/palacio_de_congresos_7bb45.jpg",
+     "label": "Vista desde avenida y palmeras",
+     "credit": "Portal de Cádiz"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Estación de Autobuses",
+   "photos": [
+    {
+     "url": "https://cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/SWUWDM34VNB7DK4NMAZDJMXUVY.jpeg",
+     "label": "Fachada en obras (abril de 2026)",
+     "credit": "Cadena SER"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Oficina de Correos",
+   "photos": [
+    {
+     "url": "https://www.8directo.com/uploads/s1/31/20/07/3/correos-la-li-nea.jpeg",
+     "label": "Exterior de Correos",
+     "credit": "8Directo"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Oficina Local de Tráfico",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Casa Cuartel Guardia Civil",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/afe70653-2d35-4aad-a358-42d3344ce160_source-aspect-ratio_1600w_0.jpg",
+     "label": "Fachada",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Agencia Tributaria",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Juzgados de La Línea",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/98d1b1a4-ee10-4625-84f8-b0e3327f7a0a_source-aspect-ratio_1600w_0.jpg",
+     "label": "Entrada",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Policía Local La Alcaidesa",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Protección Civil",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Hotel de Asociaciones La Cátedra",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Edificio SIT",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Concejalía de Deportes",
+   "photos": [
+    {
+     "url": "https://www.portaldecadiz.com/fotonoticias/2026/03/05/captura_de_pantalla_2026-03-05_000208_aa51b.jpg",
+     "label": "Acceso a Deportes",
+     "credit": "Portal de Cádiz"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Centro Servicios Sociales Levante",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Residencia María Luisa Escribano",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Centro José Luis Herrero",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Edificios públicos",
+   "name": "Residencia o centro de mayores La Velada",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Museo del Istmo / Edificio La Comandancia",
+   "photos": [
+    {
+     "url": "https://directoriodearte.com/storage/2025/12/Museo_municipal_del_Istmo-portada.jpg",
+     "label": "Fachada principal y lateral",
+     "credit": "Directorio de Arte"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://www.andalucia.org/listing/edificio-comandancia-%28archivo-y-biblioteca%29/16203102/",
+     "label": "Galería de fotografías en Turismo de Andalucía"
+    }
+   ],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Casa de la Cultura",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Teatro Paseo de La Velada",
+   "photos": [
+    {
+     "url": "https://www.portaldecadiz.com/fotonoticias/2026/02/02/625037505_1343301481170449_6111642761882924863_n_4e0bb.jpg",
+     "label": "Entrada principal",
+     "credit": "Portal de Cádiz"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Círculo Mercantil",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/b6113b4b-d725-45a2-abf4-232afb0787a7_facebook-aspect-ratio_default_0.jpg",
+     "label": "Fachada histórica (1921)",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Sociedad Musical Linense",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Unión Cultural y Deportiva Linense",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Mercado El Junquillo",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Cultura y sociedades",
+   "name": "Lonja del Puerto Pesquero de La Atunara",
+   "photos": [
+    {
+     "url": "https://grupo.us.es/puertosandaluces/img/09_atunara/p09_lonja07.jpg",
+     "label": "Fachada de lonja",
+     "credit": "Universidad de Sevilla"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://grupo.us.es/puertosandaluces/p09_37lonja.html",
+     "label": "Atlas de los puertos pesqueros andaluces"
+    }
+   ],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Villa María Luisa",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Chalet D’Amato",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/8482d9d1-e425-4210-bae7-6e439bc1e0fd_facebook-aspect-ratio_default_0.jpg",
+     "label": "Fachada frontal",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Villa Laura",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Casa de Maximiliano Rodríguez",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Casa de la Tabacalera (ruinas)",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Búnker 087",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Búnker 091",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Búnker 149",
+   "photos": [],
+   "sources": [
+    {
+     "url": "https://es.wikiloc.com/rutas-a-pie/la-linea-de-la-concepcion-cadizruta-de-los-bunkers-77414878",
+     "label": "Ruta fotográfica con waypoint por número de registro"
+    }
+   ],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Búnker 162",
+   "photos": [],
+   "sources": [
+    {
+     "url": "https://es.wikiloc.com/rutas-a-pie/la-linea-de-la-concepcion-cadizruta-de-los-bunkers-77414878",
+     "label": "Ruta fotográfica con waypoint por número de registro"
+    }
+   ],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Patrimonio histórico",
+   "name": "Búnker 165B",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Plaza de Toros El Arenal",
+   "photos": [
+    {
+     "url": "https://www.europasur.es/2023/06/21/vivir-el-sur/Plaza-toros-Linea_1804329684_187366266_667x375.jpg",
+     "label": "Fachada exterior",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://plazaelarenal.com/wp-content/uploads/2022/04/Expo-Comprimido-OK.pdf",
+     "label": "Dossier con varias fotos del antes, obras y después"
+    }
+   ],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Estadio de Atletismo",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Polideportivo Municipal",
+   "photos": [
+    {
+     "url": "https://www.lalinea.es/portal/images/Noticias_corporacion_2023/Pabellon_polideportivo_nuevo.jpeg",
+     "label": "Pabellón azul y blanco",
+     "credit": "Ayuntamiento de La Línea"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Pabellón Padre Diego",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Pabellón Punto Ribot",
+   "photos": [
+    {
+     "url": "https://www.8directo.com/uploads/s1/30/59/04/3/whatsapp-image-2025-07-16-at-11-04-04.jpeg",
+     "label": "Entrada principal",
+     "credit": "8Directo"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Piscina Cubierta",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Ciudad Deportiva Antonio Reyes",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Linense Tenis Club",
+   "photos": [
+    {
+     "url": "https://res.cloudinary.com/playtomic/image/upload/c_limit%2Cw_1600/v1/pro/tenants/a207dafc-7edd-11e8-8674-52540049669c/linensetenisclub_0001",
+     "label": "Pistas de tenis",
+     "credit": "Playtomic"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Real Club Náutico",
+   "photos": [
+    {
+     "url": "https://static.grupojoly.com/clip/474e2c2b-7439-4db2-a629-33c2e5bec2c0_source-aspect-ratio_1600w_0.jpg",
+     "label": "Escuela de vela y sede",
+     "credit": "Europa Sur"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Club de Remo",
+   "photos": [],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  },
+  {
+   "category": "Deporte",
+   "name": "Club Marítimo Linense",
+   "photos": [
+    {
+     "url": "https://www.lalinea.es/portal/images/Noticias_jun_2019/Club_Maritimo_LInense.jpg",
+     "label": "Fachada nocturna",
+     "credit": "Ayuntamiento de La Línea"
+    }
+   ],
+   "sources": [],
+   "note": "",
+   "point_only": false
+  }
+ ]
+}

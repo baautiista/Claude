@@ -125,6 +125,13 @@
    "fecha": "2026-10-18",
    "triangulos_lod0": 444,
    "problemas": []
+  },
+  "B-w257431100": {
+   "lote": "AYUNTAMIENTO",
+   "generador": "singular",
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 8354,
+   "problemas": []
   }
  }
 }
