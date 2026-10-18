@@ -32,7 +32,7 @@ import { arbolesToros, CENTRO_TOROS, construirToros, solidosToros } from "./sect
 import { CENTRO_MERCADO, construirMercado, solidosMercado } from "./sectores/mercado";
 import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
-import { ModelosBlender } from "./ciudad/modelosBlender";
+import { ModelosBlender, cargarModelo } from "./ciudad/modelosBlender";
 import { conectarBackend } from "./ciudad/correcciones";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
@@ -2364,12 +2364,13 @@ export class Mundo {
       m.frustumCulled = false;
       this.escena.add(m);
     }
-    // Autobuses urbanos verdes por las avenidas.
+    // Autobuses urbanos (modelo de Blender) por las avenidas.
     for (let i = 0; i < 7; i++) {
       const g = autobusUrbano();
       this.escena.add(g);
       this.autobuses.push({ m: nuevo(principales, 11, 1), g });
     }
+    (globalThis as unknown as { __autobuses: unknown }).__autobuses = this.autobuses; // pruebas
   }
 
   private construirGaviotas() {
@@ -3702,19 +3703,23 @@ function sobreTramo(t: Tramo, s: number, dir: number, carril: number, acera: num
   return { x: a[0] + (b[0] - a[0]) * k - dy * off, y: a[1] + (b[1] - a[1]) * k + dx * off, rot: Math.atan2(dx, dy) };
 }
 
-/** Autobús urbano verde y blanco. */
+/**
+ * Autobús urbano de La Línea: modelo de Blender (scripts/blender/vehiculos/autobus.py), blanco con
+ * franjas azul celeste. El grupo se devuelve al momento y el modelo aparece al cargarse.
+ */
 function autobusUrbano() {
   const g = new THREE.Group();
-  g.add(M.en(M.rcaja(3, 3.2, 10, "#FFFFFF", 0.7), 0, 2.4, 0));
-  g.add(M.en(M.rcaja(3.1, 1, 10.1, "#2FA84A", 0.4), 0, 1.3, 0));
-  g.add(M.en(M.rcaja(3.15, 1.1, 9.4, M.mat("#3B5B7E", { roughness: 0.2, metalness: 0.4 }), 0.3), 0, 3, 0));
-  g.add(M.en(M.rcaja(3.15, 0.5, 2.2, "#2FA84A", 0.2), 0, 4.1, 3.6));
-  for (const z of [-3.2, 3.2]) for (const x of [-1.5, 1.5]) {
-    const r = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.5, 10), M.mat("#1C1D21"));
-    r.rotation.z = Math.PI / 2;
-    g.add(M.en(r, x, 0.7, z));
-  }
-  g.traverse((o) => (o.castShadow = true));
+  void cargarModelo("modelos/vehiculos/autobus.glb").then((m) => {
+    const c = m.clone();
+    c.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (mesh.isMesh) {
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+      }
+    });
+    g.add(c);
+  }).catch((e) => console.error("Autobús de Blender no cargado", e));
   return g;
 }
 

@@ -23,6 +23,29 @@ interface Lote {
 
 const LOTES = (indice as unknown as { lotes: Record<string, Lote> }).lotes;
 
+const cargador = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+const cacheModelos = new Map<string, Promise<THREE.Group>>();
+
+/**
+ * Carga un modelo de Blender (public/<ruta>.glb) una sola vez. En la versión publicada se lee
+ * <ruta>.glb.json (los artefactos no sirven .glb). Devuelve la escena original: clonarla para usarla.
+ */
+export function cargarModelo(ruta: string): Promise<THREE.Group> {
+  let p = cacheModelos.get(ruta);
+  if (!p) {
+    const url = new URL(ruta, document.baseURI).href;
+    p = new Promise<THREE.Group>((ok, mal) => {
+      if (!import.meta.env.PROD) return void cargador.load(url, (g) => ok(g.scene), undefined, mal);
+      fetch(url + ".json")
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+        .then(({ glb }: { glb: string }) => cargador.parse(Uint8Array.from(atob(glb), (c) => c.charCodeAt(0)).buffer, "", (g) => ok(g.scene), mal))
+        .catch(mal);
+    });
+    cacheModelos.set(ruta, p);
+  }
+  return p;
+}
+
 /** Ids de los edificios que ya tienen modelo de Blender. */
 export const EDIFICIOS_BLENDER = new Set(Object.values(LOTES).flatMap((l) => l.edificios));
 

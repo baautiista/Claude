@@ -63,6 +63,7 @@ class Materiales:
             nt.links.new(ca.outputs["Color"], bsdf.inputs["Base Color"])
         else:
             bsdf.inputs["Base Color"].default_value = (*color(hex_color), 1)
+        m.diffuse_color = (*color(hex_color), 1)  # color en la vista de Blender (Workbench)
         if emisivo:
             bsdf.inputs["Emission Color"].default_value = (*color(emisivo[0]), 1)
             bsdf.inputs["Emission Strength"].default_value = emisivo[1]
@@ -296,12 +297,12 @@ def camara(nombre, pos, mira, lente=24):
     return ob
 
 
-def renderizar(nombre, vistas, origen, ocultar=lambda ob: False, ancho=1100, alto=760):
+def renderizar(nombre, vistas, origen, ocultar=lambda ob: False, ancho=1100, alto=760, carpeta="singulares", color="TEXTURE"):
     """Renders de validación con Workbench (texturas y sombras). Posiciones en coordenadas del juego."""
     s = bpy.context.scene
     s.render.engine = "BLENDER_WORKBENCH"
     s.display.shading.light = "STUDIO"
-    s.display.shading.color_type = "TEXTURE"
+    s.display.shading.color_type = color
     s.display.shading.show_shadows = True
     s.display.shading.shadow_intensity = 0.45
     s.display.shading.show_cavity = True
@@ -317,21 +318,21 @@ def renderizar(nombre, vistas, origen, ocultar=lambda ob: False, ancho=1100, alt
     out = []
     for nv, pos, mira, lente in vistas:
         s.camera = camara(f"Cam_{nv}", b(pos), b(mira), lente)
-        f = ruta("city-reconstruction", "blender", "render", "singulares", f"{nombre}-{nv}.png")
+        f = ruta("city-reconstruction", "blender", "render", carpeta, f"{nombre}-{nv}.png")
         s.render.filepath = f
         bpy.ops.render.render(write_still=True)
         out.append(os.path.relpath(f, RAIZ))
     return out
 
 
-def exportar(nombre, glb_rel):
+def exportar(nombre, glb_rel, carpeta="singulares"):
     """Guarda el .blend editable y exporta el GLB optimizado (meshopt) para el juego."""
     bpy.context.preferences.filepaths.save_version = 0
-    blend = ruta("city-reconstruction", "blender", "blend", "singulares", f"{nombre}.blend")
+    blend = ruta("city-reconstruction", "blender", "blend", carpeta, f"{nombre}.blend")
     bpy.ops.wm.save_as_mainfile(filepath=blend, compress=True)
     for ob in bpy.context.scene.objects:
         ob.select_set(ob.type in ("MESH", "EMPTY") and not ob.get("solo_validacion"))
-    crudo = ruta("city-reconstruction", "blender", "blend", "singulares", f"{nombre}.crudo.glb")
+    crudo = ruta("city-reconstruction", "blender", "blend", carpeta, f"{nombre}.crudo.glb")
     bpy.ops.export_scene.gltf(filepath=crudo, export_format="GLB", use_selection=True, export_extras=True, export_yup=True,
                               export_apply=False, export_vertex_color="MATERIAL", export_image_format="JPEG", export_jpeg_quality=82)
     glb = ruta("public", glb_rel)
