@@ -10,5 +10,13 @@
  "B-w1229253734": {
   "modelo": "oculto",
   "nota": "Sustituido por el modelo propio de la Sociedad Musical Linense (src/mundo/sectores/saccone.ts)."
+ },
+ "B-r18215331": {
+  "modelo": "oculto",
+  "nota": "Sustituido por el modelo propio de la Plaza de Toros El Arenal (src/mundo/sectores/toros.ts)."
+ },
+ "B-w1282774526": {
+  "modelo": "oculto",
+  "nota": "Puerta de Cuadrillas: incluida en el modelo de la Plaza de Toros (src/mundo/sectores/toros.ts)."
  }
 }

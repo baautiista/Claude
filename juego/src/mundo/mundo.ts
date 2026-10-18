@@ -27,6 +27,7 @@ import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HO
 import { construirCentro02, CENTRO_C02, SUSTITUYE_C02, solidosCentro02 } from "./sectores/centro02";
 import { solidosCentro01 } from "./sectores/centro01";
 import { arbolesSaccone, CENTRO_SACCONE, construirSaccone, enJardinesSaccone, solidosSaccone } from "./sectores/saccone";
+import { arbolesToros, CENTRO_TOROS, construirToros, solidosToros } from "./sectores/toros";
 import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
 import { conectarBackend } from "./ciudad/correcciones";
@@ -1630,7 +1631,7 @@ export class Mundo {
       }
       (t === 2 ? arbustos : t === 1 ? pinos : frondosos).push([x, y]);
     }
-    for (const a of arbolesSaccone()) this.plantar(a.p as Punto, a.e, rand, a.esc);
+    for (const a of [...arbolesSaccone(), ...arbolesToros()]) this.plantar(a.p as Punto, a.e, rand, a.esc);
     this.bosque(frondosos, rand, "jardin");
     this.bosque(pinos, rand, "pino");
     for (const p of arbustos) this.plantar(p, Especie.Arbusto, rand, 0.9 + rand() * 0.6);
@@ -2001,7 +2002,7 @@ export class Mundo {
   /** Huellas de los sectores reconstruidos (obstáculos para el validador y las colisiones). */
   private sectoresSolidos(): Punto[][] {
     const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
-    return [...solidosCentro01(), ...solidosCentro02(ocupado), ...solidosSaccone()] as Punto[][];
+    return [...solidosCentro01(), ...solidosCentro02(ocupado), ...solidosSaccone(), ...solidosToros()] as Punto[][];
   }
 
   /** Ciudad generada automáticamente: teselas que se cargan y descargan según la cámara. */
@@ -2159,6 +2160,20 @@ export class Mundo {
       const c3 = p3(CENTRO_SACCONE);
       lod.position.copy(c3);
       for (const [obra, dist] of [[construirSaccone(ctx, true), 0], [construirSaccone(ctx, false), 260]] as const) {
+        const g = this.mallasObra(obra);
+        g.position.copy(c3).negate();
+        const nivel = new THREE.Group();
+        nivel.add(g);
+        lod.addLevel(nivel, dist);
+      }
+      this.escena.add(lod);
+    }
+    // TOROS · Plaza de Toros El Arenal y su entorno.
+    {
+      const lod = new THREE.LOD();
+      const c3 = p3(CENTRO_TOROS);
+      lod.position.copy(c3);
+      for (const [obra, dist] of [[construirToros(ctx, true), 0], [construirToros(ctx, false), 260]] as const) {
         const g = this.mallasObra(obra);
         g.position.copy(c3).negate();
         const nivel = new THREE.Group();
