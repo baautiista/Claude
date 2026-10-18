@@ -20,41 +20,41 @@ const BLANCO = C("#F6F3EC");
 
 /** Huellas OSM sustituidas por modelos propios (centro aproximado de su rectángulo en linea.json). */
 export const SUSTITUYE_CENTRO01: P2[] = [
-  [1111.8, 2119.3], // Santuario
-  [1095, 2119.3], // Casa de Ruperto Toledano
-  [1092.9, 2135.6], // edificio verde de la esquina
-  [1091.3, 2144.5], // edificio crema de cierros
-  [1119.6, 2141.1], // edificio blanco del tejado a cuatro aguas
-  [1126.5, 2122.7], // torre de ladrillo
-  [1126.9, 2130], // torre de ladrillo (anexo)
-  [1110.4, 2160.6], // queda dentro del edificio rosa (huella estimada)
+  [2223.6, 4238.6], // Santuario
+  [2190, 4238.6], // Casa de Ruperto Toledano
+  [2185.8, 4271.2], // edificio verde de la esquina
+  [2182.6, 4289], // edificio crema de cierros
+  [2239.2, 4282.2], // edificio blanco del tejado a cuatro aguas
+  [2253, 4245.4], // torre de ladrillo
+  [2253.8, 4260], // torre de ladrillo (anexo)
+  [2220.8, 4321.2], // queda dentro del edificio rosa (huella estimada)
 ];
 
 /** Zona del sector: aquí los árboles son plátanos de sombra grandes, como en la plaza real. */
-export const ZONA_CENTRO01 = { c: [1108, 2126] as P2, r: 30 };
+export const ZONA_CENTRO01 = { c: [2216, 4252] as P2, r: 60 };
 /** Tablón de encargos del juego (no existe en la plaza real): en la esquina sureste, fuera de las vistas principales. */
-export const TABLON_CENTRO01: P2 = [1112.0, 2145.4];
+export const TABLON_CENTRO01: P2 = [2224, 4290.8];
 /** Grupo escultórico en homenaje a José Cruz Herrera (OSM lo rotula «Las Tres Gracias»). */
-const MONUMENTO: P2 = [1107.0, 2138.0];
+const MONUMENTO: P2 = [2214, 4276];
 
 /* ── Huellas (OSM simplificadas; las del sur, estimadas) ─────────── */
 
 /** Fachada de la iglesia retrasada 1,2 m respecto a OSM para dar algo más de aire a la plaza. */
-const IGLESIA_FRENTE: [P2, P2] = [[1105.6, 2124.4], [1114.7, 2126.8]];
+const IGLESIA_FRENTE: [P2, P2] = [[2211.2, 4248.8], [2229.4, 4253.6]];
 /** Encoge una huella hacia su centro (la plaza y sus calles quedan algo más holgadas). */
 function encoger(poli: P2[], f = 0.84): P2[] {
   const [cx, cy] = centroide(poli);
   return poli.map(([x, y]) => [cx + (x - cx) * f, cy + (y - cy) * f] as P2);
 }
 
-const TOLEDANO: P2[] = encoger([[1090.5, 2123.6], [1096.8, 2125.1], [1097.0, 2124.3], [1099.2, 2114.9], [1093.1, 2113.5], [1091.8, 2117.9]]);
-const VERDE: P2[] = encoger([[1088.8, 2129.5], [1097.1, 2131.5], [1099.7, 2136.9], [1098.7, 2141.4], [1091.9, 2140.6], [1086.0, 2139.0]]);
-const CREMA: P2[] = encoger([[1085.1, 2148.1], [1097.4, 2147.8], [1098.7, 2141.4], [1091.9, 2140.6], [1086.0, 2139.0], [1084.5, 2139.4], [1084.5, 2141.7]]);
-const TORRE: P2[] = encoger([[1121.4, 2131.3], [1127.6, 2132.8], [1128.7, 2127.5], [1130.5, 2120.1], [1124.7, 2116.9]]);
-const BLANCA: P2[] = encoger([[1113.8, 2146.2], [1123.1, 2144.6], [1124.5, 2136.2], [1121.2, 2135.5], [1115.0, 2139.7]]);
+const TOLEDANO: P2[] = encoger([[2181, 4247.2], [2193.6, 4250.2], [2194, 4248.6], [2198.4, 4229.8], [2186.2, 4227], [2183.6, 4235.8]]);
+const VERDE: P2[] = encoger([[2177.6, 4259], [2194.2, 4263], [2199.4, 4273.8], [2197.4, 4282.8], [2183.8, 4281.2], [2172, 4278]]);
+const CREMA: P2[] = encoger([[2170.2, 4296.2], [2194.8, 4295.6], [2197.4, 4282.8], [2183.8, 4281.2], [2172, 4278], [2169, 4278.8], [2169, 4283.4]]);
+const TORRE: P2[] = encoger([[2242.8, 4262.6], [2255.2, 4265.6], [2257.4, 4255], [2261, 4240.2], [2249.4, 4233.8]]);
+const BLANCA: P2[] = encoger([[2227.6, 4292.4], [2246.2, 4289.2], [2249, 4272.4], [2242.4, 4271], [2230, 4279.4]]);
 /** Sin huella en OSM: estimadas con las vistas aéreas y de calle. */
-const ROSA: P2[] = encoger([[1094.0, 2149.6], [1113.2, 2149.6], [1113.2, 2157.8], [1094.0, 2158.2]]);
-const ESTRECHO: P2[] = encoger([[1113.2, 2149.6], [1119.0, 2149.2], [1119.0, 2157.6], [1113.2, 2157.8]]);
+const ROSA: P2[] = encoger([[2188, 4299.2], [2226.4, 4299.2], [2226.4, 4315.6], [2188, 4316.4]]);
+const ESTRECHO: P2[] = encoger([[2226.4, 4299.2], [2238, 4298.4], [2238, 4315.2], [2226.4, 4315.6]]);
 
 const HUELLAS = [TOLEDANO, VERDE, CREMA, TORRE, BLANCA, ROSA, ESTRECHO];
 
@@ -163,7 +163,7 @@ function terraza(o: Obra, x: number, z: number, lona: RGB, r: () => number) {
 /* ── Santuario de la Inmaculada Concepción ───────────────────────── */
 
 function santuario(o: Obra, c: Ctx) {
-  const mc = new Marco(IGLESIA_FRENTE[0], IGLESIA_FRENTE[1], [1111.5, 2118]);
+  const mc = new Marco(IGLESIA_FRENTE[0], IGLESIA_FRENTE[1], [2223, 4236]);
   const W = mc.usar(o, c);
   const D = 15.3;
   const m = W / 2;
@@ -642,15 +642,15 @@ function plaza(o: Obra, c: Ctx, iglesia: Marco) {
   enMundo(o, c);
   const GRIS = C("#B9B6AE");
   const plazaPoli: P2[] = [
-    [1096.6, 2125.6], [1105.2, 2125.9], [1114.6, 2128.4], [1121.2, 2131.5], [1127.6, 2133.0], [1124.5, 2136.4], [1121.2, 2135.7],
-    [1115.0, 2139.9], [1113.9, 2146.6], [1124.0, 2145.6], [1124.0, 2148.4], [1119.0, 2149.2], [1094.0, 2149.6], [1097.4, 2147.8],
-    [1098.7, 2141.4], [1099.7, 2136.9], [1097.1, 2131.5],
+    [2193.2, 4251.2], [2210.4, 4251.8], [2229.2, 4256.8], [2242.4, 4263], [2255.2, 4266], [2249, 4272.8], [2242.4, 4271.4],
+    [2230, 4279.8], [2227.8, 4293.2], [2248, 4291.2], [2248, 4296.8], [2238, 4298.4], [2188, 4299.2], [2194.8, 4295.6],
+    [2197.4, 4282.8], [2199.4, 4273.8], [2194.2, 4263],
   ];
   // El pavimento llega hasta debajo de las fachadas (que se han encogido un poco hacia dentro).
-  plano(o, Mat.Suelo, plazaPoli.map(([x, y]) => [1108 + (x - 1108) * 1.08, 2138 + (y - 2138) * 1.08] as P2), 0.24, GRIS, 0.35);
+  plano(o, Mat.Suelo, plazaPoli.map(([x, y]) => [2216 + (x - 2216) * 1.08, 4276 + (y - 4276) * 1.08] as P2), 0.24, GRIS, 0.35);
   // Calles laterales de la iglesia: adoquín claro a poniente y ladrillo en espiga a levante.
-  plano(o, Mat.Suelo, [[1097.0, 2125.0], [1105.3, 2125.6], [1108.6, 2110.4], [1100.2, 2108.4]], 0.23, C("#A9A49B"), 0.5);
-  plano(o, Mat.Suelo, [[1114.4, 2128.0], [1121.4, 2131.3], [1124.7, 2116.9], [1118.4, 2113.4]], 0.23, C("#B97A5E"), 0.6);
+  plano(o, Mat.Suelo, [[2194, 4250], [2210.6, 4251.2], [2217.2, 4220.8], [2200.4, 4216.8]], 0.23, C("#A9A49B"), 0.5);
+  plano(o, Mat.Suelo, [[2228.8, 4256], [2242.8, 4262.6], [2249.4, 4233.8], [2236.8, 4226.8]], 0.23, C("#B97A5E"), 0.6);
   // Rosa de los vientos: puntas grises y rosadas alrededor del monumento.
   const [mx, mz] = MONUMENTO;
   for (let k = 0; k < 16; k++) {
@@ -712,13 +712,13 @@ function plaza(o: Obra, c: Ctx, iglesia: Marco) {
   figura(mx + 0.64, mz + 0.28, 1.12, false, 0);
 
   // Farolas fernandinas, bolardos, macetero con magnolio y terrazas.
-  for (const p of [[1112.4, 2141.4], [1101.4, 2137.8], [1104.8, 2146.6], [1117.8, 2132.9]] as P2[]) farola(o, p[0], p[1]);
+  for (const p of [[2224.8, 4282.8], [2202.8, 4275.6], [2209.6, 4293.2], [2235.6, 4265.8]] as P2[]) farola(o, p[0], p[1]);
   for (let i = 0; i < 5; i++) torno(o, Mat.Metal, 1100.0 + i * 1.05, 0, 2127.5 + i * 0.25, [[0.08, 0], [0.08, 0.85], [0.05, 0.92]], C("#A3A8AD"), 8);
   torno(o, Mat.Detalle, 1100.9, 0, 2130.9, [[0.35, 0], [0.75, 0.35], [0.86, 0.55], [0.8, 0.6], [0.6, 0.58]], C("#3D4044"), 12);
   arbolito(o, 1100.9, 0.45, 2130.9, 2.6, C("#406E36"));
   const r = azar(5);
-  for (const p of [[1101.5, 2145.6], [1104.7, 2146.0]] as P2[]) terraza(o, p[0], p[1], C("#F4F2EC"), r);
-  for (const p of [[1101.9, 2133.5], [1102.3, 2140.5]] as P2[]) terraza(o, p[0], p[1], C("#2C2E33"), r);
+  for (const p of [[2203, 4291.2], [2209.4, 4292]] as P2[]) terraza(o, p[0], p[1], C("#F4F2EC"), r);
+  for (const p of [[2203.8, 4267], [2204.6, 4281]] as P2[]) terraza(o, p[0], p[1], C("#2C2E33"), r);
 
   // Quioscos a los lados del compás de la iglesia, farolas y bancos granates.
   const W = iglesia.usar(o, c, 0.24);

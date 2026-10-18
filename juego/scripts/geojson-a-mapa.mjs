@@ -16,10 +16,11 @@
  *     de OSM y tramos con su clase, nombre y forma),
  *   - arboles, solares y puntos de interés.
  *
- * Unidades del juego: 1 unidad = 2 m. Norte arriba: x hacia el este, y hacia el sur.
+ * Unidades internas de este script: 1 unidad = 2 m; la salida se escala a 1 unidad = 1 m. Norte arriba: x hacia el este, y hacia el sur.
  * Datos © colaboradores de OpenStreetMap (ODbL).
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { escalarLinea } from "./escala-mapa.mjs";
 
 const ENTRADA = process.argv[2] ?? new URL("../fuentes/la-linea.geojson", import.meta.url).pathname;
 const SALIDA = new URL("../src/datos/linea.json", import.meta.url).pathname;
@@ -440,7 +441,8 @@ const salida = {
   poi,
   deportes,
 };
-writeFileSync(SALIDA, JSON.stringify(salida));
+// Los umbrales de arriba están en unidades de 2 m; la salida se lleva a escala real (1 m).
+writeFileSync(SALIDA, JSON.stringify(escalarLinea(salida)));
 console.log(`Listo → ${SALIDA}`);
 console.log(`  costa ${salida.costa.length} puntos · edificios ${edificios.length} · nodos ${nodos.length} · tramos ${tramos.length} · árboles ${salida.arboles.length} · solares ${salida.solares.length}`);
 console.log("  capas:", Object.fromEntries(Object.entries(capas).map(([k, v]) => [k, v.length])));

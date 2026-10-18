@@ -1,72 +1,12 @@
 [
  {
-  "id": "B-w257431100",
-  "nombre": "Ayuntamiento de La Línea de la Concepción",
-  "barrio": "Centro",
-  "osm": "w257431100",
+  "id": "B-w1387264327",
+  "nombre": "Chalet Villa María Luisa",
+  "barrio": "La Colonia",
+  "osm": "w1387264327",
   "centro": [
-   1136.7,
-   2267.2
-  ]
- },
- {
-  "id": "B-w877660200",
-  "nombre": "Casa de la Cultura",
-  "barrio": "Centro",
-  "osm": "w877660200",
-  "centro": [
-   1148.8,
-   2177.6
-  ]
- },
- {
-  "id": "B-w270300913",
-  "nombre": "Mercado de Abastos La Concepción",
-  "barrio": "Centro",
-  "osm": "w270300913",
-  "centro": [
-   1161.2,
-   2073.6
-  ]
- },
- {
-  "id": "B-w297237751",
-  "nombre": "Teatro Paseo de La Velada",
-  "barrio": "La Velada",
-  "osm": "w297237751",
-  "centro": [
-   1265.9,
-   1924.9
-  ]
- },
- {
-  "id": "B-w1232542264",
-  "nombre": "Justicia de Derechos",
-  "barrio": "Santiago",
-  "osm": "w1232542264",
-  "centro": [
-   1420.4,
-   2098.3
-  ]
- },
- {
-  "id": "B-w42896656",
-  "nombre": "Estación de Autobuses de La Línea de La Concepción",
-  "barrio": "Bellavista",
-  "osm": "w42896656",
-  "centro": [
-   1167.4,
-   2348.7
-  ]
- },
- {
-  "id": "B-w1337532857",
-  "nombre": null,
-  "barrio": "Santiago",
-  "osm": "w1337532857",
-  "centro": [
-   1419.9,
-   2072.9
+   840.4,
+   3599.4
   ]
  },
  {
@@ -75,8 +15,8 @@
   "barrio": "La Colonia",
   "osm": "w720874799",
   "centro": [
-   479.0,
-   1789.6
+   958.0,
+   3579.3
   ]
  },
  {
@@ -85,38 +25,8 @@
   "barrio": "Mondéjar",
   "osm": "w1347199962",
   "centro": [
-   780.5,
-   2019.7
-  ]
- },
- {
-  "id": "B-w1387264327",
-  "nombre": "Chalet Villa María Luisa",
-  "barrio": "La Colonia",
-  "osm": "w1387264327",
-  "centro": [
-   420.2,
-   1799.7
-  ]
- },
- {
-  "id": "B-w257431096",
-  "nombre": "Oficina Local de Tráfico",
-  "barrio": "San Felipe",
-  "osm": "w257431096",
-  "centro": [
-   1170.3,
-   2446.4
-  ]
- },
- {
-  "id": "B-w692428477",
-  "nombre": "Parroquia de Santiago Apóstol",
-  "barrio": "Santiago",
-  "osm": "w692428477",
-  "centro": [
-   1578.6,
-   2125.9
+   1561.0,
+   4039.3
   ]
  },
  {
@@ -125,8 +35,8 @@
   "barrio": "San Bernardo",
   "osm": "w660914926",
   "centro": [
-   1544.1,
-   1696.3
+   3088.2,
+   3392.6
   ]
  },
  {
@@ -135,8 +45,8 @@
   "barrio": "San Bernardo",
   "osm": "w1469522861",
   "centro": [
-   1534.7,
-   1719.1
+   3069.5,
+   3438.1
   ]
  },
  {
@@ -145,8 +55,8 @@
   "barrio": "San Bernardo",
   "osm": "w1469522862",
   "centro": [
-   1536.5,
-   1713.8
+   3073.0,
+   3427.6
   ]
  },
  {
@@ -155,28 +65,28 @@
   "barrio": "San Bernardo",
   "osm": "w1327914034",
   "centro": [
-   1629.3,
-   1744.7
+   3258.7,
+   3489.5
   ]
  },
  {
-  "id": "B-w1220983272",
-  "nombre": "Parroquia San Pío X",
-  "barrio": "La Velada",
-  "osm": "w1220983272",
+  "id": "B-w257431096",
+  "nombre": "Oficina Local de Tráfico",
+  "barrio": "San Felipe",
+  "osm": "w257431096",
   "centro": [
-   1195.2,
-   1860.9
+   2340.5,
+   4892.9
   ]
  },
  {
-  "id": "B-w1296318896",
-  "nombre": "Iglesia Evangélica Esperanza de Vida",
-  "barrio": "La Velada",
-  "osm": "w1296318896",
+  "id": "B-w42896656",
+  "nombre": "Estación de Autobuses de La Línea de La Concepción",
+  "barrio": "Bellavista",
+  "osm": "w42896656",
   "centro": [
-   1254.6,
-   1821.4
+   2334.4,
+   4697.9
   ]
  },
  {
@@ -185,8 +95,28 @@
   "barrio": "La Velada",
   "osm": "w1247820568",
   "centro": [
-   1292.3,
-   1872.7
+   2584.6,
+   3745.4
+  ]
+ },
+ {
+  "id": "B-w1232542264",
+  "nombre": "Justicia de Derechos",
+  "barrio": "Santiago",
+  "osm": "w1232542264",
+  "centro": [
+   2841.7,
+   4196.4
+  ]
+ },
+ {
+  "id": "B-w1337532857",
+  "nombre": null,
+  "barrio": "Santiago",
+  "osm": "w1337532857",
+  "centro": [
+   2839.9,
+   4145.8
   ]
  },
  {
@@ -195,8 +125,8 @@
   "barrio": "San José",
   "osm": "w1256535712",
   "centro": [
-   1613.9,
-   1350.7
+   3229.3,
+   2700.5
   ]
  },
  {
@@ -205,48 +135,48 @@
   "barrio": "San José",
   "osm": "w1256535713",
   "centro": [
-   1657.2,
-   1333.4
+   3314.5,
+   2666.9
   ]
  },
  {
-  "id": "B-w1232533749",
-  "nombre": "Iglesia Evangélica Flidadelfia - Cristo",
-  "barrio": "Los Junquillos",
-  "osm": "w1232533749",
+  "id": "B-w692428477",
+  "nombre": "Parroquia de Santiago Apóstol",
+  "barrio": "Santiago",
+  "osm": "w692428477",
   "centro": [
-   836.7,
-   1785.2
+   3157.2,
+   4251.7
   ]
  },
  {
-  "id": "B-w720862894",
-  "nombre": "Protección Civil de La Línea de la Concepción",
-  "barrio": "Los Junquillos",
-  "osm": "w720862894",
+  "id": "B-w1220983272",
+  "nombre": "Parroquia San Pío X",
+  "barrio": "La Velada",
+  "osm": "w1220983272",
   "centro": [
-   812.8,
-   1761.3
+   2390.3,
+   3721.8
   ]
  },
  {
-  "id": "B-w1354218026",
-  "nombre": "Parroquia de San Pedro Apóstol",
-  "barrio": "San Pedro",
-  "osm": "w1354218026",
+  "id": "B-w270300913",
+  "nombre": "Mercado de Abastos La Concepción",
+  "barrio": "Centro",
+  "osm": "w270300913",
   "centro": [
-   962.6,
-   1891.6
+   2322.3,
+   4147.2
   ]
  },
  {
-  "id": "B-w1329606844",
-  "nombre": "Mercado El Junquillo",
-  "barrio": "Las Pedreras",
-  "osm": "w1329606844",
+  "id": "B-w297237751",
+  "nombre": "Teatro Paseo de La Velada",
+  "barrio": "La Velada",
+  "osm": "w297237751",
   "centro": [
-   879.6,
-   1792.5
+   2531.7,
+   3849.8
   ]
  },
  {
@@ -255,8 +185,8 @@
   "barrio": "San José",
   "osm": "w1211919689",
   "centro": [
-   1212.0,
-   1640.0
+   2424.1,
+   3280.0
   ]
  },
  {
@@ -265,8 +195,8 @@
   "barrio": "San José",
   "osm": "w1211919690",
   "centro": [
-   1231.0,
-   1647.6
+   2461.9,
+   3295.2
   ]
  },
  {
@@ -275,8 +205,8 @@
   "barrio": "San José",
   "osm": "w1211919691",
   "centro": [
-   1210.3,
-   1611.8
+   2420.5,
+   3223.6
   ]
  },
  {
@@ -285,18 +215,8 @@
   "barrio": "San José",
   "osm": "w1211919692",
   "centro": [
-   1236.8,
-   1618.5
-  ]
- },
- {
-  "id": "B-w1222774379",
-  "nombre": "Parroquia San José",
-  "barrio": "San José",
-  "osm": "w1222774379",
-  "centro": [
-   1384.8,
-   1689.3
+   2473.6,
+   3237.0
   ]
  },
  {
@@ -305,8 +225,48 @@
   "barrio": "Los Junquillos",
   "osm": "w1347193501",
   "centro": [
-   730.6,
-   1717.1
+   1461.2,
+   3434.2
+  ]
+ },
+ {
+  "id": "B-w1232533749",
+  "nombre": "Iglesia Evangélica Flidadelfia - Cristo",
+  "barrio": "Los Junquillos",
+  "osm": "w1232533749",
+  "centro": [
+   1673.3,
+   3570.4
+  ]
+ },
+ {
+  "id": "B-w720862894",
+  "nombre": "Protección Civil de La Línea de la Concepción",
+  "barrio": "Los Junquillos",
+  "osm": "w720862894",
+  "centro": [
+   1625.6,
+   3522.6
+  ]
+ },
+ {
+  "id": "B-w1329606844",
+  "nombre": "Mercado El Junquillo",
+  "barrio": "Las Pedreras",
+  "osm": "w1329606844",
+  "centro": [
+   1759.3,
+   3585.0
+  ]
+ },
+ {
+  "id": "B-w1296318896",
+  "nombre": "Iglesia Evangélica Esperanza de Vida",
+  "barrio": "La Velada",
+  "osm": "w1296318896",
+  "centro": [
+   2511.9,
+   3643.5
   ]
  },
  {
@@ -315,8 +275,8 @@
   "barrio": "El Zabal",
   "osm": "w1333188073",
   "centro": [
-   1017.9,
-   660.1
+   2035.8,
+   1320.3
   ]
  },
  {
@@ -325,8 +285,48 @@
   "barrio": "La Atunara",
   "osm": "w668112225",
   "centro": [
-   1776.1,
-   1149.8
+   3552.1,
+   2299.5
+  ]
+ },
+ {
+  "id": "B-w1354218026",
+  "nombre": "Parroquia de San Pedro Apóstol",
+  "barrio": "San Pedro",
+  "osm": "w1354218026",
+  "centro": [
+   1925.3,
+   3783.2
+  ]
+ },
+ {
+  "id": "B-w1222774379",
+  "nombre": "Parroquia San José",
+  "barrio": "San José",
+  "osm": "w1222774379",
+  "centro": [
+   2769.7,
+   3378.6
+  ]
+ },
+ {
+  "id": "B-w257431100",
+  "nombre": "Ayuntamiento de La Línea de la Concepción",
+  "barrio": "Centro",
+  "osm": "w257431100",
+  "centro": [
+   2273.0,
+   4533.9
+  ]
+ },
+ {
+  "id": "B-w877660200",
+  "nombre": "Casa de la Cultura",
+  "barrio": "Centro",
+  "osm": "w877660200",
+  "centro": [
+   2297.6,
+   4355.2
   ]
  }
 ]

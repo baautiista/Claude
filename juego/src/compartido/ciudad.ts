@@ -23,11 +23,11 @@ export interface EdificioBase {
 
 /** Zonas reconstruidas (coordenadas del juego, 1 unidad = 1 m). */
 export const ZONAS_RECONSTRUIDAS = {
-  plazaIglesia: { c: [1108, 2135] as P, r: 34 },
-  cruzHerrera: { c: [1218, 2188] as P, r: 28 },
+  plazaIglesia: { c: [2216, 4270] as P, r: 68 },
+  cruzHerrera: { c: [2436, 4376] as P, r: 56 },
   calleReal: {
-    eje: [[1098.4, 2128.1], [1121.6, 2133.6], [1154.8, 2141.7], [1195.0, 2151.9], [1208.9, 2154.9], [1217.7, 2158.0], [1244.6, 2171.5], [1253.5, 2175.7]] as P[],
-    ancho: 16,
+    eje: [[2196.8, 4256.2], [2243.2, 4267.2], [2309.6, 4283.4], [2390, 4303.8], [2417.8, 4309.8], [2435.4, 4316], [2489.2, 4343], [2507, 4351.4]] as P[],
+    ancho: 32,
   },
 };
 

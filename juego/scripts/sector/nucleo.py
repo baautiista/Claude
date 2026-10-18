@@ -25,7 +25,8 @@ from shapely.ops import polygonize, unary_union
 from shapely.strtree import STRtree
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-KX, KY, LON0, LAT0 = 44921, 55475, -5.3762, 36.2005
+# Escala real: 1 unidad del juego = 1 m (igual que src/datos/linea.json).
+KX, KY, LON0, LAT0 = 89842, 110950, -5.3762, 36.2005
 CLASE = {
     "motorway": 0, "trunk": 0, "primary": 0, "motorway_link": 0, "trunk_link": 0, "primary_link": 0,
     "secondary": 1, "secondary_link": 1, "tertiary": 2, "tertiary_link": 2, "unclassified": 2,
@@ -35,8 +36,8 @@ PB, PLANTA = 3.6, 3.0
 TESELA = 160.0
 COMERCIALES = {"Calle Real", "Calle Clavel", "Calle Sol", "Calle del Sol", "Calle Teatro", "Calle Jardines", "Calle Gibraltar", "Calle Aurora", "Calle San Pablo", "Calle Jardines"}
 # Zonas modeladas a mano (no se generan automáticamente): ver src/compartido/ciudad.ts y sectores/.
-ZONAS_MANUALES = [Point(1108, 2135).buffer(34), Point(1218, 2188).buffer(28), Polygon([(1236, 2160), (1300, 2160), (1300, 2262), (1205, 2262), (1205, 2180)]),
-                  LineString([(1098.4, 2128.1), (1121.6, 2133.6), (1154.8, 2141.7), (1195.0, 2151.9), (1208.9, 2154.9), (1217.7, 2158.0), (1244.6, 2171.5), (1253.5, 2175.7)]).buffer(16)]
+ZONAS_MANUALES = [Point(2216, 4270).buffer(68), Point(2436, 4376).buffer(56), Polygon([(2472, 4320), (2600, 4320), (2600, 4524), (2410, 4524), (2410, 4360)]),
+                  LineString([(2196.8, 4256.2), (2243.2, 4267.2), (2309.6, 4283.4), (2390, 4303.8), (2417.8, 4309.8), (2435.4, 4316), (2489.2, 4343), (2507, 4351.4)]).buffer(32)]
 EMBLEMA_TAGS = {"amenity": {"place_of_worship", "townhall", "courthouse", "theatre", "library", "arts_centre", "marketplace"},
                 "building": {"church", "cathedral", "chapel", "government", "civic", "train_station", "bullring"},
                 "tourism": {"museum", "attraction"}, "historic": None, "heritage": None, "wikidata": None, "wikipedia": None}
@@ -155,7 +156,7 @@ def barrio_de(p, anclas):
 def manzanas(calles):
     """Manzanas: polígonos cerrados por calles reales (sin sendas ni accesos de servicio)."""
     lineas = [c["linea"] for c in calles if c["clase"] <= 4]
-    return [b for b in polygonize(unary_union(lineas)) if 60 < b.area < 80000]
+    return [b for b in polygonize(unary_union(lineas)) if 60 < b.area < 320000]
 
 
 # ── Edificios de una manzana ─────────────────────────────────────────

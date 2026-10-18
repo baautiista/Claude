@@ -3,9 +3,9 @@ Reconstrucción automática de La Línea por lotes.
 
   python3 scripts/sector/ciudad.py --barrio Centro              # todas las manzanas de un barrio
   python3 scripts/sector/ciudad.py --barrio Centro --barrio "La Atunara"
-  python3 scripts/sector/ciudad.py --zona 1080,2040,1260,2180   # recuadro (coordenadas del juego)
+  python3 scripts/sector/ciudad.py --zona 2160,4080,2520,4360   # recuadro (coordenadas del juego)
   python3 scripts/sector/ciudad.py --todo                       # toda la ciudad
-  python3 scripts/sector/ciudad.py --punto 1169,2111            # una manzana
+  python3 scripts/sector/ciudad.py --punto 2338,4222            # una manzana
   opciones: --forzar (regenera aunque nada haya cambiado)
 
 Para cada manzana: datos (Catastro/LiDAR importados > OSM > Overture), validación sin recortes,

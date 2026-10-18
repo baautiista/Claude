@@ -1,19 +1,159 @@
 {
- "_nota": "Anclajes de barrio tomados de elementos de OpenStreetMap con su nombre (parroquias, polígonos, mercados, calles). OSM no tiene límites de barrio en La Línea: cada punto del mapa se asigna al anclaje más cercano, así que los límites son aproximados. Se pueden mover o añadir anclajes aquí. Coordenadas del juego (m).",
- "Centro":            {"anclas": [[1160, 2140], [1230, 2200], [1140, 2260]], "fuente": "Mercado de Abastos, Santuario de la Inmaculada, Ayuntamiento"},
- "San Felipe":        {"anclas": [[1221, 2400]], "fuente": "OSM: Polígono de San Felipe"},
- "Bellavista":        {"anclas": [[1175, 2300]], "fuente": "OSM: Urbanización Bellavista"},
- "San Pedro":         {"anclas": [[980, 1840]], "fuente": "OSM: Parroquia de San Pedro Apóstol, Residencial San Pedro"},
- "La Colonia":        {"anclas": [[600, 1600]], "fuente": "OSM: Avenida de la Colonia"},
- "Los Junquillos":    {"anclas": [[760, 1740]], "fuente": "OSM: Pista Deportiva Junquillos, Mercado El Junquillo"},
- "Mondéjar":          {"anclas": [[725, 1878]], "fuente": "OSM: Churrería Mondéjar (anclaje débil)"},
- "Las Pedreras":      {"anclas": [[880, 1780]], "fuente": "OSM: Zona Comercial Pedreras"},
- "La Velada":         {"anclas": [[1250, 1930]], "fuente": "OSM: Paseo, Parque y Teatro de La Velada"},
- "San José":          {"anclas": [[1385, 1690]], "fuente": "OSM: Parroquia San José"},
- "San Bernardo":      {"anclas": [[1630, 1760]], "fuente": "OSM: Parroquia de San Bernardo Abad, Zona Comercial"},
- "Santiago":          {"anclas": [[1565, 2120]], "fuente": "OSM: Parroquia de Santiago Apóstol, Urbanización Nuevo Santiago"},
- "La Atunara":        {"anclas": [[1760, 1260], [1891, 1111]], "fuente": "OSM: Zona Comercial y Puerto Pesquero de La Atunara"},
- "El Zabal":          {"anclas": [[1168, 845]], "fuente": "OSM: Polígono Industrial El Zabal"},
- "Santa Margarita":   {"anclas": [[1700, -200]], "fuente": "OSM: Santa Margarita (residencial)"},
- "La Alcaidesa":      {"anclas": [[2600, -2000]], "fuente": "OSM: La Alcaidesa (residencial)"}
+ "_nota": "Anclajes de barrio tomados de elementos de OpenStreetMap con su nombre (parroquias, polígonos, mercados, calles). OSM no tiene límites de barrio en La Línea: cada punto del mapa se asigna al anclaje más cercano, así que los límites son aproximados. Se pueden mover o añadir anclajes aquí. Coordenadas del juego (1 unidad = 1 m).",
+ "Centro": {
+  "anclas": [
+   [
+    2320,
+    4280
+   ],
+   [
+    2460,
+    4400
+   ],
+   [
+    2280,
+    4520
+   ]
+  ],
+  "fuente": "Mercado de Abastos, Santuario de la Inmaculada, Ayuntamiento"
+ },
+ "San Felipe": {
+  "anclas": [
+   [
+    2442,
+    4800
+   ]
+  ],
+  "fuente": "OSM: Polígono de San Felipe"
+ },
+ "Bellavista": {
+  "anclas": [
+   [
+    2350,
+    4600
+   ]
+  ],
+  "fuente": "OSM: Urbanización Bellavista"
+ },
+ "San Pedro": {
+  "anclas": [
+   [
+    1960,
+    3680
+   ]
+  ],
+  "fuente": "OSM: Parroquia de San Pedro Apóstol, Residencial San Pedro"
+ },
+ "La Colonia": {
+  "anclas": [
+   [
+    1200,
+    3200
+   ]
+  ],
+  "fuente": "OSM: Avenida de la Colonia"
+ },
+ "Los Junquillos": {
+  "anclas": [
+   [
+    1520,
+    3480
+   ]
+  ],
+  "fuente": "OSM: Pista Deportiva Junquillos, Mercado El Junquillo"
+ },
+ "Mondéjar": {
+  "anclas": [
+   [
+    1450,
+    3756
+   ]
+  ],
+  "fuente": "OSM: Churrería Mondéjar (anclaje débil)"
+ },
+ "Las Pedreras": {
+  "anclas": [
+   [
+    1760,
+    3560
+   ]
+  ],
+  "fuente": "OSM: Zona Comercial Pedreras"
+ },
+ "La Velada": {
+  "anclas": [
+   [
+    2500,
+    3860
+   ]
+  ],
+  "fuente": "OSM: Paseo, Parque y Teatro de La Velada"
+ },
+ "San José": {
+  "anclas": [
+   [
+    2770,
+    3380
+   ]
+  ],
+  "fuente": "OSM: Parroquia San José"
+ },
+ "San Bernardo": {
+  "anclas": [
+   [
+    3260,
+    3520
+   ]
+  ],
+  "fuente": "OSM: Parroquia de San Bernardo Abad, Zona Comercial"
+ },
+ "Santiago": {
+  "anclas": [
+   [
+    3130,
+    4240
+   ]
+  ],
+  "fuente": "OSM: Parroquia de Santiago Apóstol, Urbanización Nuevo Santiago"
+ },
+ "La Atunara": {
+  "anclas": [
+   [
+    3520,
+    2520
+   ],
+   [
+    3782,
+    2222
+   ]
+  ],
+  "fuente": "OSM: Zona Comercial y Puerto Pesquero de La Atunara"
+ },
+ "El Zabal": {
+  "anclas": [
+   [
+    2336,
+    1690
+   ]
+  ],
+  "fuente": "OSM: Polígono Industrial El Zabal"
+ },
+ "Santa Margarita": {
+  "anclas": [
+   [
+    3400,
+    -400
+   ]
+  ],
+  "fuente": "OSM: Santa Margarita (residencial)"
+ },
+ "La Alcaidesa": {
+  "anclas": [
+   [
+    5200,
+    -4000
+   ]
+  ],
+  "fuente": "OSM: La Alcaidesa (residencial)"
+ }
 }

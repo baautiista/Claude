@@ -1,247 +1,62 @@
 {
  "teselas": {
-  "7_13": {
+  "6_23": {
    "bbox": [
+    960.0,
+    3680.0,
     1120.0,
-    2080.0,
-    1280.0,
-    2240.0
+    3840.0
    ],
-   "edificios": 128,
+   "edificios": 0,
    "estados": {
     "verde": 0,
-    "amarillo": 123,
-    "rojo": 5
-   },
-   "barrios": [
-    "Centro"
-   ]
-  },
-  "6_12": {
-   "bbox": [
-    960.0,
-    1920.0,
-    1120.0,
-    2080.0
-   ],
-   "edificios": 363,
-   "estados": {
-    "verde": 2,
-    "amarillo": 359,
-    "rojo": 2
-   },
-   "barrios": [
-    "Centro",
-    "La Velada",
-    "San Pedro"
-   ]
-  },
-  "7_12": {
-   "bbox": [
-    1120.0,
-    1920.0,
-    1280.0,
-    2080.0
-   ],
-   "edificios": 271,
-   "estados": {
-    "verde": 5,
-    "amarillo": 256,
-    "rojo": 10
-   },
-   "barrios": [
-    "Centro",
-    "La Velada"
-   ]
-  },
-  "6_13": {
-   "bbox": [
-    960.0,
-    2080.0,
-    1120.0,
-    2240.0
-   ],
-   "edificios": 146,
-   "estados": {
-    "verde": 5,
-    "amarillo": 137,
-    "rojo": 4
-   },
-   "barrios": [
-    "Centro"
-   ]
-  },
-  "8_13": {
-   "bbox": [
-    1280.0,
-    2080.0,
-    1440.0,
-    2240.0
-   ],
-   "edificios": 164,
-   "estados": {
-    "verde": 0,
-    "amarillo": 160,
-    "rojo": 4
-   },
-   "barrios": [
-    "Centro",
-    "Santiago"
-   ]
-  },
-  "5_13": {
-   "bbox": [
-    800.0,
-    2080.0,
-    960.0,
-    2240.0
-   ],
-   "edificios": 89,
-   "estados": {
-    "verde": 7,
-    "amarillo": 79,
-    "rojo": 3
-   },
-   "barrios": [
-    "Centro",
-    "Mondéjar",
-    "San Pedro"
-   ]
-  },
-  "6_14": {
-   "bbox": [
-    960.0,
-    2240.0,
-    1120.0,
-    2400.0
-   ],
-   "edificios": 16,
-   "estados": {
-    "verde": 2,
-    "amarillo": 14,
+    "amarillo": 0,
     "rojo": 0
    },
    "barrios": [
-    "Bellavista",
-    "Centro"
-   ]
-  },
-  "5_12": {
-   "bbox": [
-    800.0,
-    1920.0,
-    960.0,
-    2080.0
-   ],
-   "edificios": 187,
-   "estados": {
-    "verde": 0,
-    "amarillo": 185,
-    "rojo": 2
-   },
-   "barrios": [
-    "Centro",
-    "Mondéjar",
-    "San Pedro"
-   ]
-  },
-  "7_14": {
-   "bbox": [
-    1120.0,
-    2240.0,
-    1280.0,
-    2400.0
-   ],
-   "edificios": 41,
-   "estados": {
-    "verde": 0,
-    "amarillo": 37,
-    "rojo": 4
-   },
-   "barrios": [
-    "Bellavista",
-    "Centro",
-    "San Felipe"
-   ]
-  },
-  "8_14": {
-   "bbox": [
-    1280.0,
-    2240.0,
-    1440.0,
-    2400.0
-   ],
-   "edificios": 10,
-   "estados": {
-    "verde": 1,
-    "amarillo": 9,
-    "rojo": 0
-   },
-   "barrios": [
-    "Centro",
-    "San Felipe"
-   ]
-  },
-  "8_12": {
-   "bbox": [
-    1280.0,
-    1920.0,
-    1440.0,
-    2080.0
-   ],
-   "edificios": 138,
-   "estados": {
-    "verde": 0,
-    "amarillo": 134,
-    "rojo": 4
-   },
-   "barrios": [
-    "Centro",
-    "La Velada",
-    "Santiago"
-   ]
-  },
-  "3_11": {
-   "bbox": [
-    480.0,
-    1760.0,
-    640.0,
-    1920.0
-   ],
-   "edificios": 123,
-   "estados": {
-    "verde": 2,
-    "amarillo": 121,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Colonia",
     "Mondéjar"
    ]
   },
-  "4_12": {
+  "8_24": {
    "bbox": [
-    640.0,
-    1920.0,
-    800.0,
-    2080.0
+    1280.0,
+    3840.0,
+    1440.0,
+    4000.0
    ],
-   "edificios": 109,
+   "edificios": 28,
    "estados": {
-    "verde": 0,
-    "amarillo": 108,
+    "verde": 1,
+    "amarillo": 26,
     "rojo": 1
    },
    "barrios": [
     "Mondéjar"
    ]
   },
-  "1_11": {
+  "10_26": {
    "bbox": [
-    160.0,
+    1600.0,
+    4160.0,
     1760.0,
-    320.0,
-    1920.0
+    4320.0
+   ],
+   "edificios": 3,
+   "estados": {
+    "verde": 0,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "3_22": {
+   "bbox": [
+    480.0,
+    3520.0,
+    640.0,
+    3680.0
    ],
    "edificios": 0,
    "estados": {
@@ -253,12 +68,491 @@
     "La Colonia"
    ]
   },
-  "2_11": {
+  "5_22": {
    "bbox": [
-    320.0,
+    800.0,
+    3520.0,
+    960.0,
+    3680.0
+   ],
+   "edificios": 15,
+   "estados": {
+    "verde": 1,
+    "amarillo": 14,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "6_22": {
+   "bbox": [
+    960.0,
+    3520.0,
+    1120.0,
+    3680.0
+   ],
+   "edificios": 109,
+   "estados": {
+    "verde": 4,
+    "amarillo": 105,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia",
+    "Mondéjar"
+   ]
+  },
+  "7_24": {
+   "bbox": [
+    1120.0,
+    3840.0,
+    1280.0,
+    4000.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "9_25": {
+   "bbox": [
+    1440.0,
+    4000.0,
+    1600.0,
+    4160.0
+   ],
+   "edificios": 13,
+   "estados": {
+    "verde": 0,
+    "amarillo": 13,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "11_27": {
+   "bbox": [
     1760.0,
-    480.0,
-    1920.0
+    4320.0,
+    1920.0,
+    4480.0
+   ],
+   "edificios": 11,
+   "estados": {
+    "verde": 3,
+    "amarillo": 8,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "18_31": {
+   "bbox": [
+    2880.0,
+    4960.0,
+    3040.0,
+    5120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "19_30": {
+   "bbox": [
+    3040.0,
+    4800.0,
+    3200.0,
+    4960.0
+   ],
+   "edificios": 17,
+   "estados": {
+    "verde": 2,
+    "amarillo": 15,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "18_30": {
+   "bbox": [
+    2880.0,
+    4800.0,
+    3040.0,
+    4960.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "13_30": {
+   "bbox": [
+    2080.0,
+    4800.0,
+    2240.0,
+    4960.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "14_31": {
+   "bbox": [
+    2240.0,
+    4960.0,
+    2400.0,
+    5120.0
+   ],
+   "edificios": 9,
+   "estados": {
+    "verde": 4,
+    "amarillo": 4,
+    "rojo": 1
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "31_-25": {
+   "bbox": [
+    4960.0,
+    -4000.0,
+    5120.0,
+    -3840.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "33_-23": {
+   "bbox": [
+    5280.0,
+    -3680.0,
+    5440.0,
+    -3520.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "33_-25": {
+   "bbox": [
+    5280.0,
+    -4000.0,
+    5440.0,
+    -3840.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "33_-24": {
+   "bbox": [
+    5280.0,
+    -3840.0,
+    5440.0,
+    -3680.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "34_-28": {
+   "bbox": [
+    5440.0,
+    -4480.0,
+    5600.0,
+    -4320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "32_-27": {
+   "bbox": [
+    5120.0,
+    -4320.0,
+    5280.0,
+    -4160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "33_-27": {
+   "bbox": [
+    5280.0,
+    -4320.0,
+    5440.0,
+    -4160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "32_-29": {
+   "bbox": [
+    5120.0,
+    -4640.0,
+    5280.0,
+    -4480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "31_-29": {
+   "bbox": [
+    4960.0,
+    -4640.0,
+    5120.0,
+    -4480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "31_-28": {
+   "bbox": [
+    4960.0,
+    -4480.0,
+    5120.0,
+    -4320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "30_-27": {
+   "bbox": [
+    4800.0,
+    -4320.0,
+    4960.0,
+    -4160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "29_-27": {
+   "bbox": [
+    4640.0,
+    -4320.0,
+    4800.0,
+    -4160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "18_-26": {
+   "bbox": [
+    2880.0,
+    -4160.0,
+    3040.0,
+    -4000.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "9_19": {
+   "bbox": [
+    1440.0,
+    3040.0,
+    1600.0,
+    3200.0
+   ],
+   "edificios": 49,
+   "estados": {
+    "verde": 1,
+    "amarillo": 48,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia",
+    "Los Junquillos"
+   ]
+  },
+  "10_19": {
+   "bbox": [
+    1600.0,
+    3040.0,
+    1760.0,
+    3200.0
+   ],
+   "edificios": 97,
+   "estados": {
+    "verde": 1,
+    "amarillo": 96,
+    "rojo": 0
+   },
+   "barrios": [
+    "Los Junquillos"
+   ]
+  },
+  "10_20": {
+   "bbox": [
+    1600.0,
+    3200.0,
+    1760.0,
+    3360.0
+   ],
+   "edificios": 12,
+   "estados": {
+    "verde": 1,
+    "amarillo": 11,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras",
+    "Los Junquillos"
+   ]
+  },
+  "20_28": {
+   "bbox": [
+    3200.0,
+    4480.0,
+    3360.0,
+    4640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "19_27": {
+   "bbox": [
+    3040.0,
+    4320.0,
+    3200.0,
+    4480.0
+   ],
+   "edificios": 13,
+   "estados": {
+    "verde": 1,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "19_28": {
+   "bbox": [
+    3040.0,
+    4480.0,
+    3200.0,
+    4640.0
    ],
    "edificios": 19,
    "estados": {
@@ -267,273 +561,15 @@
     "rojo": 0
    },
    "barrios": [
-    "La Colonia"
-   ]
-  },
-  "3_12": {
-   "bbox": [
-    480.0,
-    1920.0,
-    640.0,
-    2080.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Mondéjar"
-   ]
-  },
-  "9_15": {
-   "bbox": [
-    1440.0,
-    2400.0,
-    1600.0,
-    2560.0
-   ],
-   "edificios": 16,
-   "estados": {
-    "verde": 2,
-    "amarillo": 14,
-    "rojo": 0
-   },
-   "barrios": [
-    "San Felipe",
     "Santiago"
    ]
   },
-  "6_15": {
+  "18_28": {
    "bbox": [
-    960.0,
-    2400.0,
-    1120.0,
-    2560.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "San Felipe"
-   ]
-  },
-  "7_15": {
-   "bbox": [
-    1120.0,
-    2400.0,
-    1280.0,
-    2560.0
-   ],
-   "edificios": 50,
-   "estados": {
-    "verde": 6,
-    "amarillo": 42,
-    "rojo": 2
-   },
-   "barrios": [
-    "San Felipe"
-   ]
-  },
-  "15_-13": {
-   "bbox": [
-    2400.0,
-    -2080.0,
-    2560.0,
-    -1920.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "16_-12": {
-   "bbox": [
-    2560.0,
-    -1920.0,
-    2720.0,
-    -1760.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "16_-13": {
-   "bbox": [
-    2560.0,
-    -2080.0,
-    2720.0,
-    -1920.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "16_-14": {
-   "bbox": [
-    2560.0,
-    -2240.0,
-    2720.0,
-    -2080.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "16_-15": {
-   "bbox": [
-    2560.0,
-    -2400.0,
-    2720.0,
-    -2240.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "15_-15": {
-   "bbox": [
-    2400.0,
-    -2400.0,
-    2560.0,
-    -2240.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "15_-14": {
-   "bbox": [
-    2400.0,
-    -2240.0,
-    2560.0,
-    -2080.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "14_-14": {
-   "bbox": [
-    2240.0,
-    -2240.0,
-    2400.0,
-    -2080.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "4_9": {
-   "bbox": [
-    640.0,
-    1440.0,
-    800.0,
-    1600.0
-   ],
-   "edificios": 120,
-   "estados": {
-    "verde": 5,
-    "amarillo": 115,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Colonia",
-    "Los Junquillos"
-   ]
-  },
-  "5_9": {
-   "bbox": [
-    800.0,
-    1440.0,
-    960.0,
-    1600.0
-   ],
-   "edificios": 192,
-   "estados": {
-    "verde": 4,
-    "amarillo": 188,
-    "rojo": 0
-   },
-   "barrios": [
-    "Los Junquillos"
-   ]
-  },
-  "5_10": {
-   "bbox": [
-    800.0,
-    1600.0,
-    960.0,
-    1760.0
-   ],
-   "edificios": 195,
-   "estados": {
-    "verde": 2,
-    "amarillo": 186,
-    "rojo": 7
-   },
-   "barrios": [
-    "Las Pedreras",
-    "Los Junquillos"
-   ]
-  },
-  "10_14": {
-   "bbox": [
-    1600.0,
-    2240.0,
-    1760.0,
-    2400.0
+    2880.0,
+    4480.0,
+    3040.0,
+    4640.0
    ],
    "edificios": 0,
    "estados": {
@@ -545,902 +581,116 @@
     "Santiago"
    ]
   },
-  "9_13": {
+  "18_27": {
    "bbox": [
-    1440.0,
-    2080.0,
-    1600.0,
-    2240.0
+    2880.0,
+    4320.0,
+    3040.0,
+    4480.0
    ],
-   "edificios": 253,
-   "estados": {
-    "verde": 4,
-    "amarillo": 247,
-    "rojo": 2
-   },
-   "barrios": [
-    "Santiago"
-   ]
-  },
-  "9_14": {
-   "bbox": [
-    1440.0,
-    2240.0,
-    1600.0,
-    2400.0
-   ],
-   "edificios": 18,
+   "edificios": 7,
    "estados": {
     "verde": 1,
-    "amarillo": 17,
+    "amarillo": 6,
     "rojo": 0
    },
    "barrios": [
     "Santiago"
    ]
   },
-  "9_10": {
+  "19_20": {
    "bbox": [
-    1440.0,
-    1600.0,
-    1600.0,
-    1760.0
+    3040.0,
+    3200.0,
+    3200.0,
+    3360.0
    ],
-   "edificios": 396,
+   "edificios": 146,
    "estados": {
     "verde": 3,
-    "amarillo": 385,
-    "rojo": 8
+    "amarillo": 141,
+    "rojo": 2
    },
    "barrios": [
     "San Bernardo",
     "San José"
    ]
   },
-  "10_11": {
+  "18_21": {
    "bbox": [
-    1600.0,
-    1760.0,
-    1760.0,
-    1920.0
+    2880.0,
+    3360.0,
+    3040.0,
+    3520.0
    ],
-   "edificios": 186,
-   "estados": {
-    "verde": 0,
-    "amarillo": 182,
-    "rojo": 4
-   },
-   "barrios": [
-    "San Bernardo"
-   ]
-  },
-  "10_10": {
-   "bbox": [
-    1600.0,
-    1600.0,
-    1760.0,
-    1760.0
-   ],
-   "edificios": 222,
-   "estados": {
-    "verde": 0,
-    "amarillo": 222,
-    "rojo": 0
-   },
-   "barrios": [
-    "San Bernardo"
-   ]
-  },
-  "10_12": {
-   "bbox": [
-    1600.0,
-    1920.0,
-    1760.0,
-    2080.0
-   ],
-   "edificios": 177,
-   "estados": {
-    "verde": 4,
-    "amarillo": 171,
-    "rojo": 2
-   },
-   "barrios": [
-    "Santiago"
-   ]
-  },
-  "10_13": {
-   "bbox": [
-    1600.0,
-    2080.0,
-    1760.0,
-    2240.0
-   ],
-   "edificios": 171,
-   "estados": {
-    "verde": 4,
-    "amarillo": 159,
-    "rojo": 8
-   },
-   "barrios": [
-    "Santiago"
-   ]
-  },
-  "7_8": {
-   "bbox": [
-    1120.0,
-    1280.0,
-    1280.0,
-    1440.0
-   ],
-   "edificios": 91,
-   "estados": {
-    "verde": 1,
-    "amarillo": 82,
-    "rojo": 8
-   },
-   "barrios": [
-    "San José"
-   ]
-  },
-  "7_7": {
-   "bbox": [
-    1120.0,
-    1120.0,
-    1280.0,
-    1280.0
-   ],
-   "edificios": 79,
-   "estados": {
-    "verde": 58,
-    "amarillo": 21,
-    "rojo": 0
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "7_11": {
-   "bbox": [
-    1120.0,
-    1760.0,
-    1280.0,
-    1920.0
-   ],
-   "edificios": 443,
-   "estados": {
-    "verde": 7,
-    "amarillo": 428,
-    "rojo": 8
-   },
-   "barrios": [
-    "La Velada",
-    "San Pedro"
-   ]
-  },
-  "8_11": {
-   "bbox": [
-    1280.0,
-    1760.0,
-    1440.0,
-    1920.0
-   ],
-   "edificios": 503,
+   "edificios": 149,
    "estados": {
     "verde": 3,
-    "amarillo": 499,
+    "amarillo": 145,
     "rojo": 1
    },
    "barrios": [
-    "La Velada",
-    "San José"
-   ]
-  },
-  "9_11": {
-   "bbox": [
-    1440.0,
-    1760.0,
-    1600.0,
-    1920.0
-   ],
-   "edificios": 408,
-   "estados": {
-    "verde": 2,
-    "amarillo": 405,
-    "rojo": 1
-   },
-   "barrios": [
-    "La Velada",
     "San Bernardo",
     "San José"
    ]
   },
-  "9_12": {
+  "19_21": {
    "bbox": [
-    1440.0,
-    1920.0,
-    1600.0,
-    2080.0
+    3040.0,
+    3360.0,
+    3200.0,
+    3520.0
    ],
-   "edificios": 290,
+   "edificios": 78,
    "estados": {
-    "verde": 1,
-    "amarillo": 288,
+    "verde": 0,
+    "amarillo": 77,
     "rojo": 1
    },
    "barrios": [
-    "Santiago"
-   ]
-  },
-  "11_9": {
-   "bbox": [
-    1760.0,
-    1440.0,
-    1920.0,
-    1600.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "10_9": {
-   "bbox": [
-    1600.0,
-    1440.0,
-    1760.0,
-    1600.0
-   ],
-   "edificios": 681,
-   "estados": {
-    "verde": 2,
-    "amarillo": 657,
-    "rojo": 22
-   },
-   "barrios": [
-    "La Atunara",
     "San Bernardo"
    ]
   },
-  "11_8": {
+  "20_22": {
    "bbox": [
-    1760.0,
-    1280.0,
-    1920.0,
-    1440.0
+    3200.0,
+    3520.0,
+    3360.0,
+    3680.0
    ],
-   "edificios": 54,
+   "edificios": 168,
+   "estados": {
+    "verde": 0,
+    "amarillo": 168,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "20_21": {
+   "bbox": [
+    3200.0,
+    3360.0,
+    3360.0,
+    3520.0
+   ],
+   "edificios": 95,
    "estados": {
     "verde": 1,
-    "amarillo": 49,
-    "rojo": 4
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "9_8": {
-   "bbox": [
-    1440.0,
-    1280.0,
-    1600.0,
-    1440.0
-   ],
-   "edificios": 75,
-   "estados": {
-    "verde": 9,
-    "amarillo": 64,
-    "rojo": 2
-   },
-   "barrios": [
-    "La Atunara",
-    "San José"
-   ]
-  },
-  "10_8": {
-   "bbox": [
-    1600.0,
-    1280.0,
-    1760.0,
-    1440.0
-   ],
-   "edificios": 210,
-   "estados": {
-    "verde": 1,
-    "amarillo": 200,
-    "rojo": 9
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "10_7": {
-   "bbox": [
-    1600.0,
-    1120.0,
-    1760.0,
-    1280.0
-   ],
-   "edificios": 90,
-   "estados": {
-    "verde": 36,
-    "amarillo": 54,
+    "amarillo": 94,
     "rojo": 0
    },
    "barrios": [
-    "La Atunara"
+    "San Bernardo"
    ]
   },
-  "5_8": {
+  "14_29": {
    "bbox": [
-    800.0,
-    1280.0,
-    960.0,
-    1440.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Colonia",
-    "Las Pedreras"
-   ]
-  },
-  "8_8": {
-   "bbox": [
-    1280.0,
-    1280.0,
-    1440.0,
-    1440.0
-   ],
-   "edificios": 28,
-   "estados": {
-    "verde": 1,
-    "amarillo": 25,
-    "rojo": 2
-   },
-   "barrios": [
-    "San José"
-   ]
-  },
-  "7_9": {
-   "bbox": [
-    1120.0,
-    1440.0,
-    1280.0,
-    1600.0
-   ],
-   "edificios": 329,
-   "estados": {
-    "verde": 6,
-    "amarillo": 318,
-    "rojo": 5
-   },
-   "barrios": [
-    "San José"
-   ]
-  },
-  "8_-2": {
-   "bbox": [
-    1280.0,
-    -320.0,
-    1440.0,
-    -160.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "8_7": {
-   "bbox": [
-    1280.0,
-    1120.0,
-    1440.0,
-    1280.0
-   ],
-   "edificios": 75,
-   "estados": {
-    "verde": 61,
-    "amarillo": 13,
-    "rojo": 1
-   },
-   "barrios": [
-    "El Zabal",
-    "La Atunara",
-    "San José"
-   ]
-  },
-  "8_6": {
-   "bbox": [
-    1280.0,
-    960.0,
-    1440.0,
-    1120.0
-   ],
-   "edificios": 22,
-   "estados": {
-    "verde": 20,
-    "amarillo": 2,
-    "rojo": 0
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "5_11": {
-   "bbox": [
-    800.0,
-    1760.0,
-    960.0,
-    1920.0
-   ],
-   "edificios": 276,
-   "estados": {
-    "verde": 4,
-    "amarillo": 265,
-    "rojo": 7
-   },
-   "barrios": [
-    "Las Pedreras",
-    "Los Junquillos",
-    "Mondéjar",
-    "San Pedro"
-   ]
-  },
-  "4_11": {
-   "bbox": [
-    640.0,
-    1760.0,
-    800.0,
-    1920.0
-   ],
-   "edificios": 107,
-   "estados": {
-    "verde": 3,
-    "amarillo": 101,
-    "rojo": 3
-   },
-   "barrios": [
-    "Los Junquillos",
-    "Mondéjar"
-   ]
-  },
-  "7_-4": {
-   "bbox": [
-    1120.0,
-    -640.0,
-    1280.0,
-    -480.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "6_11": {
-   "bbox": [
-    960.0,
-    1760.0,
-    1120.0,
-    1920.0
-   ],
-   "edificios": 567,
-   "estados": {
-    "verde": 11,
-    "amarillo": 550,
-    "rojo": 6
-   },
-   "barrios": [
-    "San Pedro"
-   ]
-  },
-  "7_10": {
-   "bbox": [
-    1120.0,
-    1600.0,
-    1280.0,
-    1760.0
-   ],
-   "edificios": 441,
-   "estados": {
-    "verde": 10,
-    "amarillo": 429,
-    "rojo": 2
-   },
-   "barrios": [
-    "La Velada",
-    "San José",
-    "San Pedro"
-   ]
-  },
-  "8_10": {
-   "bbox": [
-    1280.0,
-    1600.0,
-    1440.0,
-    1760.0
-   ],
-   "edificios": 311,
-   "estados": {
-    "verde": 4,
-    "amarillo": 304,
-    "rojo": 3
-   },
-   "barrios": [
-    "San José"
-   ]
-  },
-  "6_10": {
-   "bbox": [
-    960.0,
-    1600.0,
-    1120.0,
-    1760.0
-   ],
-   "edificios": 371,
-   "estados": {
-    "verde": 3,
-    "amarillo": 366,
-    "rojo": 2
-   },
-   "barrios": [
-    "Las Pedreras",
-    "San Pedro"
-   ]
-  },
-  "4_10": {
-   "bbox": [
-    640.0,
-    1600.0,
-    800.0,
-    1760.0
-   ],
-   "edificios": 132,
-   "estados": {
-    "verde": 4,
-    "amarillo": 128,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Colonia",
-    "Los Junquillos"
-   ]
-  },
-  "3_10": {
-   "bbox": [
-    480.0,
-    1600.0,
-    640.0,
-    1760.0
-   ],
-   "edificios": 213,
-   "estados": {
-    "verde": 1,
-    "amarillo": 212,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Colonia",
-    "Los Junquillos"
-   ]
-  },
-  "8_0": {
-   "bbox": [
-    1280.0,
-    0.0,
-    1440.0,
-    160.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "9_0": {
-   "bbox": [
-    1440.0,
-    0.0,
-    1600.0,
-    160.0
-   ],
-   "edificios": 107,
-   "estados": {
-    "verde": 90,
-    "amarillo": 17,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "6_5": {
-   "bbox": [
-    960.0,
-    800.0,
-    1120.0,
-    960.0
-   ],
-   "edificios": 38,
-   "estados": {
-    "verde": 27,
-    "amarillo": 11,
-    "rojo": 0
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "7_5": {
-   "bbox": [
-    1120.0,
-    800.0,
-    1280.0,
-    960.0
-   ],
-   "edificios": 52,
-   "estados": {
-    "verde": 34,
-    "amarillo": 18,
-    "rojo": 0
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "8_-4": {
-   "bbox": [
-    1280.0,
-    -640.0,
-    1440.0,
-    -480.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "8_-3": {
-   "bbox": [
-    1280.0,
-    -480.0,
-    1440.0,
-    -320.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "2_10": {
-   "bbox": [
-    320.0,
-    1600.0,
-    480.0,
-    1760.0
-   ],
-   "edificios": 342,
-   "estados": {
-    "verde": 6,
-    "amarillo": 335,
-    "rojo": 1
-   },
-   "barrios": [
-    "La Colonia"
-   ]
-  },
-  "6_9": {
-   "bbox": [
-    960.0,
-    1440.0,
-    1120.0,
-    1600.0
-   ],
-   "edificios": 162,
-   "estados": {
-    "verde": 1,
-    "amarillo": 160,
-    "rojo": 1
-   },
-   "barrios": [
-    "Las Pedreras",
-    "San José",
-    "San Pedro"
-   ]
-  },
-  "6_8": {
-   "bbox": [
-    960.0,
-    1280.0,
-    1120.0,
-    1440.0
-   ],
-   "edificios": 43,
-   "estados": {
-    "verde": 0,
-    "amarillo": 38,
-    "rojo": 5
-   },
-   "barrios": [
-    "Las Pedreras",
-    "San José"
-   ]
-  },
-  "3_9": {
-   "bbox": [
-    480.0,
-    1440.0,
-    640.0,
-    1600.0
-   ],
-   "edificios": 10,
-   "estados": {
-    "verde": 1,
-    "amarillo": 9,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Colonia"
-   ]
-  },
-  "11_0": {
-   "bbox": [
-    1760.0,
-    0.0,
-    1920.0,
-    160.0
-   ],
-   "edificios": 89,
-   "estados": {
-    "verde": 42,
-    "amarillo": 46,
-    "rojo": 1
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "11_1": {
-   "bbox": [
-    1760.0,
-    160.0,
-    1920.0,
-    320.0
-   ],
-   "edificios": 126,
-   "estados": {
-    "verde": 110,
-    "amarillo": 12,
-    "rojo": 4
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "12_1": {
-   "bbox": [
-    1920.0,
-    160.0,
-    2080.0,
-    320.0
-   ],
-   "edificios": 46,
-   "estados": {
-    "verde": 40,
-    "amarillo": 6,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "11_2": {
-   "bbox": [
-    1760.0,
-    320.0,
-    1920.0,
-    480.0
-   ],
-   "edificios": 98,
-   "estados": {
-    "verde": 88,
-    "amarillo": 6,
-    "rojo": 4
-   },
-   "barrios": [
-    "La Atunara",
-    "Santa Margarita"
-   ]
-  },
-  "12_2": {
-   "bbox": [
-    1920.0,
-    320.0,
-    2080.0,
-    480.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "11_4": {
-   "bbox": [
-    1760.0,
-    640.0,
-    1920.0,
-    800.0
-   ],
-   "edificios": 38,
-   "estados": {
-    "verde": 19,
-    "amarillo": 19,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "11_3": {
-   "bbox": [
-    1760.0,
-    480.0,
-    1920.0,
-    640.0
-   ],
-   "edificios": 14,
-   "estados": {
-    "verde": 12,
-    "amarillo": 2,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "6_4": {
-   "bbox": [
-    960.0,
-    640.0,
-    1120.0,
-    800.0
+    2240.0,
+    4640.0,
+    2400.0,
+    4800.0
    ],
    "edificios": 5,
    "estados": {
@@ -1449,563 +699,568 @@
     "rojo": 0
    },
    "barrios": [
-    "El Zabal"
+    "Bellavista",
+    "San Felipe"
    ]
   },
-  "9_-6": {
+  "15_30": {
    "bbox": [
-    1440.0,
-    -960.0,
-    1600.0,
-    -800.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "9_-7": {
-   "bbox": [
-    1440.0,
-    -1120.0,
-    1600.0,
-    -960.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_6": {
-   "bbox": [
-    1600.0,
-    960.0,
-    1760.0,
-    1120.0
-   ],
-   "edificios": 65,
-   "estados": {
-    "verde": 40,
-    "amarillo": 24,
-    "rojo": 1
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "6_6": {
-   "bbox": [
-    960.0,
-    960.0,
-    1120.0,
-    1120.0
-   ],
-   "edificios": 17,
-   "estados": {
-    "verde": 11,
-    "amarillo": 6,
-    "rojo": 0
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "6_3": {
-   "bbox": [
-    960.0,
-    480.0,
-    1120.0,
-    640.0
-   ],
-   "edificios": 6,
-   "estados": {
-    "verde": 2,
-    "amarillo": 3,
-    "rojo": 1
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "7_3": {
-   "bbox": [
-    1120.0,
-    480.0,
-    1280.0,
-    640.0
-   ],
-   "edificios": 6,
-   "estados": {
-    "verde": 3,
-    "amarillo": 3,
-    "rojo": 0
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "7_4": {
-   "bbox": [
-    1120.0,
-    640.0,
-    1280.0,
-    800.0
+    2400.0,
+    4800.0,
+    2560.0,
+    4960.0
    ],
    "edificios": 29,
    "estados": {
-    "verde": 19,
-    "amarillo": 10,
+    "verde": 2,
+    "amarillo": 27,
     "rojo": 0
    },
    "barrios": [
-    "El Zabal"
+    "San Felipe"
    ]
   },
-  "11_6": {
+  "13_29": {
    "bbox": [
-    1760.0,
-    960.0,
-    1920.0,
-    1120.0
+    2080.0,
+    4640.0,
+    2240.0,
+    4800.0
    ],
-   "edificios": 6,
+   "edificios": 9,
    "estados": {
-    "verde": 0,
-    "amarillo": 6,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "11_-2": {
-   "bbox": [
-    1760.0,
-    -320.0,
-    1920.0,
-    -160.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "9_6": {
-   "bbox": [
-    1440.0,
-    960.0,
-    1600.0,
-    1120.0
-   ],
-   "edificios": 124,
-   "estados": {
-    "verde": 69,
-    "amarillo": 53,
-    "rojo": 2
-   },
-   "barrios": [
-    "El Zabal",
-    "La Atunara"
-   ]
-  },
-  "11_-3": {
-   "bbox": [
-    1760.0,
-    -480.0,
-    1920.0,
-    -320.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_-1": {
-   "bbox": [
-    1600.0,
-    -160.0,
-    1760.0,
-    0.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_-2": {
-   "bbox": [
-    1600.0,
-    -320.0,
-    1760.0,
-    -160.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "11_7": {
-   "bbox": [
-    1760.0,
-    1120.0,
-    1920.0,
-    1280.0
-   ],
-   "edificios": 72,
-   "estados": {
-    "verde": 0,
-    "amarillo": 70,
-    "rojo": 2
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "9_-4": {
-   "bbox": [
-    1440.0,
-    -640.0,
-    1600.0,
-    -480.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "9_-3": {
-   "bbox": [
-    1440.0,
-    -480.0,
-    1600.0,
-    -320.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "11_-1": {
-   "bbox": [
-    1760.0,
-    -160.0,
-    1920.0,
-    0.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "9_3": {
-   "bbox": [
-    1440.0,
-    480.0,
-    1600.0,
-    640.0
-   ],
-   "edificios": 245,
-   "estados": {
-    "verde": 221,
-    "amarillo": 20,
-    "rojo": 4
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "10_2": {
-   "bbox": [
-    1600.0,
-    320.0,
-    1760.0,
-    480.0
-   ],
-   "edificios": 302,
-   "estados": {
-    "verde": 268,
-    "amarillo": 24,
-    "rojo": 10
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_3": {
-   "bbox": [
-    1600.0,
-    480.0,
-    1760.0,
-    640.0
-   ],
-   "edificios": 94,
-   "estados": {
-    "verde": 73,
-    "amarillo": 17,
-    "rojo": 4
-   },
-   "barrios": [
-    "El Zabal",
-    "La Atunara"
-   ]
-  },
-  "9_7": {
-   "bbox": [
-    1440.0,
-    1120.0,
-    1600.0,
-    1280.0
-   ],
-   "edificios": 84,
-   "estados": {
-    "verde": 60,
-    "amarillo": 24,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Atunara"
-   ]
-  },
-  "9_-2": {
-   "bbox": [
-    1440.0,
-    -320.0,
-    1600.0,
-    -160.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "9_-5": {
-   "bbox": [
-    1440.0,
-    -800.0,
-    1600.0,
-    -640.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "9_5": {
-   "bbox": [
-    1440.0,
-    800.0,
-    1600.0,
-    960.0
-   ],
-   "edificios": 86,
-   "estados": {
-    "verde": 77,
-    "amarillo": 8,
-    "rojo": 1
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "8_2": {
-   "bbox": [
-    1280.0,
-    320.0,
-    1440.0,
-    480.0
-   ],
-   "edificios": 22,
-   "estados": {
-    "verde": 17,
-    "amarillo": 5,
-    "rojo": 0
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "9_1": {
-   "bbox": [
-    1440.0,
-    160.0,
-    1600.0,
-    320.0
-   ],
-   "edificios": 22,
-   "estados": {
-    "verde": 22,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_1": {
-   "bbox": [
-    1600.0,
-    160.0,
-    1760.0,
-    320.0
-   ],
-   "edificios": 66,
-   "estados": {
-    "verde": 63,
-    "amarillo": 2,
-    "rojo": 1
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_0": {
-   "bbox": [
-    1600.0,
-    0.0,
-    1760.0,
-    160.0
-   ],
-   "edificios": 44,
-   "estados": {
-    "verde": 42,
-    "amarillo": 1,
-    "rojo": 1
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "7_6": {
-   "bbox": [
-    1120.0,
-    960.0,
-    1280.0,
-    1120.0
-   ],
-   "edificios": 42,
-   "estados": {
-    "verde": 35,
+    "verde": 2,
     "amarillo": 7,
     "rojo": 0
    },
    "barrios": [
-    "El Zabal"
+    "Bellavista",
+    "Centro"
    ]
   },
-  "6_7": {
+  "14_30": {
    "bbox": [
-    960.0,
-    1120.0,
-    1120.0,
-    1280.0
+    2240.0,
+    4800.0,
+    2400.0,
+    4960.0
+   ],
+   "edificios": 12,
+   "estados": {
+    "verde": 0,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "15_28": {
+   "bbox": [
+    2400.0,
+    4480.0,
+    2560.0,
+    4640.0
+   ],
+   "edificios": 38,
+   "estados": {
+    "verde": 0,
+    "amarillo": 37,
+    "rojo": 1
+   },
+   "barrios": [
+    "Bellavista"
+   ]
+  },
+  "14_28": {
+   "bbox": [
+    2240.0,
+    4480.0,
+    2400.0,
+    4640.0
+   ],
+   "edificios": 5,
+   "estados": {
+    "verde": 0,
+    "amarillo": 5,
+    "rojo": 0
+   },
+   "barrios": [
+    "Bellavista",
+    "Centro"
+   ]
+  },
+  "17_29": {
+   "bbox": [
+    2720.0,
+    4640.0,
+    2880.0,
+    4800.0
+   ],
+   "edificios": 13,
+   "estados": {
+    "verde": 1,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "21_25": {
+   "bbox": [
+    3360.0,
+    4000.0,
+    3520.0,
+    4160.0
+   ],
+   "edificios": 2,
+   "estados": {
+    "verde": 1,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "21_23": {
+   "bbox": [
+    3360.0,
+    3680.0,
+    3520.0,
+    3840.0
+   ],
+   "edificios": 5,
+   "estados": {
+    "verde": 0,
+    "amarillo": 5,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "20_24": {
+   "bbox": [
+    3200.0,
+    3840.0,
+    3360.0,
+    4000.0
+   ],
+   "edificios": 181,
+   "estados": {
+    "verde": 3,
+    "amarillo": 178,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "21_24": {
+   "bbox": [
+    3360.0,
+    3840.0,
+    3520.0,
+    4000.0
+   ],
+   "edificios": 5,
+   "estados": {
+    "verde": 0,
+    "amarillo": 5,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "21_26": {
+   "bbox": [
+    3360.0,
+    4160.0,
+    3520.0,
+    4320.0
    ],
    "edificios": 14,
    "estados": {
-    "verde": 12,
-    "amarillo": 0,
-    "rojo": 2
+    "verde": 2,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "20_26": {
+   "bbox": [
+    3200.0,
+    4160.0,
+    3360.0,
+    4320.0
+   ],
+   "edificios": 152,
+   "estados": {
+    "verde": 2,
+    "amarillo": 150,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "13_28": {
+   "bbox": [
+    2080.0,
+    4480.0,
+    2240.0,
+    4640.0
+   ],
+   "edificios": 4,
+   "estados": {
+    "verde": 0,
+    "amarillo": 4,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "12_28": {
+   "bbox": [
+    1920.0,
+    4480.0,
+    2080.0,
+    4640.0
+   ],
+   "edificios": 5,
+   "estados": {
+    "verde": 0,
+    "amarillo": 5,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "11_26": {
+   "bbox": [
+    1760.0,
+    4160.0,
+    1920.0,
+    4320.0
+   ],
+   "edificios": 76,
+   "estados": {
+    "verde": 4,
+    "amarillo": 71,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro",
+    "San Pedro"
+   ]
+  },
+  "15_16": {
+   "bbox": [
+    2400.0,
+    2560.0,
+    2560.0,
+    2720.0
+   ],
+   "edificios": 11,
+   "estados": {
+    "verde": 0,
+    "amarillo": 11,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "14_15": {
+   "bbox": [
+    2240.0,
+    2400.0,
+    2400.0,
+    2560.0
+   ],
+   "edificios": 81,
+   "estados": {
+    "verde": 60,
+    "amarillo": 21,
+    "rojo": 0
    },
    "barrios": [
     "El Zabal"
    ]
   },
-  "9_9": {
+  "15_22": {
    "bbox": [
-    1440.0,
-    1440.0,
-    1600.0,
-    1600.0
+    2400.0,
+    3520.0,
+    2560.0,
+    3680.0
    ],
-   "edificios": 99,
+   "edificios": 58,
    "estados": {
-    "verde": 2,
-    "amarillo": 91,
-    "rojo": 6
+    "verde": 0,
+    "amarillo": 58,
+    "rojo": 0
    },
    "barrios": [
-    "La Atunara",
-    "San Bernardo",
-    "San José"
+    "La Velada"
    ]
   },
-  "8_9": {
+  "14_22": {
    "bbox": [
-    1280.0,
-    1440.0,
-    1440.0,
-    1600.0
+    2240.0,
+    3520.0,
+    2400.0,
+    3680.0
    ],
-   "edificios": 127,
+   "edificios": 143,
    "estados": {
     "verde": 1,
-    "amarillo": 126,
+    "amarillo": 142,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada",
+    "San Pedro"
+   ]
+  },
+  "17_23": {
+   "bbox": [
+    2720.0,
+    3680.0,
+    2880.0,
+    3840.0
+   ],
+   "edificios": 270,
+   "estados": {
+    "verde": 4,
+    "amarillo": 265,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Velada",
+    "San José"
+   ]
+  },
+  "17_22": {
+   "bbox": [
+    2720.0,
+    3520.0,
+    2880.0,
+    3680.0
+   ],
+   "edificios": 133,
+   "estados": {
+    "verde": 1,
+    "amarillo": 132,
     "rojo": 0
    },
    "barrios": [
     "San José"
    ]
   },
-  "12_0": {
+  "16_23": {
    "bbox": [
-    1920.0,
-    0.0,
-    2080.0,
-    160.0
+    2560.0,
+    3680.0,
+    2720.0,
+    3840.0
+   ],
+   "edificios": 92,
+   "estados": {
+    "verde": 0,
+    "amarillo": 92,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada"
+   ]
+  },
+  "16_22": {
+   "bbox": [
+    2560.0,
+    3520.0,
+    2720.0,
+    3680.0
+   ],
+   "edificios": 46,
+   "estados": {
+    "verde": 0,
+    "amarillo": 46,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada",
+    "San José"
+   ]
+  },
+  "21_22": {
+   "bbox": [
+    3360.0,
+    3520.0,
+    3520.0,
+    3680.0
+   ],
+   "edificios": 16,
+   "estados": {
+    "verde": 0,
+    "amarillo": 16,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "21_21": {
+   "bbox": [
+    3360.0,
+    3360.0,
+    3520.0,
+    3520.0
+   ],
+   "edificios": 37,
+   "estados": {
+    "verde": 0,
+    "amarillo": 37,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "21_20": {
+   "bbox": [
+    3360.0,
+    3200.0,
+    3520.0,
+    3360.0
+   ],
+   "edificios": 57,
+   "estados": {
+    "verde": 0,
+    "amarillo": 57,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "19_22": {
+   "bbox": [
+    3040.0,
+    3520.0,
+    3200.0,
+    3680.0
+   ],
+   "edificios": 136,
+   "estados": {
+    "verde": 0,
+    "amarillo": 136,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "17_26": {
+   "bbox": [
+    2720.0,
+    4160.0,
+    2880.0,
+    4320.0
+   ],
+   "edificios": 77,
+   "estados": {
+    "verde": 1,
+    "amarillo": 75,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro",
+    "Santiago"
+   ]
+  },
+  "18_26": {
+   "bbox": [
+    2880.0,
+    4160.0,
+    3040.0,
+    4320.0
+   ],
+   "edificios": 109,
+   "estados": {
+    "verde": 2,
+    "amarillo": 107,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "17_25": {
+   "bbox": [
+    2720.0,
+    4000.0,
+    2880.0,
+    4160.0
+   ],
+   "edificios": 29,
+   "estados": {
+    "verde": 1,
+    "amarillo": 28,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada",
+    "Santiago"
+   ]
+  },
+  "18_25": {
+   "bbox": [
+    2880.0,
+    4000.0,
+    3040.0,
+    4160.0
+   ],
+   "edificios": 128,
+   "estados": {
+    "verde": 0,
+    "amarillo": 128,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "18_24": {
+   "bbox": [
+    2880.0,
+    3840.0,
+    3040.0,
+    4000.0
+   ],
+   "edificios": 89,
+   "estados": {
+    "verde": 1,
+    "amarillo": 88,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "22_18": {
+   "bbox": [
+    3520.0,
+    2880.0,
+    3680.0,
+    3040.0
    ],
    "edificios": 0,
    "estados": {
@@ -2014,82 +1269,218 @@
     "rojo": 0
    },
    "barrios": [
-    "Santa Margarita"
+    "La Atunara"
    ]
   },
-  "10_5": {
+  "21_18": {
    "bbox": [
-    1600.0,
-    800.0,
-    1760.0,
-    960.0
+    3360.0,
+    2880.0,
+    3520.0,
+    3040.0
    ],
-   "edificios": 39,
+   "edificios": 388,
    "estados": {
-    "verde": 33,
-    "amarillo": 6,
+    "verde": 2,
+    "amarillo": 385,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "21_19": {
+   "bbox": [
+    3360.0,
+    3040.0,
+    3520.0,
+    3200.0
+   ],
+   "edificios": 137,
+   "estados": {
+    "verde": 2,
+    "amarillo": 135,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "22_17": {
+   "bbox": [
+    3520.0,
+    2720.0,
+    3680.0,
+    2880.0
+   ],
+   "edificios": 21,
+   "estados": {
+    "verde": 1,
+    "amarillo": 20,
     "rojo": 0
    },
    "barrios": [
     "La Atunara"
    ]
   },
-  "10_4": {
+  "20_16": {
    "bbox": [
-    1600.0,
-    640.0,
-    1760.0,
-    800.0
+    3200.0,
+    2560.0,
+    3360.0,
+    2720.0
    ],
-   "edificios": 87,
+   "edificios": 0,
    "estados": {
-    "verde": 79,
-    "amarillo": 6,
-    "rojo": 2
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
    },
    "barrios": [
     "La Atunara"
    ]
   },
-  "9_-13": {
+  "18_17": {
+   "bbox": [
+    2880.0,
+    2720.0,
+    3040.0,
+    2880.0
+   ],
+   "edificios": 79,
+   "estados": {
+    "verde": 12,
+    "amarillo": 66,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "21_17": {
+   "bbox": [
+    3360.0,
+    2720.0,
+    3520.0,
+    2880.0
+   ],
+   "edificios": 132,
+   "estados": {
+    "verde": 0,
+    "amarillo": 132,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "19_16": {
+   "bbox": [
+    3040.0,
+    2560.0,
+    3200.0,
+    2720.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "20_15": {
+   "bbox": [
+    3200.0,
+    2400.0,
+    3360.0,
+    2560.0
+   ],
+   "edificios": 60,
+   "estados": {
+    "verde": 38,
+    "amarillo": 22,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "10_17": {
+   "bbox": [
+    1600.0,
+    2720.0,
+    1760.0,
+    2880.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "9_18": {
    "bbox": [
     1440.0,
-    -2080.0,
+    2880.0,
     1600.0,
-    -1920.0
+    3040.0
    ],
-   "edificios": 0,
+   "edificios": 20,
    "estados": {
-    "verde": 0,
-    "amarillo": 0,
+    "verde": 7,
+    "amarillo": 13,
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "La Colonia"
    ]
   },
-  "12_-2": {
+  "16_16": {
    "bbox": [
-    1920.0,
-    -320.0,
-    2080.0,
-    -160.0
+    2560.0,
+    2560.0,
+    2720.0,
+    2720.0
    ],
-   "edificios": 0,
+   "edificios": 10,
+   "estados": {
+    "verde": 1,
+    "amarillo": 8,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "15_18": {
+   "bbox": [
+    2400.0,
+    2880.0,
+    2560.0,
+    3040.0
+   ],
+   "edificios": 81,
    "estados": {
     "verde": 0,
-    "amarillo": 0,
+    "amarillo": 81,
     "rojo": 0
    },
    "barrios": [
-    "Santa Margarita"
+    "San José"
    ]
   },
-  "12_-3": {
+  "17_-3": {
    "bbox": [
-    1920.0,
+    2720.0,
     -480.0,
-    2080.0,
+    2880.0,
     -320.0
    ],
    "edificios": 0,
@@ -2102,28 +1493,182 @@
     "Santa Margarita"
    ]
   },
-  "13_-3": {
+  "17_24": {
    "bbox": [
-    2080.0,
-    -480.0,
+    2720.0,
+    3840.0,
+    2880.0,
+    4000.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada"
+   ]
+  },
+  "16_24": {
+   "bbox": [
+    2560.0,
+    3840.0,
+    2720.0,
+    4000.0
+   ],
+   "edificios": 71,
+   "estados": {
+    "verde": 0,
+    "amarillo": 71,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada"
+   ]
+  },
+  "16_26": {
+   "bbox": [
+    2560.0,
+    4160.0,
+    2720.0,
+    4320.0
+   ],
+   "edificios": 59,
+   "estados": {
+    "verde": 0,
+    "amarillo": 58,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "16_14": {
+   "bbox": [
+    2560.0,
     2240.0,
-    -320.0
+    2720.0,
+    2400.0
    ],
-   "edificios": 0,
+   "edificios": 41,
    "estados": {
-    "verde": 0,
-    "amarillo": 0,
+    "verde": 29,
+    "amarillo": 12,
     "rojo": 0
    },
    "barrios": [
-    "Santa Margarita"
+    "El Zabal"
    ]
   },
-  "7_-8": {
+  "16_12": {
+   "bbox": [
+    2560.0,
+    1920.0,
+    2720.0,
+    2080.0
+   ],
+   "edificios": 20,
+   "estados": {
+    "verde": 19,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "17_12": {
+   "bbox": [
+    2720.0,
+    1920.0,
+    2880.0,
+    2080.0
+   ],
+   "edificios": 11,
+   "estados": {
+    "verde": 10,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "20_19": {
+   "bbox": [
+    3200.0,
+    3040.0,
+    3360.0,
+    3200.0
+   ],
+   "edificios": 83,
+   "estados": {
+    "verde": 0,
+    "amarillo": 74,
+    "rojo": 9
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "10_23": {
+   "bbox": [
+    1600.0,
+    3680.0,
+    1760.0,
+    3840.0
+   ],
+   "edificios": 38,
+   "estados": {
+    "verde": 1,
+    "amarillo": 37,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras",
+    "Mondéjar"
+   ]
+  },
+  "9_23": {
+   "bbox": [
+    1440.0,
+    3680.0,
+    1600.0,
+    3840.0
+   ],
+   "edificios": 56,
+   "estados": {
+    "verde": 0,
+    "amarillo": 56,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "7_20": {
    "bbox": [
     1120.0,
-    -1280.0,
+    3200.0,
     1280.0,
+    3360.0
+   ],
+   "edificios": 23,
+   "estados": {
+    "verde": 0,
+    "amarillo": 23,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "15_-8": {
+   "bbox": [
+    2400.0,
+    -1280.0,
+    2560.0,
     -1120.0
    ],
    "edificios": 0,
@@ -2136,29 +1681,666 @@
     "Santa Margarita"
    ]
   },
-  "12_-14": {
+  "19_26": {
+   "bbox": [
+    3040.0,
+    4160.0,
+    3200.0,
+    4320.0
+   ],
+   "edificios": 138,
+   "estados": {
+    "verde": 1,
+    "amarillo": 137,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "20_25": {
+   "bbox": [
+    3200.0,
+    4000.0,
+    3360.0,
+    4160.0
+   ],
+   "edificios": 1,
+   "estados": {
+    "verde": 0,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "19_25": {
+   "bbox": [
+    3040.0,
+    4000.0,
+    3200.0,
+    4160.0
+   ],
+   "edificios": 89,
+   "estados": {
+    "verde": 0,
+    "amarillo": 89,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "13_23": {
+   "bbox": [
+    2080.0,
+    3680.0,
+    2240.0,
+    3840.0
+   ],
+   "edificios": 162,
+   "estados": {
+    "verde": 7,
+    "amarillo": 155,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "13_24": {
+   "bbox": [
+    2080.0,
+    3840.0,
+    2240.0,
+    4000.0
+   ],
+   "edificios": 101,
+   "estados": {
+    "verde": 3,
+    "amarillo": 98,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada",
+    "San Pedro"
+   ]
+  },
+  "14_23": {
+   "bbox": [
+    2240.0,
+    3680.0,
+    2400.0,
+    3840.0
+   ],
+   "edificios": 151,
+   "estados": {
+    "verde": 2,
+    "amarillo": 149,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada"
+   ]
+  },
+  "14_24": {
+   "bbox": [
+    2240.0,
+    3840.0,
+    2400.0,
+    4000.0
+   ],
+   "edificios": 86,
+   "estados": {
+    "verde": 1,
+    "amarillo": 85,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada"
+   ]
+  },
+  "13_25": {
+   "bbox": [
+    2080.0,
+    4000.0,
+    2240.0,
+    4160.0
+   ],
+   "edificios": 78,
+   "estados": {
+    "verde": 0,
+    "amarillo": 77,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "14_25": {
+   "bbox": [
+    2240.0,
+    4000.0,
+    2400.0,
+    4160.0
+   ],
+   "edificios": 84,
+   "estados": {
+    "verde": 1,
+    "amarillo": 82,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "12_22": {
    "bbox": [
     1920.0,
-    -2240.0,
+    3520.0,
     2080.0,
-    -2080.0
+    3680.0
    ],
-   "edificios": 0,
+   "edificios": 170,
    "estados": {
-    "verde": 0,
-    "amarillo": 0,
+    "verde": 3,
+    "amarillo": 167,
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "San Pedro"
    ]
   },
-  "13_-14": {
+  "11_22": {
+   "bbox": [
+    1760.0,
+    3520.0,
+    1920.0,
+    3680.0
+   ],
+   "edificios": 124,
+   "estados": {
+    "verde": 0,
+    "amarillo": 123,
+    "rojo": 1
+   },
+   "barrios": [
+    "Las Pedreras",
+    "San Pedro"
+   ]
+  },
+  "11_21": {
+   "bbox": [
+    1760.0,
+    3360.0,
+    1920.0,
+    3520.0
+   ],
+   "edificios": 176,
+   "estados": {
+    "verde": 3,
+    "amarillo": 171,
+    "rojo": 2
+   },
+   "barrios": [
+    "Las Pedreras"
+   ]
+  },
+  "15_21": {
+   "bbox": [
+    2400.0,
+    3360.0,
+    2560.0,
+    3520.0
+   ],
+   "edificios": 188,
+   "estados": {
+    "verde": 5,
+    "amarillo": 182,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "15_24": {
+   "bbox": [
+    2400.0,
+    3840.0,
+    2560.0,
+    4000.0
+   ],
+   "edificios": 36,
+   "estados": {
+    "verde": 1,
+    "amarillo": 34,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Velada"
+   ]
+  },
+  "15_25": {
+   "bbox": [
+    2400.0,
+    4000.0,
+    2560.0,
+    4160.0
+   ],
+   "edificios": 65,
+   "estados": {
+    "verde": 2,
+    "amarillo": 63,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro",
+    "La Velada"
+   ]
+  },
+  "18_23": {
+   "bbox": [
+    2880.0,
+    3680.0,
+    3040.0,
+    3840.0
+   ],
+   "edificios": 174,
+   "estados": {
+    "verde": 1,
+    "amarillo": 173,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada",
+    "San Bernardo",
+    "San José"
+   ]
+  },
+  "19_23": {
+   "bbox": [
+    3040.0,
+    3680.0,
+    3200.0,
+    3840.0
+   ],
+   "edificios": 18,
+   "estados": {
+    "verde": 0,
+    "amarillo": 18,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "18_22": {
+   "bbox": [
+    2880.0,
+    3520.0,
+    3040.0,
+    3680.0
+   ],
+   "edificios": 98,
+   "estados": {
+    "verde": 2,
+    "amarillo": 96,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo",
+    "San José"
+   ]
+  },
+  "18_20": {
+   "bbox": [
+    2880.0,
+    3200.0,
+    3040.0,
+    3360.0
+   ],
+   "edificios": 39,
+   "estados": {
+    "verde": 1,
+    "amarillo": 34,
+    "rojo": 4
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "17_20": {
+   "bbox": [
+    2720.0,
+    3200.0,
+    2880.0,
+    3360.0
+   ],
+   "edificios": 58,
+   "estados": {
+    "verde": 0,
+    "amarillo": 58,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "15_20": {
+   "bbox": [
+    2400.0,
+    3200.0,
+    2560.0,
+    3360.0
+   ],
+   "edificios": 40,
+   "estados": {
+    "verde": 2,
+    "amarillo": 38,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "16_21": {
+   "bbox": [
+    2560.0,
+    3360.0,
+    2720.0,
+    3520.0
+   ],
+   "edificios": 101,
+   "estados": {
+    "verde": 4,
+    "amarillo": 96,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "16_20": {
+   "bbox": [
+    2560.0,
+    3200.0,
+    2720.0,
+    3360.0
+   ],
+   "edificios": 70,
+   "estados": {
+    "verde": 1,
+    "amarillo": 69,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "13_21": {
    "bbox": [
     2080.0,
-    -2240.0,
+    3360.0,
     2240.0,
-    -2080.0
+    3520.0
+   ],
+   "edificios": 127,
+   "estados": {
+    "verde": 2,
+    "amarillo": 125,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "13_20": {
+   "bbox": [
+    2080.0,
+    3200.0,
+    2240.0,
+    3360.0
+   ],
+   "edificios": 104,
+   "estados": {
+    "verde": 1,
+    "amarillo": 103,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "13_22": {
+   "bbox": [
+    2080.0,
+    3520.0,
+    2240.0,
+    3680.0
+   ],
+   "edificios": 147,
+   "estados": {
+    "verde": 3,
+    "amarillo": 144,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "12_23": {
+   "bbox": [
+    1920.0,
+    3680.0,
+    2080.0,
+    3840.0
+   ],
+   "edificios": 112,
+   "estados": {
+    "verde": 4,
+    "amarillo": 107,
+    "rojo": 1
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "10_25": {
+   "bbox": [
+    1600.0,
+    4000.0,
+    1760.0,
+    4160.0
+   ],
+   "edificios": 12,
+   "estados": {
+    "verde": 0,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "10_24": {
+   "bbox": [
+    1600.0,
+    3840.0,
+    1760.0,
+    4000.0
+   ],
+   "edificios": 24,
+   "estados": {
+    "verde": 0,
+    "amarillo": 24,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "9_24": {
+   "bbox": [
+    1440.0,
+    3840.0,
+    1600.0,
+    4000.0
+   ],
+   "edificios": 71,
+   "estados": {
+    "verde": 2,
+    "amarillo": 69,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "11_25": {
+   "bbox": [
+    1760.0,
+    4000.0,
+    1920.0,
+    4160.0
+   ],
+   "edificios": 73,
+   "estados": {
+    "verde": 0,
+    "amarillo": 72,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro",
+    "San Pedro"
+   ]
+  },
+  "8_23": {
+   "bbox": [
+    1280.0,
+    3680.0,
+    1440.0,
+    3840.0
+   ],
+   "edificios": 34,
+   "estados": {
+    "verde": 2,
+    "amarillo": 32,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "7_23": {
+   "bbox": [
+    1120.0,
+    3680.0,
+    1280.0,
+    3840.0
+   ],
+   "edificios": 13,
+   "estados": {
+    "verde": 0,
+    "amarillo": 13,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "9_21": {
+   "bbox": [
+    1440.0,
+    3360.0,
+    1600.0,
+    3520.0
+   ],
+   "edificios": 20,
+   "estados": {
+    "verde": 0,
+    "amarillo": 20,
+    "rojo": 0
+   },
+   "barrios": [
+    "Los Junquillos"
+   ]
+  },
+  "9_20": {
+   "bbox": [
+    1440.0,
+    3200.0,
+    1600.0,
+    3360.0
+   ],
+   "edificios": 25,
+   "estados": {
+    "verde": 0,
+    "amarillo": 25,
+    "rojo": 0
+   },
+   "barrios": [
+    "Los Junquillos"
+   ]
+  },
+  "8_21": {
+   "bbox": [
+    1280.0,
+    3360.0,
+    1440.0,
+    3520.0
+   ],
+   "edificios": 83,
+   "estados": {
+    "verde": 6,
+    "amarillo": 77,
+    "rojo": 0
+   },
+   "barrios": [
+    "Los Junquillos"
+   ]
+  },
+  "10_22": {
+   "bbox": [
+    1600.0,
+    3520.0,
+    1760.0,
+    3680.0
+   ],
+   "edificios": 16,
+   "estados": {
+    "verde": 2,
+    "amarillo": 14,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras",
+    "Los Junquillos"
+   ]
+  },
+  "8_19": {
+   "bbox": [
+    1280.0,
+    3040.0,
+    1440.0,
+    3200.0
+   ],
+   "edificios": 60,
+   "estados": {
+    "verde": 0,
+    "amarillo": 60,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "16_1": {
+   "bbox": [
+    2560.0,
+    160.0,
+    2720.0,
+    320.0
    ],
    "edificios": 0,
    "estados": {
@@ -2167,14 +2349,820 @@
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "Santa Margarita"
    ]
   },
-  "13_-13": {
+  "18_1": {
+   "bbox": [
+    2880.0,
+    160.0,
+    3040.0,
+    320.0
+   ],
+   "edificios": 102,
+   "estados": {
+    "verde": 85,
+    "amarillo": 17,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "13_11": {
    "bbox": [
     2080.0,
+    1760.0,
+    2240.0,
+    1920.0
+   ],
+   "edificios": 28,
+   "estados": {
+    "verde": 27,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "14_11": {
+   "bbox": [
+    2240.0,
+    1760.0,
+    2400.0,
+    1920.0
+   ],
+   "edificios": 34,
+   "estados": {
+    "verde": 22,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "13_10": {
+   "bbox": [
+    2080.0,
+    1600.0,
+    2240.0,
+    1760.0
+   ],
+   "edificios": 12,
+   "estados": {
+    "verde": 0,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "14_10": {
+   "bbox": [
+    2240.0,
+    1600.0,
+    2400.0,
+    1760.0
+   ],
+   "edificios": 19,
+   "estados": {
+    "verde": 12,
+    "amarillo": 7,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "16_-7": {
+   "bbox": [
+    2560.0,
+    -1120.0,
+    2720.0,
+    -960.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "16_-6": {
+   "bbox": [
+    2560.0,
+    -960.0,
+    2720.0,
+    -800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "16_-8": {
+   "bbox": [
+    2560.0,
+    -1280.0,
+    2720.0,
+    -1120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "8_18": {
+   "bbox": [
+    1280.0,
+    2880.0,
+    1440.0,
+    3040.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "4_21": {
+   "bbox": [
+    640.0,
+    3360.0,
+    800.0,
+    3520.0
+   ],
+   "edificios": 29,
+   "estados": {
+    "verde": 0,
+    "amarillo": 29,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "4_22": {
+   "bbox": [
+    640.0,
+    3520.0,
+    800.0,
+    3680.0
+   ],
+   "edificios": 5,
+   "estados": {
+    "verde": 0,
+    "amarillo": 5,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "6_21": {
+   "bbox": [
+    960.0,
+    3360.0,
+    1120.0,
+    3520.0
+   ],
+   "edificios": 157,
+   "estados": {
+    "verde": 0,
+    "amarillo": 157,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "5_20": {
+   "bbox": [
+    800.0,
+    3200.0,
+    960.0,
+    3360.0
+   ],
+   "edificios": 274,
+   "estados": {
+    "verde": 6,
+    "amarillo": 267,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "5_21": {
+   "bbox": [
+    800.0,
+    3360.0,
+    960.0,
+    3520.0
+   ],
+   "edificios": 63,
+   "estados": {
+    "verde": 2,
+    "amarillo": 61,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "12_18": {
+   "bbox": [
+    1920.0,
+    2880.0,
+    2080.0,
+    3040.0
+   ],
+   "edificios": 31,
+   "estados": {
+    "verde": 1,
+    "amarillo": 29,
+    "rojo": 1
+   },
+   "barrios": [
+    "Las Pedreras"
+   ]
+  },
+  "12_19": {
+   "bbox": [
+    1920.0,
+    3040.0,
+    2080.0,
+    3200.0
+   ],
+   "edificios": 34,
+   "estados": {
+    "verde": 0,
+    "amarillo": 34,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras"
+   ]
+  },
+  "13_19": {
+   "bbox": [
+    2080.0,
+    3040.0,
+    2240.0,
+    3200.0
+   ],
+   "edificios": 74,
+   "estados": {
+    "verde": 1,
+    "amarillo": 73,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras",
+    "San José",
+    "San Pedro"
+   ]
+  },
+  "13_18": {
+   "bbox": [
+    2080.0,
+    2880.0,
+    2240.0,
+    3040.0
+   ],
+   "edificios": 27,
+   "estados": {
+    "verde": 0,
+    "amarillo": 27,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras",
+    "San José"
+   ]
+  },
+  "14_18": {
+   "bbox": [
+    2240.0,
+    2880.0,
+    2400.0,
+    3040.0
+   ],
+   "edificios": 65,
+   "estados": {
+    "verde": 2,
+    "amarillo": 63,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "14_19": {
+   "bbox": [
+    2240.0,
+    3040.0,
+    2400.0,
+    3200.0
+   ],
+   "edificios": 157,
+   "estados": {
+    "verde": 7,
+    "amarillo": 150,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "14_20": {
+   "bbox": [
+    2240.0,
+    3200.0,
+    2400.0,
+    3360.0
+   ],
+   "edificios": 48,
+   "estados": {
+    "verde": 4,
+    "amarillo": 44,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José",
+    "San Pedro"
+   ]
+  },
+  "14_21": {
+   "bbox": [
+    2240.0,
+    3360.0,
+    2400.0,
+    3520.0
+   ],
+   "edificios": 176,
+   "estados": {
+    "verde": 0,
+    "amarillo": 176,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Velada",
+    "San José",
+    "San Pedro"
+   ]
+  },
+  "13_17": {
+   "bbox": [
+    2080.0,
+    2720.0,
+    2240.0,
+    2880.0
+   ],
+   "edificios": 47,
+   "estados": {
+    "verde": 1,
+    "amarillo": 45,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "14_17": {
+   "bbox": [
+    2240.0,
+    2720.0,
+    2400.0,
+    2880.0
+   ],
+   "edificios": 38,
+   "estados": {
+    "verde": 1,
+    "amarillo": 37,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "16_17": {
+   "bbox": [
+    2560.0,
+    2720.0,
+    2720.0,
+    2880.0
+   ],
+   "edificios": 19,
+   "estados": {
+    "verde": 0,
+    "amarillo": 18,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "15_17": {
+   "bbox": [
+    2400.0,
+    2720.0,
+    2560.0,
+    2880.0
+   ],
+   "edificios": 16,
+   "estados": {
+    "verde": 1,
+    "amarillo": 14,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "13_16": {
+   "bbox": [
+    2080.0,
+    2560.0,
+    2240.0,
+    2720.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras",
+    "San José"
+   ]
+  },
+  "15_23": {
+   "bbox": [
+    2400.0,
+    3680.0,
+    2560.0,
+    3840.0
+   ],
+   "edificios": 102,
+   "estados": {
+    "verde": 6,
+    "amarillo": 95,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Velada"
+   ]
+  },
+  "11_20": {
+   "bbox": [
+    1760.0,
+    3200.0,
+    1920.0,
+    3360.0
+   ],
+   "edificios": 13,
+   "estados": {
+    "verde": 0,
+    "amarillo": 13,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras"
+   ]
+  },
+  "7_19": {
+   "bbox": [
+    1120.0,
+    3040.0,
+    1280.0,
+    3200.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "7_18": {
+   "bbox": [
+    1120.0,
+    2880.0,
+    1280.0,
+    3040.0
+   ],
+   "edificios": 11,
+   "estados": {
+    "verde": 1,
+    "amarillo": 10,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "10_18": {
+   "bbox": [
+    1600.0,
+    2880.0,
+    1760.0,
+    3040.0
+   ],
+   "edificios": 104,
+   "estados": {
+    "verde": 5,
+    "amarillo": 98,
+    "rojo": 1
+   },
+   "barrios": [
+    "Los Junquillos"
+   ]
+  },
+  "12_27": {
+   "bbox": [
+    1920.0,
+    4320.0,
+    2080.0,
+    4480.0
+   ],
+   "edificios": 23,
+   "estados": {
+    "verde": 5,
+    "amarillo": 18,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "21_16": {
+   "bbox": [
+    3360.0,
+    2560.0,
+    3520.0,
+    2720.0
+   ],
+   "edificios": 83,
+   "estados": {
+    "verde": 2,
+    "amarillo": 81,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "21_15": {
+   "bbox": [
+    3360.0,
+    2400.0,
+    3520.0,
+    2560.0
+   ],
+   "edificios": 23,
+   "estados": {
+    "verde": 2,
+    "amarillo": 21,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "21_14": {
+   "bbox": [
+    3360.0,
+    2240.0,
+    3520.0,
+    2400.0
+   ],
+   "edificios": 13,
+   "estados": {
+    "verde": 0,
+    "amarillo": 13,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "23_0": {
+   "bbox": [
+    3680.0,
+    0.0,
+    3840.0,
+    160.0
+   ],
+   "edificios": 53,
+   "estados": {
+    "verde": 29,
+    "amarillo": 24,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "22_3": {
+   "bbox": [
+    3520.0,
+    480.0,
+    3680.0,
+    640.0
+   ],
+   "edificios": 118,
+   "estados": {
+    "verde": 103,
+    "amarillo": 11,
+    "rojo": 4
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "24_3": {
+   "bbox": [
+    3840.0,
+    480.0,
+    4000.0,
+    640.0
+   ],
+   "edificios": 57,
+   "estados": {
+    "verde": 51,
+    "amarillo": 6,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "23_4": {
+   "bbox": [
+    3680.0,
+    640.0,
+    3840.0,
+    800.0
+   ],
+   "edificios": 36,
+   "estados": {
+    "verde": 32,
+    "amarillo": 1,
+    "rojo": 3
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "24_5": {
+   "bbox": [
+    3840.0,
+    800.0,
+    4000.0,
+    960.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "22_9": {
+   "bbox": [
+    3520.0,
+    1440.0,
+    3680.0,
+    1600.0
+   ],
+   "edificios": 42,
+   "estados": {
+    "verde": 23,
+    "amarillo": 19,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "22_6": {
+   "bbox": [
+    3520.0,
+    960.0,
+    3680.0,
+    1120.0
+   ],
+   "edificios": 19,
+   "estados": {
+    "verde": 16,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "22_5": {
+   "bbox": [
+    3520.0,
+    800.0,
+    3680.0,
+    960.0
+   ],
+   "edificios": 20,
+   "estados": {
+    "verde": 17,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "13_9": {
+   "bbox": [
+    2080.0,
+    1440.0,
+    2240.0,
+    1600.0
+   ],
+   "edificios": 4,
+   "estados": {
+    "verde": 0,
+    "amarillo": 4,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "19_-11": {
+   "bbox": [
+    3040.0,
+    -1760.0,
+    3200.0,
+    -1600.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "19_-12": {
+   "bbox": [
+    3040.0,
+    -1920.0,
+    3200.0,
+    -1760.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_-13": {
+   "bbox": [
+    2880.0,
     -2080.0,
-    2240.0,
+    3040.0,
     -1920.0
    ],
    "edificios": 0,
@@ -2184,66 +3172,168 @@
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "Santa Margarita"
    ]
   },
-  "14_-15": {
+  "20_13": {
+   "bbox": [
+    3200.0,
+    2080.0,
+    3360.0,
+    2240.0
+   ],
+   "edificios": 76,
+   "estados": {
+    "verde": 50,
+    "amarillo": 25,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "13_12": {
+   "bbox": [
+    2080.0,
+    1920.0,
+    2240.0,
+    2080.0
+   ],
+   "edificios": 17,
+   "estados": {
+    "verde": 11,
+    "amarillo": 6,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "13_8": {
+   "bbox": [
+    2080.0,
+    1280.0,
+    2240.0,
+    1440.0
+   ],
+   "edificios": 1,
+   "estados": {
+    "verde": 0,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "13_7": {
+   "bbox": [
+    2080.0,
+    1120.0,
+    2240.0,
+    1280.0
+   ],
+   "edificios": 8,
+   "estados": {
+    "verde": 4,
+    "amarillo": 3,
+    "rojo": 1
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "14_6": {
    "bbox": [
     2240.0,
-    -2400.0,
+    960.0,
     2400.0,
-    -2240.0
+    1120.0
    ],
-   "edificios": 0,
+   "edificios": 4,
    "estados": {
-    "verde": 0,
-    "amarillo": 0,
+    "verde": 3,
+    "amarillo": 1,
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "El Zabal"
    ]
   },
-  "14_-13": {
+  "14_8": {
    "bbox": [
     2240.0,
-    -2080.0,
+    1280.0,
     2400.0,
-    -1920.0
+    1440.0
    ],
-   "edificios": 0,
+   "edificios": 1,
    "estados": {
     "verde": 0,
-    "amarillo": 0,
+    "amarillo": 1,
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "El Zabal"
    ]
   },
-  "12_-15": {
+  "14_7": {
    "bbox": [
-    1920.0,
-    -2400.0,
-    2080.0,
-    -2240.0
+    2240.0,
+    1120.0,
+    2400.0,
+    1280.0
    ],
-   "edificios": 0,
+   "edificios": 2,
    "estados": {
     "verde": 0,
-    "amarillo": 0,
+    "amarillo": 2,
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "El Zabal"
    ]
   },
-  "12_-16": {
+  "22_13": {
    "bbox": [
-    1920.0,
-    -2560.0,
+    3520.0,
     2080.0,
-    -2400.0
+    3680.0,
+    2240.0
+   ],
+   "edificios": 3,
+   "estados": {
+    "verde": 0,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "22_12": {
+   "bbox": [
+    3520.0,
+    1920.0,
+    3680.0,
+    2080.0
+   ],
+   "edificios": 3,
+   "estados": {
+    "verde": 0,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "22_-3": {
+   "bbox": [
+    3520.0,
+    -480.0,
+    3680.0,
+    -320.0
    ],
    "edificios": 0,
    "estados": {
@@ -2252,7 +3342,1510 @@
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
+    "Santa Margarita"
+   ]
+  },
+  "23_-3": {
+   "bbox": [
+    3680.0,
+    -480.0,
+    3840.0,
+    -320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_12": {
+   "bbox": [
+    2880.0,
+    1920.0,
+    3040.0,
+    2080.0
+   ],
+   "edificios": 131,
+   "estados": {
+    "verde": 80,
+    "amarillo": 50,
+    "rojo": 1
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "19_13": {
+   "bbox": [
+    3040.0,
+    2080.0,
+    3200.0,
+    2240.0
+   ],
+   "edificios": 6,
+   "estados": {
+    "verde": 0,
+    "amarillo": 6,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "23_-5": {
+   "bbox": [
+    3680.0,
+    -800.0,
+    3840.0,
+    -640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_-2": {
+   "bbox": [
+    3200.0,
+    -320.0,
+    3360.0,
+    -160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "21_-2": {
+   "bbox": [
+    3360.0,
+    -320.0,
+    3520.0,
+    -160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_-3": {
+   "bbox": [
+    3200.0,
+    -480.0,
+    3360.0,
+    -320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "21_-1": {
+   "bbox": [
+    3360.0,
+    -160.0,
+    3520.0,
+    0.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "22_14": {
+   "bbox": [
+    3520.0,
+    2240.0,
+    3680.0,
+    2400.0
+   ],
+   "edificios": 21,
+   "estados": {
+    "verde": 0,
+    "amarillo": 21,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "17_-5": {
+   "bbox": [
+    2720.0,
+    -800.0,
+    2880.0,
+    -640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "17_-6": {
+   "bbox": [
+    2720.0,
+    -960.0,
+    2880.0,
+    -800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_-6": {
+   "bbox": [
+    2880.0,
+    -960.0,
+    3040.0,
+    -800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_-8": {
+   "bbox": [
+    2880.0,
+    -1280.0,
+    3040.0,
+    -1120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_-5": {
+   "bbox": [
+    2880.0,
+    -800.0,
+    3040.0,
+    -640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "22_-1": {
+   "bbox": [
+    3520.0,
+    -160.0,
+    3680.0,
+    0.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_7": {
+   "bbox": [
+    2880.0,
+    1120.0,
+    3040.0,
+    1280.0
+   ],
+   "edificios": 289,
+   "estados": {
+    "verde": 264,
+    "amarillo": 23,
+    "rojo": 2
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "20_4": {
+   "bbox": [
+    3200.0,
+    640.0,
+    3360.0,
+    800.0
+   ],
+   "edificios": 363,
+   "estados": {
+    "verde": 331,
+    "amarillo": 25,
+    "rojo": 7
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "21_6": {
+   "bbox": [
+    3360.0,
+    960.0,
+    3520.0,
+    1120.0
+   ],
+   "edificios": 55,
+   "estados": {
+    "verde": 50,
+    "amarillo": 4,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "19_-8": {
+   "bbox": [
+    3040.0,
+    -1280.0,
+    3200.0,
+    -1120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "17_15": {
+   "bbox": [
+    2720.0,
+    2400.0,
+    2880.0,
+    2560.0
+   ],
+   "edificios": 40,
+   "estados": {
+    "verde": 40,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "18_14": {
+   "bbox": [
+    2880.0,
+    2240.0,
+    3040.0,
+    2400.0
+   ],
+   "edificios": 94,
+   "estados": {
+    "verde": 70,
+    "amarillo": 24,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "20_7": {
+   "bbox": [
+    3200.0,
+    1120.0,
+    3360.0,
+    1280.0
+   ],
+   "edificios": 8,
+   "estados": {
+    "verde": 5,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "18_-3": {
+   "bbox": [
+    2880.0,
+    -480.0,
+    3040.0,
+    -320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_-9": {
+   "bbox": [
+    2880.0,
+    -1440.0,
+    3040.0,
+    -1280.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "23_3": {
+   "bbox": [
+    3680.0,
+    480.0,
+    3840.0,
+    640.0
+   ],
+   "edificios": 45,
+   "estados": {
+    "verde": 42,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_-4": {
+   "bbox": [
+    3200.0,
+    -640.0,
+    3360.0,
+    -480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "19_-3": {
+   "bbox": [
+    3040.0,
+    -480.0,
+    3200.0,
+    -320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "18_11": {
+   "bbox": [
+    2880.0,
+    1760.0,
+    3040.0,
+    1920.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "17_4": {
+   "bbox": [
+    2720.0,
+    640.0,
+    2880.0,
+    800.0
+   ],
+   "edificios": 25,
+   "estados": {
+    "verde": 19,
+    "amarillo": 6,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "18_3": {
+   "bbox": [
+    2880.0,
+    480.0,
+    3040.0,
+    640.0
+   ],
+   "edificios": 32,
+   "estados": {
+    "verde": 31,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_2": {
+   "bbox": [
+    3200.0,
+    320.0,
+    3360.0,
+    480.0
+   ],
+   "edificios": 73,
+   "estados": {
+    "verde": 71,
+    "amarillo": 2,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_1": {
+   "bbox": [
+    3200.0,
+    160.0,
+    3360.0,
+    320.0
+   ],
+   "edificios": 59,
+   "estados": {
+    "verde": 57,
+    "amarillo": 1,
+    "rojo": 1
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "21_1": {
+   "bbox": [
+    3360.0,
+    160.0,
+    3520.0,
+    320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "22_15": {
+   "bbox": [
+    3520.0,
+    2400.0,
+    3680.0,
+    2560.0
+   ],
+   "edificios": 53,
+   "estados": {
+    "verde": 0,
+    "amarillo": 52,
+    "rojo": 1
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "14_9": {
+   "bbox": [
+    2240.0,
+    1440.0,
+    2400.0,
+    1600.0
+   ],
+   "edificios": 29,
+   "estados": {
+    "verde": 20,
+    "amarillo": 9,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "14_12": {
+   "bbox": [
+    2240.0,
+    1920.0,
+    2400.0,
+    2080.0
+   ],
+   "edificios": 45,
+   "estados": {
+    "verde": 38,
+    "amarillo": 7,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "13_14": {
+   "bbox": [
+    2080.0,
+    2240.0,
+    2240.0,
+    2400.0
+   ],
+   "edificios": 16,
+   "estados": {
+    "verde": 15,
+    "amarillo": 0,
+    "rojo": 1
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "11_23": {
+   "bbox": [
+    1760.0,
+    3680.0,
+    1920.0,
+    3840.0
+   ],
+   "edificios": 104,
+   "estados": {
+    "verde": 1,
+    "amarillo": 103,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "12_24": {
+   "bbox": [
+    1920.0,
+    3840.0,
+    2080.0,
+    4000.0
+   ],
+   "edificios": 103,
+   "estados": {
+    "verde": 3,
+    "amarillo": 100,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "12_25": {
+   "bbox": [
+    1920.0,
+    4000.0,
+    2080.0,
+    4160.0
+   ],
+   "edificios": 91,
+   "estados": {
+    "verde": 1,
+    "amarillo": 90,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro",
+    "San Pedro"
+   ]
+  },
+  "12_20": {
+   "bbox": [
+    1920.0,
+    3200.0,
+    2080.0,
+    3360.0
+   ],
+   "edificios": 50,
+   "estados": {
+    "verde": 0,
+    "amarillo": 48,
+    "rojo": 2
+   },
+   "barrios": [
+    "Las Pedreras",
+    "San Pedro"
+   ]
+  },
+  "20_27": {
+   "bbox": [
+    3200.0,
+    4320.0,
+    3360.0,
+    4480.0
+   ],
+   "edificios": 12,
+   "estados": {
+    "verde": 1,
+    "amarillo": 8,
+    "rojo": 3
+   },
+   "barrios": [
+    "Santiago"
+   ]
+  },
+  "12_21": {
+   "bbox": [
+    1920.0,
+    3360.0,
+    2080.0,
+    3520.0
+   ],
+   "edificios": 103,
+   "estados": {
+    "verde": 1,
+    "amarillo": 102,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "7_21": {
+   "bbox": [
+    1120.0,
+    3360.0,
+    1280.0,
+    3520.0
+   ],
+   "edificios": 37,
+   "estados": {
+    "verde": 1,
+    "amarillo": 36,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia",
+    "Los Junquillos"
+   ]
+  },
+  "7_22": {
+   "bbox": [
+    1120.0,
+    3520.0,
+    1280.0,
+    3680.0
+   ],
+   "edificios": 3,
+   "estados": {
+    "verde": 0,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia",
+    "Mondéjar"
+   ]
+  },
+  "8_22": {
+   "bbox": [
+    1280.0,
+    3520.0,
+    1440.0,
+    3680.0
+   ],
+   "edificios": 19,
+   "estados": {
+    "verde": 1,
+    "amarillo": 18,
+    "rojo": 0
+   },
+   "barrios": [
+    "Los Junquillos",
+    "Mondéjar"
+   ]
+  },
+  "20_20": {
+   "bbox": [
+    3200.0,
+    3200.0,
+    3360.0,
+    3360.0
+   ],
+   "edificios": 35,
+   "estados": {
+    "verde": 1,
+    "amarillo": 34,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "20_18": {
+   "bbox": [
+    3200.0,
+    2880.0,
+    3360.0,
+    3040.0
+   ],
+   "edificios": 87,
+   "estados": {
+    "verde": 1,
+    "amarillo": 86,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara",
+    "San Bernardo"
+   ]
+  },
+  "19_18": {
+   "bbox": [
+    3040.0,
+    2880.0,
+    3200.0,
+    3040.0
+   ],
+   "edificios": 3,
+   "estados": {
+    "verde": 0,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "20_17": {
+   "bbox": [
+    3200.0,
+    2720.0,
+    3360.0,
+    2880.0
+   ],
+   "edificios": 1,
+   "estados": {
+    "verde": 0,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "19_17": {
+   "bbox": [
+    3040.0,
+    2720.0,
+    3200.0,
+    2880.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "19_19": {
+   "bbox": [
+    3040.0,
+    3040.0,
+    3200.0,
+    3200.0
+   ],
+   "edificios": 8,
+   "estados": {
+    "verde": 1,
+    "amarillo": 7,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Bernardo"
+   ]
+  },
+  "18_18": {
+   "bbox": [
+    2880.0,
+    2880.0,
+    3040.0,
+    3040.0
+   ],
+   "edificios": 8,
+   "estados": {
+    "verde": 0,
+    "amarillo": 8,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "17_19": {
+   "bbox": [
+    2720.0,
+    3040.0,
+    2880.0,
+    3200.0
+   ],
+   "edificios": 31,
+   "estados": {
+    "verde": 0,
+    "amarillo": 31,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "17_21": {
+   "bbox": [
+    2720.0,
+    3360.0,
+    2880.0,
+    3520.0
+   ],
+   "edificios": 99,
+   "estados": {
+    "verde": 3,
+    "amarillo": 96,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "18_19": {
+   "bbox": [
+    2880.0,
+    3040.0,
+    3040.0,
+    3200.0
+   ],
+   "edificios": 87,
+   "estados": {
+    "verde": 4,
+    "amarillo": 83,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "17_-7": {
+   "bbox": [
+    2720.0,
+    -1120.0,
+    2880.0,
+    -960.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "25_1": {
+   "bbox": [
+    4000.0,
+    160.0,
+    4160.0,
+    320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "16_15": {
+   "bbox": [
+    2560.0,
+    2400.0,
+    2720.0,
+    2560.0
+   ],
+   "edificios": 3,
+   "estados": {
+    "verde": 1,
+    "amarillo": 2,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "21_10": {
+   "bbox": [
+    3360.0,
+    1600.0,
+    3520.0,
+    1760.0
+   ],
+   "edificios": 44,
+   "estados": {
+    "verde": 38,
+    "amarillo": 6,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "21_8": {
+   "bbox": [
+    3360.0,
+    1280.0,
+    3520.0,
+    1440.0
+   ],
+   "edificios": 117,
+   "estados": {
+    "verde": 110,
+    "amarillo": 7,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "21_7": {
+   "bbox": [
+    3360.0,
+    1120.0,
+    3520.0,
+    1280.0
+   ],
+   "edificios": 60,
+   "estados": {
+    "verde": 46,
+    "amarillo": 10,
+    "rojo": 4
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "9_22": {
+   "bbox": [
+    1440.0,
+    3520.0,
+    1600.0,
+    3680.0
+   ],
+   "edificios": 2,
+   "estados": {
+    "verde": 0,
+    "amarillo": 2,
+    "rojo": 0
+   },
+   "barrios": [
+    "Mondéjar"
+   ]
+  },
+  "16_18": {
+   "bbox": [
+    2560.0,
+    2880.0,
+    2720.0,
+    3040.0
+   ],
+   "edificios": 70,
+   "estados": {
+    "verde": 3,
+    "amarillo": 67,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "14_26": {
+   "bbox": [
+    2240.0,
+    4160.0,
+    2400.0,
+    4320.0
+   ],
+   "edificios": 52,
+   "estados": {
+    "verde": 0,
+    "amarillo": 51,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "15_26": {
+   "bbox": [
+    2400.0,
+    4160.0,
+    2560.0,
+    4320.0
+   ],
+   "edificios": 46,
+   "estados": {
+    "verde": 0,
+    "amarillo": 44,
+    "rojo": 2
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "16_19": {
+   "bbox": [
+    2560.0,
+    3040.0,
+    2720.0,
+    3200.0
+   ],
+   "edificios": 30,
+   "estados": {
+    "verde": 0,
+    "amarillo": 30,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "14_16": {
+   "bbox": [
+    2240.0,
+    2560.0,
+    2400.0,
+    2720.0
+   ],
+   "edificios": 32,
+   "estados": {
+    "verde": 0,
+    "amarillo": 31,
+    "rojo": 1
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "16_27": {
+   "bbox": [
+    2560.0,
+    4320.0,
+    2720.0,
+    4480.0
+   ],
+   "edificios": 14,
+   "estados": {
+    "verde": 0,
+    "amarillo": 14,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "14_27": {
+   "bbox": [
+    2240.0,
+    4320.0,
+    2400.0,
+    4480.0
+   ],
+   "edificios": 31,
+   "estados": {
+    "verde": 1,
+    "amarillo": 30,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "17_28": {
+   "bbox": [
+    2720.0,
+    4480.0,
+    2880.0,
+    4640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "15_19": {
+   "bbox": [
+    2400.0,
+    3040.0,
+    2560.0,
+    3200.0
+   ],
+   "edificios": 39,
+   "estados": {
+    "verde": 1,
+    "amarillo": 38,
+    "rojo": 0
+   },
+   "barrios": [
+    "San José"
+   ]
+  },
+  "13_27": {
+   "bbox": [
+    2080.0,
+    4320.0,
+    2240.0,
+    4480.0
+   ],
+   "edificios": 7,
+   "estados": {
+    "verde": 0,
+    "amarillo": 7,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "11_19": {
+   "bbox": [
+    1760.0,
+    3040.0,
+    1920.0,
+    3200.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras"
+   ]
+  },
+  "12_26": {
+   "bbox": [
+    1920.0,
+    4160.0,
+    2080.0,
+    4320.0
+   ],
+   "edificios": 68,
+   "estados": {
+    "verde": 0,
+    "amarillo": 67,
+    "rojo": 1
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "16_25": {
+   "bbox": [
+    2560.0,
+    4000.0,
+    2720.0,
+    4160.0
+   ],
+   "edificios": 40,
+   "estados": {
+    "verde": 0,
+    "amarillo": 40,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro",
+    "La Velada"
+   ]
+  },
+  "22_16": {
+   "bbox": [
+    3520.0,
+    2560.0,
+    3680.0,
+    2720.0
+   ],
+   "edificios": 33,
+   "estados": {
+    "verde": 0,
+    "amarillo": 33,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "18_0": {
+   "bbox": [
+    2880.0,
+    0.0,
+    3040.0,
+    160.0
+   ],
+   "edificios": 29,
+   "estados": {
+    "verde": 26,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "22_-5": {
+   "bbox": [
+    3520.0,
+    -800.0,
+    3680.0,
+    -640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "24_-4": {
+   "bbox": [
+    3840.0,
+    -640.0,
+    4000.0,
+    -480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "24_-5": {
+   "bbox": [
+    3840.0,
+    -800.0,
+    4000.0,
+    -640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "23_-4": {
+   "bbox": [
+    3680.0,
+    -640.0,
+    3840.0,
+    -480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "23_-1": {
+   "bbox": [
+    3680.0,
+    -160.0,
+    3840.0,
+    0.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "23_-2": {
+   "bbox": [
+    3680.0,
+    -320.0,
+    3840.0,
+    -160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "25_-4": {
+   "bbox": [
+    4000.0,
+    -640.0,
+    4160.0,
+    -480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "24_-3": {
+   "bbox": [
+    3840.0,
+    -480.0,
+    4000.0,
+    -320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "26_-5": {
+   "bbox": [
+    4160.0,
+    -800.0,
+    4320.0,
+    -640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "22_-2": {
+   "bbox": [
+    3520.0,
+    -320.0,
+    3680.0,
+    -160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
    ]
   },
   "14_-16": {
@@ -2269,116 +4862,14 @@
     "rojo": 0
    },
    "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "15_-12": {
-   "bbox": [
-    2400.0,
-    -1920.0,
-    2560.0,
-    -1760.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "La Alcaidesa"
-   ]
-  },
-  "8_15": {
-   "bbox": [
-    1280.0,
-    2400.0,
-    1440.0,
-    2560.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "San Felipe"
-   ]
-  },
-  "8_1": {
-   "bbox": [
-    1280.0,
-    160.0,
-    1440.0,
-    320.0
-   ],
-   "edificios": 65,
-   "estados": {
-    "verde": 61,
-    "amarillo": 3,
-    "rojo": 1
-   },
-   "barrios": [
     "Santa Margarita"
    ]
   },
-  "8_3": {
+  "21_-4": {
    "bbox": [
-    1280.0,
-    480.0,
-    1440.0,
-    640.0
-   ],
-   "edificios": 45,
-   "estados": {
-    "verde": 40,
-    "amarillo": 4,
-    "rojo": 1
-   },
-   "barrios": [
-    "El Zabal"
-   ]
-  },
-  "8_-5": {
-   "bbox": [
-    1280.0,
-    -800.0,
-    1440.0,
-    -640.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_-5": {
-   "bbox": [
-    1600.0,
-    -800.0,
-    1760.0,
-    -640.0
-   ],
-   "edificios": 0,
-   "estados": {
-    "verde": 0,
-    "amarillo": 0,
-    "rojo": 0
-   },
-   "barrios": [
-    "Santa Margarita"
-   ]
-  },
-  "10_-4": {
-   "bbox": [
-    1600.0,
+    3360.0,
     -640.0,
-    1760.0,
+    3520.0,
     -480.0
    ],
    "edificios": 0,
@@ -2391,12 +4882,387 @@
     "Santa Margarita"
    ]
   },
-  "9_-1": {
+  "13_31": {
    "bbox": [
-    1440.0,
-    -160.0,
+    2080.0,
+    4960.0,
+    2240.0,
+    5120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "12_31": {
+   "bbox": [
+    1920.0,
+    4960.0,
+    2080.0,
+    5120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "12_17": {
+   "bbox": [
+    1920.0,
+    2720.0,
+    2080.0,
+    2880.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras"
+   ]
+  },
+  "13_26": {
+   "bbox": [
+    2080.0,
+    4160.0,
+    2240.0,
+    4320.0
+   ],
+   "edificios": 48,
+   "estados": {
+    "verde": 0,
+    "amarillo": 48,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "11_24": {
+   "bbox": [
+    1760.0,
+    3840.0,
+    1920.0,
+    4000.0
+   ],
+   "edificios": 81,
+   "estados": {
+    "verde": 0,
+    "amarillo": 80,
+    "rojo": 1
+   },
+   "barrios": [
+    "San Pedro"
+   ]
+  },
+  "10_21": {
+   "bbox": [
     1600.0,
-    0.0
+    3360.0,
+    1760.0,
+    3520.0
+   ],
+   "edificios": 1,
+   "estados": {
+    "verde": 0,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras",
+    "Los Junquillos"
+   ]
+  },
+  "27_-28": {
+   "bbox": [
+    4320.0,
+    -4480.0,
+    4480.0,
+    -4320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "24_-28": {
+   "bbox": [
+    3840.0,
+    -4480.0,
+    4000.0,
+    -4320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "27_-27": {
+   "bbox": [
+    4320.0,
+    -4320.0,
+    4480.0,
+    -4160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "25_-27": {
+   "bbox": [
+    4000.0,
+    -4320.0,
+    4160.0,
+    -4160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "26_-26": {
+   "bbox": [
+    4160.0,
+    -4160.0,
+    4320.0,
+    -4000.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "29_-26": {
+   "bbox": [
+    4640.0,
+    -4160.0,
+    4800.0,
+    -4000.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "28_-30": {
+   "bbox": [
+    4480.0,
+    -4800.0,
+    4640.0,
+    -4640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "29_-25": {
+   "bbox": [
+    4640.0,
+    -4000.0,
+    4800.0,
+    -3840.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "29_-29": {
+   "bbox": [
+    4640.0,
+    -4640.0,
+    4800.0,
+    -4480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "24_-30": {
+   "bbox": [
+    3840.0,
+    -4800.0,
+    4000.0,
+    -4640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "25_-31": {
+   "bbox": [
+    4000.0,
+    -4960.0,
+    4160.0,
+    -4800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "28_-31": {
+   "bbox": [
+    4480.0,
+    -4960.0,
+    4640.0,
+    -4800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "31_-23": {
+   "bbox": [
+    4960.0,
+    -3680.0,
+    5120.0,
+    -3520.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "24_-31": {
+   "bbox": [
+    3840.0,
+    -4960.0,
+    4000.0,
+    -4800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "16_30": {
+   "bbox": [
+    2560.0,
+    4800.0,
+    2720.0,
+    4960.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "San Felipe"
+   ]
+  },
+  "12_29": {
+   "bbox": [
+    1920.0,
+    4640.0,
+    2080.0,
+    4800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "27_-6": {
+   "bbox": [
+    4320.0,
+    -960.0,
+    4480.0,
+    -800.0
    ],
    "edificios": 0,
    "estados": {
@@ -2408,12 +5274,12 @@
     "Santa Margarita"
    ]
   },
-  "7_2": {
+  "15_6": {
    "bbox": [
-    1120.0,
-    320.0,
-    1280.0,
-    480.0
+    2400.0,
+    960.0,
+    2560.0,
+    1120.0
    ],
    "edificios": 0,
    "estados": {
@@ -2425,12 +5291,421 @@
     "El Zabal"
    ]
   },
-  "1_10": {
+  "17_2": {
    "bbox": [
-    160.0,
-    1600.0,
+    2720.0,
     320.0,
+    2880.0,
+    480.0
+   ],
+   "edificios": 83,
+   "estados": {
+    "verde": 80,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "16_6": {
+   "bbox": [
+    2560.0,
+    960.0,
+    2720.0,
+    1120.0
+   ],
+   "edificios": 52,
+   "estados": {
+    "verde": 46,
+    "amarillo": 6,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "19_-4": {
+   "bbox": [
+    3040.0,
+    -640.0,
+    3200.0,
+    -480.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "22_1": {
+   "bbox": [
+    3520.0,
+    160.0,
+    3680.0,
+    320.0
+   ],
+   "edificios": 48,
+   "estados": {
+    "verde": 25,
+    "amarillo": 23,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "19_10": {
+   "bbox": [
+    3040.0,
+    1600.0,
+    3200.0,
     1760.0
+   ],
+   "edificios": 96,
+   "estados": {
+    "verde": 87,
+    "amarillo": 8,
+    "rojo": 1
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "18_10": {
+   "bbox": [
+    2880.0,
+    1600.0,
+    3040.0,
+    1760.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "23_5": {
+   "bbox": [
+    3680.0,
+    800.0,
+    3840.0,
+    960.0
+   ],
+   "edificios": 68,
+   "estados": {
+    "verde": 62,
+    "amarillo": 2,
+    "rojo": 4
+   },
+   "barrios": [
+    "La Atunara"
+   ]
+  },
+  "15_8": {
+   "bbox": [
+    2400.0,
+    1280.0,
+    2560.0,
+    1440.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "11_17": {
+   "bbox": [
+    1760.0,
+    2720.0,
+    1920.0,
+    2880.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Las Pedreras"
+   ]
+  },
+  "16_-10": {
+   "bbox": [
+    2560.0,
+    -1600.0,
+    2720.0,
+    -1440.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "17_-9": {
+   "bbox": [
+    2720.0,
+    -1440.0,
+    2880.0,
+    -1280.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "17_-10": {
+   "bbox": [
+    2720.0,
+    -1600.0,
+    2880.0,
+    -1440.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "17_-8": {
+   "bbox": [
+    2720.0,
+    -1280.0,
+    2880.0,
+    -1120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "19_-10": {
+   "bbox": [
+    3040.0,
+    -1600.0,
+    3200.0,
+    -1440.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_-10": {
+   "bbox": [
+    3200.0,
+    -1600.0,
+    3360.0,
+    -1440.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_-9": {
+   "bbox": [
+    3200.0,
+    -1440.0,
+    3360.0,
+    -1280.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "21_-9": {
+   "bbox": [
+    3360.0,
+    -1440.0,
+    3520.0,
+    -1280.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "20_-8": {
+   "bbox": [
+    3200.0,
+    -1280.0,
+    3360.0,
+    -1120.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "16_-9": {
+   "bbox": [
+    2560.0,
+    -1440.0,
+    2720.0,
+    -1280.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "19_-2": {
+   "bbox": [
+    3040.0,
+    -320.0,
+    3200.0,
+    -160.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
+  },
+  "8_20": {
+   "bbox": [
+    1280.0,
+    3200.0,
+    1440.0,
+    3360.0
+   ],
+   "edificios": 12,
+   "estados": {
+    "verde": 0,
+    "amarillo": 12,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia",
+    "Los Junquillos"
+   ]
+  },
+  "14_14": {
+   "bbox": [
+    2240.0,
+    2240.0,
+    2400.0,
+    2400.0
+   ],
+   "edificios": 10,
+   "estados": {
+    "verde": 10,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "15_7": {
+   "bbox": [
+    2400.0,
+    1120.0,
+    2560.0,
+    1280.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "15_4": {
+   "bbox": [
+    2400.0,
+    640.0,
+    2560.0,
+    800.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "El Zabal"
+   ]
+  },
+  "3_21": {
+   "bbox": [
+    480.0,
+    3360.0,
+    640.0,
+    3520.0
    ],
    "edificios": 1,
    "estados": {
@@ -2442,25 +5717,127 @@
     "La Colonia"
    ]
   },
-  "4_8": {
+  "17_27": {
    "bbox": [
-    640.0,
-    1280.0,
-    800.0,
-    1440.0
+    2720.0,
+    4320.0,
+    2880.0,
+    4480.0
    ],
-   "edificios": 14,
+   "edificios": 21,
    "estados": {
     "verde": 0,
-    "amarillo": 14,
+    "amarillo": 21,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "16_28": {
+   "bbox": [
+    2560.0,
+    4480.0,
+    2720.0,
+    4640.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Centro"
+   ]
+  },
+  "8_16": {
+   "bbox": [
+    1280.0,
+    2560.0,
+    1440.0,
+    2720.0
+   ],
+   "edificios": 11,
+   "estados": {
+    "verde": 0,
+    "amarillo": 11,
     "rojo": 0
    },
    "barrios": [
     "La Colonia"
    ]
+  },
+  "8_17": {
+   "bbox": [
+    1280.0,
+    2720.0,
+    1440.0,
+    2880.0
+   ],
+   "edificios": 3,
+   "estados": {
+    "verde": 0,
+    "amarillo": 3,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Colonia"
+   ]
+  },
+  "31_-24": {
+   "bbox": [
+    4960.0,
+    -3840.0,
+    5120.0,
+    -3680.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "La Alcaidesa"
+   ]
+  },
+  "15_29": {
+   "bbox": [
+    2400.0,
+    4640.0,
+    2560.0,
+    4800.0
+   ],
+   "edificios": 1,
+   "estados": {
+    "verde": 0,
+    "amarillo": 1,
+    "rojo": 0
+   },
+   "barrios": [
+    "Bellavista"
+   ]
+  },
+  "21_-3": {
+   "bbox": [
+    3360.0,
+    -480.0,
+    3520.0,
+    -320.0
+   ],
+   "edificios": 0,
+   "estados": {
+    "verde": 0,
+    "amarillo": 0,
+    "rojo": 0
+   },
+   "barrios": [
+    "Santa Margarita"
+   ]
   }
  },
- "generado": "2026-10-12T16:31:31",
+ "generado": "2026-10-18T15:24:38",
  "fuentes": {
   "osm": "ok",
   "overture": "ok",

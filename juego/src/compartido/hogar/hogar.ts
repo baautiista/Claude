@@ -113,7 +113,7 @@ export function unidades(): Unidad[] {
   mapa().edificios.forEach((e, idx) => {
     if (e.tipo !== 0 && e.tipo !== 1) return;
     if (!existen.has(idx)) return;
-    const huella = e.w * e.d * 4; // m² (1 unidad = 2 m)
+    const huella = e.w * e.d; // m² (1 unidad = 1 m)
     if (huella < 40) return;
     const h = hashTexto(`e${idx}`);
     const b = barrioDe(e.x, e.y);

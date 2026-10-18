@@ -41,39 +41,39 @@ interface Estilo {
 
 /** Edificios identificados en las fotos (por el centro de su huella OSM). */
 const CONOCIDOS: [P2, Estilo][] = [
-  [[1182, 2157], { tipo: "casino", color: C("#8DB4DC"), plantas: 2 }], // Casino Círculo Mercantil
-  [[1204, 2171], { tipo: "historico", color: C("#9A927C"), plantas: 2 }], // Casa de Maximiliano Rodríguez
-  [[1202, 2187], { tipo: "historico", color: C("#B8B6AD"), plantas: 2 }], // La Vivienda Unifamiliar
-  [[1228, 2200], { tipo: "porticos", color: C("#D9735A"), plantas: 4 }],
-  [[1222, 2205], { tipo: "porticos", color: C("#E0A06A"), plantas: 4 }],
-  [[1216, 2203], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
-  [[1213, 2202], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
-  [[1210, 2200], { tipo: "bloque", color: C("#F4F1EA"), plantas: 5 }],
+  [[2364, 4314], { tipo: "casino", color: C("#8DB4DC"), plantas: 2 }], // Casino Círculo Mercantil
+  [[2408, 4342], { tipo: "historico", color: C("#9A927C"), plantas: 2 }], // Casa de Maximiliano Rodríguez
+  [[2404, 4374], { tipo: "historico", color: C("#B8B6AD"), plantas: 2 }], // La Vivienda Unifamiliar
+  [[2456, 4400], { tipo: "porticos", color: C("#D9735A"), plantas: 4 }],
+  [[2444, 4410], { tipo: "porticos", color: C("#E0A06A"), plantas: 4 }],
+  [[2432, 4406], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
+  [[2426, 4404], { tipo: "verdes", color: C("#F4F2EC"), plantas: 3 }],
+  [[2420, 4400], { tipo: "bloque", color: C("#F4F1EA"), plantas: 5 }],
   // Plaza de la Constitución, de Calle Real a Av. España (foto del usuario y POI de OSM)
-  [[1240, 2177], { tipo: "bloque", color: C("#D98A6A"), plantas: 5, pilares: true }], // esquina curva salmón (Diputación)
-  [[1239, 2182], { tipo: "bloque", color: C("#EFE6D2"), plantas: 5, pilares: true }], // bloque crema (100 Montaditos)
-  [[1242, 2187], { tipo: "casita", color: C("#E3A487"), plantas: 2, cierros: true }], // Kebab House
-  [[1240, 2191], { tipo: "historico", color: C("#F4F2EC"), plantas: 4, arcos: true, barandilla: C("#2F5FA8") }], // Salón Mónaco
-  [[1234, 2199], { tipo: "bloque", color: C("#D9826A"), plantas: 3, balcones: true }],
-  [[1230, 2208], { tipo: "bloque", color: C("#F2F0EA"), plantas: 3, balcones: true }], // Hostal Carlos I
-  [[1225, 2217], { tipo: "bloque", color: C("#CDB06A"), plantas: 10, balcones: true, barandilla: C("#4E7A4A") }], // torre ocre
-  [[1221, 2224], { tipo: "moderno", color: C("#F6F4EF"), plantas: 3 }], // esquina blanca, Av. España
-  [[1281, 2230], { tipo: "bloque", color: C("#EADFB8"), plantas: 13, balcones: true }], // Edificio La Línea (torre crema escalonada)
-  [[1271, 2163], { tipo: "bloque", color: C("#E9E4D6"), plantas: 16, balcones: true }], // Torre de La Línea
-  [[1265, 2163], { tipo: "bloque", color: C("#E3B98F"), plantas: 6 }],
-  [[1278, 2163], { tipo: "bloque", color: C("#F1EDE4"), plantas: 5 }],
-  [[1235, 2175], { tipo: "bloque", color: C("#E9A98A"), plantas: 8 }],
-  [[1229, 2176], { tipo: "casita", color: C("#F3F1EB"), plantas: 2 }], // Bablú
-  [[1224, 2171], { tipo: "bloque", color: C("#A8322E"), plantas: 5, cierros: true }],
-  [[1224, 2167], { tipo: "bloque", color: C("#A8322E"), plantas: 5 }],
-  [[1221, 2169], { tipo: "bloque", color: C("#E3A672"), plantas: 5 }],
-  [[1219, 2165], { tipo: "bloque", color: C("#E8C35A"), plantas: 5 }],
-  [[1216, 2178], { tipo: "casita", color: C("#7E8B62"), plantas: 1 }], // Hacienda Patagónica
-  [[1207, 2165], { tipo: "ladrillo", color: C("#F6F3EC"), plantas: 5 }], // Molly Bloom's
-  [[1162, 2136], { tipo: "moderno", color: C("#F1EFEA"), plantas: 6 }], // Edf. Modelo (Caixabank)
-  [[1144, 2148], { tipo: "historico", color: C("#EDE0C8"), plantas: 3 }], // Antiguo Cine
-  [[1140, 2131], { tipo: "bloque", color: C("#E3CFA8"), plantas: 5 }],
-  [[1133, 2147], { tipo: "bloque", color: C("#B9452F"), plantas: 4, cierros: true }],
+  [[2480, 4354], { tipo: "bloque", color: C("#D98A6A"), plantas: 5, pilares: true }], // esquina curva salmón (Diputación)
+  [[2478, 4364], { tipo: "bloque", color: C("#EFE6D2"), plantas: 5, pilares: true }], // bloque crema (100 Montaditos)
+  [[2484, 4374], { tipo: "casita", color: C("#E3A487"), plantas: 2, cierros: true }], // Kebab House
+  [[2480, 4382], { tipo: "historico", color: C("#F4F2EC"), plantas: 4, arcos: true, barandilla: C("#2F5FA8") }], // Salón Mónaco
+  [[2468, 4398], { tipo: "bloque", color: C("#D9826A"), plantas: 3, balcones: true }],
+  [[2460, 4416], { tipo: "bloque", color: C("#F2F0EA"), plantas: 3, balcones: true }], // Hostal Carlos I
+  [[2450, 4434], { tipo: "bloque", color: C("#CDB06A"), plantas: 10, balcones: true, barandilla: C("#4E7A4A") }], // torre ocre
+  [[2442, 4448], { tipo: "moderno", color: C("#F6F4EF"), plantas: 3 }], // esquina blanca, Av. España
+  [[2562, 4460], { tipo: "bloque", color: C("#EADFB8"), plantas: 13, balcones: true }], // Edificio La Línea (torre crema escalonada)
+  [[2542, 4326], { tipo: "bloque", color: C("#E9E4D6"), plantas: 16, balcones: true }], // Torre de La Línea
+  [[2530, 4326], { tipo: "bloque", color: C("#E3B98F"), plantas: 6 }],
+  [[2556, 4326], { tipo: "bloque", color: C("#F1EDE4"), plantas: 5 }],
+  [[2470, 4350], { tipo: "bloque", color: C("#E9A98A"), plantas: 8 }],
+  [[2458, 4352], { tipo: "casita", color: C("#F3F1EB"), plantas: 2 }], // Bablú
+  [[2448, 4342], { tipo: "bloque", color: C("#A8322E"), plantas: 5, cierros: true }],
+  [[2448, 4334], { tipo: "bloque", color: C("#A8322E"), plantas: 5 }],
+  [[2442, 4338], { tipo: "bloque", color: C("#E3A672"), plantas: 5 }],
+  [[2438, 4330], { tipo: "bloque", color: C("#E8C35A"), plantas: 5 }],
+  [[2432, 4356], { tipo: "casita", color: C("#7E8B62"), plantas: 1 }], // Hacienda Patagónica
+  [[2414, 4330], { tipo: "ladrillo", color: C("#F6F3EC"), plantas: 5 }], // Molly Bloom's
+  [[2324, 4272], { tipo: "moderno", color: C("#F1EFEA"), plantas: 6 }], // Edf. Modelo (Caixabank)
+  [[2288, 4296], { tipo: "historico", color: C("#EDE0C8"), plantas: 3 }], // Antiguo Cine
+  [[2280, 4262], { tipo: "bloque", color: C("#E3CFA8"), plantas: 5 }],
+  [[2266, 4294], { tipo: "bloque", color: C("#B9452F"), plantas: 4, cierros: true }],
 ];
 
 /** Paleta de la Calle Real (fotos): salmón, crema, rojo, amarillo, blanco, rosa palo. */
@@ -254,7 +254,7 @@ function edificio(o: Obra, c: Ctx, h: HuellaOSM, poli: P2[], todas: P2[][], ocup
 
 /* ── Calle Real: pavimento, farolas, maceteros y terrazas ────────── */
 
-const REAL: P2[] = [[1121.6, 2133.6], [1154.8, 2141.7], [1195.0, 2151.9], [1208.9, 2154.9], [1213.9, 2156.3], [1217.7, 2158.0], [1244.6, 2171.5], [1253.5, 2175.7]];
+const REAL: P2[] = [[2243.2, 4267.2], [2309.6, 4283.4], [2390, 4303.8], [2417.8, 4309.8], [2427.8, 4312.6], [2435.4, 4316], [2489.2, 4343], [2507, 4351.4]];
 
 function farolaFernandina(o: Obra, x: number, z: number) {
   const N = C("#1D2421");
@@ -312,8 +312,8 @@ function calleReal(o: Obra, c: Ctx) {
 
 /* ── Plaza Cruz Herrera ──────────────────────────────────────────── */
 
-const PLAZA: P2[] = [[1207.5, 2176.0], [1215.5, 2178.5], [1222.5, 2183.0], [1236.0, 2185.5], [1232.0, 2196.5], [1218.0, 2196.0], [1206.0, 2195.0], [1202.5, 2190.0]];
-const FUENTE: P2 = [1215.0, 2188.0];
+const PLAZA: P2[] = [[2415, 4352], [2431, 4357], [2445, 4366], [2472, 4371], [2464, 4393], [2436, 4392], [2412, 4390], [2405, 4380]];
+const FUENTE: P2 = [2430, 4376];
 
 /** Fuente de azulejos: vaso estrellado con borde de azulejo y pilar escalonado con farola de cuatro brazos. */
 function fuente(o: Obra, c: Ctx) {
@@ -402,19 +402,19 @@ function plazaCruzHerrera(o: Obra, c: Ctx) {
   pergola(o, 1224.0, 2190.5, 1229.0, 2194.0, BLANCO, C("#4F7D5B"));
   // Jardinera alta con dos palmeras y naranjos en alcorques.
   o.caja(Mat.Detalle, 1227.0, 0, 2182.2, 1231.0, 0.7, 2184.8, C("#9C9890"));
-  palmera(o, 1228.2, 2183.5, 9.5);
-  palmera(o, 1229.8, 2183.5, 8.6);
-  for (const [x, z] of [[1210.5, 2181.0], [1213.5, 2182.0], [1220.0, 2194.0], [1223.5, 2189.5], [1209.0, 2192.5]] as P2[]) arbolito(o, x, 0, z, 3.2, C("#3F7A36"));
+  palmera(o, 2456.4, 4367, 9.5);
+  palmera(o, 2459.6, 4367, 8.6);
+  for (const [x, z] of [[2421, 4362], [2427, 4364], [2440, 4388], [2447, 4379], [2418, 4385]] as P2[]) arbolito(o, x, 0, z, 3.2, C("#3F7A36"));
   // Terrazas con sombrillas verdes (Bablú) y bancos de forja.
-  for (const [x, z] of [[1229.0, 2179.2], [1232.0, 2180.0], [1234.6, 2181.0]] as P2[]) {
+  for (const [x, z] of [[2458, 4358.4], [2464, 4360], [2469.2, 4362]] as P2[]) {
     torno(o, Mat.Metal, x, 0, z, [[0.04, 0], [0.04, 2.4]], C("#DDDCD6"), 5);
     torno(o, Mat.Detalle, x, 2.0, z, [[1.5, 0], [1.45, 0.08], [0.05, 0.6]], C("#2E6B45"), 8);
   }
-  for (const [x, z] of [[1218.5, 2191.8], [1210.5, 2186.5]] as P2[]) {
+  for (const [x, z] of [[2437, 4383.6], [2421, 4373]] as P2[]) {
     o.caja(Mat.Metal, x - 0.8, 0.4, z - 0.25, x + 0.8, 0.46, z + 0.25, HIERRO);
     o.caja(Mat.Metal, x - 0.8, 0.46, z - 0.27, x + 0.8, 0.95, z - 0.23, HIERRO);
   }
-  for (const [x, z] of [[1206.5, 2179.5], [1225.0, 2196.0]] as P2[]) farolaFernandina(o, x, z);
+  for (const [x, z] of [[2413, 4359], [2450, 4392]] as P2[]) farolaFernandina(o, x, z);
   enMundo(o, c);
 }
 
@@ -428,25 +428,25 @@ function plazaCruzHerrera(o: Obra, c: Ctx) {
 
 /* Geometría calcada de la vista cenital del usuario (≈17,2 px/m; la fuente y la Comandancia como referencia). */
 /** Parte baja del norte, a nivel de calle: frente de la Comandancia, taxis y círculos del pavimento. */
-const PC_BAJA: P2[][] = [[[1250.4, 2181.6], [1249.5, 2188.6], [1248.4, 2194.4], [1254.2, 2191.5], [1261.4, 2184.2], [1268.1, 2185.1], [1263.8, 2191.5], [1264.4, 2196.2], [1269.8, 2196.7], [1274.1, 2188.3], [1273.9, 2188.3], [1274.5, 2182.2], [1274.5, 2175.2], [1258.8, 2176.1], [1253.6, 2178.1], [1252.5, 2179.3], [1251.8, 2180.8], [1251.3, 2180.6]]];
+const PC_BAJA: P2[][] = [[[2500.8, 4363.2], [2499, 4377.2], [2496.8, 4388.8], [2508.4, 4383], [2522.8, 4368.4], [2536.2, 4370.2], [2527.6, 4383], [2528.8, 4392.4], [2539.6, 4393.4], [2548.2, 4376.6], [2547.8, 4376.6], [2549, 4364.4], [2549, 4350.4], [2517.6, 4352.2], [2507.2, 4356.2], [2505, 4358.6], [2503.6, 4361.6], [2502.6, 4361.2]]];
 /** Explanada sobre el parking, a la altura de Correos y de La Línea. */
-const PC_ALTA: P2[] = [[1236.7, 2220.0], [1235.5, 2226.9], [1235.0, 2233.9], [1235.5, 2246.7], [1237.0, 2251.4], [1240.2, 2254.0], [1260.9, 2254.0], [1260.9, 2247.9], [1263.8, 2247.9], [1263.8, 2254.0], [1271.6, 2254.0], [1288.6, 2252.8], [1283.8, 2246.0], [1286.4, 2244.8], [1284.6, 2242.0], [1287.0, 2240.5], [1283.7, 2227.4], [1281.9, 2228.4], [1278.7, 2223.4], [1275.9, 2224.8], [1273.0, 2219.8], [1270.6, 2221.2], [1267.4, 2211.7], [1264.8, 2206.3], [1269.8, 2196.7], [1264.3, 2196.2], [1263.8, 2191.5], [1254.2, 2191.5], [1248.4, 2194.4], [1245.7, 2199.6], [1242.5, 2207.5], [1240.2, 2212.4], [1238.6, 2216.2], [1250.0, 2216.2], [1250.0, 2219.4], [1237.0, 2219.4]];
+const PC_ALTA: P2[] = [[2473.4, 4440], [2471, 4453.8], [2470, 4467.8], [2471, 4493.4], [2474, 4502.8], [2480.4, 4508], [2521.8, 4508], [2521.8, 4495.8], [2527.6, 4495.8], [2527.6, 4508], [2543.2, 4508], [2577.2, 4505.6], [2567.6, 4492], [2572.8, 4489.6], [2569.2, 4484], [2574, 4481], [2567.4, 4454.8], [2563.8, 4456.8], [2557.4, 4446.8], [2551.8, 4449.6], [2546, 4439.6], [2541.2, 4442.4], [2534.8, 4423.4], [2529.6, 4412.6], [2539.6, 4393.4], [2528.6, 4392.4], [2527.6, 4383], [2508.4, 4383], [2496.8, 4388.8], [2491.4, 4399.2], [2485, 4415], [2480.4, 4424.8], [2477.2, 4432.4], [2500, 4432.4], [2500, 4438.8], [2474, 4438.8]];
 /** Aristas de la explanada sin muro (contra los edificios, bocas de las rampas y del parking). */
 const SIN_MURO = new Set([7, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 26, 33]);
 /** Rampa al principio, desde la parte baja (dos primeros vértices) a la explanada. */
-const RAMPA_N: P2[] = [[1261.4, 2184.2], [1268.1, 2185.1], [1263.8, 2191.5], [1254.2, 2191.5]];
+const RAMPA_N: P2[] = [[2522.8, 4368.4], [2536.2, 4370.2], [2527.6, 4383], [2508.4, 4383]];
 /** Rampa con barandilla desde la acera oeste (sube hacia el este). */
-const RAMPA_O: P2[] = [[1236.4, 2216.2], [1250.0, 2216.2], [1250.0, 2219.4], [1236.4, 2219.4]];
+const RAMPA_O: P2[] = [[2472.8, 4432.4], [2500, 4432.4], [2500, 4438.8], [2472.8, 4438.8]];
 /** Céspedes con bordillo rosa: [contorno, 0 = parte baja · 1 = explanada]. */
-const CESPEDES: [P2[], number][] = [[[[1253.6, 2190.4], [1252.7, 2188.0], [1253.6, 2183.9], [1256.5, 2180.7], [1259.7, 2179.4], [1261.7, 2180.4], [1261.4, 2183.3], [1258.8, 2187.4], [1255.9, 2190.0]], 0], [[[1248.4, 2204.3], [1248.7, 2200.2], [1250.4, 2197.8], [1251.6, 2198.5], [1251.3, 2201.4], [1249.8, 2203.7]], 1], [[[1241.1, 2212.7], [1241.7, 2209.2], [1243.7, 2206.3], [1246.3, 2205.1], [1246.9, 2206.6], [1245.5, 2210.1], [1243.1, 2212.1]], 1], [[[1262.0, 2204.9], [1262.3, 2202.5], [1264.3, 2200.9], [1266.1, 2200.9], [1266.4, 2201.9], [1264.6, 2204.3]], 1], [[[1261.4, 2217.9], [1260.9, 2214.2], [1262.0, 2211.5], [1264.3, 2209.8], [1266.4, 2210.4], [1266.1, 2212.4], [1264.9, 2215.3], [1263.2, 2217.6]], 1], [[[1239.3, 2214.3], [1242.5, 2212.5], [1247.8, 2212.3], [1249.8, 2213.6], [1250.0, 2216.2], [1247.8, 2216.0], [1239.3, 2216.0]], 1], [[[1242.0, 2219.4], [1250.0, 2219.4], [1250.4, 2223.5], [1250.0, 2226.9], [1247.8, 2226.3], [1242.5, 2225.8], [1241.7, 2222.3]], 1], [[[1234.1, 2232.6], [1237.9, 2232.9], [1239.5, 2237.5], [1242.8, 2239.3], [1245.7, 2239.9], [1245.0, 2243.3], [1242.5, 2245.6], [1237.9, 2245.3], [1235.1, 2242.1], [1234.3, 2237.5]], 1], [[[1239.8, 2248.6], [1243.7, 2247.9], [1246.0, 2249.5], [1245.7, 2253.1], [1240.3, 2253.2]], 1], [[[1263.8, 2246.7], [1268.7, 2245.6], [1270.9, 2247.9], [1270.6, 2253.1], [1265.8, 2254.2], [1263.9, 2251.4]], 1], [[[1265.2, 2195.6], [1264.3, 2192.1], [1265.2, 2189.7], [1267.8, 2186.5], [1270.5, 2184.8], [1272.1, 2185.7], [1271.6, 2189.2], [1269.3, 2192.7], [1267.0, 2195.0]], 0]];
-const PARQUES: P2[][] = [[[1242.0, 2221.4], [1248.4, 2221.4], [1248.4, 2225.2], [1242.0, 2225.2]], [[1236.4, 2237.9], [1243.1, 2237.9], [1243.1, 2242.4], [1236.4, 2242.4]]];
-const CUADRICULA: P2[] = [[1247.8, 2236.0], [1264.9, 2236.0], [1264.9, 2253.4], [1249.5, 2253.4], [1247.8, 2250.8]];
-const PERGOLAS: P2[][] = [[[1256.0, 2204.9], [1256.8, 2210.7], [1257.4, 2218.8]], [[1252.0, 2230.4], [1251.4, 2233.9], [1251.0, 2237.5]], [[1268.1, 2236.5], [1270.9, 2239.6]]];
-const BOCA: P2[] = [[1260.9, 2247.9], [1263.8, 2247.9]];
+const CESPEDES: [P2[], number][] = [[[[2507.2, 4380.8], [2505.4, 4376], [2507.2, 4367.8], [2513, 4361.4], [2519.4, 4358.8], [2523.4, 4360.8], [2522.8, 4366.6], [2517.6, 4374.8], [2511.8, 4380]], 0], [[[2496.8, 4408.6], [2497.4, 4400.4], [2500.8, 4395.6], [2503.2, 4397], [2502.6, 4402.8], [2499.6, 4407.4]], 1], [[[2482.2, 4425.4], [2483.4, 4418.4], [2487.4, 4412.6], [2492.6, 4410.2], [2493.8, 4413.2], [2491, 4420.2], [2486.2, 4424.2]], 1], [[[2524, 4409.8], [2524.6, 4405], [2528.6, 4401.8], [2532.2, 4401.8], [2532.8, 4403.8], [2529.2, 4408.6]], 1], [[[2522.8, 4435.8], [2521.8, 4428.4], [2524, 4423], [2528.6, 4419.6], [2532.8, 4420.8], [2532.2, 4424.8], [2529.8, 4430.6], [2526.4, 4435.2]], 1], [[[2478.6, 4428.6], [2485, 4425], [2495.6, 4424.6], [2499.6, 4427.2], [2500, 4432.4], [2495.6, 4432], [2478.6, 4432]], 1], [[[2484, 4438.8], [2500, 4438.8], [2500.8, 4447], [2500, 4453.8], [2495.6, 4452.6], [2485, 4451.6], [2483.4, 4444.6]], 1], [[[2468.2, 4465.2], [2475.8, 4465.8], [2479, 4475], [2485.6, 4478.6], [2491.4, 4479.8], [2490, 4486.6], [2485, 4491.2], [2475.8, 4490.6], [2470.2, 4484.2], [2468.6, 4475]], 1], [[[2479.6, 4497.2], [2487.4, 4495.8], [2492, 4499], [2491.4, 4506.2], [2480.6, 4506.4]], 1], [[[2527.6, 4493.4], [2537.4, 4491.2], [2541.8, 4495.8], [2541.2, 4506.2], [2531.6, 4508.4], [2527.8, 4502.8]], 1], [[[2530.4, 4391.2], [2528.6, 4384.2], [2530.4, 4379.4], [2535.6, 4373], [2541, 4369.6], [2544.2, 4371.4], [2543.2, 4378.4], [2538.6, 4385.4], [2534, 4390]], 0]];
+const PARQUES: P2[][] = [[[2484, 4442.8], [2496.8, 4442.8], [2496.8, 4450.4], [2484, 4450.4]], [[2472.8, 4475.8], [2486.2, 4475.8], [2486.2, 4484.8], [2472.8, 4484.8]]];
+const CUADRICULA: P2[] = [[2495.6, 4472], [2529.8, 4472], [2529.8, 4506.8], [2499, 4506.8], [2495.6, 4501.6]];
+const PERGOLAS: P2[][] = [[[2512, 4409.8], [2513.6, 4421.4], [2514.8, 4437.6]], [[2504, 4460.8], [2502.8, 4467.8], [2502, 4475]], [[2536.2, 4473], [2541.8, 4479.2]]];
+const BOCA: P2[] = [[2521.8, 4495.8], [2527.6, 4495.8]];
 const ALTO_PC = 1.5;
-const FUENTE_PC: P2 = [1244.0, 2231.6];
-const COMANDANCIA: P2[] = [[1284.2, 2189.4], [1285.8, 2174.9], [1275.5, 2173.0], [1273.9, 2188.3]];
-const CORREOS: P2[] = [[1271.9, 2192.8], [1264.8, 2206.3], [1275.1, 2211.5], [1280.3, 2201.7], [1282.6, 2202.8], [1285.4, 2197.8], [1272.8, 2191.0]];
+const FUENTE_PC: P2 = [2488, 4463.2];
+const COMANDANCIA: P2[] = [[2568.4, 4378.8], [2571.6, 4349.8], [2551, 4346], [2547.8, 4376.6]];
+const CORREOS: P2[] = [[2543.8, 4385.6], [2529.6, 4412.6], [2550.2, 4423], [2560.6, 4403.4], [2565.2, 4405.6], [2570.8, 4395.6], [2545.6, 4382]];
 const ROSA = C("#D7826F");
 const ALBARDILLA = C("#E2D6C2");
 const MADERA = C("#6B3326");
@@ -538,7 +538,7 @@ function comandancia(o: Obra, c: Ctx) {
   const NAR = C("#E5965F");
   const PIEDRA = C("#C6AE80");
   const H = 9.6;
-  const frente = 3; // arista (1273.9,2188.3)-(1284.2,2189.4)? no: la fachada a la plaza es la oeste
+  const frente = 3; // arista (2547.8,4376.6)-(2568.4,4378.8)? no: la fachada a la plaza es la oeste
   void frente;
   const cen = centroPoli(COMANDANCIA);
   for (let i = 0; i < COMANDANCIA.length; i++) {
@@ -546,7 +546,7 @@ function comandancia(o: Obra, c: Ctx) {
     const b = COMANDANCIA[(i + 1) % COMANDANCIA.length];
     const mc = new Marco(a, b, cen);
     const L = mc.usar(o, c, 0.36);
-    const principal = Math.abs(a[0] - 1275.5) < 0.2; // arista oeste, a la plaza
+    const principal = Math.abs(a[0] - 2551) < 0.4; // arista oeste, a la plaza
     muro(o, 0, L, 0, H, NAR, Mat.Muro, 0.8);
     o.caja(Mat.Detalle, -0.05, 0, 0, L + 0.05, 0.8, 0.12, PIEDRA);
     moldura(o, -0.05, L + 0.05, 4.5, 4.7, 0.12, PIEDRA);
@@ -617,7 +617,7 @@ function correos(o: Obra, c: Ctx) {
     o.caja(Mat.Detalle, -0.02, 3.4, 0, L + 0.02, 3.55, 0.08, C("#E9E6E0"));
     o.caja(Mat.Detalle, -0.05, H - 0.1, -0.05, L + 0.05, H + 0.15, 0.1, C("#ECEAE5"));
     for (const x of vanos(L, 4.5, 1.2)) o.caja(Mat.Cristal, x - 1.4, 0.9, 0.07, x + 1.4, 2.3, 0.09, C("#2A3036"));
-    if (L > 10 && Math.abs(a[0] - 1271.9) < 0.2) {
+    if (L > 10 && Math.abs(a[0] - 2543.8) < 0.4) {
       // Fachada a la plaza: entrada y rótulo de Correos.
       const m = L * 0.7;
       o.caja(Mat.Cristal, m - 1.6, 0, 0.07, m + 1.6, 2.7, 0.1, C("#3B4650"));
@@ -647,7 +647,7 @@ function plazaConstitucion(o: Obra, c: Ctx) {
   // Círculos oscuros del pavimento frente a la Comandancia.
   if (o.fino) for (const R of [6, 8.5, 11, 13.5]) {
     const n = 72;
-    const [cx, cz] = [1265.8, 2183.3];
+    const [cx, cz] = [2531.6, 4366.6];
     for (let i = 0; i < n; i++) {
       const a0 = (i / n) * Math.PI * 2;
       const a1 = ((i + 1) / n) * Math.PI * 2;
@@ -710,21 +710,21 @@ function plazaConstitucion(o: Obra, c: Ctx) {
   for (const [p, nivel] of CESPEDES) parterre(o, c, p, nivel ? ya : yb, 0.4);
   // Caseta rosa del parking dentro del primer parterre, quiosco verde y caseta de la cuadrícula.
   enMundo(o, c, yb);
-  o.caja(Mat.Muro, 1257.4, 0, 2185.2, 1261.0, 2.5, 2188.5, ROSA);
-  o.caja(Mat.Detalle, 1257.3, 2.5, 2185.1, 1261.1, 2.62, 2188.6, ALBARDILLA);
+  o.caja(Mat.Muro, 2514.8, 0, 4370.4, 2522, 2.5, 4377, ROSA);
+  o.caja(Mat.Detalle, 2514.6, 2.5, 4370.2, 2522.2, 2.62, 4377.2, ALBARDILLA);
   torno(o, Mat.Detalle, 1255.6, 0, 2180.3, [[1.3, 0], [1.3, 2.4], [1.45, 2.5], [1.0, 3.1], [0.2, 3.4]], C("#3E5F4A"), 10);
   arbolito(o, 1253.6, 0.4, 2188.4, 4.2, C("#3B6E30"));
-  palmera(o, 1257.0, 2183.0, 9.5);
-  for (const [x, z] of [[1267.6, 2189.5], [1266.2, 2186.0]] as P2[]) arbolito(o, x, 0.4, z, 2.4, C("#3F7A36"));
+  palmera(o, 2514, 4366, 9.5);
+  for (const [x, z] of [[2535.2, 4379], [2532.4, 4372]] as P2[]) arbolito(o, x, 0.4, z, 2.4, C("#3F7A36"));
   pergola(o, 1258.8, 2171.6, 1264.0, 2175.0, C("#5A4636"), C("#B5523F"));
-  for (const [x, z] of [[1247.0, 2185.5], [1252.0, 2178.5], [1270.0, 2181.0]] as P2[]) farolaFernandina(o, x, z);
+  for (const [x, z] of [[2494, 4371], [2504, 4357], [2540, 4362]] as P2[]) farolaFernandina(o, x, z);
   enMundo(o, c, ya);
   o.caja(Mat.Muro, 1249.9, 0, 2248.6, 1252.6, 2.4, 2251.3, C("#C98A6E"));
-  o.caja(Mat.Detalle, 1249.8, 2.4, 2248.5, 1252.7, 2.55, 2251.4, ALBARDILLA);
-  for (const [x, z] of [[1248.8, 2203.0], [1263.0, 2204.0], [1244.0, 2209.0], [1262.8, 2213.6]] as P2[]) arbolito(o, x, 0.4, z, 2.6, C("#3F7A36"));
+  o.caja(Mat.Detalle, 2499.6, 2.4, 4497, 2505.4, 2.55, 4502.8, ALBARDILLA);
+  for (const [x, z] of [[2497.6, 4406], [2526, 4408], [2488, 4418], [2525.6, 4427.2]] as P2[]) arbolito(o, x, 0.4, z, 2.6, C("#3F7A36"));
   arbolito(o, 1238.6, 0, 2226.0, 5.2, C("#3B6E30"));
-  for (const [x, z] of [[1266.0, 2247.5], [1268.4, 2250.5], [1240.0, 2250.0]] as P2[]) arbolito(o, x, 0.4, z, 4.4, C("#3B6E30"));
-  for (const [x, z, h] of [[1239.5, 2240.5, 8.5], [1246.0, 2214.5, 9.0]] as [number, number, number][]) palmera(o, x, z, h);
+  for (const [x, z] of [[2532, 4495], [2536.8, 4501], [2480, 4500]] as P2[]) arbolito(o, x, 0.4, z, 4.4, C("#3B6E30"));
+  for (const [x, z, h] of [[2479, 4481, 8.5], [2492, 4429, 9.0]] as [number, number, number][]) palmera(o, x, z, h);
   enMundo(o, c);
   // Fuente, pérgolas y parques infantiles sobre la explanada.
   fuenteConstitucion(o, c, ya);
@@ -738,7 +738,7 @@ function plazaConstitucion(o: Obra, c: Ctx) {
     o.caja(Mat.Detalle, x0 + 4.2, 0, z0 + 2.2, x0 + 4.3, 1.8, z0 + 2.3, C("#F2C230"));
     o.caja(Mat.Detalle, x0 + 4.2, 1.8, z0 + 2.2, x0 + 5.6, 1.9, z0 + 2.3, C("#F2C230"));
   });
-  for (const [x, z] of [[1256.0, 2224.0], [1258.0, 2238.0], [1250.0, 2244.0], [1262.0, 2229.0], [1254.0, 2212.0]] as P2[]) {
+  for (const [x, z] of [[2512, 4448], [2516, 4476], [2500, 4488], [2524, 4458], [2508, 4424]] as P2[]) {
     torno(o, Mat.Metal, x, 0, z, [[0.08, 0], [0.06, 5.5]], C("#B9BCBF"), 6);
     torno(o, Mat.Metal, x, 5.5, z, [[0.75, 0], [0.75, 0.08], [0.1, 0.18]], C("#C9CCCF"), 14);
   }
@@ -808,4 +808,4 @@ export function construirCentro02(c: Ctx, ocupado: (p: P2) => boolean, fino: boo
 }
 
 /** Centro aproximado del sector (para el LOD). */
-export const CENTRO_C02: P2 = [1190, 2165];
+export const CENTRO_C02: P2 = [2380, 4330];

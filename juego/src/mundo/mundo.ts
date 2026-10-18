@@ -176,8 +176,8 @@ const C_SOL_OCASO = new THREE.Color("#FFB070");
 const C_HEMI = new THREE.Color("#DCEBFF");
 const C_HEMI_NOCHE = new THREE.Color("#3B4F8C");
 
-const CX = 1300;
-const CY = 1500;
+const CX = 2600;
+const CY = 3000;
 const SUELO = 3;
 const v3 = (x: number, y2: number, alto = SUELO) => new THREE.Vector3(x - CX, alto, y2 - CY);
 const p3 = (p: Punto, alto = SUELO) => v3(p[0], p[1], alto);
@@ -281,7 +281,7 @@ function aspectoJugador(piel: string, ropa: string, id = "yo"): Aspecto {
 /* ── Zona de prueba del nuevo sistema de construcción ─────────────────── */
 
 /** Manzanas alrededor del Mercado de la Concepción: aquí rigen las reglas nuevas de colocación. */
-export const ZONA_PRUEBA = { c: [1165, 2045] as Punto, r: 95 };
+export const ZONA_PRUEBA = { c: [2330, 4090] as Punto, r: 190 };
 
 /**
  * Anchura de calzada de cada tramo. Fuera de la zona de prueba, la de su clase. Dentro, la que
@@ -593,8 +593,8 @@ interface Etiqueta {
 const OCUPADO_DEPORTE: [number, number, number, number, number][] = [
   ...DATOS.deportes.pistas.map(([x, y, w, d, a]) => [x, y, w / 2 + 1.5, d / 2 + 1.5, a] as [number, number, number, number, number]),
   ...(DATOS.deportes.estadio ? [[DATOS.deportes.estadio[0], DATOS.deportes.estadio[1], DATOS.deportes.estadio[2] / 2 + 3, DATOS.deportes.estadio[3] / 2 + 3, DATOS.deportes.estadio[4]] as [number, number, number, number, number]] : []),
-  [1610, 2275.5, 39, 14, 0],
-  [1471, 2326, 16, 36, 0],
+  [3220, 4551, 78, 28, 0],
+  [2942, 4652, 32, 72, 0],
 ];
 const enDeporte = (p: Punto) =>
   OCUPADO_DEPORTE.some(([x, y, hw, hd, a]) => {
@@ -863,7 +863,7 @@ export class Mundo {
       this.escena.add(malla);
     }
     // Mercantes fondeados en la bahía.
-    for (const [x, y, c] of [[380, 2250, "#C8623E"], [300, 2480, "#1F5EFF"], [180, 2100, "#2B2D31"], [450, 1950, "#2E7D35"]] as const) {
+    for (const [x, y, c] of [[760, 4500, "#C8623E"], [600, 4960, "#1F5EFF"], [360, 4200, "#2B2D31"], [900, 3900, "#2E7D35"]] as const) {
       const buque = new THREE.Group();
       buque.add(M.en(M.rcaja(14, 7, 70, c, 2), 0, 3, 0));
       buque.add(M.en(M.rcaja(12, 10, 12, "#FFFFFF", 1.5), 0, 11, 25));
@@ -1760,7 +1760,7 @@ export class Mundo {
     if (D.estadio) this.estadioReal(D.estadio);
 
     // Aparcamiento del estadio (entre la Av. del Ejército y la grada norte), con coches.
-    const [px0, px1, py0, py1] = [1572, 1648, 2262, 2289];
+    const [px0, px1, py0, py1] = [3144, 3296, 4524, 4578];
     const ap = new THREE.Mesh(caja, losa(M.matTex(T.aparcamiento(), (px1 - px0) / 10, (py1 - py0) / 12)));
     ap.position.copy(v3((px0 + px1) / 2, (py0 + py1) / 2, SUELO + 0.17));
     ap.scale.set(px1 - px0, 0.3, py1 - py0);
@@ -1790,13 +1790,13 @@ export class Mundo {
     this.escena.add(coches);
 
     // Parque Princesa Sofía: pinar y acebuches, claros de tierra y la pista de atletismo.
-    const PISTA_PARQUE: [number, number, number, number] = [1471, 2326, 26, 66];
+    const PISTA_PARQUE: [number, number, number, number] = [2942, 4652, 52, 132];
     const pista = new THREE.Mesh(caja, losa(M.matTex(T.pistaAtletismo())));
     pista.position.copy(v3(PISTA_PARQUE[0], PISTA_PARQUE[1], SUELO + 0.2));
     pista.scale.set(PISTA_PARQUE[2], 0.36, PISTA_PARQUE[3]);
     pista.receiveShadow = true;
     this.escena.add(pista);
-    const parque = (DATOS.capas.parque ?? []).map((a) => a[0]).find((r) => dentroPoli([1400, 2370], r));
+    const parque = (DATOS.capas.parque ?? []).map((a) => a[0]).find((r) => dentroPoli([2800, 4740], r));
     if (parque) {
       const xs = parque.map((p) => p[0]);
       const ys = parque.map((p) => p[1]);
@@ -2155,8 +2155,8 @@ export class Mundo {
     void conectarBackend();
     // Personajes de referencia del nuevo estilo, charlando junto al monumento.
     const pareja: [Aspecto, Punto, Punto][] = [
-      [REFERENCIA_HOMBRE, [1103.6, 2142.2], [1105.0, 2143.6]],
-      [REFERENCIA_MUJER, [1105.0, 2143.6], [1103.6, 2142.2]],
+      [REFERENCIA_HOMBRE, [2207.2, 4284.4], [2210, 4287.2]],
+      [REFERENCIA_MUJER, [2210, 4287.2], [2207.2, 4284.4]],
     ];
     for (const [a, p, mira] of pareja) {
       const g = crearPersonaje(a);
@@ -2935,7 +2935,7 @@ export class Mundo {
 
   /** Acercamiento suave a una altura de cámara (entrada en partida). */
   volarA(alto: number) {
-    this.altoMeta = Math.max(90, Math.min(2600, alto));
+    this.altoMeta = Math.max(90, Math.min(5200, alto));
   }
 
   /** Zoom progresivo: fija una altura objetivo y la cámara llega con suavidad. */
@@ -2944,12 +2944,12 @@ export class Mundo {
       this.povFov = Math.max(40, Math.min(80, this.povFov * f));
       return;
     }
-    this.altoMeta = Math.max(18, Math.min(2600, (this.altoMeta ?? this.alto) * f));
+    this.altoMeta = Math.max(18, Math.min(5200, (this.altoMeta ?? this.alto) * f));
   }
 
   private limitar() {
-    this.objetivoCam.x = Math.max(-CX + 100, Math.min(1400, this.objetivoCam.x));
-    this.objetivoCam.z = Math.max(-CY + 50, Math.min(1500, this.objetivoCam.z));
+    this.objetivoCam.x = Math.max(-CX + 200, Math.min(2800, this.objetivoCam.x));
+    this.objetivoCam.z = Math.max(-CY + 100, Math.min(3000, this.objetivoCam.z));
   }
 
   private tocar(cx: number, cy: number) {
