@@ -18,5 +18,9 @@
  "B-w1282774526": {
   "modelo": "oculto",
   "nota": "Puerta de Cuadrillas: incluida en el modelo de la Plaza de Toros (src/mundo/sectores/toros.ts)."
+ },
+ "B-w270300913": {
+  "modelo": "oculto",
+  "nota": "Sustituido por el modelo propio del Mercado de Abastos La Concepción (src/mundo/sectores/mercado.ts)."
  }
 }

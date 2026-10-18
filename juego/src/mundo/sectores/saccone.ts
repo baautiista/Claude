@@ -918,6 +918,31 @@ export function arbolesSaccone(): ArbolSector[] {
   return res;
 }
 
+/* ── Pavos reales ─────────────────────────────────────────────────── */
+
+/** ¿Puede pisar un pavo este punto? Dentro del recinto, lejos de la verja, edificios y agua. */
+export function libreJardin(p: P2) {
+  if (!dentroPoli(p, PARQUE)) return false;
+  for (let i = 0; i < PARQUE.length; i++) if (distSeg(p, PARQUE[i], PARQUE[(i + 1) % PARQUE.length]) < 1.2) return false;
+  if (dentroPoli(p, MUSEO) || dentroPoli(p, SOCIEDAD)) return false;
+  if (distLinea(p, [...SOCIEDAD, SOCIEDAD[0]]) < 1.5) return false;
+  if (Math.hypot(p[0] - GLORIETA[0], p[1] - GLORIETA[1]) < 9.5) return false;
+  if (distSeg(p, ESCENARIO[0], ESCENARIO[1]) < 7) return false;
+  for (const q of PUNTOS) if (Math.hypot(p[0] - q.p[0], p[1] - q.p[1]) < (q.nombre.startsWith("Fuente") ? 4 : 2.5)) return false;
+  return true;
+}
+
+/** Punto al azar del jardín (preferentemente junto a un camino, donde se les ve pasear). */
+export function destinoJardin(r: () => number): P2 {
+  for (let k = 0; k < 40; k++) {
+    const s = SENDAS[Math.floor(r() * SENDAS.length)];
+    const q = s.p[Math.floor(r() * s.p.length)];
+    const p: P2 = [q[0] + (r() - 0.5) * 8, q[1] + (r() - 0.5) * 8];
+    if (libreJardin(p)) return p;
+  }
+  return [2240, 4440];
+}
+
 /* ── Conjunto ───────────────────────────────────────────────────────── */
 
 let cacheSolidos: P2[][] | null = null;

@@ -26,8 +26,10 @@ import * as T from "./texturas";
 import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
 import { construirCentro02, CENTRO_C02, SUSTITUYE_C02, solidosCentro02 } from "./sectores/centro02";
 import { solidosCentro01 } from "./sectores/centro01";
-import { arbolesSaccone, CENTRO_SACCONE, construirSaccone, enJardinesSaccone, solidosSaccone } from "./sectores/saccone";
+import { arbolesSaccone, CENTRO_SACCONE, construirSaccone, destinoJardin, enJardinesSaccone, libreJardin, solidosSaccone } from "./sectores/saccone";
+import { PavoReal } from "./pavos";
 import { arbolesToros, CENTRO_TOROS, construirToros, solidosToros } from "./sectores/toros";
+import { CENTRO_MERCADO, construirMercado, solidosMercado } from "./sectores/mercado";
 import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
 import { conectarBackend } from "./ciudad/correcciones";
@@ -610,19 +612,6 @@ function azar(semilla: number) {
   return () => ((s = (s * 16807) % 2147483647) / 2147483647);
 }
 
-/** Edificio real más cercano a un punto (para sustituirlo por un modelo propio). */
-function edificioCercano(p: Punto) {
-  let mejor = DATOS.edificios[0];
-  let d = Infinity;
-  for (const e of DATOS.edificios) {
-    const dd = (e[0] - p[0]) ** 2 + (e[1] - p[1]) ** 2;
-    if (dd < d) {
-      d = dd;
-      mejor = e;
-    }
-  }
-  return mejor;
-}
 
 export class Mundo {
   private renderer: THREE.WebGLRenderer;
@@ -647,6 +636,8 @@ export class Mundo {
   private mallaPeatones!: THREE.InstancedMesh;
   private mallaCabezas!: THREE.InstancedMesh;
   private gaviotas: { g: THREE.Group; c: THREE.Vector3; r: number; v: number; f: number }[] = [];
+  /** Los dos pavos reales de los Jardines Saccone. */
+  private pavos: PavoReal[] = [];
   private busJugador!: THREE.Group;
   private vecinos = new Map<string, { g: Personaje; e: Etiqueta; meta: THREE.Vector3; emote: Etiqueta; rot: number | null; anim: string; dicho: Etiqueta | null; dichoT: number }>();
   /** Pantalla de inicio: la cámara sobrevuela la ciudad. */
@@ -776,6 +767,14 @@ export class Mundo {
     this.construirZonas();
     this.construirTrafico();
     this.construirGaviotas();
+    // Pavos reales paseando por los Jardines Saccone.
+    for (const [i, inicio] of ([[2228, 4436], [2200, 4452]] as Punto[]).entries()) {
+      let v = 101 + i * 977;
+      const r = () => ((v = (v * 16807) % 2147483647) / 2147483647);
+      const pavo = new PavoReal([inicio[0], inicio[1]], libreJardin, () => destinoJardin(r), 31 + i * 17);
+      this.escena.add(pavo.p.g);
+      this.pavos.push(pavo);
+    }
 
     this.jugador = crearPersonaje(aspectoJugador("#E8B796", "#C4E910"));
     this.escena.add(this.jugador);
@@ -2002,7 +2001,7 @@ export class Mundo {
   /** Huellas de los sectores reconstruidos (obstáculos para el validador y las colisiones). */
   private sectoresSolidos(): Punto[][] {
     const ocupado = (p: [number, number]) => this.ocupadoOSM(p);
-    return [...solidosCentro01(), ...solidosCentro02(ocupado), ...solidosSaccone(), ...solidosToros()] as Punto[][];
+    return [...solidosCentro01(), ...solidosCentro02(ocupado), ...solidosSaccone(), ...solidosToros(), ...solidosMercado()] as Punto[][];
   }
 
   /** Ciudad generada automáticamente: teselas que se cargan y descargan según la cámara. */
@@ -2168,6 +2167,21 @@ export class Mundo {
       }
       this.escena.add(lod);
     }
+    // MERCADO · Mercado de Abastos La Concepción (visitable: se entra por los portones).
+    {
+      const lod = new THREE.LOD();
+      const c3 = p3(CENTRO_MERCADO);
+      lod.position.copy(c3);
+      for (const [obra, dist] of [[construirMercado(ctx, true), 0], [construirMercado(ctx, false), 260]] as const) {
+        const g = this.mallasObra(obra);
+        g.position.copy(c3).negate();
+        const nivel = new THREE.Group();
+        nivel.add(g);
+        lod.addLevel(nivel, dist);
+      }
+      this.escena.add(lod);
+      this.hacerTocable(lod, { tipo: "lugar", id: "mercado" });
+    }
     // TOROS · Plaza de Toros El Arenal y su entorno.
     {
       const lod = new THREE.LOD();
@@ -2220,9 +2234,7 @@ export class Mundo {
     this.construirSectores();
     this.prepararColisiones();
     poner(M.tablon(), TABLON, { tipo: "tablon" }, mirar(TABLON, nodoDe("plaza")), 0.45);
-    // Mercado de Abastos con su orientación real y el puesto 14 delante.
-    const mercado = edificioCercano(MERCADO);
-    poner(M.mercado(), [mercado[0], mercado[1]], { tipo: "lugar", id: "mercado" }, -mercado[4], Math.max(0.35, Math.min(mercado[2] / 40, mercado[3] / 26) * 1.05));
+    // Mercado de Abastos: modelo propio en construirSectores (sectores/mercado.ts); aquí, el puesto 14 delante.
     poner(M.puesto(), PUESTO, { tipo: "puesto" }, mirar(PUESTO, nodoDe("mercado")), 0.4);
     this.cajasPuesto = new THREE.Group();
     poner(this.cajasPuesto, PUESTO, undefined, mirar(PUESTO, nodoDe("mercado")), 0.4);
@@ -3358,6 +3370,11 @@ export class Mundo {
       b.g.position.set(p.x - CX, ALTO_CALLE, p.y - CY);
       b.g.rotation.y = p.rot;
     }
+    for (const pv of this.pavos)
+      pv.actualizar(Math.min(dt, 0.1), t, (g, x, y, rumbo) => {
+        g.position.set(x - CX, SUELO + 0.13, y - CY);
+        g.rotation.y = rumbo;
+      });
     for (const gv of this.gaviotas) {
       const ang = t * gv.v + gv.f;
       gv.g.position.set(gv.c.x + Math.cos(ang) * gv.r, gv.c.y + Math.sin(t * 0.7 + gv.f) * 2, gv.c.z + Math.sin(ang) * gv.r);
