@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w877660201",
+ "edificio": "B-w877660201",
+ "nombre": "Centro Atención Integral al Mayor María Luisa Escribano",
+ "arquetipo": "residencia",
+ "categoria": "Edificios públicos",
+ "origen": [
+  2326,
+  4362
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 4,
+ "altura_m": 13.2,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.93,
+ "triangulos_lod0": 1423,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «residencia»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w877660201.blend",
+ "glb": "modelos/singulares/B-w877660201.glb",
+ "glb_kb": 58,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w877660201-calle.png"
+ ],
+ "segundos": 1.3
+}

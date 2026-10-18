@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1475236311",
+ "edificio": "B-w1475236311",
+ "nombre": "Concejalía de Asuntos Sociales \"Levante\"",
+ "arquetipo": "equipamiento",
+ "categoria": "Edificios públicos",
+ "origen": [
+  3492,
+  2250
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 2,
+ "altura_m": 6.8,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.81,
+ "triangulos_lod0": 1200,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «equipamiento»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1475236311.blend",
+ "glb": "modelos/singulares/B-w1475236311.glb",
+ "glb_kb": 55,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1475236311-calle.png"
+ ],
+ "segundos": 1.2
+}

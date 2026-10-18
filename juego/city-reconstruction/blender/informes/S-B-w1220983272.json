@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1220983272",
+ "edificio": "B-w1220983272",
+ "nombre": "Parroquia San Pío X",
+ "arquetipo": "iglesia",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  2388,
+  3720
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 11.0,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "dos aguas (inferida)",
+ "relleno_rectangulo": 0.82,
+ "triangulos_lod0": 916,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «iglesia»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1220983272.blend",
+ "glb": "modelos/singulares/B-w1220983272.glb",
+ "glb_kb": 72,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1220983272-calle.png"
+ ],
+ "segundos": 1.2
+}

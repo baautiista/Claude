@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w719422967",
+ "edificio": "B-w719422967",
+ "nombre": "Hotel de Asociaciones La Cátedra",
+ "arquetipo": "equipamiento",
+ "categoria": "Edificios públicos",
+ "origen": [
+  1409,
+  3511
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 2,
+ "altura_m": 6.8,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.88,
+ "triangulos_lod0": 628,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «equipamiento»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w719422967.blend",
+ "glb": "modelos/singulares/B-w719422967.glb",
+ "glb_kb": 40,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w719422967-calle.png"
+ ],
+ "segundos": 1.1
+}

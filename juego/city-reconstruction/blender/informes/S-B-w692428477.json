@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w692428477",
+ "edificio": "B-w692428477",
+ "nombre": "Parroquia de Santiago Apóstol",
+ "arquetipo": "iglesia",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  3149,
+  4250
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 11.0,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.78,
+ "triangulos_lod0": 1488,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «iglesia»",
+   "plantas"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w692428477.blend",
+ "glb": "modelos/singulares/B-w692428477.glb",
+ "glb_kb": 79,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w692428477-calle.png"
+ ],
+ "segundos": 2.9
+}

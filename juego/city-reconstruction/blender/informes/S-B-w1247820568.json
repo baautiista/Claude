@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1247820568",
+ "edificio": "B-w1247820568",
+ "nombre": "Chalet D'Amato",
+ "arquetipo": "villa",
+ "categoria": "Patrimonio histórico",
+ "origen": [
+  2583,
+  3746
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 10.0,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.69,
+ "triangulos_lod0": 3106,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «villa»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1247820568.blend",
+ "glb": "modelos/singulares/B-w1247820568.glb",
+ "glb_kb": 99,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1247820568-calle.png"
+ ],
+ "segundos": 1.0
+}

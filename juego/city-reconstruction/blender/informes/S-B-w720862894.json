@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w720862894",
+ "edificio": "B-w720862894",
+ "nombre": "Protección Civil de La Línea de la Concepción",
+ "arquetipo": "equipamiento",
+ "categoria": "Edificios públicos",
+ "origen": [
+  1626,
+  3523
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 3.6,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 1.0,
+ "triangulos_lod0": 250,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «equipamiento»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w720862894.blend",
+ "glb": "modelos/singulares/B-w720862894.glb",
+ "glb_kb": 31,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w720862894-calle.png"
+ ],
+ "segundos": 1.1
+}

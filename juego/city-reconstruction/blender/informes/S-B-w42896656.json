@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w42896656",
+ "edificio": "B-w42896656",
+ "nombre": "Estación de Autobuses de La Línea de La Concepción",
+ "arquetipo": "estacion",
+ "categoria": "Edificios públicos",
+ "origen": [
+  2360,
+  4708
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 2,
+ "altura_m": 7.0,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.6,
+ "triangulos_lod0": 1883,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «estacion»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w42896656.blend",
+ "glb": "modelos/singulares/B-w42896656.glb",
+ "glb_kb": 73,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w42896656-calle.png"
+ ],
+ "segundos": 1.1
+}

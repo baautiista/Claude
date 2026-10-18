@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w257431096",
+ "edificio": "B-w257431096",
+ "nombre": "Oficina Local de Tráfico",
+ "arquetipo": "equipamiento",
+ "categoria": "Edificios públicos",
+ "origen": [
+  2339,
+  4895
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 3.6,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.81,
+ "triangulos_lod0": 500,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «equipamiento»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w257431096.blend",
+ "glb": "modelos/singulares/B-w257431096.glb",
+ "glb_kb": 37,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w257431096-calle.png"
+ ],
+ "segundos": 1.4
+}

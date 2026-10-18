@@ -1,0 +1,1967 @@
+[
+ {
+  "id": "B-w692428477",
+  "nombre": "Parroquia de Santiago Apóstol",
+  "arquetipo": "iglesia",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    3178.95,
+    4240.4
+   ],
+   [
+    3178.4,
+    4250.07
+   ],
+   [
+    3159.67,
+    4249.87
+   ],
+   [
+    3159.6,
+    4254.66
+   ],
+   [
+    3178.13,
+    4255.25
+   ],
+   [
+    3177.86,
+    4260.44
+   ],
+   [
+    3150.61,
+    4259.5
+   ],
+   [
+    3150.38,
+    4254.47
+   ],
+   [
+    3119.08,
+    4253.7
+   ],
+   [
+    3119.4,
+    4238.79
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "medianera",
+   "calle",
+   "calle"
+  ],
+  "area": 929.4,
+  "plantas_estimadas": 5,
+  "plantas_catastro": null,
+  "barrio": "Santiago"
+ },
+ {
+  "id": "B-w720874799",
+  "nombre": "Iglesia de San Miguel Arcángel",
+  "arquetipo": "iglesia",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    970.15,
+    3581.83
+   ],
+   [
+    966.03,
+    3588.84
+   ],
+   [
+    945.96,
+    3576.6
+   ],
+   [
+    950.03,
+    3569.74
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "calle",
+   "medianera"
+  ],
+  "area": 189.2,
+  "plantas_estimadas": 4,
+  "plantas_catastro": null,
+  "barrio": "La Colonia"
+ },
+ {
+  "id": "B-w1220983272",
+  "nombre": "Parroquia San Pío X",
+  "arquetipo": "iglesia",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    2379.02,
+    3709.78
+   ],
+   [
+    2379.73,
+    3707.47
+   ],
+   [
+    2406.36,
+    3715.08
+   ],
+   [
+    2404.94,
+    3723.09
+   ],
+   [
+    2402.94,
+    3729.11
+   ],
+   [
+    2404.06,
+    3729.58
+   ],
+   [
+    2403.26,
+    3733.23
+   ],
+   [
+    2399.2,
+    3732.6
+   ],
+   [
+    2399.61,
+    3730.22
+   ],
+   [
+    2375.6,
+    3723.88
+   ],
+   [
+    2376.16,
+    3721.66
+   ],
+   [
+    2370.03,
+    3719.68
+   ],
+   [
+    2373.61,
+    3708.35
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "medianera",
+   "medianera",
+   "patio",
+   "medianera",
+   "medianera",
+   "calle",
+   "calle"
+  ],
+  "area": 550.1,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "La Velada"
+ },
+ {
+  "id": "B-w1327914034",
+  "nombre": "Parroquia de San Bernardo Abad",
+  "arquetipo": "iglesia",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    3271.07,
+    3478.93
+   ],
+   [
+    3263.38,
+    3498.39
+   ],
+   [
+    3260.9,
+    3499.42
+   ],
+   [
+    3250.31,
+    3494.94
+   ],
+   [
+    3249.06,
+    3492.17
+   ],
+   [
+    3257.37,
+    3472.92
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio"
+  ],
+  "area": 346.9,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "San Bernardo"
+ },
+ {
+  "id": "B-w1354218026",
+  "nombre": "Parroquia de San Pedro Apóstol",
+  "arquetipo": "iglesia",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    1954.46,
+    3782.7
+   ],
+   [
+    1919.24,
+    3795.69
+   ],
+   [
+    1918.37,
+    3793.71
+   ],
+   [
+    1912.96,
+    3795.13
+   ],
+   [
+    1908.11,
+    3782.77
+   ],
+   [
+    1921.15,
+    3777.46
+   ],
+   [
+    1919.9,
+    3774.73
+   ],
+   [
+    1947.85,
+    3763.75
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "medianera",
+   "calle"
+  ],
+  "area": 797.2,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "San Pedro"
+ },
+ {
+  "id": "B-w1347193501",
+  "nombre": "Santuario Diocesano del Sagrado Corazón de Jesús",
+  "arquetipo": "iglesia",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    1442.65,
+    3423.61
+   ],
+   [
+    1450.28,
+    3422.19
+   ],
+   [
+    1452.5,
+    3423.77
+   ],
+   [
+    1459.98,
+    3422.42
+   ],
+   [
+    1460.78,
+    3420.68
+   ],
+   [
+    1466.26,
+    3419.81
+   ],
+   [
+    1470.95,
+    3423.22
+   ],
+   [
+    1471.9,
+    3428.29
+   ],
+   [
+    1471.03,
+    3429.4
+   ],
+   [
+    1472.72,
+    3437.5
+   ],
+   [
+    1475.22,
+    3439.36
+   ],
+   [
+    1476.69,
+    3446.3
+   ],
+   [
+    1472.78,
+    3451.48
+   ],
+   [
+    1461.15,
+    3453.13
+   ],
+   [
+    1459.08,
+    3451.07
+   ],
+   [
+    1454.93,
+    3451.89
+   ],
+   [
+    1442.61,
+    3442.23
+   ],
+   [
+    1439.57,
+    3429.68
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "calle"
+  ],
+  "area": 885.5,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "Los Junquillos"
+ },
+ {
+  "id": "B-w1333188073",
+  "nombre": "Ermita de la Virgen de Fátima",
+  "arquetipo": "ermita",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    2038.79,
+    1318.46
+   ],
+   [
+    2037.8,
+    1322.96
+   ],
+   [
+    2032.86,
+    1322.08
+   ],
+   [
+    2033.91,
+    1317.56
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "calle",
+   "calle",
+   "calle"
+  ],
+  "area": 23.0,
+  "plantas_estimadas": 2,
+  "plantas_catastro": null,
+  "barrio": "El Zabal"
+ },
+ {
+  "id": "B-w1087131240",
+  "nombre": "Hermandad de la Amargura",
+  "arquetipo": "hermandad",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    2060.54,
+    4134.42
+   ],
+   [
+    2062.55,
+    4126.87
+   ],
+   [
+    2067.62,
+    4127.88
+   ],
+   [
+    2064.33,
+    4142.5
+   ],
+   [
+    2059.01,
+    4141.55
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "medianera",
+   "calle",
+   "medianera"
+  ],
+  "area": 80.9,
+  "plantas_estimadas": 3,
+  "plantas_catastro": 3,
+  "barrio": "Centro"
+ },
+ {
+  "id": "B-w1327914038",
+  "nombre": "Hermandad Amor y Esperanza",
+  "arquetipo": "hermandad",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    3212.47,
+    3496.79
+   ],
+   [
+    3209.43,
+    3503.65
+   ],
+   [
+    3195.47,
+    3497.72
+   ],
+   [
+    3198.52,
+    3490.74
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "medianera",
+   "medianera",
+   "calle",
+   "calle"
+  ],
+  "area": 114.7,
+  "plantas_estimadas": 3,
+  "plantas_catastro": 1,
+  "barrio": "San Bernardo"
+ },
+ {
+  "id": "B-w1347199960",
+  "nombre": "Casa Hermandad de Nuestra Señora del Rocío",
+  "arquetipo": "hermandad",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    1563.53,
+    3992.64
+   ],
+   [
+    1560.91,
+    4005.71
+   ],
+   [
+    1554.1,
+    4004.26
+   ],
+   [
+    1530.93,
+    4000.36
+   ],
+   [
+    1533.8,
+    3986.92
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "medianera",
+   "medianera",
+   "patio",
+   "calle",
+   "medianera"
+  ],
+  "area": 407.5,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "Mondéjar"
+ },
+ {
+  "id": "B-w1296318896",
+  "nombre": "Iglesia Evangélica Esperanza de Vida",
+  "arquetipo": "equipamiento",
+  "categoria": "Iglesias y templos",
+  "huella": [
+   [
+    2511.82,
+    3634.48
+   ],
+   [
+    2529.67,
+    3631.93
+   ],
+   [
+    2532.75,
+    3647.3
+   ],
+   [
+    2529.94,
+    3647.85
+   ],
+   [
+    2514.06,
+    3649.83
+   ],
+   [
+    2513.37,
+    3645.58
+   ],
+   [
+    2480.49,
+    3651.5
+   ],
+   [
+    2482.78,
+    3639.57
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "calle",
+   "patio"
+  ],
+  "area": 644.1,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "La Velada"
+ },
+ {
+  "id": "B-w108197586",
+  "nombre": "Palacio de Congresos y Exposiciones",
+  "arquetipo": "palacio",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    2146.83,
+    4686.95
+   ],
+   [
+    2144.91,
+    4692.28
+   ],
+   [
+    2146.27,
+    4692.82
+   ],
+   [
+    2156.0,
+    4708.57
+   ],
+   [
+    2146.02,
+    4735.9
+   ],
+   [
+    2130.14,
+    4744.23
+   ],
+   [
+    2126.54,
+    4742.89
+   ],
+   [
+    2124.31,
+    4748.8
+   ],
+   [
+    2118.32,
+    4746.64
+   ],
+   [
+    2118.02,
+    4747.97
+   ],
+   [
+    2106.34,
+    4743.79
+   ],
+   [
+    2106.88,
+    4742.46
+   ],
+   [
+    2100.92,
+    4740.23
+   ],
+   [
+    2101.66,
+    4738.52
+   ],
+   [
+    2100.93,
+    4735.17
+   ],
+   [
+    2093.07,
+    4716.75
+   ],
+   [
+    2103.18,
+    4689.28
+   ],
+   [
+    2122.09,
+    4683.39
+   ],
+   [
+    2123.78,
+    4678.42
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "patio"
+  ],
+  "area": 3021.0,
+  "plantas_estimadas": 3,
+  "plantas_catastro": 2,
+  "barrio": "Centro"
+ },
+ {
+  "id": "B-w42896656",
+  "nombre": "Estación de Autobuses de La Línea de La Concepción",
+  "arquetipo": "estacion",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    2313.83,
+    4700.31
+   ],
+   [
+    2313.91,
+    4698.03
+   ],
+   [
+    2312.51,
+    4698.78
+   ],
+   [
+    2310.42,
+    4698.93
+   ],
+   [
+    2308.54,
+    4698.52
+   ],
+   [
+    2305.99,
+    4696.15
+   ],
+   [
+    2305.43,
+    4694.62
+   ],
+   [
+    2305.28,
+    4692.77
+   ],
+   [
+    2305.78,
+    4690.79
+   ],
+   [
+    2307.18,
+    4689.16
+   ],
+   [
+    2308.36,
+    4688.27
+   ],
+   [
+    2310.01,
+    4687.86
+   ],
+   [
+    2310.56,
+    4686.32
+   ],
+   [
+    2311.58,
+    4684.91
+   ],
+   [
+    2312.85,
+    4683.69
+   ],
+   [
+    2314.54,
+    4682.78
+   ],
+   [
+    2316.71,
+    4682.28
+   ],
+   [
+    2318.64,
+    4682.32
+   ],
+   [
+    2320.58,
+    4682.98
+   ],
+   [
+    2322.76,
+    4683.23
+   ],
+   [
+    2323.99,
+    4681.95
+   ],
+   [
+    2325.22,
+    4681.51
+   ],
+   [
+    2328.95,
+    4681.34
+   ],
+   [
+    2334.61,
+    4681.49
+   ],
+   [
+    2342.2,
+    4682.29
+   ],
+   [
+    2348.48,
+    4684.02
+   ],
+   [
+    2356.75,
+    4687.12
+   ],
+   [
+    2363.83,
+    4690.46
+   ],
+   [
+    2371.03,
+    4694.87
+   ],
+   [
+    2377.97,
+    4700.22
+   ],
+   [
+    2381.61,
+    4703.48
+   ],
+   [
+    2409.3,
+    4690.14
+   ],
+   [
+    2414.08,
+    4699.34
+   ],
+   [
+    2413.2,
+    4705.9
+   ],
+   [
+    2376.25,
+    4724.61
+   ],
+   [
+    2354.43,
+    4735.24
+   ],
+   [
+    2348.9,
+    4730.25
+   ],
+   [
+    2345.31,
+    4727.68
+   ],
+   [
+    2342.48,
+    4726.06
+   ],
+   [
+    2335.54,
+    4724.0
+   ],
+   [
+    2330.91,
+    4723.19
+   ],
+   [
+    2325.36,
+    4723.12
+   ],
+   [
+    2320.42,
+    4723.9
+   ],
+   [
+    2309.41,
+    4701.74
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle"
+  ],
+  "area": 3327.4,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "Bellavista"
+ },
+ {
+  "id": "B-w257431096",
+  "nombre": "Oficina Local de Tráfico",
+  "arquetipo": "equipamiento",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    2320.25,
+    4888.59
+   ],
+   [
+    2337.84,
+    4888.35
+   ],
+   [
+    2350.61,
+    4886.18
+   ],
+   [
+    2356.64,
+    4884.74
+   ],
+   [
+    2360.02,
+    4904.46
+   ],
+   [
+    2317.85,
+    4904.93
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio"
+  ],
+  "area": 677.1,
+  "plantas_estimadas": 1,
+  "plantas_catastro": 1,
+  "barrio": "San Felipe"
+ },
+ {
+  "id": "B-w720862894",
+  "nombre": "Protección Civil de La Línea de la Concepción",
+  "arquetipo": "equipamiento",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    1630.57,
+    3512.9
+   ],
+   [
+    1636.53,
+    3521.63
+   ],
+   [
+    1620.7,
+    3532.38
+   ],
+   [
+    1614.74,
+    3523.65
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "patio"
+  ],
+  "area": 202.3,
+  "plantas_estimadas": 1,
+  "plantas_catastro": 1,
+  "barrio": "Los Junquillos"
+ },
+ {
+  "id": "B-w719422967",
+  "nombre": "Hotel de Asociaciones La Cátedra",
+  "arquetipo": "equipamiento",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    1417.39,
+    3502.92
+   ],
+   [
+    1417.56,
+    3506.06
+   ],
+   [
+    1427.71,
+    3505.51
+   ],
+   [
+    1428.38,
+    3517.87
+   ],
+   [
+    1417.38,
+    3518.47
+   ],
+   [
+    1417.21,
+    3515.21
+   ],
+   [
+    1411.14,
+    3515.54
+   ],
+   [
+    1411.32,
+    3518.82
+   ],
+   [
+    1389.67,
+    3520.01
+   ],
+   [
+    1389.1,
+    3509.63
+   ],
+   [
+    1392.51,
+    3509.44
+   ],
+   [
+    1392.23,
+    3504.3
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "medianera",
+   "medianera",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "medianera"
+  ],
+  "area": 533.0,
+  "plantas_estimadas": 1,
+  "plantas_catastro": 2,
+  "barrio": "Los Junquillos"
+ },
+ {
+  "id": "B-w1153373360",
+  "nombre": "Concejalía de Deportes",
+  "arquetipo": "equipamiento",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    3048.37,
+    4577.45
+   ],
+   [
+    3048.43,
+    4588.65
+   ],
+   [
+    3041.78,
+    4588.69
+   ],
+   [
+    3041.72,
+    4577.5
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "medianera",
+   "medianera",
+   "patio",
+   "patio"
+  ],
+  "area": 74.4,
+  "plantas_estimadas": 1,
+  "plantas_catastro": 1,
+  "barrio": "Santiago"
+ },
+ {
+  "id": "B-w1475236311",
+  "nombre": "Concejalía de Asuntos Sociales \"Levante\"",
+  "arquetipo": "equipamiento",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    3503.41,
+    2237.38
+   ],
+   [
+    3502.51,
+    2243.43
+   ],
+   [
+    3488.14,
+    2241.32
+   ],
+   [
+    3487.64,
+    2244.75
+   ],
+   [
+    3501.99,
+    2246.83
+   ],
+   [
+    3500.78,
+    2253.59
+   ],
+   [
+    3487.19,
+    2251.6
+   ],
+   [
+    3486.73,
+    2254.7
+   ],
+   [
+    3500.32,
+    2256.7
+   ],
+   [
+    3499.06,
+    2264.43
+   ],
+   [
+    3480.55,
+    2261.77
+   ],
+   [
+    3484.67,
+    2234.63
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "calle"
+  ],
+  "area": 423.7,
+  "plantas_estimadas": 2,
+  "plantas_catastro": 2,
+  "barrio": "La Atunara"
+ },
+ {
+  "id": "B-w877660201",
+  "nombre": "Centro Atención Integral al Mayor María Luisa Escribano",
+  "arquetipo": "residencia",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    2309.16,
+    4338.99
+   ],
+   [
+    2349.2,
+    4351.18
+   ],
+   [
+    2345.49,
+    4363.47
+   ],
+   [
+    2338.22,
+    4384.19
+   ],
+   [
+    2302.74,
+    4371.37
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "medianera",
+   "medianera",
+   "calle",
+   "medianera"
+  ],
+  "area": 1349.6,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 4,
+  "barrio": "Centro"
+ },
+ {
+  "id": "B-w1259462253",
+  "nombre": "Centro Residencial José Luis Herrero",
+  "arquetipo": "residencia",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    2236.66,
+    4091.39
+   ],
+   [
+    2236.03,
+    4110.04
+   ],
+   [
+    2233.25,
+    4110.04
+   ],
+   [
+    2232.69,
+    4110.83
+   ],
+   [
+    2228.48,
+    4110.75
+   ],
+   [
+    2228.24,
+    4109.49
+   ],
+   [
+    2225.63,
+    4109.31
+   ],
+   [
+    2225.56,
+    4090.88
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "medianera",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "medianera",
+   "patio"
+  ],
+  "area": 205.1,
+  "plantas_estimadas": 4,
+  "plantas_catastro": 4,
+  "barrio": "Centro"
+ },
+ {
+  "id": "B-w1267129653",
+  "nombre": "Residencia La Velada",
+  "arquetipo": "residencia",
+  "categoria": "Edificios públicos",
+  "huella": [
+   [
+    2402.25,
+    3840.97
+   ],
+   [
+    2401.98,
+    3829.88
+   ],
+   [
+    2409.92,
+    3829.71
+   ],
+   [
+    2410.38,
+    3848.46
+   ],
+   [
+    2388.83,
+    3850.01
+   ],
+   [
+    2386.46,
+    3841.44
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "medianera",
+   "calle",
+   "calle",
+   "calle",
+   "medianera"
+  ],
+  "area": 273.8,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 2,
+  "barrio": "La Velada"
+ },
+ {
+  "id": "B-w877660200",
+  "nombre": "Casa de la Cultura",
+  "arquetipo": "equipamiento",
+  "categoria": "Cultura y sociedades",
+  "huella": [
+   [
+    2292.56,
+    4358.63
+   ],
+   [
+    2294.12,
+    4359.01
+   ],
+   [
+    2294.66,
+    4355.61
+   ],
+   [
+    2299.44,
+    4336.04
+   ],
+   [
+    2309.16,
+    4338.99
+   ],
+   [
+    2302.74,
+    4371.37
+   ],
+   [
+    2290.46,
+    4367.03
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "medianera",
+   "calle",
+   "calle"
+  ],
+  "area": 365.7,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 5,
+  "barrio": "Centro"
+ },
+ {
+  "id": "B-w297237751",
+  "nombre": "Teatro Paseo de La Velada",
+  "arquetipo": "teatro",
+  "categoria": "Cultura y sociedades",
+  "huella": [
+   [
+    2551.45,
+    3833.58
+   ],
+   [
+    2546.34,
+    3866.24
+   ],
+   [
+    2525.94,
+    3862.87
+   ],
+   [
+    2526.41,
+    3859.32
+   ],
+   [
+    2524.91,
+    3859.09
+   ],
+   [
+    2525.51,
+    3850.42
+   ],
+   [
+    2526.02,
+    3834.49
+   ],
+   [
+    2527.02,
+    3832.34
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle"
+  ],
+  "area": 738.9,
+  "plantas_estimadas": 5,
+  "plantas_catastro": null,
+  "barrio": "La Velada"
+ },
+ {
+  "id": "B-w1329606844",
+  "nombre": "Mercado El Junquillo",
+  "arquetipo": "mercado",
+  "categoria": "Cultura y sociedades",
+  "huella": [
+   [
+    1773.09,
+    3574.34
+   ],
+   [
+    1775.16,
+    3592.16
+   ],
+   [
+    1745.47,
+    3595.58
+   ],
+   [
+    1743.41,
+    3577.76
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle"
+  ],
+  "area": 536.0,
+  "plantas_estimadas": 5,
+  "plantas_catastro": 1,
+  "barrio": "Las Pedreras"
+ },
+ {
+  "id": "B-w1387264327",
+  "nombre": "Chalet Villa María Luisa",
+  "arquetipo": "villa",
+  "categoria": "Patrimonio histórico",
+  "huella": [
+   [
+    841.07,
+    3591.88
+   ],
+   [
+    840.44,
+    3593.19
+   ],
+   [
+    845.43,
+    3595.58
+   ],
+   [
+    844.88,
+    3596.71
+   ],
+   [
+    846.2,
+    3597.34
+   ],
+   [
+    841.38,
+    3607.36
+   ],
+   [
+    840.62,
+    3607.01
+   ],
+   [
+    839.04,
+    3610.28
+   ],
+   [
+    828.92,
+    3605.43
+   ],
+   [
+    836.5,
+    3589.7
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "patio",
+   "calle"
+  ],
+  "area": 195.7,
+  "plantas_estimadas": 4,
+  "plantas_catastro": 2,
+  "barrio": "La Colonia"
+ },
+ {
+  "id": "B-w1247820568",
+  "nombre": "Chalet D'Amato",
+  "arquetipo": "villa",
+  "categoria": "Patrimonio histórico",
+  "huella": [
+   [
+    2577.26,
+    3749.0
+   ],
+   [
+    2579.6,
+    3749.47
+   ],
+   [
+    2581.55,
+    3739.78
+   ],
+   [
+    2582.61,
+    3740.0
+   ],
+   [
+    2583.57,
+    3735.2
+   ],
+   [
+    2588.45,
+    3736.17
+   ],
+   [
+    2587.56,
+    3740.59
+   ],
+   [
+    2590.46,
+    3741.18
+   ],
+   [
+    2588.47,
+    3751.03
+   ],
+   [
+    2590.22,
+    3751.39
+   ],
+   [
+    2589.19,
+    3756.51
+   ],
+   [
+    2576.27,
+    3753.93
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "calle"
+  ],
+  "area": 181.0,
+  "plantas_estimadas": 4,
+  "plantas_catastro": 3,
+  "barrio": "La Velada"
+ },
+ {
+  "id": "B-w1220988670",
+  "nombre": "Búnker 149 (Registro 3)",
+  "arquetipo": "bunker",
+  "categoria": "Patrimonio histórico",
+  "huella": [
+   [
+    3440.06,
+    3626.17
+   ],
+   [
+    3441.05,
+    3626.17
+   ],
+   [
+    3442.0,
+    3626.38
+   ],
+   [
+    3442.89,
+    3626.79
+   ],
+   [
+    3443.54,
+    3627.37
+   ],
+   [
+    3443.5,
+    3629.53
+   ],
+   [
+    3443.25,
+    3631.07
+   ],
+   [
+    3442.43,
+    3632.78
+   ],
+   [
+    3441.28,
+    3634.34
+   ],
+   [
+    3440.87,
+    3636.36
+   ],
+   [
+    3440.87,
+    3637.38
+   ],
+   [
+    3441.25,
+    3638.97
+   ],
+   [
+    3442.35,
+    3640.71
+   ],
+   [
+    3442.63,
+    3641.4
+   ],
+   [
+    3442.76,
+    3642.44
+   ],
+   [
+    3442.6,
+    3643.27
+   ],
+   [
+    3442.32,
+    3643.79
+   ],
+   [
+    3441.08,
+    3644.31
+   ],
+   [
+    3439.05,
+    3644.25
+   ],
+   [
+    3438.01,
+    3643.84
+   ],
+   [
+    3437.05,
+    3643.0
+   ],
+   [
+    3436.47,
+    3641.87
+   ],
+   [
+    3435.46,
+    3639.05
+   ],
+   [
+    3434.55,
+    3638.62
+   ],
+   [
+    3433.12,
+    3638.34
+   ],
+   [
+    3432.63,
+    3636.72
+   ],
+   [
+    3432.6,
+    3635.3
+   ],
+   [
+    3432.87,
+    3634.15
+   ],
+   [
+    3433.78,
+    3633.38
+   ],
+   [
+    3434.0,
+    3633.0
+   ],
+   [
+    3433.75,
+    3630.48
+   ],
+   [
+    3433.9,
+    3630.15
+   ],
+   [
+    3436.61,
+    3630.76
+   ],
+   [
+    3436.86,
+    3630.45
+   ],
+   [
+    3436.91,
+    3628.86
+   ],
+   [
+    3437.16,
+    3628.34
+   ],
+   [
+    3438.24,
+    3627.07
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle",
+   "calle"
+  ],
+  "area": 125.7,
+  "plantas_estimadas": 4,
+  "plantas_catastro": null,
+  "barrio": "San Bernardo"
+ },
+ {
+  "id": "B-w769139281",
+  "nombre": "Búnker 162",
+  "arquetipo": "bunker",
+  "categoria": "Patrimonio histórico",
+  "huella": [
+   [
+    2845.3,
+    4534.13
+   ],
+   [
+    2845.2,
+    4531.45
+   ],
+   [
+    2847.78,
+    4531.64
+   ],
+   [
+    2849.99,
+    4534.32
+   ],
+   [
+    2852.88,
+    4534.13
+   ],
+   [
+    2858.25,
+    4536.81
+   ],
+   [
+    2861.42,
+    4535.85
+   ],
+   [
+    2864.49,
+    4540.25
+   ],
+   [
+    2865.07,
+    4544.27
+   ],
+   [
+    2862.76,
+    4548.67
+   ],
+   [
+    2860.08,
+    4550.49
+   ],
+   [
+    2855.95,
+    4549.64
+   ],
+   [
+    2847.5,
+    4556.62
+   ],
+   [
+    2830.51,
+    4549.25
+   ],
+   [
+    2826.67,
+    4546.29
+   ],
+   [
+    2827.15,
+    4542.17
+   ],
+   [
+    2830.03,
+    4538.14
+   ],
+   [
+    2835.22,
+    4537.95
+   ],
+   [
+    2836.94,
+    4533.65
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio"
+  ],
+  "area": 602.6,
+  "plantas_estimadas": 1,
+  "plantas_catastro": null,
+  "barrio": "San Felipe"
+ },
+ {
+  "id": "B-w257433026",
+  "nombre": "Polideportivo Municipal de La Línea",
+  "arquetipo": "pabellon",
+  "categoria": "Deporte",
+  "huella": [
+   [
+    3032.01,
+    4518.33
+   ],
+   [
+    3090.65,
+    4516.75
+   ],
+   [
+    3091.18,
+    4562.13
+   ],
+   [
+    3033.34,
+    4563.6
+   ]
+  ],
+  "patios": [],
+  "caras": [
+   "calle",
+   "patio",
+   "patio",
+   "patio"
+  ],
+  "area": 2641.4,
+  "plantas_estimadas": 5,
+  "plantas_catastro": null,
+  "barrio": "Santiago"
+ }
+]

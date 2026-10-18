@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w297237751",
+ "edificio": "B-w297237751",
+ "nombre": "Teatro Paseo de La Velada",
+ "arquetipo": "teatro",
+ "categoria": "Cultura y sociedades",
+ "origen": [
+  2538,
+  3849
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 4,
+ "altura_m": 12.0,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.89,
+ "triangulos_lod0": 510,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «teatro»",
+   "plantas"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w297237751.blend",
+ "glb": "modelos/singulares/B-w297237751.glb",
+ "glb_kb": 39,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w297237751-calle.png"
+ ],
+ "segundos": 0.9
+}

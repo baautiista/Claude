@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1327914038",
+ "edificio": "B-w1327914038",
+ "nombre": "Hermandad Amor y Esperanza",
+ "arquetipo": "hermandad",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  3204,
+  3497
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 3.6,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.99,
+ "triangulos_lod0": 282,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «hermandad»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1327914038.blend",
+ "glb": "modelos/singulares/B-w1327914038.glb",
+ "glb_kb": 35,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1327914038-calle.png"
+ ],
+ "segundos": 0.8
+}

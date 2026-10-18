@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1333188073",
+ "edificio": "B-w1333188073",
+ "nombre": "Ermita de la Virgen de Fátima",
+ "arquetipo": "ermita",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  2036,
+  1320
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 4.2,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "dos aguas (inferida)",
+ "relleno_rectangulo": 0.96,
+ "triangulos_lod0": 238,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «ermita»",
+   "plantas"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1333188073.blend",
+ "glb": "modelos/singulares/B-w1333188073.glb",
+ "glb_kb": 48,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1333188073-calle.png"
+ ],
+ "segundos": 0.9
+}

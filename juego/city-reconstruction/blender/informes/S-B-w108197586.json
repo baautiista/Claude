@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w108197586",
+ "edificio": "B-w108197586",
+ "nombre": "Palacio de Congresos y Exposiciones",
+ "arquetipo": "palacio",
+ "categoria": "Edificios públicos",
+ "origen": [
+  2125,
+  4714
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 2,
+ "altura_m": 6.8,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.8,
+ "triangulos_lod0": 6439,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «palacio»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w108197586.blend",
+ "glb": "modelos/singulares/B-w108197586.glb",
+ "glb_kb": 171,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w108197586-calle.png"
+ ],
+ "segundos": 1.3
+}

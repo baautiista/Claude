@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1220988670",
+ "edificio": "B-w1220988670",
+ "nombre": "Búnker 149 (Registro 3)",
+ "arquetipo": "bunker",
+ "categoria": "Patrimonio histórico",
+ "origen": [
+  3438,
+  3635
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 2.1,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.66,
+ "triangulos_lod0": 465,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «bunker»",
+   "plantas"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1220988670.blend",
+ "glb": "modelos/singulares/B-w1220988670.glb",
+ "glb_kb": 36,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1220988670-calle.png"
+ ],
+ "segundos": 0.8
+}

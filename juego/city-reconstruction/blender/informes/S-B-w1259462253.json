@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1259462253",
+ "edificio": "B-w1259462253",
+ "nombre": "Centro Residencial José Luis Herrero",
+ "arquetipo": "residencia",
+ "categoria": "Edificios públicos",
+ "origen": [
+  2231,
+  4101
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 4,
+ "altura_m": 13.2,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.93,
+ "triangulos_lod0": 478,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «residencia»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1259462253.blend",
+ "glb": "modelos/singulares/B-w1259462253.glb",
+ "glb_kb": 38,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1259462253-calle.png"
+ ],
+ "segundos": 1.0
+}

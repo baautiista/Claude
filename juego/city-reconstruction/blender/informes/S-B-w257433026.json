@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w257433026",
+ "edificio": "B-w257433026",
+ "nombre": "Polideportivo Municipal de La Línea",
+ "arquetipo": "pabellon",
+ "categoria": "Deporte",
+ "origen": [
+  3062,
+  4540
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 10.5,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "bóveda de chapa (inferida)",
+ "relleno_rectangulo": 0.99,
+ "triangulos_lod0": 618,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «pabellon»",
+   "plantas"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w257433026.blend",
+ "glb": "modelos/singulares/B-w257433026.glb",
+ "glb_kb": 46,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w257433026-calle.png"
+ ],
+ "segundos": 0.8
+}

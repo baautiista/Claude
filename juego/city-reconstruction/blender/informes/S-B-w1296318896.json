@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1296318896",
+ "edificio": "B-w1296318896",
+ "nombre": "Iglesia Evangélica Esperanza de Vida",
+ "arquetipo": "equipamiento",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  2507,
+  3642
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 3.6,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.78,
+ "triangulos_lod0": 590,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «equipamiento»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1296318896.blend",
+ "glb": "modelos/singulares/B-w1296318896.glb",
+ "glb_kb": 39,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1296318896-calle.png"
+ ],
+ "segundos": 0.8
+}

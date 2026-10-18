@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1347193501",
+ "edificio": "B-w1347193501",
+ "nombre": "Santuario Diocesano del Sagrado Corazón de Jesús",
+ "arquetipo": "iglesia",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  1458,
+  3436
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 11.0,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "dos aguas (inferida)",
+ "relleno_rectangulo": 0.8,
+ "triangulos_lod0": 1130,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «iglesia»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1347193501.blend",
+ "glb": "modelos/singulares/B-w1347193501.glb",
+ "glb_kb": 77,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1347193501-calle.png"
+ ],
+ "segundos": 0.9
+}

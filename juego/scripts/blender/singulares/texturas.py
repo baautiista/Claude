@@ -73,20 +73,20 @@ def _imagen(nombre, rgb, carpeta):
     return img
 
 
-def estuco(carpeta, base="#E9D5A9", semilla=1, n=512):
+def estuco(carpeta, base="#E9D5A9", semilla=1, n=512, nombre="T_estuco"):
     rng = np.random.default_rng(semilla)
     v = _fbm(rng, n) - 0.5
     grano = rng.random((n, n)) - 0.5
     c = _hex(base)[None, None, :] * (1 + v[..., None] * 0.07 + grano[..., None] * 0.035)
-    return _imagen("T_estuco", c, carpeta)
+    return _imagen(nombre, c, carpeta)
 
 
-def hormigon(carpeta, semilla=2, n=512):
+def hormigon(carpeta, semilla=2, n=512, nombre="T_hormigon"):
     rng = np.random.default_rng(semilla)
     v = _fbm(rng, n) - 0.5
     poros = (rng.random((n, n)) > 0.985) * -0.12
     c = _hex("#B8B1A3")[None, None, :] * (1 + v[..., None] * 0.16 + poros[..., None] + (rng.random((n, n, 1)) - 0.5) * 0.05)
-    return _imagen("T_hormigon", c, carpeta)
+    return _imagen(nombre, c, carpeta)
 
 
 def adoquin(carpeta, semilla=3, n=512):
@@ -151,7 +151,7 @@ def cesped(carpeta, semilla=6, n=512):
     return _imagen("T_cesped", c + claros, carpeta)
 
 
-def ladrillo(carpeta, semilla=7, n=512):
+def ladrillo(carpeta, semilla=7, n=512, nombre="T_ladrillo"):
     """Ladrillo visto rojo (24 × 6 cm, llaga 1 cm): bordillo del parterre."""
     rng = np.random.default_rng(semilla)
     yy, xx = np.mgrid[0:n, 0:n] / n  # 1 m
@@ -162,7 +162,7 @@ def ladrillo(carpeta, semilla=7, n=512):
     pieza = (np.floor((xx + (fila % 2) * 0.125) / 0.25) * 17 + fila * 5) % 7
     c = _hex("#A9533A")[None, None, :] * (0.88 + pieza[..., None] * 0.035 + (_fbm(rng, n)[..., None] - 0.5) * 0.2)
     c = np.where(junta[..., None], _hex("#CDBFAE")[None, None, :], c)
-    return _imagen("T_ladrillo", c, carpeta)
+    return _imagen(nombre, c, carpeta)
 
 
 def ostionera(carpeta, semilla=8, n=512):
@@ -187,3 +187,26 @@ def asfalto(carpeta, semilla=10, n=256):
     rng = np.random.default_rng(semilla)
     c = _hex("#55585B")[None, None, :] * (0.85 + rng.random((n, n, 1)) * 0.25 + (_fbm(rng, n)[..., None] - 0.5) * 0.2)
     return _imagen("T_asfalto", c, carpeta)
+
+
+def teja(carpeta, semilla=11, n=256, nombre="T_teja"):
+    """Teja árabe vista desde arriba: canales en filas (cubre 2 m)."""
+    rng = np.random.default_rng(semilla)
+    yy, xx = np.mgrid[0:n, 0:n] / n * 2.0
+    fx = (xx / 0.2) % 1
+    fila = np.floor(yy / 0.4)
+    fy = (yy / 0.4) % 1
+    luz = 0.75 + 0.35 * np.sin(fx * np.pi) - 0.25 * (fy > 0.85)
+    tono = ((np.floor(xx / 0.2) * 7 + fila * 13) % 5)[..., None] * 0.03
+    c = _hex("#B3573A")[None, None, :] * (luz[..., None] + tono + (_fbm(rng, n)[..., None] - 0.5) * 0.25)
+    return _imagen(nombre, c, carpeta)
+
+
+def chapa(carpeta, base="#C9D2DA", semilla=12, n=256, nombre="T_chapa"):
+    """Chapa grecada (nervios cada 25 cm; cubre 2 m)."""
+    rng = np.random.default_rng(semilla)
+    yy, xx = np.mgrid[0:n, 0:n] / n * 2.0
+    f = (xx / 0.25) % 1
+    luz = 0.85 + 0.2 * (f < 0.2) - 0.12 * ((f > 0.2) & (f < 0.27))
+    c = _hex(base)[None, None, :] * (luz[..., None] + (_fbm(rng, n)[..., None] - 0.5) * 0.06)
+    return _imagen(nombre, c, carpeta)

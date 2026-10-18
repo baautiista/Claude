@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w877660200",
+ "edificio": "B-w877660200",
+ "nombre": "Casa de la Cultura",
+ "arquetipo": "equipamiento",
+ "categoria": "Cultura y sociedades",
+ "origen": [
+  2300,
+  4354
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 5,
+ "altura_m": 16.4,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.84,
+ "triangulos_lod0": 1387,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «equipamiento»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w877660200.blend",
+ "glb": "modelos/singulares/B-w877660200.glb",
+ "glb_kb": 59,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w877660200-calle.png"
+ ],
+ "segundos": 1.0
+}

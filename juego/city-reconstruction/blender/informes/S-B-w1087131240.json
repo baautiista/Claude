@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1087131240",
+ "edificio": "B-w1087131240",
+ "nombre": "Hermandad de la Amargura",
+ "arquetipo": "hermandad",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  2063,
+  4135
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 10.0,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.97,
+ "triangulos_lod0": 491,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «hermandad»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1087131240.blend",
+ "glb": "modelos/singulares/B-w1087131240.glb",
+ "glb_kb": 45,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1087131240-calle.png"
+ ],
+ "segundos": 0.8
+}

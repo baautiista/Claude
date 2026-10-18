@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1329606844",
+ "edificio": "B-w1329606844",
+ "nombre": "Mercado El Junquillo",
+ "arquetipo": "mercado",
+ "categoria": "Cultura y sociedades",
+ "origen": [
+  1759,
+  3585
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 2,
+ "altura_m": 8.0,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 1.0,
+ "triangulos_lod0": 818,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «mercado»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1329606844.blend",
+ "glb": "modelos/singulares/B-w1329606844.glb",
+ "glb_kb": 56,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1329606844-calle.png"
+ ],
+ "segundos": 0.8
+}

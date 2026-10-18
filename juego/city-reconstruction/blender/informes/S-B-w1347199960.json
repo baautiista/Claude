@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1347199960",
+ "edificio": "B-w1347199960",
+ "nombre": "Casa Hermandad de Nuestra Señora del Rocío",
+ "arquetipo": "hermandad",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  1547,
+  3996
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 3.6,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 0.97,
+ "triangulos_lod0": 385,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «hermandad»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1347199960.blend",
+ "glb": "modelos/singulares/B-w1347199960.glb",
+ "glb_kb": 38,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1347199960-calle.png"
+ ],
+ "segundos": 0.8
+}

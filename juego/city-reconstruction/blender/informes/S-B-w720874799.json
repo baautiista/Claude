@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w720874799",
+ "edificio": "B-w720874799",
+ "nombre": "Iglesia de San Miguel Arcángel",
+ "arquetipo": "iglesia",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  958,
+  3579
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 11.0,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "dos aguas (inferida)",
+ "relleno_rectangulo": 0.99,
+ "triangulos_lod0": 474,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «iglesia»",
+   "plantas"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w720874799.blend",
+ "glb": "modelos/singulares/B-w720874799.glb",
+ "glb_kb": 60,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w720874799-calle.png"
+ ],
+ "segundos": 1.0
+}

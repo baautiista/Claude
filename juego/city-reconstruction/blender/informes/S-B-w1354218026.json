@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1354218026",
+ "edificio": "B-w1354218026",
+ "nombre": "Parroquia de San Pedro Apóstol",
+ "arquetipo": "iglesia",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  1931,
+  3780
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 11.0,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "dos aguas (inferida)",
+ "relleno_rectangulo": 0.91,
+ "triangulos_lod0": 914,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «iglesia»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1354218026.blend",
+ "glb": "modelos/singulares/B-w1354218026.glb",
+ "glb_kb": 71,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1354218026-calle.png"
+ ],
+ "segundos": 0.9
+}

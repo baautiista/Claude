@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1387264327",
+ "edificio": "B-w1387264327",
+ "nombre": "Chalet Villa María Luisa",
+ "arquetipo": "villa",
+ "categoria": "Patrimonio histórico",
+ "origen": [
+  838,
+  3600
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 2,
+ "altura_m": 6.8,
+ "fuente_altura": "Catastro",
+ "cubierta": "cuatro aguas (inferida)",
+ "relleno_rectangulo": 0.93,
+ "triangulos_lod0": 1558,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «villa»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1387264327.blend",
+ "glb": "modelos/singulares/B-w1387264327.glb",
+ "glb_kb": 75,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1387264327-calle.png"
+ ],
+ "segundos": 0.9
+}

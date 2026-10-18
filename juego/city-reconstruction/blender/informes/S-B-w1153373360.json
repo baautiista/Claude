@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1153373360",
+ "edificio": "B-w1153373360",
+ "nombre": "Concejalía de Deportes",
+ "arquetipo": "equipamiento",
+ "categoria": "Edificios públicos",
+ "origen": [
+  3045,
+  4583
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 1,
+ "altura_m": 3.6,
+ "fuente_altura": "Catastro",
+ "cubierta": "azotea",
+ "relleno_rectangulo": 1.0,
+ "triangulos_lod0": 98,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «equipamiento»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1153373360.blend",
+ "glb": "modelos/singulares/B-w1153373360.glb",
+ "glb_kb": 27,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1153373360-calle.png"
+ ],
+ "segundos": 1.1
+}

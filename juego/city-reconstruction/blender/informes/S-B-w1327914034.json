@@ -1,0 +1,36 @@
+{
+ "lote": "S-B-w1327914034",
+ "edificio": "B-w1327914034",
+ "nombre": "Parroquia de San Bernardo Abad",
+ "arquetipo": "iglesia",
+ "categoria": "Iglesias y templos",
+ "origen": [
+  3260,
+  3486
+ ],
+ "generador": "scripts/blender/singulares/singular.py",
+ "plantas": 3,
+ "altura_m": 11.0,
+ "fuente_altura": "por tipo (inferida)",
+ "cubierta": "dos aguas (inferida)",
+ "relleno_rectangulo": 0.97,
+ "triangulos_lod0": 834,
+ "problemas": [],
+ "certeza": {
+  "comprobado": [
+   "huella y caras (OpenStreetMap)",
+   "nombre",
+   "plantas (Catastro)"
+  ],
+  "inferido": [
+   "colores, huecos, cubierta y elementos del tipo «iglesia»"
+  ]
+ },
+ "blend": "city-reconstruction/blender/blend/singulares/B-w1327914034.blend",
+ "glb": "modelos/singulares/B-w1327914034.glb",
+ "glb_kb": 69,
+ "render": [
+  "city-reconstruction/blender/render/singulares/B-w1327914034-calle.png"
+ ],
+ "segundos": 0.9
+}
