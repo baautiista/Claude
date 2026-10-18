@@ -8,239 +8,239 @@
  "edificios": [
   {
    "id": "B-r18344388",
-   "plantas": 5,
-   "alturaM": 15.6,
+   "plantas": 3,
+   "alturaM": 9.6,
    "tipologia": "bloque",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 11544,
-    "alto": 16.66,
+    "triangulos": 6900,
+    "alto": 10.66,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 406,
-    "alto": 16.6,
+    "triangulos": 302,
+    "alto": 10.6,
     "problemas": []
    }
   },
   {
    "id": "B-r16846406",
-   "plantas": 5,
-   "alturaM": 15.6,
+   "plantas": 3,
+   "alturaM": 9.6,
    "tipologia": "bloque",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 7908,
-    "alto": 19.8,
+    "triangulos": 4952,
+    "alto": 13.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 380,
-    "alto": 16.6,
+    "triangulos": 316,
+    "alto": 10.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462231",
-   "plantas": 5,
-   "alturaM": 15.6,
+   "plantas": 3,
+   "alturaM": 9.6,
    "tipologia": "bloque",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 7550,
-    "alto": 19.8,
+    "triangulos": 4502,
+    "alto": 13.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 208,
-    "alto": 16.6,
+    "triangulos": 136,
+    "alto": 10.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462235",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 1,
+   "alturaM": 3.6,
    "tipologia": "comercial",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 3064,
-    "alto": 13.66,
+    "triangulos": 548,
+    "alto": 4.16,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 70,
-    "alto": 13.6,
+    "triangulos": 46,
+    "alto": 4.1,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462249",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 3,
+   "alturaM": 9.6,
    "tipologia": "bloque",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 2090,
-    "alto": 16.8,
+    "triangulos": 1694,
+    "alto": 13.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 106,
-    "alto": 13.6,
+    "triangulos": 94,
+    "alto": 10.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462234",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 2,
+   "alturaM": 6.6,
    "tipologia": "comercial",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 1940,
-    "alto": 16.8,
+    "triangulos": 896,
+    "alto": 10.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 42,
-    "alto": 13.6,
+    "triangulos": 30,
+    "alto": 7.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462233",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 3,
+   "alturaM": 9.6,
    "tipologia": "comercial",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 7024,
-    "alto": 16.8,
+    "triangulos": 4988,
+    "alto": 13.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 106,
-    "alto": 13.6,
+    "triangulos": 84,
+    "alto": 10.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462232",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 3,
+   "alturaM": 9.6,
    "tipologia": "comercial",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 1994,
-    "alto": 16.8,
+    "triangulos": 1480,
+    "alto": 13.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 52,
-    "alto": 13.6,
+    "triangulos": 46,
+    "alto": 10.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462248",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 3,
+   "alturaM": 9.6,
    "tipologia": "bloque",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 4036,
-    "alto": 16.8,
+    "triangulos": 3020,
+    "alto": 13.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 124,
-    "alto": 13.6,
+    "triangulos": 100,
+    "alto": 10.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462243",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 1,
+   "alturaM": 3.6,
    "tipologia": "burguesa",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 2574,
-    "alto": 16.8,
+    "triangulos": 450,
+    "alto": 4.16,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 52,
-    "alto": 13.6,
+    "triangulos": 34,
+    "alto": 4.1,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462230",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 2,
+   "alturaM": 6.6,
    "tipologia": "bloque",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 2214,
-    "alto": 16.8,
+    "triangulos": 1158,
+    "alto": 10.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 74,
-    "alto": 13.6,
+    "triangulos": 46,
+    "alto": 7.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462247",
-   "plantas": 4,
-   "alturaM": 12.6,
+   "plantas": 2,
+   "alturaM": 6.6,
    "tipologia": "bloque",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 3584,
-    "alto": 16.8,
+    "triangulos": 1722,
+    "alto": 10.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 98,
-    "alto": 13.6,
+    "triangulos": 58,
+    "alto": 7.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462241",
-   "plantas": 3,
-   "alturaM": 9.6,
+   "plantas": 2,
+   "alturaM": 6.6,
    "tipologia": "burguesa",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 994,
-    "alto": 13.8,
+    "triangulos": 666,
+    "alto": 10.8,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 30,
-    "alto": 10.6,
+    "triangulos": 26,
+    "alto": 7.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462244",
-   "plantas": 3,
-   "alturaM": 9.6,
+   "plantas": 1,
+   "alturaM": 3.6,
    "tipologia": "burguesa",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 1406,
-    "alto": 13.8,
+    "triangulos": 322,
+    "alto": 4.16,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 36,
-    "alto": 10.6,
+    "triangulos": 24,
+    "alto": 4.1,
     "problemas": []
    }
   },
@@ -263,52 +263,52 @@
   },
   {
    "id": "B-w1259462240",
-   "plantas": 3,
-   "alturaM": 9.6,
+   "plantas": 1,
+   "alturaM": 3.6,
    "tipologia": "medianeras",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 636,
-    "alto": 10.66,
+    "triangulos": 304,
+    "alto": 4.16,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 40,
-    "alto": 10.6,
+    "triangulos": 32,
+    "alto": 4.1,
     "problemas": []
    }
   },
   {
    "id": "B-w1259462242",
-   "plantas": 3,
-   "alturaM": 9.6,
+   "plantas": 2,
+   "alturaM": 6.6,
    "tipologia": "medianeras",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 472,
-    "alto": 10.66,
+    "triangulos": 408,
+    "alto": 7.66,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 44,
-    "alto": 10.6,
+    "triangulos": 42,
+    "alto": 7.6,
     "problemas": []
    }
   },
   {
    "id": "B-w1329978384",
-   "plantas": 3,
-   "alturaM": 9.6,
+   "plantas": 1,
+   "alturaM": 3.6,
    "tipologia": "burguesa",
    "fuente_plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
    "lod0": {
-    "triangulos": 2228,
-    "alto": 13.8,
+    "triangulos": 444,
+    "alto": 4.16,
     "problemas": []
    },
    "lod1": {
-    "triangulos": 42,
-    "alto": 10.6,
+    "triangulos": 26,
+    "alto": 4.1,
     "problemas": []
    }
   }
@@ -322,7 +322,7 @@
   "city-reconstruction/blender/render/AURORA-01-lejos.png"
  ],
  "glb": "public/modelos/manzanas/AURORA-01.glb",
- "glb_kb": 844,
- "segundos": 17.3,
+ "glb_kb": 542,
+ "segundos": 7.8,
  "problemas": 0
 }

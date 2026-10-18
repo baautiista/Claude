@@ -6,7 +6,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-r16846406": {
 "estado": "VALIDANDO",
@@ -14,7 +14,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462231": {
 "estado": "VALIDANDO",
@@ -22,7 +22,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462235": {
 "estado": "VALIDANDO",
@@ -30,7 +30,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462249": {
 "estado": "VALIDANDO",
@@ -38,7 +38,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462234": {
 "estado": "VALIDANDO",
@@ -46,7 +46,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462233": {
 "estado": "VALIDANDO",
@@ -54,7 +54,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462232": {
 "estado": "VALIDANDO",
@@ -62,7 +62,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462248": {
 "estado": "VALIDANDO",
@@ -70,7 +70,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462243": {
 "estado": "VALIDANDO",
@@ -78,7 +78,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462230": {
 "estado": "VALIDANDO",
@@ -86,7 +86,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462247": {
 "estado": "VALIDANDO",
@@ -94,7 +94,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462241": {
 "estado": "VALIDANDO",
@@ -102,7 +102,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462244": {
 "estado": "VALIDANDO",
@@ -110,7 +110,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1329978385": {
 "estado": "VALIDANDO",
@@ -118,7 +118,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462240": {
 "estado": "VALIDANDO",
@@ -126,7 +126,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1259462242": {
 "estado": "VALIDANDO",
@@ -134,7 +134,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 },
 "B-w1329978384": {
 "estado": "VALIDANDO",
@@ -142,7 +142,7 @@
 "error": null,
 "lote": "AURORA-01",
 "revisar": 0,
-"actualizado": "2026-10-18 19:58:07"
+"actualizado": "2026-10-18 20:18:06"
 }
 },
 "sectores": {
@@ -150,150 +150,1417 @@
 },
 "consultas": [
 {
+"clave": "commons:14_25",
+"fuente": "Wikimedia Commons",
+"fecha": "2026-10-18 20:17:09",
+"resultado": "ok",
+"n": 6
+},
+{
 "clave": "propias:B-r16846406",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:15",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-r18344388",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:15",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462230",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:15",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462231",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:16",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462232",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:16",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462233",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:16",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462234",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:16",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462235",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:17",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462240",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:17",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462241",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:17",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462242",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:18",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462243",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:18",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462244",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:18",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462247",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:19",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462248",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:19",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1259462249",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:19",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "propias:B-w1329978384",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:19",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
 },
 {
 "clave": "mapillary:14_25",
 "fuente": "Mapillary",
-"fecha": "2026-10-18 19:57:19",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_token",
-"n": 0
-},
-{
-"clave": "commons:14_25",
-"fuente": "Wikimedia Commons",
-"fecha": "2026-10-18 19:57:20",
-"resultado": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
 "n": 0
 },
 {
 "clave": "propias:B-w1329978385",
 "fuente": "Foto propia",
-"fecha": "2026-10-18 19:57:20",
+"fecha": "2026-10-18 20:17:57",
 "resultado": "sin_fotos",
 "n": 0
+},
+{
+"clave": "catastro:14_25",
+"fuente": "Catastro INSPIRE BU",
+"fecha": "2026-10-18 20:17:57",
+"resultado": "ok",
+"n": 285
 }
 ],
-"fotos": [],
+"fotos": [
+{
+"id": "commons:9059449",
+"fuente": "Wikimedia Commons",
+"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Iglesia_de_la_Inmaculada_en_La_L%C3%ADnea_de_la_Concepci%C3%B3n_2.jpg/1280px-Iglesia_de_la_Inmaculada_en_La_L%C3%ADnea_de_la_Concepci%C3%B3n_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+"pagina": "https://commons.wikimedia.org/wiki/File:Iglesia_de_la_Inmaculada_en_La_L%C3%ADnea_de_la_Concepci%C3%B3n_2.jpg",
+"licencia": "CC BY 2.0",
+"autor": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/18378655@N00\">James Cridland</a> from London, UK",
+"fecha": "2007-08-19",
+"lon": -5.351468,
+"lat": 36.1623,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "commons:58486310",
+"fuente": "Wikimedia Commons",
+"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Cristo_de_Vel%C3%A1zquez_de_Jos%C3%A9_Cruz_Herrera.jpg/1280px-Cristo_de_Vel%C3%A1zquez_de_Jos%C3%A9_Cruz_Herrera.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+"pagina": "https://commons.wikimedia.org/wiki/File:Cristo_de_Vel%C3%A1zquez_de_Jos%C3%A9_Cruz_Herrera.jpg",
+"licencia": "CC BY-SA 4.0",
+"autor": "<a href=\"//commons.wikimedia.org/wiki/User:Maximo88\" title=\"User:Maximo88\">Maximo88</a>",
+"fecha": "2017-01-01",
+"lon": -5.351478,
+"lat": 36.162094,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "commons:58486694",
+"fuente": "Wikimedia Commons",
+"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Santuario_de_la_Inmaculada_Concepci%C3%B3n_%28Retablo%29.jpg/1280px-Santuario_de_la_Inmaculada_Concepci%C3%B3n_%28Retablo%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+"pagina": "https://commons.wikimedia.org/wiki/File:Santuario_de_la_Inmaculada_Concepci%C3%B3n_(Retablo).jpg",
+"licencia": "CC BY-SA 4.0",
+"autor": "<a href=\"//commons.wikimedia.org/wiki/User:Maximo88\" title=\"User:Maximo88\">Maximo88</a>",
+"fecha": "2017-01-01",
+"lon": -5.351511,
+"lat": 36.162022,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "commons:77094718",
+"fuente": "Wikimedia Commons",
+"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Avemar_Dos.jpg/1280px-Avemar_Dos.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+"pagina": "https://commons.wikimedia.org/wiki/File:Avemar_Dos.jpg",
+"licencia": "CC BY-SA 4.0",
+"autor": "<a href=\"//commons.wikimedia.org/wiki/User:CarlosVdeHabsburgo\" title=\"User:CarlosVdeHabsburgo\">CarlosVdeHabsburgo</a>",
+"fecha": "2019-02-23",
+"lon": -5.352578,
+"lat": 36.163548,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "commons:81240127",
+"fuente": "Wikimedia Commons",
+"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Mercado_de_la_linea.jpg/1280px-Mercado_de_la_linea.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+"pagina": "https://commons.wikimedia.org/wiki/File:Mercado_de_la_linea.jpg",
+"licencia": "CC0",
+"autor": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Rockysantos&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Rockysantos (page does not exist)\">Rockysantos</a>",
+"fecha": "11 August ",
+"lon": -5.35027778,
+"lat": 36.16277778,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "commons:81849278",
+"fuente": "Wikimedia Commons",
+"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Cinema_imperial_.jpg/1280px-Cinema_imperial_.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+"pagina": "https://commons.wikimedia.org/wiki/File:Cinema_imperial_.jpg",
+"licencia": "CC0",
+"autor": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Rockysantos&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Rockysantos (page does not exist)\">Rockysantos</a>",
+"fecha": "01/09/2019",
+"lon": -5.34833333,
+"lat": 36.16222222,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749020TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749019TF8084N_part2",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749016TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749017TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749022TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749002TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749003TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749004TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749005TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749023TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749007TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749009TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749010TF8084N_part3",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749015TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749013TF8084N_part3",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749021TF8084N_part1",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+},
+{
+"id": "catastro:ES.SDGC.BU.8749001TF8084N_part3",
+"fuente": "Catastro INSPIRE BU",
+"url": null,
+"pagina": "https://www.catastro.hacienda.gob.es/",
+"licencia": "Reutilización libre citando a la DG del Catastro",
+"autor": "Dirección General del Catastro",
+"fecha": "2026-10-18",
+"lon": null,
+"lat": null,
+"rumbo": null,
+"archivo": null,
+"sha1": null
+}
+],
 "foto_edificio": [],
-"observaciones": [],
+"observaciones": [
+{
+"edificio": "B-r16846406",
+"campo": "plantas",
+"valor": "3",
+"estado": "comprobado",
+"confianza": 0.88,
+"foto": "catastro:ES.SDGC.BU.8749013TF8084N_part3",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-r18344388",
+"campo": "plantas",
+"valor": "3",
+"estado": "comprobado",
+"confianza": 0.86,
+"foto": "catastro:ES.SDGC.BU.8749021TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462230",
+"campo": "plantas",
+"valor": "2",
+"estado": "comprobado",
+"confianza": 0.83,
+"foto": "catastro:ES.SDGC.BU.8749001TF8084N_part3",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462231",
+"campo": "plantas",
+"valor": "3",
+"estado": "comprobado",
+"confianza": 0.88,
+"foto": "catastro:ES.SDGC.BU.8749020TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462232",
+"campo": "plantas",
+"valor": "3",
+"estado": "comprobado",
+"confianza": 0.91,
+"foto": "catastro:ES.SDGC.BU.8749019TF8084N_part2",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462233",
+"campo": "plantas",
+"valor": "3",
+"estado": "comprobado",
+"confianza": 0.88,
+"foto": "catastro:ES.SDGC.BU.8749016TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462234",
+"campo": "plantas",
+"valor": "2",
+"estado": "comprobado",
+"confianza": 0.9,
+"foto": "catastro:ES.SDGC.BU.8749017TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462235",
+"campo": "plantas",
+"valor": "1",
+"estado": "comprobado",
+"confianza": 0.9,
+"foto": "catastro:ES.SDGC.BU.8749022TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462240",
+"campo": "plantas",
+"valor": "1",
+"estado": "comprobado",
+"confianza": 0.86,
+"foto": "catastro:ES.SDGC.BU.8749002TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462241",
+"campo": "plantas",
+"valor": "2",
+"estado": "comprobado",
+"confianza": 0.92,
+"foto": "catastro:ES.SDGC.BU.8749003TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462242",
+"campo": "plantas",
+"valor": "2",
+"estado": "comprobado",
+"confianza": 0.89,
+"foto": "catastro:ES.SDGC.BU.8749004TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462243",
+"campo": "plantas",
+"valor": "1",
+"estado": "comprobado",
+"confianza": 0.91,
+"foto": "catastro:ES.SDGC.BU.8749005TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462244",
+"campo": "plantas",
+"valor": "1",
+"estado": "comprobado",
+"confianza": 0.82,
+"foto": "catastro:ES.SDGC.BU.8749023TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462247",
+"campo": "plantas",
+"valor": "2",
+"estado": "comprobado",
+"confianza": 0.84,
+"foto": "catastro:ES.SDGC.BU.8749007TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462248",
+"campo": "plantas",
+"valor": "3",
+"estado": "comprobado",
+"confianza": 0.82,
+"foto": "catastro:ES.SDGC.BU.8749010TF8084N_part3",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1259462249",
+"campo": "plantas",
+"valor": "3",
+"estado": "comprobado",
+"confianza": 0.82,
+"foto": "catastro:ES.SDGC.BU.8749010TF8084N_part3",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1329978384",
+"campo": "plantas",
+"valor": "1",
+"estado": "comprobado",
+"confianza": 0.89,
+"foto": "catastro:ES.SDGC.BU.8749015TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+},
+{
+"edificio": "B-w1329978385",
+"campo": "plantas",
+"valor": "1",
+"estado": "comprobado",
+"confianza": 0.8,
+"foto": "catastro:ES.SDGC.BU.8749022TF8084N_part1",
+"autor": "Catastro",
+"fecha": "2026-10-18 20:17:57"
+}
+],
 "eventos": [
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1329978384",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462242",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462240",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1329978385",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462244",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462241",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462247",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462230",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462243",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462248",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462232",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462233",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462234",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462249",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462235",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-w1259462231",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-r16846406",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:18:06",
+"edificio": "B-r18344388",
+"de": "MODELANDO",
+"a": "VALIDANDO",
+"nota": "GLB 542 KB"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1329978384",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462242",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462240",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1329978385",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462244",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462241",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462247",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462230",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462243",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462248",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462232",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462233",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462234",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462249",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462235",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462231",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-r16846406",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-r18344388",
+"de": "SIN_REFERENCIAS",
+"a": "MODELANDO",
+"nota": "lote AURORA-01"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1329978385",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1329978385",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1329978384",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1329978384",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462249",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462249",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462248",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462248",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462247",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462247",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462244",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462244",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462243",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462243",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462242",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462242",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462241",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462241",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462240",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462240",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462235",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462235",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462234",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462234",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462233",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462233",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462232",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462232",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462231",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462231",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462230",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-w1259462230",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-r18344388",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-r18344388",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-r16846406",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:57",
+"edificio": "B-r16846406",
+"de": "SIN_REFERENCIAS",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1329978385",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1329978385",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1329978384",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1329978384",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462249",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462249",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462248",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462248",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462247",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462247",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462244",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462244",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462243",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462243",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462242",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462242",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462241",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462241",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:18",
+"edificio": "B-w1259462240",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462240",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462235",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462235",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462234",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462234",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462233",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462233",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462232",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462232",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:17",
+"edificio": "B-w1259462231",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:11",
+"edificio": "B-w1259462231",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:11",
+"edificio": "B-w1259462230",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:10",
+"edificio": "B-w1259462230",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:10",
+"edificio": "B-r18344388",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:10",
+"edificio": "B-r18344388",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
+{
+"fecha": "2026-10-18 20:17:10",
+"edificio": "B-r16846406",
+"de": "INVESTIGANDO",
+"a": "SIN_REFERENCIAS",
+"nota": "0 fotos"
+},
+{
+"fecha": "2026-10-18 20:17:05",
+"edificio": "B-r16846406",
+"de": "VALIDANDO",
+"a": "INVESTIGANDO",
+"nota": ""
+},
 {
 "fecha": "2026-10-18 19:58:07",
 "edificio": "B-w1329978384",

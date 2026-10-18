@@ -64,10 +64,12 @@
  },
  "atributos": {
   "plantas": {
-   "valor": 3,
-   "estado": "inferido",
-   "confianza": "baja",
-   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+   "valor": "2",
+   "estado": "comprobado",
+   "confianza": 0.89,
+   "fuente": "catastro:ES.SDGC.BU.8749004TF8084N_part1",
+   "autor": "Catastro",
+   "fecha": "2026-10-18 20:17:57"
   },
   "alturaM": {
    "valor": 9.6,
@@ -120,11 +122,12 @@
  },
  "fotos": [],
  "consultas": {
+  "Catastro": "ok",
   "Mapillary": "sin_token",
-  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Wikimedia Commons": "ok",
   "Fotos propias": "sin_fotos"
  },
- "estado": "INVESTIGANDO",
- "actualizada": "2026-10-18 19:57:18",
+ "estado": "SIN_REFERENCIAS",
+ "actualizada": "2026-10-18 20:17:57",
  "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
 }

@@ -247,6 +247,73 @@ def fuente_commons(c, cuad, centro_lonlat, radio=250):
     return "ok", out
 
 
+def fuente_catastro(cuad, bbox_lonlat):
+    """Partes de edificio del Catastro (INSPIRE BU, DGC; reutilización libre citando la fuente):
+    contorno y número oficial de plantas sobre rasante. Se guardan en caché por cuadrícula."""
+    import re
+    import xml.etree.ElementTree as ET
+    from pyproj import Transformer
+    a_utm = Transformer.from_crs(4326, 25830, always_xy=True)
+    a_geo = Transformer.from_crs(25830, 4326, always_xy=True)
+    x0, y0 = a_utm.transform(bbox_lonlat[0], bbox_lonlat[1])
+    x1, y1 = a_utm.transform(bbox_lonlat[2], bbox_lonlat[3])
+    os.makedirs(CACHE, exist_ok=True)
+    f = os.path.join(CACHE, f"catastro-bu-{cuad}.json")
+    if os.path.exists(f):
+        return "ok", json.load(open(f))
+    url = ("https://ovc.catastro.meh.es/INSPIRE/wfsBU.aspx?service=WFS&version=2.0.0&request=GetFeature"
+           f"&typeNames=BU:BuildingPart&srsName=EPSG::25830&bbox={x0:.0f},{y0:.0f},{x1:.0f},{y1:.0f}")
+    req = urllib.request.Request(url, headers={"User-Agent": "LaLineaCity/1.0 (https://github.com/baautiista/claude)"})
+    with urllib.request.urlopen(req, timeout=90) as r:
+        xml = r.read()
+    time.sleep(1.5)
+    ns = {"gml": "http://www.opengis.net/gml/3.2", "bu-ext2d": "http://inspire.jrc.ec.europa.eu/schemas/bu-ext2d/2.0"}
+    raiz = ET.fromstring(xml)
+    partes = []
+    for bp in raiz.iter("{http://inspire.jrc.ec.europa.eu/schemas/bu-ext2d/2.0}BuildingPart"):
+        pid = bp.get("{http://www.opengis.net/gml/3.2}id", "")
+        nf = bp.find(".//bu-ext2d:numberOfFloorsAboveGround", ns)
+        pl = bp.find(".//gml:posList", ns)
+        if nf is None or pl is None or not (nf.text or "").strip():
+            continue
+        v = [float(t) for t in pl.text.split()]
+        anillo = []
+        for i in range(0, len(v) - 1, 2):
+            lon, lat = a_geo.transform(v[i], v[i + 1])
+            anillo.append([round((lon - L0) * KX, 2), round((A0 - lat) * KY, 2)])
+        partes.append({"id": pid, "plantas": int(nf.text), "huella": anillo})
+    json.dump(partes, open(f, "w"))
+    return "ok", partes
+
+
+def plantas_catastro(e, partes):
+    """Plantas oficiales del edificio: la de la parte catastral que más superficie comparte con su huella."""
+    from shapely.geometry import Polygon
+    try:
+        h = Polygon(json.loads(e["datos"])["huella"]).buffer(0)
+    except Exception:  # noqa: BLE001
+        return None
+    # Catastro parte cada edificio en volúmenes (un bajo comercial que ocupa toda la parcela es «1 planta»
+    # aunque encima haya más): se toma la parte más alta entre las que cubren al menos un 30 % de la huella.
+    cand = []
+    for p in partes:
+        try:
+            q = Polygon(p["huella"]).buffer(0)
+        except Exception:  # noqa: BLE001
+            continue
+        if p["plantas"] < 1 or not q.intersects(h):
+            continue
+        a = q.intersection(h).area
+        cand.append((a, p))
+    if not cand:
+        return None
+    buenos = [t for t in cand if t[0] >= 0.3 * h.area] or [max(cand, key=lambda t: t[0])]
+    a, p = max(buenos, key=lambda t: (t[1]["plantas"], t[0]))
+    if a < 0.15 * h.area:
+        return None
+    return p["plantas"], round(a / h.area, 2), p["id"]
+
+
 def fuente_propias(c, eid, calles):
     """Fotos del usuario: fotos-propias/<id o calle>/manifiesto.json [{archivo, autor, fecha, licencia, lon, lat, rumbo}]."""
     out = []
@@ -328,9 +395,23 @@ def investigar(a):
             r2, _ = consultar(c, f"commons:{cuad}", "Wikimedia Commons", lambda: fuente_commons(c, cuad, ((lo0 + lo1) / 2, (la0 + la1) / 2)))
             calles = [r[0] for r in c.execute("SELECT calle FROM edificio_calle WHERE edificio=?", (e["id"],))]
             r3, _ = consultar(c, f"propias:{e['id']}", "Foto propia", lambda: fuente_propias(c, e["id"], calles))
+            # Datos oficiales del Catastro: plantas comprobadas.
+            try:
+                rc, partes = fuente_catastro(cuad, (lo0, la0, lo1, la1))
+                pc = plantas_catastro(e, partes)
+                if pc:
+                    pl, cobertura, pid = pc
+                    c.execute("INSERT OR IGNORE INTO fotos (id, fuente, url, pagina, licencia, autor, fecha) VALUES (?,?,?,?,?,?,?)",
+                              (f"catastro:{pid}", "Catastro INSPIRE BU", None, "https://www.catastro.hacienda.gob.es/", "Reutilización libre citando a la DG del Catastro", "Dirección General del Catastro", time.strftime("%Y-%m-%d")))
+                    c.execute("INSERT OR REPLACE INTO observaciones VALUES (?,?,?,?,?,?,?,?)",
+                              (e["id"], "plantas", str(pl), "comprobado", round(0.75 + 0.2 * min(1, cobertura), 2), f"catastro:{pid}", "Catastro", ahora()))
+                c.execute("INSERT OR REPLACE INTO consultas VALUES (?,?,?,?,?)", (f"catastro:{cuad}", "Catastro INSPIRE BU", ahora(), rc, len(partes)))
+            except Exception as ex:  # noqa: BLE001
+                c.execute("INSERT OR REPLACE INTO consultas VALUES (?,?,?,?,?)", (f"catastro:{cuad}", "Catastro INSPIRE BU", ahora(), f"sin_acceso: {str(ex)[:120]}", 0))
             n = asociar_fotos(c, e)
             mover(c, e["id"], "REFERENCIAS_ENCONTRADAS" if n else "SIN_REFERENCIAS", f"{n} fotos")
-            ficha(c, e["id"], {"Mapillary": r1, "Wikimedia Commons": r2, "Fotos propias": r3})
+            rcat = c.execute("SELECT resultado FROM consultas WHERE clave=?", (f"catastro:{cuad}",)).fetchone()
+            ficha(c, e["id"], {"Catastro": rcat[0] if rcat else None, "Mapillary": r1, "Wikimedia Commons": r2, "Fotos propias": r3})
         except Exception as ex:  # noqa: BLE001
             mover(c, e["id"], "ERROR", error=str(ex)[:300])
         c.commit()
@@ -498,6 +579,7 @@ def estadisticas(c):
         "total": t("SELECT COUNT(*) FROM edificios"),
         "investigados": t("SELECT COUNT(*) FROM edificios WHERE estado!='PENDIENTE'"),
         "con_referencias": t("SELECT COUNT(DISTINCT edificio) FROM foto_edificio"),
+        "con_datos_oficiales": t("SELECT COUNT(DISTINCT edificio) FROM observaciones WHERE autor='Catastro'"),
         "modelados": t("SELECT COUNT(*) FROM edificios WHERE lote IS NOT NULL"),
         "integrados": t("SELECT COUNT(*) FROM edificios WHERE estado='INTEGRADO'"),
         "calles": t("SELECT COUNT(*) FROM calles WHERE edificios>0"),
