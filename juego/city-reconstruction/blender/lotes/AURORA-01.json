@@ -1,0 +1,2067 @@
+{
+ "nombre": "AURORA-01",
+ "origen": [
+  2325,
+  4052
+ ],
+ "nota": "Coordenadas del juego (x, y del mapa; 1 unidad = 1 m). Datos: OSM/Overture/IGN vía scripts/sector.",
+ "edificios": [
+  {
+   "id": "B-r18344388",
+   "osm": "r18344388",
+   "overture": "5caa07a6-3193-4390-ad19-2acc4b41270f",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2303.44,
+     4055.78
+    ],
+    [
+     2301.86,
+     4064.4
+    ],
+    [
+     2297.48,
+     4092.75
+    ],
+    [
+     2279.15,
+     4090.22
+    ],
+    [
+     2285.14,
+     4052.59
+    ],
+    [
+     2291.55,
+     4010.71
+    ],
+    [
+     2330.28,
+     4015.07
+    ],
+    [
+     2326.17,
+     4055.98
+    ],
+    [
+     2321.26,
+     4056.61
+    ],
+    [
+     2314.71,
+     4056.86
+    ],
+    [
+     2308.16,
+     4057.61
+    ],
+    [
+     2306.77,
+     4055.09
+    ]
+   ],
+   "patios": [
+    [
+     [
+      2300.1,
+      4025.5
+     ],
+     [
+      2300.65,
+      4021.84
+     ],
+     [
+      2297.46,
+      4021.36
+     ],
+     [
+      2296.91,
+      4025.02
+     ]
+    ],
+    [
+     [
+      2295.72,
+      4031.47
+     ],
+     [
+      2295.21,
+      4035.24
+     ],
+     [
+      2298.9,
+      4035.75
+     ],
+     [
+      2299.42,
+      4031.98
+     ]
+    ],
+    [
+     [
+      2296.86,
+      4048.44
+     ],
+     [
+      2297.48,
+      4044.29
+     ],
+     [
+      2293.85,
+      4043.75
+     ],
+     [
+      2293.24,
+      4047.9
+     ]
+    ],
+    [
+     [
+      2296.21,
+      4056.14
+     ],
+     [
+      2296.71,
+      4053.11
+     ],
+     [
+      2293.33,
+      4052.56
+     ],
+     [
+      2292.83,
+      4055.59
+     ]
+    ],
+    [
+     [
+      2293.88,
+      4064.21
+     ],
+     [
+      2290.66,
+      4063.75
+     ],
+     [
+      2290.2,
+      4066.95
+     ],
+     [
+      2293.42,
+      4067.4
+     ]
+    ],
+    [
+     [
+      2289.02,
+      4074.58
+     ],
+     [
+      2288.55,
+      4078.32
+     ],
+     [
+      2292.08,
+      4078.75
+     ],
+     [
+      2292.54,
+      4075.03
+     ]
+    ],
+    [
+     [
+      2288.11,
+      4082.94
+     ],
+     [
+      2287.46,
+      4086.94
+     ],
+     [
+      2291.02,
+      4087.52
+     ],
+     [
+      2291.67,
+      4083.51
+     ]
+    ]
+   ],
+   "caras": [
+    "patio",
+    "patio",
+    "medianera",
+    "calle",
+    "calle",
+    "medianera",
+    "patio",
+    "medianera",
+    "patio",
+    "medianera",
+    "patio",
+    "patio"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Carteya",
+    "Calle Carteya",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 2327.5,
+   "frente": 80.5,
+   "esquina": false,
+   "plantas": 5,
+   "alturaM": 15.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2287.71,
+     4052.99
+    ],
+    [
+     2294.12,
+     4011.1
+    ],
+    [
+     2294.01,
+     4011.0
+    ],
+    [
+     2330.26,
+     4015.08
+    ],
+    [
+     2326.17,
+     4055.95
+    ],
+    [
+     2321.26,
+     4056.61
+    ],
+    [
+     2314.71,
+     4056.86
+    ],
+    [
+     2308.19,
+     4057.6
+    ],
+    [
+     2306.77,
+     4055.09
+    ],
+    [
+     2303.44,
+     4055.78
+    ],
+    [
+     2301.86,
+     4064.4
+    ],
+    [
+     2297.45,
+     4092.74
+    ],
+    [
+     2281.73,
+     4090.54
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#D98A6A",
+   "zocalo": false,
+   "pb": "portal",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-r16846406",
+   "osm": "r16846406",
+   "overture": "89423c63-9de5-4c72-a4aa-f7b9b65f1dcc",
+   "fuente": "OpenStreetMap",
+   "nombre": "Edificio Las Flores",
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2337.19,
+     4047.31
+    ],
+    [
+     2337.73,
+     4040.3
+    ],
+    [
+     2341.44,
+     4040.38
+    ],
+    [
+     2341.48,
+     4044.27
+    ],
+    [
+     2344.18,
+     4044.22
+    ],
+    [
+     2344.68,
+     4040.73
+    ],
+    [
+     2352.94,
+     4041.09
+    ],
+    [
+     2353.15,
+     4086.58
+    ],
+    [
+     2344.09,
+     4086.28
+    ],
+    [
+     2331.09,
+     4086.12
+    ],
+    [
+     2331.09,
+     4082.48
+    ],
+    [
+     2324.79,
+     4082.41
+    ],
+    [
+     2324.54,
+     4085.37
+    ],
+    [
+     2316.73,
+     4085.11
+    ],
+    [
+     2316.48,
+     4083.86
+    ],
+    [
+     2309.61,
+     4083.58
+    ],
+    [
+     2303.63,
+     4060.63
+    ],
+    [
+     2307.65,
+     4060.63
+    ],
+    [
+     2308.16,
+     4057.61
+    ],
+    [
+     2314.71,
+     4056.86
+    ],
+    [
+     2314.83,
+     4059.12
+    ],
+    [
+     2321.76,
+     4059.37
+    ],
+    [
+     2321.26,
+     4056.61
+    ],
+    [
+     2326.17,
+     4055.98
+    ],
+    [
+     2326.55,
+     4057.86
+    ],
+    [
+     2332.47,
+     4057.61
+    ],
+    [
+     2331.84,
+     4047.82
+    ]
+   ],
+   "patios": [
+    [
+     [
+      2342.54,
+      4055.23
+     ],
+     [
+      2338.03,
+      4055.08
+     ],
+     [
+      2338.03,
+      4058.58
+     ],
+     [
+      2342.44,
+      4058.78
+     ]
+    ],
+    [
+     [
+      2342.04,
+      4071.17
+     ],
+     [
+      2342.04,
+      4067.01
+     ],
+     [
+      2337.59,
+      4066.96
+     ],
+     [
+      2337.75,
+      4070.97
+     ]
+    ],
+    [
+     [
+      2341.53,
+      4082.03
+     ],
+     [
+      2341.64,
+      4078.7
+     ],
+     [
+      2336.75,
+      4078.53
+     ],
+     [
+      2336.79,
+      4081.86
+     ]
+    ],
+    [
+     [
+      2312.56,
+      4067.65
+     ],
+     [
+      2312.63,
+      4070.48
+     ],
+     [
+      2311.32,
+      4070.68
+     ],
+     [
+      2311.66,
+      4073.16
+     ],
+     [
+      2319.28,
+      4073.51
+     ],
+     [
+      2319.41,
+      4072.13
+     ],
+     [
+      2322.6,
+      4072.26
+     ],
+     [
+      2322.74,
+      4073.51
+     ],
+     [
+      2335.4,
+      4073.72
+     ],
+     [
+      2335.54,
+      4065.44
+     ],
+     [
+      2322.6,
+      4064.75
+     ],
+     [
+      2322.46,
+      4066.62
+     ],
+     [
+      2319.41,
+      4066.62
+     ],
+     [
+      2319.34,
+      4064.68
+     ],
+     [
+      2311.32,
+      4064.68
+     ],
+     [
+      2311.11,
+      4067.58
+     ]
+    ]
+   ],
+   "caras": [
+    "patio",
+    "medianera",
+    "patio",
+    "patio",
+    "calle",
+    "medianera",
+    "calle",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "patio"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "Calle de las Flores",
+    "",
+    "Calle de las Flores",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 1328.6,
+   "frente": 49.0,
+   "esquina": false,
+   "plantas": 5,
+   "alturaM": 15.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2307.65,
+     4060.63
+    ],
+    [
+     2308.2,
+     4057.6
+    ],
+    [
+     2314.67,
+     4056.87
+    ],
+    [
+     2314.83,
+     4059.12
+    ],
+    [
+     2321.76,
+     4059.37
+    ],
+    [
+     2321.31,
+     4056.6
+    ],
+    [
+     2326.13,
+     4055.98
+    ],
+    [
+     2326.55,
+     4057.86
+    ],
+    [
+     2332.47,
+     4057.61
+    ],
+    [
+     2331.85,
+     4047.85
+    ],
+    [
+     2337.19,
+     4047.31
+    ],
+    [
+     2337.75,
+     4040.31
+    ],
+    [
+     2341.42,
+     4040.39
+    ],
+    [
+     2341.48,
+     4044.27
+    ],
+    [
+     2344.18,
+     4044.22
+    ],
+    [
+     2346.75,
+     4044.59
+    ],
+    [
+     2347.25,
+     4041.1
+    ],
+    [
+     2345.64,
+     4040.79
+    ],
+    [
+     2350.86,
+     4041.0
+    ],
+    [
+     2350.34,
+     4041.1
+    ],
+    [
+     2350.54,
+     4086.46
+    ],
+    [
+     2331.13,
+     4086.12
+    ],
+    [
+     2331.09,
+     4082.48
+    ],
+    [
+     2324.79,
+     4082.41
+    ],
+    [
+     2324.49,
+     4085.37
+    ],
+    [
+     2316.76,
+     4085.11
+    ],
+    [
+     2316.48,
+     4083.86
+    ],
+    [
+     2309.63,
+     4083.58
+    ],
+    [
+     2303.64,
+     4060.67
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#F2EBDD",
+   "zocalo": false,
+   "pb": "portal",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462231",
+   "osm": "w1259462231",
+   "overture": "27f2997a-53f0-4db7-b0af-5a30a7d764d4",
+   "fuente": "OpenStreetMap",
+   "nombre": "Edf. Aurora Mercado",
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2297.48,
+     4092.75
+    ],
+    [
+     2296.24,
+     4095.12
+    ],
+    [
+     2310.38,
+     4096.55
+    ],
+    [
+     2309.59,
+     4114.94
+    ],
+    [
+     2275.88,
+     4113.04
+    ],
+    [
+     2279.15,
+     4090.22
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "medianera",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Aurora",
+    "Calle Carteya",
+    ""
+   ],
+   "area": 678.2,
+   "frente": 56.8,
+   "esquina": true,
+   "plantas": 5,
+   "alturaM": 15.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2281.77,
+     4090.58
+    ],
+    [
+     2297.42,
+     4092.74
+    ],
+    [
+     2296.24,
+     4095.12
+    ],
+    [
+     2310.36,
+     4096.56
+    ],
+    [
+     2309.69,
+     4112.31
+    ],
+    [
+     2278.88,
+     4110.6
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#E8C35A",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462235",
+   "osm": "w1259462235",
+   "overture": "1a63f2d5-eeb6-48d8-a02d-54253c7a944e",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2324.72,
+     4105.05
+    ],
+    [
+     2325.32,
+     4099.16
+    ],
+    [
+     2333.63,
+     4100.12
+    ],
+    [
+     2332.48,
+     4116.5
+    ],
+    [
+     2318.61,
+     4115.5
+    ],
+    [
+     2318.93,
+     4106.49
+    ],
+    [
+     2317.73,
+     4106.37
+    ],
+    [
+     2317.77,
+     4104.45
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "patio"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Aurora",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 204.2,
+   "frente": 13.9,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E6CFA0",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462249",
+   "osm": "w1259462249",
+   "overture": "b8075dce-0785-463f-986b-23960eecd526",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2352.94,
+     4041.09
+    ],
+    [
+     2344.68,
+     4040.73
+    ],
+    [
+     2341.44,
+     4040.38
+    ],
+    [
+     2337.73,
+     4040.3
+    ],
+    [
+     2337.85,
+     4039.13
+    ],
+    [
+     2335.22,
+     4039.06
+    ],
+    [
+     2335.01,
+     4030.37
+    ],
+    [
+     2343.25,
+     4030.55
+    ],
+    [
+     2343.18,
+     4033.05
+    ],
+    [
+     2346.02,
+     4032.99
+    ],
+    [
+     2346.08,
+     4030.61
+    ],
+    [
+     2353.01,
+     4030.78
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "patio",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "",
+    "Calle de las Flores"
+   ],
+   "area": 169.6,
+   "frente": 18.0,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EBC9B8",
+   "zocalo": false,
+   "pb": "portal",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462234",
+   "osm": "w1259462234",
+   "overture": "dce3dcd6-e7aa-461f-b6fa-f71cd16681c2",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2342.78,
+     4117.14
+    ],
+    [
+     2332.48,
+     4116.5
+    ],
+    [
+     2333.63,
+     4100.12
+    ],
+    [
+     2343.99,
+     4101.09
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "medianera",
+    "patio",
+    "medianera"
+   ],
+   "calles": [
+    "Calle Aurora",
+    "",
+    "",
+    ""
+   ],
+   "area": 168.5,
+   "frente": 10.3,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#EFE3C6",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462233",
+   "osm": "w1259462233",
+   "overture": "72d9acf0-51bd-4dff-96a8-dacb6e438ce2",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2353.02,
+     4100.97
+    ],
+    [
+     2353.43,
+     4117.82
+    ],
+    [
+     2342.78,
+     4117.14
+    ],
+    [
+     2343.99,
+     4101.09
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "Calle Aurora",
+    "",
+    "Calle de las Flores"
+   ],
+   "area": 162.1,
+   "frente": 36.6,
+   "esquina": true,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E8C35A",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462232",
+   "osm": "w1259462232",
+   "overture": "cd7ac683-5100-4d42-83ea-3da58529d2db",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2317.97,
+     4097.24
+    ],
+    [
+     2317.73,
+     4106.37
+    ],
+    [
+     2318.93,
+     4106.49
+    ],
+    [
+     2318.61,
+     4115.5
+    ],
+    [
+     2309.59,
+     4114.94
+    ],
+    [
+     2310.38,
+     4096.55
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "patio"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Aurora",
+    "",
+    ""
+   ],
+   "area": 152.6,
+   "frente": 9.0,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E9B38F",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462248",
+   "osm": "w1259462248",
+   "overture": "17e9b43c-eda1-4d84-9132-97848e8371c7",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2337.92,
+     4023.4
+    ],
+    [
+     2338.55,
+     4021.59
+    ],
+    [
+     2352.95,
+     4022.14
+    ],
+    [
+     2353.01,
+     4030.78
+    ],
+    [
+     2335.57,
+     4030.37
+    ],
+    [
+     2335.91,
+     4023.47
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "calle",
+    "calle",
+    "calle",
+    "patio",
+    "patio"
+   ],
+   "calles": [
+    "",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "",
+    ""
+   ],
+   "area": 146.4,
+   "frente": 40.5,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#C9533E",
+   "zocalo": false,
+   "pb": "portal",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462243",
+   "osm": "w1259462243",
+   "overture": "49842f59-f6f3-4f33-ab53-607526e0b465",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2330.85,
+     3999.74
+    ],
+    [
+     2330.3,
+     4012.85
+    ],
+    [
+     2326.56,
+     4012.67
+    ],
+    [
+     2326.47,
+     4011.57
+    ],
+    [
+     2319.95,
+     4011.4
+    ],
+    [
+     2319.59,
+     3998.94
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle Granada"
+   ],
+   "area": 136.5,
+   "frente": 11.3,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "burguesa",
+   "revestimiento": "revoco",
+   "color": "#E6CFA0",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462230",
+   "osm": "w1259462230",
+   "overture": "31eba2cb-f89d-45b2-9814-149e2cf2c6e3",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2300.12,
+     3998.24
+    ],
+    [
+     2300.74,
+     4011.71
+    ],
+    [
+     2289.3,
+     4010.39
+    ],
+    [
+     2291.43,
+     3998.19
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "calle",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "Calle Carteya",
+    "Calle Granada"
+   ],
+   "area": 129.6,
+   "frente": 21.1,
+   "esquina": true,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#F2EBDD",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462247",
+   "osm": "w1259462247",
+   "overture": "2f06c3eb-d7c4-43cb-bcbb-e5b21f3c3095",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2351.82,
+     4000.28
+    ],
+    [
+     2352.58,
+     4011.03
+    ],
+    [
+     2340.35,
+     4010.94
+    ],
+    [
+     2340.53,
+     4000.01
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "",
+    "Calle Granada"
+   ],
+   "area": 127.5,
+   "frente": 34.3,
+   "esquina": true,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#E6CFA0",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462241",
+   "osm": "w1259462241",
+   "overture": "52cdb3c3-b756-4788-bbdb-2ab35384fc47",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2315.3,
+     3998.67
+    ],
+    [
+     2315.35,
+     4013.33
+    ],
+    [
+     2308.09,
+     4012.48
+    ],
+    [
+     2307.54,
+     3998.39
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Granada"
+   ],
+   "area": 107.8,
+   "frente": 7.8,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "burguesa",
+   "revestimiento": "revoco",
+   "color": "#C9533E",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462244",
+   "osm": "w1259462244",
+   "overture": "ab19fcb5-3e60-4d69-b26c-d5e2ccd4c801",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2340.53,
+     4000.01
+    ],
+    [
+     2340.35,
+     4010.94
+    ],
+    [
+     2330.39,
+     4010.59
+    ],
+    [
+     2330.85,
+     3999.74
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "patio",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Granada"
+   ],
+   "area": 107.0,
+   "frente": 9.7,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "burguesa",
+   "revestimiento": "revoco",
+   "color": "#C9533E",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1329978385",
+   "osm": "w1329978385",
+   "overture": "24912b80-e940-4e59-afe8-d441fc0805ec",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2321.74,
+     4095.24
+    ],
+    [
+     2322.69,
+     4092.78
+    ],
+    [
+     2334.3,
+     4093.81
+    ],
+    [
+     2333.63,
+     4100.12
+    ],
+    [
+     2325.32,
+     4099.16
+    ],
+    [
+     2317.92,
+     4098.71
+    ],
+    [
+     2317.97,
+     4097.24
+    ],
+    [
+     2316.67,
+     4097.13
+    ],
+    [
+     2315.5,
+     4094.86
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "patio",
+    "medianera",
+    "medianera",
+    "patio",
+    "patio"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 93.3,
+   "frente": 0,
+   "esquina": false,
+   "plantas": 1,
+   "alturaM": 3.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "anexo",
+   "revestimiento": "revoco",
+   "color": "#EDE9E0",
+   "zocalo": false,
+   "pb": "vivienda",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462240",
+   "osm": "w1259462240",
+   "overture": "fc107114-631d-4929-8fed-2e2f6753899e",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2307.54,
+     3998.39
+    ],
+    [
+     2308.09,
+     4012.48
+    ],
+    [
+     2303.91,
+     4012.04
+    ],
+    [
+     2303.89,
+     4007.59
+    ],
+    [
+     2300.55,
+     4007.77
+    ],
+    [
+     2300.12,
+     3998.24
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "patio",
+    "patio",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle Granada"
+   ],
+   "area": 87.9,
+   "frente": 7.4,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "tejadillo",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EBC9B8",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1259462242",
+   "osm": "w1259462242",
+   "overture": "03857e46-8a5d-477d-80b9-2efea83d9471",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2319.59,
+     3998.94
+    ],
+    [
+     2320.02,
+     4013.87
+    ],
+    [
+     2315.35,
+     4013.33
+    ],
+    [
+     2315.35,
+     4011.87
+    ],
+    [
+     2317.31,
+     4011.69
+    ],
+    [
+     2317.4,
+     4006.59
+    ],
+    [
+     2315.33,
+     4007.04
+    ],
+    [
+     2315.3,
+     3998.67
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle Granada"
+   ],
+   "area": 56.2,
+   "frente": 4.3,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "tejadillo",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EBC9B8",
+   "zocalo": true,
+   "pb": "vivienda",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  },
+  {
+   "id": "B-w1329978384",
+   "osm": "w1329978384",
+   "overture": "337f2f69-f8fc-4a6a-8163-025181ea891b",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_25",
+   "huella": [
+    [
+     2353.15,
+     4086.58
+    ],
+    [
+     2352.96,
+     4091.98
+    ],
+    [
+     2343.91,
+     4091.68
+    ],
+    [
+     2344.09,
+     4086.28
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "patio",
+    "medianera"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "",
+    ""
+   ],
+   "area": 49.0,
+   "frente": 14.5,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "burguesa",
+   "revestimiento": "revoco",
+   "color": "#E9B38F",
+   "zocalo": true,
+   "pb": "vivienda",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "estimada por reglas (huella, frente, barrio y vecinos con dato real)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": []
+  }
+ ]
+}

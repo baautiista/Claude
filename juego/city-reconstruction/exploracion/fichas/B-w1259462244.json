@@ -1,0 +1,110 @@
+{
+ "id": "B-w1259462244",
+ "osm": "w1259462244",
+ "overture": "ab19fcb5-3e60-4d69-b26c-d5e2ccd4c801",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle Granada"
+ ],
+ "coordenadas": {
+  "juego": [
+   2335.5,
+   4005.3
+  ],
+  "lon": -5.350204,
+  "lat": 36.1644
+ },
+ "geometria": {
+  "huella": [
+   [
+    2340.53,
+    4000.01
+   ],
+   [
+    2340.35,
+    4010.94
+   ],
+   [
+    2330.39,
+    4010.59
+   ],
+   [
+    2330.85,
+    3999.74
+   ]
+  ],
+  "area_m2": 107.0,
+  "caras": [
+   "medianera",
+   "patio",
+   "medianera",
+   "calle"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 3,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 9.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "burguesa",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "revoco",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#C9533E",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "comercio",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:18",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

@@ -1,0 +1,225 @@
+{
+ "id": "B-r16846406",
+ "osm": "r16846406",
+ "overture": "89423c63-9de5-4c72-a4aa-f7b9b65f1dcc",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle de las Flores"
+ ],
+ "coordenadas": {
+  "juego": [
+   2328.2,
+   4062.6
+  ],
+  "lon": -5.350286,
+  "lat": 36.163884
+ },
+ "geometria": {
+  "huella": [
+   [
+    2337.19,
+    4047.31
+   ],
+   [
+    2337.73,
+    4040.3
+   ],
+   [
+    2341.44,
+    4040.38
+   ],
+   [
+    2341.48,
+    4044.27
+   ],
+   [
+    2344.18,
+    4044.22
+   ],
+   [
+    2344.68,
+    4040.73
+   ],
+   [
+    2352.94,
+    4041.09
+   ],
+   [
+    2353.15,
+    4086.58
+   ],
+   [
+    2344.09,
+    4086.28
+   ],
+   [
+    2331.09,
+    4086.12
+   ],
+   [
+    2331.09,
+    4082.48
+   ],
+   [
+    2324.79,
+    4082.41
+   ],
+   [
+    2324.54,
+    4085.37
+   ],
+   [
+    2316.73,
+    4085.11
+   ],
+   [
+    2316.48,
+    4083.86
+   ],
+   [
+    2309.61,
+    4083.58
+   ],
+   [
+    2303.63,
+    4060.63
+   ],
+   [
+    2307.65,
+    4060.63
+   ],
+   [
+    2308.16,
+    4057.61
+   ],
+   [
+    2314.71,
+    4056.86
+   ],
+   [
+    2314.83,
+    4059.12
+   ],
+   [
+    2321.76,
+    4059.37
+   ],
+   [
+    2321.26,
+    4056.61
+   ],
+   [
+    2326.17,
+    4055.98
+   ],
+   [
+    2326.55,
+    4057.86
+   ],
+   [
+    2332.47,
+    4057.61
+   ],
+   [
+    2331.84,
+    4047.82
+   ]
+  ],
+  "area_m2": 1328.6,
+  "caras": [
+   "patio",
+   "medianera",
+   "patio",
+   "patio",
+   "calle",
+   "medianera",
+   "calle",
+   "medianera",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "patio",
+   "medianera",
+   "patio",
+   "patio",
+   "patio",
+   "medianera",
+   "patio",
+   "patio",
+   "patio",
+   "patio"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 5,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 15.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "bloque",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "revoco",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#F2EBDD",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "portal",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:15",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

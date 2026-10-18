@@ -1,0 +1,130 @@
+{
+ "id": "B-w1259462235",
+ "osm": "w1259462235",
+ "overture": "1a63f2d5-eeb6-48d8-a02d-54253c7a944e",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle Aurora"
+ ],
+ "coordenadas": {
+  "juego": [
+   2323.6,
+   4106.7
+  ],
+  "lon": -5.350336,
+  "lat": 36.163486
+ },
+ "geometria": {
+  "huella": [
+   [
+    2324.72,
+    4105.05
+   ],
+   [
+    2325.32,
+    4099.16
+   ],
+   [
+    2333.63,
+    4100.12
+   ],
+   [
+    2332.48,
+    4116.5
+   ],
+   [
+    2318.61,
+    4115.5
+   ],
+   [
+    2318.93,
+    4106.49
+   ],
+   [
+    2317.73,
+    4106.37
+   ],
+   [
+    2317.77,
+    4104.45
+   ]
+  ],
+  "area_m2": 204.2,
+  "caras": [
+   "patio",
+   "medianera",
+   "medianera",
+   "calle",
+   "medianera",
+   "medianera",
+   "medianera",
+   "patio"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 4,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 12.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "comercial",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "piedra_pb",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#E6CFA0",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "comercio",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:17",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

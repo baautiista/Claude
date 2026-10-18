@@ -1,0 +1,120 @@
+{
+ "id": "B-w1259462232",
+ "osm": "w1259462232",
+ "overture": "cd7ac683-5100-4d42-83ea-3da58529d2db",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle Aurora"
+ ],
+ "coordenadas": {
+  "juego": [
+   2315.5,
+   4106.2
+  ],
+  "lon": -5.350427,
+  "lat": 36.163491
+ },
+ "geometria": {
+  "huella": [
+   [
+    2317.97,
+    4097.24
+   ],
+   [
+    2317.73,
+    4106.37
+   ],
+   [
+    2318.93,
+    4106.49
+   ],
+   [
+    2318.61,
+    4115.5
+   ],
+   [
+    2309.59,
+    4114.94
+   ],
+   [
+    2310.38,
+    4096.55
+   ]
+  ],
+  "area_m2": 152.6,
+  "caras": [
+   "patio",
+   "medianera",
+   "medianera",
+   "calle",
+   "medianera",
+   "patio"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 4,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 12.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "comercial",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "piedra_pb",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#E9B38F",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "comercio",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:16",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

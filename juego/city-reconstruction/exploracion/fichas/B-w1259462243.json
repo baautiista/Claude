@@ -1,0 +1,120 @@
+{
+ "id": "B-w1259462243",
+ "osm": "w1259462243",
+ "overture": "49842f59-f6f3-4f33-ab53-607526e0b465",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle Granada"
+ ],
+ "coordenadas": {
+  "juego": [
+   2325.6,
+   4007.9
+  ],
+  "lon": -5.350314,
+  "lat": 36.164377
+ },
+ "geometria": {
+  "huella": [
+   [
+    2330.85,
+    3999.74
+   ],
+   [
+    2330.3,
+    4012.85
+   ],
+   [
+    2326.56,
+    4012.67
+   ],
+   [
+    2326.47,
+    4011.57
+   ],
+   [
+    2319.95,
+    4011.4
+   ],
+   [
+    2319.59,
+    3998.94
+   ]
+  ],
+  "area_m2": 136.5,
+  "caras": [
+   "medianera",
+   "patio",
+   "patio",
+   "patio",
+   "medianera",
+   "calle"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 4,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 12.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "burguesa",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "revoco",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#E6CFA0",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "comercio",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:18",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

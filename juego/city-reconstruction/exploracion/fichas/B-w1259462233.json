@@ -1,0 +1,111 @@
+{
+ "id": "B-w1259462233",
+ "osm": "w1259462233",
+ "overture": "72d9acf0-51bd-4dff-96a8-dacb6e438ce2",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle Aurora",
+  "Calle de las Flores"
+ ],
+ "coordenadas": {
+  "juego": [
+   2348.3,
+   4109.3
+  ],
+  "lon": -5.350062,
+  "lat": 36.163463
+ },
+ "geometria": {
+  "huella": [
+   [
+    2353.02,
+    4100.97
+   ],
+   [
+    2353.43,
+    4117.82
+   ],
+   [
+    2342.78,
+    4117.14
+   ],
+   [
+    2343.99,
+    4101.09
+   ]
+  ],
+  "area_m2": 162.1,
+  "caras": [
+   "calle",
+   "calle",
+   "medianera",
+   "calle"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 4,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 12.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "comercial",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "piedra_pb",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#E8C35A",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "comercio",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:16",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

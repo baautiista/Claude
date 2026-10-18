@@ -1,0 +1,110 @@
+{
+ "id": "B-w1329978384",
+ "osm": "w1329978384",
+ "overture": "337f2f69-f8fc-4a6a-8163-025181ea891b",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle de las Flores"
+ ],
+ "coordenadas": {
+  "juego": [
+   2348.5,
+   4089.1
+  ],
+  "lon": -5.350059,
+  "lat": 36.163644
+ },
+ "geometria": {
+  "huella": [
+   [
+    2353.15,
+    4086.58
+   ],
+   [
+    2352.96,
+    4091.98
+   ],
+   [
+    2343.91,
+    4091.68
+   ],
+   [
+    2344.09,
+    4086.28
+   ]
+  ],
+  "area_m2": 49.0,
+  "caras": [
+   "calle",
+   "calle",
+   "patio",
+   "medianera"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 3,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 9.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "burguesa",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "revoco",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#E9B38F",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "vivienda",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:19",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

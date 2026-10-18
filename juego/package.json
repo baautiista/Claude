@@ -15,6 +15,7 @@
     "importar": "python3 scripts/sector/importar.py"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1",
     "@types/node": "^26.6.5",
     "@types/three": "^0.169.0",
     "@types/ws": "^8.18.2",

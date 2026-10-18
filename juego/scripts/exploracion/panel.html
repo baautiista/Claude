@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reconstrucción de La Línea</title>
+<style>
+  :root { --azul: #1F5EFF; --lima: #C4E910; --rosa: #FF1254; --fondo: #F4F5F8; --tarjeta: #FFFFFF; --texto: #15171C; --suave: #5B6170; --borde: #E2E5EC; }
+  @media (prefers-color-scheme: dark) { :root { --fondo: #0F1218; --tarjeta: #171B23; --texto: #EEF0F4; --suave: #9AA1B0; --borde: #262C38; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fondo); color: var(--texto); font: 15px/1.45 Inter, system-ui, sans-serif; }
+  header { background: var(--azul); color: #fff; padding: 18px 20px; }
+  header h1 { margin: 0; font: 700 22px Poppins, system-ui, sans-serif; }
+  header p { margin: 4px 0 0; opacity: .85; font-size: 13px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; }
+  .cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .cifra { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px; padding: 12px; }
+  .cifra b { display: block; font: 700 28px Poppins, system-ui, sans-serif; }
+  .cifra span { color: var(--suave); font-size: 13px; }
+  .cifra.alerta b { color: var(--rosa); }
+  section { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px; padding: 14px; overflow-x: auto; }
+  h2 { margin: 0 0 10px; font: 600 16px Poppins, system-ui, sans-serif; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--borde); white-space: nowrap; }
+  th { color: var(--suave); font-weight: 600; }
+  .barra { height: 8px; background: var(--borde); border-radius: 4px; min-width: 120px; }
+  .barra i { display: block; height: 100%; background: var(--azul); border-radius: 4px; }
+  select, button { font: inherit; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--borde); background: var(--tarjeta); color: var(--texto); }
+  .estado { display: inline-block; padding: 1px 8px; border-radius: 10px; background: var(--borde); font-size: 12px; }
+  .vacio { color: var(--suave); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Reconstrucción de La Línea City</h1>
+  <p>Exploración, referencias, modelos de Blender e integración en el juego · <span id="hora"></span></p>
+</header>
+<main>
+  <div class="cifras" id="cifras"></div>
+  <section><h2>Cola de trabajo</h2><div id="estados"></div></section>
+  <section><h2>Avance por barrio y prioridad</h2><table id="barrios"></table></section>
+  <section><h2>Fuentes consultadas</h2><table id="consultas"></table></section>
+  <section><h2>Errores</h2><table id="errores"></table></section>
+  <section><h2>Últimos movimientos</h2><table id="eventos"></table></section>
+</main>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+async function cargar() {
+  const d = await (await fetch("/api/estado")).json();
+  $("#hora").textContent = new Date().toLocaleString("es-ES");
+  const c = [
+    ["Edificios", d.total], ["Investigados", d.investigados], ["Con referencias visuales", d.con_referencias],
+    ["Modelos 3D generados", d.modelados], ["Incorporados al juego", d.integrados],
+    ["Calles completadas", `${d.calles_completadas} / ${d.calles}`], ["Pendientes de revisión", d.revisar], ["Errores", d.errores.length],
+  ];
+  $("#cifras").innerHTML = c.map(([t, v], i) => `<div class="cifra ${i >= 6 && Number(String(v).split(" ")[0]) > 0 ? "alerta" : ""}"><b>${esc(v)}</b><span>${esc(t)}</span></div>`).join("");
+  $("#estados").innerHTML = Object.entries(d.estados).map(([k, v]) => `<span class="estado">${esc(k)} · ${v}</span>`).join(" ");
+  $("#barrios").innerHTML = "<tr><th>Barrio</th><th>Edificios</th><th>Investigados</th><th>Con fotos</th><th>Integrados</th><th>Avance</th><th>Prioridad</th></tr>" +
+    d.barrios.map((b) => `<tr><td>${esc(b.barrio)}</td><td>${b.edificios}</td><td>${b.investigados}</td><td>${b.con_referencias}</td><td>${b.integrados}</td>
+      <td><div class="barra" title="${b.avance} %"><i style="width:${Math.max(1, b.avance)}%"></i></div> ${b.avance} %</td>
+      <td><select data-b="${esc(b.barrio)}">${[1,2,3,4,5,6,7,8,9].map((n) => `<option ${n === b.prioridad ? "selected" : ""}>${n}</option>`).join("")}</select></td></tr>`).join("");
+  document.querySelectorAll("select[data-b]").forEach((s) => s.onchange = async () => {
+    await fetch("/api/prioridad", { method: "POST", body: JSON.stringify({ barrio: s.dataset.b, prioridad: s.value }) });
+    cargar();
+  });
+  $("#consultas").innerHTML = "<tr><th>Fuente</th><th>Resultado</th><th>Cuadrículas</th></tr>" + (d.consultas.map((q) => `<tr><td>${esc(q.fuente)}</td><td>${esc(q.resultado)}</td><td>${q.n}</td></tr>`).join("") || '<tr><td class="vacio" colspan="3">Aún no se ha consultado ninguna fuente.</td></tr>');
+  $("#errores").innerHTML = "<tr><th>Edificio</th><th>Barrio</th><th>Error</th><th>Fecha</th></tr>" + (d.errores.map((e) => `<tr><td>${esc(e.id)}</td><td>${esc(e.barrio)}</td><td>${esc(e.error)}</td><td>${esc(e.actualizado)}</td></tr>`).join("") || '<tr><td class="vacio" colspan="4">Sin errores.</td></tr>');
+  $("#eventos").innerHTML = "<tr><th>Fecha</th><th>Edificio</th><th>De</th><th>A</th><th>Nota</th></tr>" + d.eventos.map((e) => `<tr><td>${esc(e.fecha)}</td><td>${esc(e.edificio)}</td><td>${esc(e.de)}</td><td>${esc(e.a)}</td><td>${esc(e.nota)}</td></tr>`).join("");
+}
+cargar();
+setInterval(cargar, 10000);
+</script>
+</body>
+</html>

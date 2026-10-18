@@ -1,0 +1,133 @@
+{
+ "id": "B-w1329978385",
+ "osm": "w1329978385",
+ "overture": "24912b80-e940-4e59-afe8-d441fc0805ec",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [],
+ "coordenadas": {
+  "juego": [
+   2322.9,
+   4096.6
+  ],
+  "lon": -5.350345,
+  "lat": 36.163577
+ },
+ "geometria": {
+  "huella": [
+   [
+    2321.74,
+    4095.24
+   ],
+   [
+    2322.69,
+    4092.78
+   ],
+   [
+    2334.3,
+    4093.81
+   ],
+   [
+    2333.63,
+    4100.12
+   ],
+   [
+    2325.32,
+    4099.16
+   ],
+   [
+    2317.92,
+    4098.71
+   ],
+   [
+    2317.97,
+    4097.24
+   ],
+   [
+    2316.67,
+    4097.13
+   ],
+   [
+    2315.5,
+    4094.86
+   ]
+  ],
+  "area_m2": 93.3,
+  "caras": [
+   "patio",
+   "patio",
+   "patio",
+   "medianera",
+   "patio",
+   "medianera",
+   "medianera",
+   "patio",
+   "patio"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 1,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 3.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "anexo",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "revoco",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#EDE9E0",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "vivienda",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:20",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

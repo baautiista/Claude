@@ -4,6 +4,7 @@ import type { Ctx, P2 } from "../sectores/piezas";
 import { construirEdificios, type InformeEdificios } from "./edificios";
 import { aplicar, type EdificioCiudad, type IndiceCiudad, type Tesela } from "./tipos";
 import { alCambiar, correccionDe } from "./correcciones";
+import { EDIFICIOS_BLENDER } from "./modelosBlender";
 
 /**
  * Carga progresiva de la ciudad generada: teselas de 160 m (src/datos/ciudad/teselas/*.json).
@@ -181,7 +182,8 @@ export class GestorCiudad {
 
   private construirTrozo(lod: THREE.LOD, datos: Tesela, nivel: 0 | 1 | 2, grupo: THREE.Group, desde: number) {
     const t0 = performance.now();
-    const lista = datos.edificios.slice(desde, desde + LOTE).map((q) => aplicar(q, correccionDe(q.id)));
+    // Los que ya tienen modelo de Blender no se dibujan aquí (su huella sigue en las colisiones).
+    const lista = datos.edificios.slice(desde, desde + LOTE).filter((q) => !EDIFICIOS_BLENDER.has(q.id)).map((q) => aplicar(q, correccionDe(q.id)));
     const { obra, informe } = construirEdificios(lista, this.ctx, nivel);
     const g = this.mallas(obra);
     g.position.copy(lod.position).negate();

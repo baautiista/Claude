@@ -6,3 +6,7 @@ fuentes/overture/
 fuentes/catastro/
 fuentes/estado.json
 __pycache__/
+city-reconstruction/exploracion/la-linea.sqlite
+city-reconstruction/exploracion/cache/
+city-reconstruction/exploracion/fotos/
+*.blend1

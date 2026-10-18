@@ -32,6 +32,7 @@ import { arbolesToros, CENTRO_TOROS, construirToros, solidosToros } from "./sect
 import { CENTRO_MERCADO, construirMercado, solidosMercado } from "./sectores/mercado";
 import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
+import { ModelosBlender } from "./ciudad/modelosBlender";
 import { conectarBackend } from "./ciudad/correcciones";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
@@ -2006,6 +2007,8 @@ export class Mundo {
 
   /** Ciudad generada automáticamente: teselas que se cargan y descargan según la cámara. */
   ciudad!: GestorCiudad;
+  /** Lotes de edificios modelados en Blender. */
+  blender!: ModelosBlender;
   /** Si está activo, tocar la ciudad selecciona edificios generados en vez de jugar. */
   editorCiudad: ((x: number, y: number) => void) | null = null;
   private solidosTeselas = new Map<string, P2Lista[]>();
@@ -2199,6 +2202,9 @@ export class Mundo {
     // Ciudad generada automáticamente desde datos reales (scripts/sector/ciudad.py), por teselas.
     this.ciudad = new GestorCiudad(ctx, (o) => this.escena.add(o), (o) => this.escena.remove(o), (o) => this.mallasObra(o), (id, p) => this.colisionesTesela(id, p as Punto[][] | null));
     (globalThis as unknown as { __ciudad: unknown }).__ciudad = this.ciudad;
+    // Manzanas modeladas en Blender (scripts/blender): sustituyen a los edificios procedurales.
+    this.blender = new ModelosBlender(ctx, (o) => this.escena.add(o));
+    (globalThis as unknown as { __blender: unknown }).__blender = this.blender;
     void conectarBackend();
     // Personajes de referencia del nuevo estilo, charlando junto al monumento.
     const pareja: [Aspecto, Punto, Punto][] = [
@@ -3226,6 +3232,7 @@ export class Mundo {
         this.ultimaCiudad = ahora;
         const p = this.modoPOV ? this.jugador.position : this.objetivoCam;
         this.ciudad.actualizar(p.x + CX, p.z + CY);
+        this.blender.actualizar(p.x + CX, p.z + CY);
       } else this.ciudad.paso();
     }
     // Personaje andando por la forma real de las calles.

@@ -1,0 +1,150 @@
+{
+ "id": "B-r18344388",
+ "osm": "r18344388",
+ "overture": "5caa07a6-3193-4390-ad19-2acc4b41270f",
+ "barrio": "Centro",
+ "cuadricula": "14_25",
+ "calles": [
+  "Calle Carteya"
+ ],
+ "coordenadas": {
+  "juego": [
+   2305.5,
+   4055.3
+  ],
+  "lon": -5.350538,
+  "lat": 36.163949
+ },
+ "geometria": {
+  "huella": [
+   [
+    2303.44,
+    4055.78
+   ],
+   [
+    2301.86,
+    4064.4
+   ],
+   [
+    2297.48,
+    4092.75
+   ],
+   [
+    2279.15,
+    4090.22
+   ],
+   [
+    2285.14,
+    4052.59
+   ],
+   [
+    2291.55,
+    4010.71
+   ],
+   [
+    2330.28,
+    4015.07
+   ],
+   [
+    2326.17,
+    4055.98
+   ],
+   [
+    2321.26,
+    4056.61
+   ],
+   [
+    2314.71,
+    4056.86
+   ],
+   [
+    2308.16,
+    4057.61
+   ],
+   [
+    2306.77,
+    4055.09
+   ]
+  ],
+  "area_m2": 2327.5,
+  "caras": [
+   "patio",
+   "patio",
+   "medianera",
+   "calle",
+   "calle",
+   "medianera",
+   "patio",
+   "medianera",
+   "patio",
+   "medianera",
+   "patio",
+   "patio"
+  ]
+ },
+ "atributos": {
+  "plantas": {
+   "valor": 5,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "estimada por reglas (huella, frente, barrio y vecinos con dato real)"
+  },
+  "alturaM": {
+   "valor": 15.6,
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "plantas × 3 m (baja)"
+  },
+  "tipologia": {
+   "valor": "bloque",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "revestimiento": {
+   "valor": "revoco",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "color": {
+   "valor": "#D98A6A",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "pb": {
+   "valor": "portal",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "cubierta": {
+   "valor": "azotea",
+   "estado": "inferido",
+   "confianza": "baja",
+   "fuente": "reglas del generador (scripts/sector/nucleo.py)"
+  },
+  "balcones": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "ventanas": {
+   "valor": null,
+   "estado": "desconocido"
+  },
+  "singular": {
+   "valor": null,
+   "estado": "desconocido"
+  }
+ },
+ "fotos": [],
+ "consultas": {
+  "Mapillary": "sin_token",
+  "Wikimedia Commons": "sin_acceso: <urlopen error Tunnel connection failed: 403 Forbidden>",
+  "Fotos propias": "sin_fotos"
+ },
+ "estado": "INVESTIGANDO",
+ "actualizada": "2026-10-18 19:57:15",
+ "nota": "comprobado = dato oficial u observado en una foto con licencia; inferido = reglas del generador; desconocido = sin información."
+}

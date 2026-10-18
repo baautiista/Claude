@@ -1,0 +1,130 @@
+{
+ "edificios": {
+  "B-r18344388": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 11544,
+   "problemas": []
+  },
+  "B-r16846406": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 7908,
+   "problemas": []
+  },
+  "B-w1259462231": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 7550,
+   "problemas": []
+  },
+  "B-w1259462235": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 3064,
+   "problemas": []
+  },
+  "B-w1259462249": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 2090,
+   "problemas": []
+  },
+  "B-w1259462234": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 1940,
+   "problemas": []
+  },
+  "B-w1259462233": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 7024,
+   "problemas": []
+  },
+  "B-w1259462232": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 1994,
+   "problemas": []
+  },
+  "B-w1259462248": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 4036,
+   "problemas": []
+  },
+  "B-w1259462243": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 2574,
+   "problemas": []
+  },
+  "B-w1259462230": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 2214,
+   "problemas": []
+  },
+  "B-w1259462247": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 3584,
+   "problemas": []
+  },
+  "B-w1259462241": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 994,
+   "problemas": []
+  },
+  "B-w1259462244": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 1406,
+   "problemas": []
+  },
+  "B-w1329978385": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 223,
+   "problemas": []
+  },
+  "B-w1259462240": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 636,
+   "problemas": []
+  },
+  "B-w1259462242": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 472,
+   "problemas": []
+  },
+  "B-w1329978384": {
+   "lote": "AURORA-01",
+   "generador": 1,
+   "fecha": "2026-10-18",
+   "triangulos_lod0": 2228,
+   "problemas": []
+  }
+ }
+}
