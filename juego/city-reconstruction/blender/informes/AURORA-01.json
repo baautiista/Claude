@@ -321,8 +321,28 @@
  "render_lod1": [
   "city-reconstruction/blender/render/AURORA-01-lejos.png"
  ],
+ "render_edificios": {
+  "B-r18344388": "city-reconstruction/blender/render/edificios/AURORA-01/B-r18344388.png",
+  "B-r16846406": "city-reconstruction/blender/render/edificios/AURORA-01/B-r16846406.png",
+  "B-w1259462231": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462231.png",
+  "B-w1259462235": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462235.png",
+  "B-w1259462249": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462249.png",
+  "B-w1259462234": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462234.png",
+  "B-w1259462233": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462233.png",
+  "B-w1259462232": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462232.png",
+  "B-w1259462248": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462248.png",
+  "B-w1259462243": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462243.png",
+  "B-w1259462230": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462230.png",
+  "B-w1259462247": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462247.png",
+  "B-w1259462241": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462241.png",
+  "B-w1259462244": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462244.png",
+  "B-w1329978385": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1329978385.png",
+  "B-w1259462240": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462240.png",
+  "B-w1259462242": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1259462242.png",
+  "B-w1329978384": "city-reconstruction/blender/render/edificios/AURORA-01/B-w1329978384.png"
+ },
  "glb": "public/modelos/manzanas/AURORA-01.glb",
  "glb_kb": 542,
- "segundos": 7.8,
+ "segundos": 50.7,
  "problemas": 0
 }

@@ -186,6 +186,19 @@ window.addEventListener("mi-linea:portada", () => location.reload());
 if (new URLSearchParams(location.search).has("comparar")) {
   // Comparación de interiores por gama (sin partida).
   void import("./interior/comparar").then(({ iniciarComparacion }) => iniciarComparacion(app));
+} else if (new URLSearchParams(location.search).has("revisar")) {
+  // Revisión de un edificio (panel de reconstrucción): misma cámara que el enlace a Google Earth.
+  const q = new URLSearchParams(location.search);
+  const [x, y] = (q.get("revisar") ?? "").split(",").map(Number);
+  const [mx, my] = (q.get("mira") ?? `${x},${y - 10}`).split(",").map(Number);
+  const ir = (a: number, b: number, c: number, d: number) => mundo.revisar(a, b, c, d);
+  ir(x, y, mx, my);
+  (globalThis as unknown as { __revisar: typeof ir }).__revisar = ir;
+  const rotulo = document.createElement("div");
+  rotulo.className = "rotulo-revision";
+  rotulo.textContent = q.get("etiqueta") || "Revisión";
+  rotulo.style.cssText = "position:fixed;left:12px;top:12px;z-index:50;padding:6px 10px;border-radius:8px;background:#1F5EFF;color:#fff;font:600 13px Poppins,system-ui,sans-serif";
+  app.append(rotulo);
 } else if (new URLSearchParams(location.search).has("editor")) {
   // Editor de ciudad: revisión de los sectores generados, sin portada ni partida.
   void import("./editor/editor").then(({ iniciarEditor }) => iniciarEditor(mundo, app));

@@ -2092,6 +2092,14 @@ export class Mundo {
     this.destinoCam = null;
     this.foco = null;
   }
+  /** Modo revisión: a pie de calle en (x, y) mirando hacia (mx, my) (comparación con Google Earth). */
+  revisar(x: number, y: number, mx: number, my: number) {
+    this.enfocarMapa(x, y, 40);
+    this.jugador.rotation.y = Math.atan2(mx - x, my - y);
+    if (!this.modoPOV) this.alternarPOV(true);
+    this.povYaw = 0;
+    this.povPitch = 0.12;
+  }
   /** Objetos auxiliares del editor (contorno de selección). */
   ayudaEditor(o: THREE.Object3D, poner: boolean) {
     if (poner) this.escena.add(o);

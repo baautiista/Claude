@@ -592,7 +592,7 @@ def renderizar(lote, vistas, ocultar_lod):
     for nombre, pos, mira, lente in vistas:
         cam = camara(f"Cam_{nombre}", pos, mira, lente)
         s.camera = cam
-        f = ruta("city-reconstruction", "blender", "render", f"{lote}-{nombre}.png")
+        f = ruta("city-reconstruction", "blender", "render", f"{lote}-{nombre}.png" if nombre else f"{lote}.png")
         s.render.filepath = f
         bpy.ops.render.render(write_still=True)
         salidas.append(os.path.relpath(f, RAIZ))
@@ -681,6 +681,18 @@ def main(lote):
         vistas.append(("calle", tuple(m + nn * 9 + u * 10 + Vector((0, 0, 1.7))), tuple(m - u * 6 + Vector((0, 0, 6))), 22))
     informe["render_lod0"] = renderizar(lote, vistas, ocultar_lod=1)
     informe["render_lod1"] = renderizar(lote, [("lejos", (cx + ext * 2.2, cy - ext * 2.2, ext * 1.6), (cx, cy, 4), 30)], ocultar_lod=0)
+    # Una vista por edificio, con la misma cámara que su enlace a Google Earth y su vista en el juego.
+    sys.path.insert(0, os.path.join(RAIZ, "scripts", "exploracion"))
+    import vistas
+    s = bpy.context.scene
+    s.render.resolution_x, s.render.resolution_y = 720, 540
+    por_edificio = {}
+    for e in datos["edificios"]:
+        cam, obj = vistas.vista(e["huella"], e.get("caras") or [], float(e["alturaM"]))
+        a_b = lambda p: (p[0] - o[0], -(p[1] - o[1]), p[2])  # noqa: E731
+        f = renderizar(f"edificios/{lote}/{e['id']}", [("", a_b(cam), a_b(obj), 24)], ocultar_lod=1)
+        por_edificio[e["id"]] = f[0]
+    informe["render_edificios"] = por_edificio
     informe["glb"] = os.path.relpath(glb, RAIZ)
     informe["glb_kb"] = round(os.path.getsize(glb) / 1024)
     informe["segundos"] = round(time.time() - t0, 1)
