@@ -650,6 +650,8 @@ def fuentes(_a):
         "IGN/CNIG": "https://www.ign.es/wms-inspire/pnoa-ma?SERVICE=WMS&REQUEST=GetCapabilities",
         "Catastro": "https://ovc.catastro.meh.es/INSPIRE/wfsBU.aspx?service=WFS&request=GetCapabilities",
     }
+    if os.environ.get("MAPILLARY_TOKEN"):
+        pruebas["Mapillary"] += "&" + urllib.parse.urlencode({"access_token": os.environ["MAPILLARY_TOKEN"]})
     for k, u in pruebas.items():
         try:
             with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "LaLineaCity/1.0"}), timeout=15) as r:
