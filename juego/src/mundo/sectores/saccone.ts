@@ -23,7 +23,7 @@ const PIEDRA = C("#A39276");
 const PIEDRA_CLARA = C("#D3C6AA");
 const OCRE = C("#C9963F");
 const MARMOL = C("#ECEAE3");
-const SALMON = C("#DE7A58");
+const SALMON = C("#F09A72");
 const ALBERO = C("#D8BF8E");
 const MADERA = C("#5A2019");
 
@@ -721,7 +721,7 @@ const ESCENARIO: [P2, P2] = (() => {
 
 /* ── Colegio Providencia del Sagrado Corazón ───────────────────────── */
 
-const ROJO = C("#8E2A22");
+const ROJO = C("#A3352A");
 const CREMA_COL = C("#EBD8AE");
 /** Dirección de la Av. de España en la fachada del colegio y normal hacia dentro. */
 const E_DIR: P2 = (() => {
@@ -745,8 +745,8 @@ const H_TORRE = 11.4;
 function fachadaRoja(o: Obra, L: number, alto: number, pisos: number[], conHuecos = true, puerta = -1) {
   muro(o, 0, L, 0, alto, ROJO, Mat.Muro, 0.8, 0.02);
   o.caja(Mat.Detalle, -0.02, 0, 0.02, L + 0.02, 0.5, 0.08, C("#6E201A"));
-  // Esquinas con sillares crema alternos.
-  for (const [xe, s] of [[0, 1], [L, -1]] as const) {
+  // Esquinas con sillares crema alternos (en las caras cortas del ochavo, solo una banda).
+  for (const [xe, s] of (L < 2.2 ? [[0, 1]] : [[0, 1], [L, -1]]) as [number, number][]) {
     let k = 0;
     for (let y = 0.5; y < alto - 0.4; y += 0.4, k++) {
       const w = k % 2 ? 0.3 : 0.55;
