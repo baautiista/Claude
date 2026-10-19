@@ -19,6 +19,8 @@ interface Lote {
   origen: [number, number];
   edificios: string[];
   generador: number;
+  /** Huellas de edificios que no están en la ciudad generada (colisión). */
+  solidos?: [number, number][][];
 }
 
 const LOTES = (indice as unknown as { lotes: Record<string, Lote> }).lotes;
@@ -61,7 +63,7 @@ export class ModelosBlender {
   private loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
   readonly estado: Record<string, { edificios: number; triangulos: number; ms: number; error?: string }> = {};
 
-  constructor(private ctx: Ctx, private anadir: (o: THREE.Object3D) => void) {}
+  constructor(private ctx: Ctx, private anadir: (o: THREE.Object3D) => void, private colisiones?: (id: string, polis: [number, number][][]) => void) {}
 
   /** Carga los lotes cercanos al punto (x, y del mapa). */
   actualizar(x: number, y: number) {
@@ -74,6 +76,7 @@ export class ModelosBlender {
 
   private cargar(nombre: string, l: Lote) {
     this.cargados.set(nombre, "cargando");
+    if (l.solidos?.length) this.colisiones?.(`blender:${nombre}`, l.solidos);
     const t0 = performance.now();
     const url = new URL(l.glb, document.baseURI).href;
     const alCargar = (gltf: { scene: THREE.Group }) => {

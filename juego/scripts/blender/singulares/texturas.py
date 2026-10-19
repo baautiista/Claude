@@ -221,7 +221,7 @@ def asfalto_fino(carpeta, semilla=21, n=512, nombre="T_asfalto"):
     return _imagen(nombre, base * (1 + arido + desgaste + (rng.random((n, n, 1)) - 0.5) * 0.1), carpeta)
 
 
-def baldosa(carpeta, semilla=22, n=512, nombre="T_baldosa"):
+def baldosa(carpeta, semilla=22, n=512, nombre="T_baldosa", base="#C9C6BE"):
     """Baldosa hidráulica de acera 33 × 33 cm con pastillas (gris claro; cubre 2 m)."""
     rng = np.random.default_rng(semilla)
     yy, xx = np.mgrid[0:n, 0:n] / n * 2.0
@@ -233,8 +233,8 @@ def baldosa(carpeta, semilla=22, n=512, nombre="T_baldosa"):
     py = (fy * 4) % 1
     pastilla = (((px - 0.5) ** 2 + (py - 0.5) ** 2) < 0.09)
     pieza = ((np.floor(xx / 0.333) * 7 + np.floor(yy / 0.333) * 13) % 6)[..., None] * 0.015
-    c = _hex("#C9C6BE")[None, None, :] * (0.97 + pieza + pastilla[..., None] * 0.05 + (_fbm(rng, n)[..., None] - 0.5) * 0.14)
-    c = np.where(junta[..., None], _hex("#9C978E")[None, None, :], c)
+    c = _hex(base)[None, None, :] * (0.97 + pieza + pastilla[..., None] * 0.05 + (_fbm(rng, n)[..., None] - 0.5) * 0.14)
+    c = np.where(junta[..., None], _hex(base)[None, None, :] * 0.72, c)
     return _imagen(nombre, c, carpeta)
 
 
@@ -246,7 +246,7 @@ def granito(carpeta, semilla=23, n=256, nombre="T_granito"):
     return _imagen(nombre, c, carpeta)
 
 
-def adoquin_gris(carpeta, semilla=24, n=512, nombre="T_adoquin_gris"):
+def adoquin_gris(carpeta, semilla=24, n=512, nombre="T_adoquin_gris", base="#B7AE9F"):
     """Adoquín de piedra gris-beige de calle peatonal, 20 × 10 cm a matajunta (cubre 2 m)."""
     rng = np.random.default_rng(semilla)
     yy, xx = np.mgrid[0:n, 0:n] / n * 2.0
@@ -255,7 +255,7 @@ def adoquin_gris(carpeta, semilla=24, n=512, nombre="T_adoquin_gris"):
     fy = (yy / 0.1) % 1
     junta = (np.minimum(fx, 1 - fx) < 0.04) | (np.minimum(fy, 1 - fy) < 0.07)
     pieza = (np.floor((xx + (fila % 2) * 0.1) / 0.2) * 17 + fila * 5) % 9
-    c = _hex("#B7AE9F")[None, None, :] * (0.86 + pieza[..., None] * 0.025 + (_fbm(rng, n)[..., None] - 0.5) * 0.18)
+    c = _hex(base)[None, None, :] * (0.86 + pieza[..., None] * 0.025 + (_fbm(rng, n)[..., None] - 0.5) * 0.18)
     c = np.where(junta[..., None], _hex("#7F786D")[None, None, :], c)
     return _imagen(nombre, c, carpeta)
 

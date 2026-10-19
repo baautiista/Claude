@@ -185,20 +185,26 @@ def muro_con_huecos(M, mc, s0, s1, h0, h1, huecos, col):
 
 # ── Elementos de fachada ─────────────────────────────────────────────
 
+# Color de carpintería y persianas del edificio en curso (la ficha de fachadas puede cambiarlos).
+ACTUAL = {"marco": None, "persiana": None}
+
+
 def ventana(M, mc, s0, s1, h0, h1, col_muro, r, persiana=True, reja=False, recercado=None):
+    MARCO = ACTUAL["marco"] or BLANCO
+    PERS = ACTUAL["persiana"] or PERSIANA
     prof = 0.16
     hueco(M, mc, s0, s1, h0, h1, prof, col_muro, CRISTAL)
     w = -prof + 0.02
     t = 0.06
     # Carpintería blanca: marco y parteluz.
     for (a, b, c, d) in [(s0, s0 + t, h0, h1), (s1 - t, s1, h0, h1), (s0, s1, h0, h0 + t), (s0, s1, h1 - t, h1)]:
-        rect(M, mc, a, b, c, d, w, "Metal", BLANCO)
+        rect(M, mc, a, b, c, d, w, "Metal", MARCO)
     m = (s0 + s1) / 2
-    rect(M, mc, m - 0.025, m + 0.025, h0, h1, w, "Metal", BLANCO)
+    rect(M, mc, m - 0.025, m + 0.025, h0, h1, w, "Metal", MARCO)
     if persiana:
         baj = r.choice([0.15, 0.3, 0.45, 0.6, 0.9])
         hb = h1 - (h1 - h0) * baj
-        rect(M, mc, s0 + t, s1 - t, hb, h1 - t, w + 0.012, "Metal", PERSIANA)
+        rect(M, mc, s0 + t, s1 - t, hb, h1 - t, w + 0.012, "Metal", PERS)
     # Alféizar volado.
     caja(M, mc, s0 - 0.08, s1 + 0.08, h0 - 0.07, h0, 0, 0.09, "Muro", mezclar(col_muro, BLANCO, 0.6))
     if recercado:
@@ -445,18 +451,24 @@ def cilindro(M, c, r, z0, z1, col, n=10):
 
 
 def fachada(M, mc, e, H, pisos, h_pb, h_alta, pb, tip, col, piedra, zocalo, r):
+    """Fachada a calle. Si el edificio trae `fachada` (ficha hecha con fotos), manda la ficha:
+    colores de planta baja y plantas altas, rótulos (franja de color; el texto se pone aparte),
+    balcones de forja, miradores, balcones corridos y friso de azulejo."""
+    F = e.get("fachada") or {}
     L = mc.L
     margen = 0.5
     nb = max(1, round((L - 2 * margen) / (3.2 if tip == "bloque" else 2.8)))
     bw = (L - 2 * margen) / nb
     centros = [margen + bw * (k + 0.5) for k in range(nb)]
-    col_pb = PIEDRA if piedra else col
+    col_pb = color(F["pb"]) if F.get("pb") else (PIEDRA if piedra else col)
+    col_alto = color(F["alto_color"]) if F.get("alto_color") else col
+    rotulos = F.get("rotulos") or []
     # Planta baja.
     huecos_pb = []
     puerta = nb // 2 if pb in ("portal", "vivienda") else -1
     for k, sc in enumerate(centros):
         if pb == "comercio":
-            huecos_pb.append((sc - bw / 2 + 0.3, sc + bw / 2 - 0.3, 0.15, min(h_pb - 0.6, 3.0)))
+            huecos_pb.append((sc - bw / 2 + 0.3, sc + bw / 2 - 0.3, 0.15, min(h_pb - 1.0, 2.6) if F else min(h_pb - 0.6, 3.0)))
         elif k == puerta:
             huecos_pb.append((sc - 0.7, sc + 0.7, 0.0, min(h_pb - 0.3, 2.7)))
         else:
@@ -464,18 +476,18 @@ def fachada(M, mc, e, H, pisos, h_pb, h_alta, pb, tip, col, piedra, zocalo, r):
     muro_con_huecos(M, mc, 0, L, 0, h_pb, huecos_pb, col_pb)
     for k, (a, b, c, d) in enumerate(huecos_pb):
         if pb == "comercio":
-            hueco(M, mc, a, b, c, d, 0.25, col_pb, CRISTAL_TIENDA)
-            for s in (a + 0.05, b - 0.05, (a + b) / 2):
-                caja(M, mc, s - 0.03, s + 0.03, c, d, -0.24, -0.2, "Metal", ALUMINIO)
-            # Cajón de la persiana metálica y rótulo del comercio sobre el escaparate.
+            hueco(M, mc, a, b, c, d, 0.25, col_pb, color("#9DB4C2") if F else CRISTAL_TIENDA)
+            for sx in (a + 0.05, b - 0.05, (a + b) / 2):
+                caja(M, mc, sx - 0.03, sx + 0.03, c, d, -0.24, -0.2, "Metal", ALUMINIO)
             caja(M, mc, a, b, d, d + 0.28, -0.05, 0.12, "Metal", ALUMINIO)
-            caja(M, mc, a + 0.2, b - 0.2, d + 0.32, min(h_pb - 0.05, d + 0.85), 0, 0.06, "Metal", r.choice(ROTULOS))
-            if r.random() < 0.45:
-                tl = r.choice(TOLDOS)
-                P = mc.p
-                M.poli([P(a, d + 0.3, 0.12), P(b, d + 0.3, 0.12), P(b, d - 0.25, 1.15), P(a, d - 0.25, 1.15)], "Teja", tl, (0, 0, 1))
-                M.poli([P(a, d + 0.3, 0.1), P(b, d + 0.3, 0.1), P(b, d - 0.25, 1.13), P(a, d - 0.25, 1.13)], "Teja", mezclar(tl, (0, 0, 0), 0.4), (0, 0, -1))
-                rect(M, mc, a, b, d - 0.55, d - 0.25, 1.15, "Teja", tl)
+            if not F:
+                caja(M, mc, a + 0.2, b - 0.2, d + 0.32, min(h_pb - 0.05, d + 0.85), 0, 0.06, "Metal", r.choice(ROTULOS))
+                if r.random() < 0.45:
+                    tl = r.choice(TOLDOS)
+                    P = mc.p
+                    M.poli([P(a, d + 0.3, 0.12), P(b, d + 0.3, 0.12), P(b, d - 0.25, 1.15), P(a, d - 0.25, 1.15)], "Teja", tl, (0, 0, 1))
+                    M.poli([P(a, d + 0.3, 0.1), P(b, d + 0.3, 0.1), P(b, d - 0.25, 1.13), P(a, d - 0.25, 1.13)], "Teja", mezclar(tl, (0, 0, 0), 0.4), (0, 0, -1))
+                    rect(M, mc, a, b, d - 0.55, d - 0.25, 1.15, "Teja", tl)
         elif k == puerta:
             hueco(M, mc, a, b, c, d, 0.3, col_pb, MADERA, "Muro")
             caja(M, mc, a - 0.12, b + 0.12, d, d + 0.14, 0, 0.06, "Muro", mezclar(col_pb, BLANCO, 0.6))
@@ -483,12 +495,22 @@ def fachada(M, mc, e, H, pisos, h_pb, h_alta, pb, tip, col, piedra, zocalo, r):
                 rect(M, mc, a + 0.15, b - 0.15, d - 0.75, d - 0.15, -0.29, "Cristal", CRISTAL)
         else:
             ventana(M, mc, a, b, c, d, col_pb, r, persiana=False, reja=True)
+    # Rótulos de la ficha: franja de color sobre los escaparates (el texto lo añade main()).
+    zr = min(h_pb - 1.0, 2.6) + 0.3
+    for ro in rotulos:
+        s0, s1 = ro.get("s", [0.1, 0.9])
+        caja(M, mc, L * s0, L * s1, zr, zr + 0.6, 0, 0.07, "Metal", color(ro["fondo"]))
+    if F.get("azulejo"):
+        azu = color(F["azulejo"])
+        for k in range(int(L / 0.2)):
+            rect(M, mc, k * 0.2, k * 0.2 + 0.2, h_pb - 0.9, h_pb - 0.5, 0.01, "Metal", azu if k % 2 else BLANCO)
     if zocalo and not piedra:
         caja(M, mc, -0.02, L + 0.02, 0, 0.8, 0, 0.05, "Muro", PIEDRA)
     if piedra:
         caja(M, mc, -0.02, L + 0.02, h_pb - 0.2, h_pb, 0, 0.12, "Muro", mezclar(PIEDRA, BLANCO, 0.3))
     # Plantas altas.
-    balconeras = tip in ("burguesa", "comercial")
+    bal = F.get("balcones")
+    balconeras = tip in ("burguesa", "comercial") or bal in ("forja", "cristal")
     for j in range(1, len(pisos)):
         h0 = pisos[j]
         h1 = h0 + h_alta
@@ -499,21 +521,32 @@ def fachada(M, mc, e, H, pisos, h_pb, h_alta, pb, tip, col, piedra, zocalo, r):
                 huecos.append((sc - w / 2, sc + w / 2, h0 + 0.05, min(h1 - 0.45, h0 + 2.35)))
             else:
                 huecos.append((sc - w / 2, sc + w / 2, h0 + 0.95, min(h1 - 0.4, h0 + 2.45)))
-        muro_con_huecos(M, mc, 0, L, h0, h1, huecos, col)
+        muro_con_huecos(M, mc, 0, L, h0, h1, huecos, col_alto)
         for k, (a, b, c, d) in enumerate(huecos):
-            cierro_aqui = tip == "medianeras" and j == 1 and k == len(centros) // 2 and len(pisos) > 1
-            ventana(M, mc, a, b, c, d, col, r, persiana=True, recercado=mezclar(col, BLANCO, 0.55) if tip in ("burguesa", "comercial") else None)
-            if cierro_aqui:
+            if bal == "miradores":
+                mirador = k % 2 == (j % 2) or len(centros) == 1
+            else:
+                mirador = (not F) and tip == "medianeras" and j == 1 and k == len(centros) // 2 and len(pisos) > 1
+            ventana(M, mc, a, b, c, d, col_alto, r, persiana=True, recercado=mezclar(col_alto, BLANCO, 0.55) if tip in ("burguesa", "comercial") and not F.get("alto_color") else None)
+            if mirador:
                 cierro(M, mc, a - 0.25, b + 0.25, c + 0.9 if not balconeras else c, d, 0.55)
-            elif balconeras:
-                balcon(M, mc, a - 0.25, b + 0.25, c, 0.55, mezclar(col, BLANCO, 0.5))
-            elif tip == "bloque" and (k + j) % 2 == 0 and len(centros) > 1:
-                balcon(M, mc, a - 0.3, b + 0.3, h0 + 0.1, 0.8, mezclar(col, BLANCO, 0.4))
-            if r.random() < 0.18 and not cierro_aqui:
+            elif bal == "forja" or (not F and balconeras):
+                balcon(M, mc, a - 0.25, b + 0.25, c, 0.55, mezclar(col_alto, BLANCO, 0.5))
+            elif bal == "cristal":
+                caja(M, mc, a - 0.3, b + 0.3, c - 0.14, c, 0, 0.7, "Muro", BLANCO)
+                rect(M, mc, a - 0.3, b + 0.3, c, c + 1.0, 0.68, "Cristal", mezclar(CRISTAL, BLANCO, 0.4))
+            elif not F and tip == "bloque" and (k + j) % 2 == 0 and len(centros) > 1:
+                balcon(M, mc, a - 0.3, b + 0.3, h0 + 0.1, 0.8, mezclar(col_alto, BLANCO, 0.4))
+            if r.random() < 0.18 and not mirador:
                 aire_acondicionado(M, mc, b + 0.65 if b + 1.1 < L else a - 0.65, c + 0.2)
+        if bal == "corridos":
+            # Balcón corrido con frente de bandas (amarillas en la foto de la platería).
+            caja(M, mc, 0.2, L - 0.2, h0 - 0.05, h0 + 0.1, 0, 0.75, "Muro", mezclar(col_alto, BLANCO, 0.3))
+            for t in range(3):
+                caja(M, mc, 0.2, L - 0.2, h0 + 0.12 + t * 0.2, h0 + 0.26 + t * 0.2, 0.72, 0.8, "Muro", color("#E9C24A"))
         # Imposta entre plantas.
-        caja(M, mc, -0.02, L + 0.02, h0 - 0.12, h0 + 0.02, 0, 0.07, "Muro", mezclar(col, BLANCO, 0.45))
-    caja(M, mc, -0.05, L + 0.05, H - 0.3, H, 0, 0.18, "Muro", mezclar(col, BLANCO, 0.5))
+        caja(M, mc, -0.02, L + 0.02, h0 - 0.12, h0 + 0.02, 0, 0.07, "Muro", mezclar(col_alto, BLANCO, 0.45))
+    caja(M, mc, -0.05, L + 0.05, H - 0.3, H, 0, 0.18, "Muro", mezclar(col_alto, BLANCO, 0.5))
 
 
 # ── Escena, validación, exportación ──────────────────────────────────
@@ -611,9 +644,66 @@ def suelo(o, lote_json, coleccion):
     return ob
 
 
-def main(lote):
+def rotulos_texto(e, o, col, padre):
+    """Letras 3D de los rótulos de la ficha, centradas en su franja de la fachada a la calle."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "singulares"))
+    import base as B
+    F = e.get("fachada") or {}
+    fc = e.get("frente_calle")
+    if not F.get("rotulos") or not fc:
+        return
+    h = e["huella"]
+    i = fc["arista"]
+    a, b = h[i], h[(i + 1) % len(h)]
+    L = math.dist(a, b)
+    u = ((b[0] - a[0]) / L, (b[1] - a[1]) / L)
+    n = (u[1], -u[0])
+    cx = sum(p[0] for p in h) / len(h)
+    cy = sum(p[1] for p in h) / len(h)
+    m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+    if (m[0] - cx) * n[0] + (m[1] - cy) * n[1] < 0:
+        n = (-n[0], -n[1])
+    # El texto se lee de izquierda a derecha mirando la fachada desde la calle.
+    rumbo = math.atan2(n[1], n[0]) - math.pi / 2
+    der = (math.cos(rumbo), math.sin(rumbo))
+    plantas = max(1, int(e["plantas"]))
+    h_pb = min(float(e["alturaM"]), 3.6 if plantas > 1 else float(e["alturaM"]))
+    zr = min(h_pb - 1.0, 2.6) + 0.3
+    for k, ro in enumerate(F["rotulos"]):
+        s0, s1 = ro.get("s", [0.1, 0.9])
+        # La arista puede ir en cualquier sentido respecto a la lectura: centro de la franja.
+        p0 = (a[0] + u[0] * L * s0, a[1] + u[1] * L * s0)
+        p1 = (a[0] + u[0] * L * s1, a[1] + u[1] * L * s1)
+        c = ((p0[0] + p1[0]) / 2 + n[0] * 0.12, (p0[1] + p1[1]) / 2 + n[1] * 0.12)
+        ancho = L * (s1 - s0) * 0.9
+        alto = max(0.12, min(0.38, ancho / (0.7 * max(4, len(ro["texto"])))))
+        nombre = f"Letra_{ro['letra'].lstrip('#')}"
+        mat = bpy.data.materials.get(nombre)
+        if not mat:
+            mat = bpy.data.materials.new(nombre)
+            mat.use_nodes = True
+            mat.node_tree.nodes.get("Principled BSDF").inputs["Base Color"].default_value = (*color(ro["letra"]), 1)
+            mat.diffuse_color = (*color(ro["letra"]), 1)
+        ob = B.texto(f"{e['id']}_rotulo{k}", ro["texto"], c, rumbo, alto, mat, col, padre, o, zr + 0.3 - alto * 0.36, prof=0.025)
+        ob["rotulo"] = ro["texto"]
+    _ = der
+
+
+def main(lote, fichas=None):
     t0 = time.time()
     datos = json.load(open(ruta("city-reconstruction", "blender", "lotes", f"{lote}.json")))
+    if fichas:
+        ficha = json.load(open(fichas))
+        for e in datos["edificios"]:
+            F = ficha.get("fachadas", {}).get(e["id"])
+            if F is None:
+                continue
+            e["fachada"] = {**ficha.get("por_defecto", {}), **F}
+            if F.get("color"):
+                e["color"] = F["color"]
+            if F.get("piedra"):
+                e["revestimiento"] = "piedra_pb"
+        datos["fuente_fachadas"] = os.path.relpath(fichas, RAIZ)
     o = datos["origen"]
     bpy.ops.wm.read_factory_settings(use_empty=True)
     mats = materiales()
@@ -626,7 +716,10 @@ def main(lote):
     informe = {"lote": lote, "origen": o, "generador": VERSION_GENERADOR, "edificios": []}
     for e in datos["edificios"]:
         r = random.Random(e["id"])
-        fila = {"id": e["id"], "plantas": e["plantas"], "alturaM": e["alturaM"], "tipologia": e["tipologia"], "fuente_plantas": e["fuentes"]["plantas"]}
+        F = e.get("fachada") or {}
+        ACTUAL["marco"] = color(F["marco"]) if F.get("marco") else None
+        ACTUAL["persiana"] = color(F["persiana"]) if F.get("persiana") else None
+        fila = {"id": e["id"], "plantas": e["plantas"], "alturaM": e["alturaM"], "tipologia": e["tipologia"], "fuente_plantas": e["fuentes"]["plantas"], "ficha": bool(F)}
         for lod in (0, 1):
             M, H, pretil = construir(e, o, lod, r)
             ob = M.objeto(f"{e['id']}__LOD{lod}", mats, col)
@@ -635,6 +728,8 @@ def main(lote):
             ob["lod"] = lod
             ob["osm"] = e.get("osm") or ""
             fila[f"lod{lod}"] = validar(e, ob, H, pretil)
+            if lod == 0:
+                rotulos_texto(e, o, col, ob)
         informe["edificios"].append(fila)
         print(f"  {e['id']}: LOD0 {fila['lod0']['triangulos']} tri · LOD1 {fila['lod1']['triangulos']} tri {fila['lod0']['problemas'] or ''}")
     # Guardar el .blend original y exportar el GLB (sin el suelo de validación).
@@ -706,10 +801,13 @@ def main(lote):
     json.dump(reg, open(reg_f, "w"), ensure_ascii=False, indent=1)
     idx_f = ruta("src", "datos", "modelos", "indice.json")
     idx = json.load(open(idx_f)) if os.path.exists(idx_f) else {"lotes": {}}
-    idx["lotes"][lote] = {"glb": f"modelos/manzanas/{lote}.glb", "origen": o, "edificios": [e["id"] for e in datos["edificios"]], "generador": VERSION_GENERADOR}
+    idx["lotes"][lote] = {"glb": f"modelos/manzanas/{lote}.glb", "origen": o, "edificios": [e["id"] for e in datos["edificios"]], "generador": VERSION_GENERADOR,
+                          # Edificios que no están en la ciudad generada (p. ej. del Catastro): sus huellas son colisión.
+                          "solidos": [e["huella"] for e in datos["edificios"] if e.get("fuente") == "Catastro"]}
     json.dump(idx, open(idx_f, "w"), ensure_ascii=False, indent=1)
     print(f"{lote}: {len(datos['edificios'])} edificios · GLB {informe['glb_kb']} KB · {informe['problemas']} problemas · {informe['segundos']} s")
 
 
 if __name__ == "__main__":
-    main(sys.argv[-1])
+    args = [a for a in sys.argv[1:] if not a.startswith("-")]
+    main(args[0], args[1] if len(args) > 1 else None)

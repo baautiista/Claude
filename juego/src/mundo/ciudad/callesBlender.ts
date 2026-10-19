@@ -16,8 +16,8 @@ interface Tesela {
   caras: number;
 }
 const TESELAS = (indice as unknown as { teselas: Record<string, Tesela> }).teselas;
-const METROS: Record<string, number> = { Asfalto: 4, Acera: 2, Bordillo: 1, Adoquin: 2, Albero: 3, Cesped: 3 };
-const CALZADA = new Set(["Asfalto", "Adoquin"]);
+const METROS: Record<string, number> = { AdoquinCalzada: 2, AceraRoja: 2, Asfalto: 4, Acera: 2, Bordillo: 1, Adoquin: 2, Albero: 3, Cesped: 3 };
+const CALZADA = new Set(["Asfalto", "Adoquin", "AdoquinCalzada"]);
 
 export const HAY_CALLES_BLENDER = Object.keys(TESELAS).length > 0;
 /** Estado de la carga (pruebas). */

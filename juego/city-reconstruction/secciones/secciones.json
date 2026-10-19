@@ -81,10 +81,11 @@
     "B-w1259023349",
     "B-r18895424"
    ],
-   "estado": "pendiente",
+   "estado": "fotos",
    "id": "CEN-01",
    "orden": 1,
-   "hechos": 0
+   "hechos": 0,
+   "nota": "Calle del Sol modelada con fotos (Cantizano → Clavel); faltan Isabel la Católica, Doctor Villar, Flores, Cervantes, Jardines y Padre Junco."
   },
   {
    "clave": "Centro|14|25",

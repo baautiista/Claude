@@ -1,0 +1,4292 @@
+{
+ "nombre": "CEN01-SOL",
+ "origen": [
+  2356,
+  4262
+ ],
+ "calle": "Calle del Sol",
+ "nota": "Calle completa: OSM + parcelas del Catastro que faltaban.",
+ "edificios": [
+  {
+   "id": "B-r19148123",
+   "osm": "r19148123",
+   "overture": "4363a999-1856-4389-abc6-636d05f30267",
+   "fuente": "OpenStreetMap",
+   "nombre": "Edf. Miguel Lozano",
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2235.67,
+     4211.86
+    ],
+    [
+     2234.34,
+     4217.4
+    ],
+    [
+     2224.05,
+     4211.98
+    ],
+    [
+     2229.13,
+     4196.63
+    ],
+    [
+     2238.86,
+     4200.51
+    ]
+   ],
+   "patios": [
+    [
+     [
+      2230.97,
+      4210.66
+     ],
+     [
+      2233.6,
+      4211.77
+     ],
+     [
+      2234.62,
+      4209.37
+     ],
+     [
+      2232.01,
+      4208.26
+     ]
+    ]
+   ],
+   "caras": [
+    "medianera",
+    "calle",
+    "medianera",
+    "patio",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "Calle del Sol",
+    "",
+    "",
+    ""
+   ],
+   "area": 175.0,
+   "frente": 11.6,
+   "esquina": false,
+   "plantas": 5,
+   "alturaM": 15.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E6CFA0",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8647110TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [
+    "solape de 0.5 m² con otra parcela resuelto a favor de la huella mayor"
+   ],
+   "frente_calle": {
+    "centro": [
+     2229.2,
+     4214.69
+    ],
+    "lado": "N",
+    "largo": 11.63,
+    "arista": 1
+   }
+  },
+  {
+   "id": "B-w1086864320",
+   "osm": "w1086864320",
+   "overture": "b773ba20-b59b-4b2b-8c60-a4d26644ee0d",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2241.41,
+     4193.61
+    ],
+    [
+     2249.48,
+     4194.56
+    ],
+    [
+     2248.99,
+     4197.72
+    ],
+    [
+     2252.16,
+     4198.2
+    ],
+    [
+     2250.66,
+     4206.23
+    ],
+    [
+     2248.68,
+     4213.0
+    ],
+    [
+     2245.09,
+     4223.11
+    ],
+    [
+     2239.34,
+     4219.83
+    ],
+    [
+     2234.34,
+     4217.4
+    ],
+    [
+     2235.67,
+     4211.86
+    ],
+    [
+     2239.36,
+     4198.76
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "medianera",
+    "medianera",
+    "patio"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    "Calle del Sol",
+    "",
+    "",
+    ""
+   ],
+   "area": 324.8,
+   "frente": 12.2,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2235.48,
+     4215.06
+    ],
+    [
+     2234.48,
+     4217.01
+    ],
+    [
+     2235.67,
+     4211.86
+    ],
+    [
+     2239.36,
+     4198.76
+    ],
+    [
+     2241.4,
+     4193.64
+    ],
+    [
+     2249.45,
+     4194.57
+    ],
+    [
+     2248.99,
+     4197.72
+    ],
+    [
+     2252.15,
+     4198.25
+    ],
+    [
+     2250.66,
+     4206.23
+    ],
+    [
+     2248.68,
+     4213.01
+    ],
+    [
+     2245.99,
+     4220.58
+    ],
+    [
+     2240.63,
+     4217.57
+    ],
+    [
+     2240.02,
+     4218.54
+    ],
+    [
+     2240.48,
+     4217.49
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE3C6",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8647109TF8084N_part6)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2242.22,
+     4221.47
+    ],
+    "lado": "N",
+    "largo": 6.62,
+    "arista": 6
+   }
+  },
+  {
+   "id": "B-w877664488",
+   "osm": "w877664488",
+   "overture": "d5ad2ff7-7f7a-40ea-b8ea-436b135687f7",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2251.93,
+     4226.66
+    ],
+    [
+     2245.09,
+     4223.11
+    ],
+    [
+     2248.68,
+     4213.0
+    ],
+    [
+     2250.66,
+     4206.23
+    ],
+    [
+     2251.31,
+     4202.52
+    ],
+    [
+     2263.25,
+     4207.09
+    ],
+    [
+     2260.94,
+     4222.36
+    ],
+    [
+     2257.62,
+     4230.01
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "patio",
+    "medianera",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "Calle del Sol",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol"
+   ],
+   "area": 308.4,
+   "frente": 14.3,
+   "esquina": false,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2246.29,
+     4220.8
+    ],
+    [
+     2245.36,
+     4222.49
+    ],
+    [
+     2248.68,
+     4213.0
+    ],
+    [
+     2250.66,
+     4206.23
+    ],
+    [
+     2251.31,
+     4202.55
+    ],
+    [
+     2263.24,
+     4207.09
+    ],
+    [
+     2260.94,
+     4222.36
+    ],
+    [
+     2258.67,
+     4227.58
+    ],
+    [
+     2253.24,
+     4224.42
+    ],
+    [
+     2252.82,
+     4225.05
+    ],
+    [
+     2253.12,
+     4224.36
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#E8C35A",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8647108TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2248.51,
+     4224.89
+    ],
+    "lado": "N",
+    "largo": 7.71,
+    "arista": 0
+   }
+  },
+  {
+   "id": "B-w877664489",
+   "osm": "w877664489",
+   "overture": "688c2dd9-0174-423d-9364-a4c978493b24",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2260.94,
+     4222.36
+    ],
+    [
+     2263.25,
+     4207.09
+    ],
+    [
+     2264.14,
+     4202.43
+    ],
+    [
+     2277.6,
+     4203.23
+    ],
+    [
+     2277.78,
+     4222.85
+    ],
+    [
+     2278.38,
+     4236.47
+    ],
+    [
+     2277.9,
+     4239.07
+    ],
+    [
+     2276.08,
+     4240.26
+    ],
+    [
+     2257.62,
+     4230.01
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "patio",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Cervantes",
+    "Calle Cervantes",
+    "Calle Cervantes",
+    "Calle Cervantes",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 555.6,
+   "frente": 59.2,
+   "esquina": true,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2258.88,
+     4227.74
+    ],
+    [
+     2258.05,
+     4229.14
+    ],
+    [
+     2260.94,
+     4222.36
+    ],
+    [
+     2263.25,
+     4207.09
+    ],
+    [
+     2264.13,
+     4202.46
+    ],
+    [
+     2276.17,
+     4203.15
+    ],
+    [
+     2275.0,
+     4203.25
+    ],
+    [
+     2275.18,
+     4222.87
+    ],
+    [
+     2275.77,
+     4236.28
+    ],
+    [
+     2275.64,
+     4236.99
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#E9B38F",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8647107TF8084N_part6)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2266.85,
+     4235.14
+    ],
+    "lado": "N",
+    "largo": 21.11,
+    "arista": 7
+   }
+  },
+  {
+   "id": "B-w877664496",
+   "osm": "w877664496",
+   "overture": "f68b7178-3f7e-4abd-ab70-5d936b220a9c",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2297.27,
+     4223.6
+    ],
+    [
+     2297.97,
+     4233.51
+    ],
+    [
+     2299.61,
+     4248.58
+    ],
+    [
+     2297.36,
+     4253.18
+    ],
+    [
+     2283.28,
+     4244.26
+    ],
+    [
+     2283.08,
+     4221.64
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    "Calle Cervantes",
+    ""
+   ],
+   "area": 398.8,
+   "frente": 39.3,
+   "esquina": true,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2299.61,
+     4248.59
+    ],
+    [
+     2298.47,
+     4250.81
+    ],
+    [
+     2285.87,
+     4242.82
+    ],
+    [
+     2285.71,
+     4222.01
+    ],
+    [
+     2297.27,
+     4223.62
+    ],
+    [
+     2297.97,
+     4233.51
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#C9533E",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8647611TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2290.32,
+     4248.72
+    ],
+    "lado": "N",
+    "largo": 16.67,
+    "arista": 3
+   }
+  },
+  {
+   "id": "B-w877664504",
+   "osm": "w877664504",
+   "overture": "e22a8ebc-5292-412a-9159-f2605c7abbe0",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2305.44,
+     4256.15
+    ],
+    [
+     2297.36,
+     4253.18
+    ],
+    [
+     2299.61,
+     4248.58
+    ],
+    [
+     2299.43,
+     4246.98
+    ],
+    [
+     2303.99,
+     4246.23
+    ],
+    [
+     2304.77,
+     4247.45
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "calles": [
+    "Calle del Sol",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "area": 52.1,
+   "frente": 8.6,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E9B38F",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8647610TF8084N_part2)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2301.4,
+     4254.66
+    ],
+    "lado": "N",
+    "largo": 8.61,
+    "arista": 0
+   }
+  },
+  {
+   "id": "B-w877664505",
+   "osm": "w877664505",
+   "overture": "1f76e474-4fe0-48a4-a8f2-7f616cbb1c0e",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2304.77,
+     4247.45
+    ],
+    [
+     2307.46,
+     4247.27
+    ],
+    [
+     2309.56,
+     4246.83
+    ],
+    [
+     2312.25,
+     4247.21
+    ],
+    [
+     2312.24,
+     4247.95
+    ],
+    [
+     2312.9,
+     4247.84
+    ],
+    [
+     2313.31,
+     4255.55
+    ],
+    [
+     2312.91,
+     4256.26
+    ],
+    [
+     2312.33,
+     4256.85
+    ],
+    [
+     2311.54,
+     4257.28
+    ],
+    [
+     2305.44,
+     4256.15
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Doctor Villar",
+    "",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 75.9,
+   "frente": 17.2,
+   "esquina": true,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#F2EBDD",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8647609TF8084N_part2)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2308.49,
+     4256.72
+    ],
+    "lado": "N",
+    "largo": 6.2,
+    "arista": 9
+   }
+  },
+  {
+   "id": "B-w877673090",
+   "osm": "w877673090",
+   "overture": "1abe30c7-1280-40e2-99b7-694b7ade215b",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2336.22,
+     4247.62
+    ],
+    [
+     2327.91,
+     4248.67
+    ],
+    [
+     2327.98,
+     4249.38
+    ],
+    [
+     2326.92,
+     4249.45
+    ],
+    [
+     2327.45,
+     4255.51
+    ],
+    [
+     2323.22,
+     4256.1
+    ],
+    [
+     2320.27,
+     4256.18
+    ],
+    [
+     2318.82,
+     4254.74
+    ],
+    [
+     2318.21,
+     4245.38
+    ],
+    [
+     2335.36,
+     4244.57
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "patio",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    "Calle del Sol",
+    "Calle Doctor Villar",
+    "Calle Doctor Villar",
+    "",
+    ""
+   ],
+   "area": 122.9,
+   "frente": 18.6,
+   "esquina": true,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#D98A6A",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747412TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2325.34,
+     4255.81
+    ],
+    "lado": "N",
+    "largo": 4.27,
+    "arista": 4
+   }
+  },
+  {
+   "id": "B-w877673091",
+   "osm": "w877673091",
+   "overture": "116dcaff-fb01-4718-a21e-11e5efc3b2d2",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2326.92,
+     4249.45
+    ],
+    [
+     2327.98,
+     4249.38
+    ],
+    [
+     2327.91,
+     4248.67
+    ],
+    [
+     2334.63,
+     4247.84
+    ],
+    [
+     2335.24,
+     4250.87
+    ],
+    [
+     2335.5,
+     4254.94
+    ],
+    [
+     2327.45,
+     4255.51
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 55.3,
+   "frente": 8.1,
+   "esquina": false,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#F2EBDD",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747411TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2331.47,
+     4255.23
+    ],
+    "lado": "N",
+    "largo": 8.07,
+    "arista": 5
+   }
+  },
+  {
+   "id": "B-w877673089",
+   "osm": "w877673089",
+   "overture": "3b9972d6-2234-4fbd-8a6e-35782fd7fdaf",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2335.5,
+     4254.94
+    ],
+    [
+     2335.24,
+     4250.87
+    ],
+    [
+     2334.63,
+     4247.84
+    ],
+    [
+     2336.22,
+     4247.62
+    ],
+    [
+     2335.36,
+     4244.57
+    ],
+    [
+     2338.24,
+     4244.73
+    ],
+    [
+     2342.41,
+     4244.04
+    ],
+    [
+     2343.56,
+     4248.35
+    ],
+    [
+     2343.73,
+     4254.32
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "patio",
+    "patio",
+    "medianera",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol"
+   ],
+   "area": 81.7,
+   "frente": 8.3,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#C9533E",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747410TF8084N_part2)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2339.61,
+     4254.63
+    ],
+    "lado": "N",
+    "largo": 8.25,
+    "arista": 8
+   }
+  },
+  {
+   "id": "B-w877673088",
+   "osm": "w877673088",
+   "overture": "92271538-53c3-40a0-8066-0d00985e8ee9",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2343.73,
+     4254.32
+    ],
+    [
+     2343.56,
+     4248.35
+    ],
+    [
+     2342.41,
+     4244.04
+    ],
+    [
+     2341.88,
+     4241.32
+    ],
+    [
+     2345.7,
+     4240.56
+    ],
+    [
+     2346.83,
+     4247.62
+    ],
+    [
+     2350.22,
+     4247.4
+    ],
+    [
+     2350.42,
+     4253.85
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "patio",
+    "medianera",
+    "patio",
+    "medianera",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol"
+   ],
+   "area": 68.9,
+   "frente": 6.7,
+   "esquina": false,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "tejadillo",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#E8C35A",
+   "zocalo": true,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747409TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2347.07,
+     4254.09
+    ],
+    "lado": "N",
+    "largo": 6.71,
+    "arista": 7
+   }
+  },
+  {
+   "id": "B-w877673087",
+   "osm": "w877673087",
+   "overture": "95d4f05f-ea39-4090-8638-2094dbac0184",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2350.42,
+     4253.85
+    ],
+    [
+     2350.19,
+     4246.43
+    ],
+    [
+     2353.93,
+     4245.77
+    ],
+    [
+     2354.28,
+     4246.97
+    ],
+    [
+     2358.78,
+     4246.23
+    ],
+    [
+     2358.71,
+     4253.45
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "patio",
+    "calle",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle de las Flores",
+    "",
+    "Calle del Sol"
+   ],
+   "area": 61.4,
+   "frente": 12.9,
+   "esquina": true,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#EBC9B8",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747408TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2354.57,
+     4253.65
+    ],
+    "lado": "N",
+    "largo": 8.3,
+    "arista": 5
+   }
+  },
+  {
+   "id": "B-w877673086",
+   "osm": "w877673086",
+   "overture": "80a50a81-202f-46b9-9f32-e309f04a7502",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2366.95,
+     4246.79
+    ],
+    [
+     2368.18,
+     4252.92
+    ],
+    [
+     2358.71,
+     4253.45
+    ],
+    [
+     2358.78,
+     4246.23
+    ],
+    [
+     2358.43,
+     4246.34
+    ],
+    [
+     2358.44,
+     4243.64
+    ],
+    [
+     2365.28,
+     4241.61
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "Calle del Sol",
+    "",
+    "",
+    "Calle de las Flores",
+    "",
+    "Calle de las Flores"
+   ],
+   "area": 89.2,
+   "frente": 23.9,
+   "esquina": true,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#D98A6A",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747407TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2363.44,
+     4253.18
+    ],
+    "lado": "N",
+    "largo": 9.48,
+    "arista": 1
+   }
+  },
+  {
+   "id": "B-w877660170",
+   "osm": "w877660170",
+   "overture": "5ee7b408-5504-4f39-a1f1-26f1b509e3b8",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2375.31,
+     4252.9
+    ],
+    [
+     2374.84,
+     4252.59
+    ],
+    [
+     2374.03,
+     4251.69
+    ],
+    [
+     2368.65,
+     4233.94
+    ],
+    [
+     2368.64,
+     4233.51
+    ],
+    [
+     2368.85,
+     4233.03
+    ],
+    [
+     2369.66,
+     4232.37
+    ],
+    [
+     2370.67,
+     4232.3
+    ],
+    [
+     2387.32,
+     4236.12
+    ],
+    [
+     2383.34,
+     4254.8
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "patio",
+    "calle"
+   ],
+   "calles": [
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle de las Flores",
+    "Calle Jardines",
+    "Calle Jardines",
+    "Calle Jardines",
+    "",
+    "Calle del Sol"
+   ],
+   "area": 275.4,
+   "frente": 48.7,
+   "esquina": true,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2386.77,
+     4238.71
+    ],
+    [
+     2383.88,
+     4252.23
+    ],
+    [
+     2376.45,
+     4250.49
+    ],
+    [
+     2371.79,
+     4235.25
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#F6F3EC",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747901TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2379.32,
+     4253.85
+    ],
+    "lado": "N",
+    "largo": 8.25,
+    "arista": 9
+   }
+  },
+  {
+   "id": "B-w877660169",
+   "osm": "w877660169",
+   "overture": "25c0529d-0d3c-4231-aed5-6c7298ce306f",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "14_26",
+   "huella": [
+    [
+     2385.07,
+     4246.68
+    ],
+    [
+     2387.25,
+     4247.22
+    ],
+    [
+     2387.97,
+     4244.05
+    ],
+    [
+     2385.74,
+     4243.56
+    ],
+    [
+     2387.32,
+     4236.12
+    ],
+    [
+     2388.49,
+     4236.37
+    ],
+    [
+     2388.62,
+     4236.1
+    ],
+    [
+     2403.91,
+     4239.63
+    ],
+    [
+     2400.01,
+     4258.79
+    ],
+    [
+     2383.34,
+     4254.8
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "calle",
+    "calle",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "Calle Jardines",
+    "Calle Jardines",
+    "",
+    "Calle Jardines",
+    "Calle Jardines",
+    "Calle Jardines",
+    "Calle San Pablo",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 324.4,
+   "frente": 59.4,
+   "esquina": true,
+   "plantas": 7,
+   "alturaM": 21.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2383.89,
+     4252.21
+    ],
+    [
+     2385.06,
+     4246.75
+    ],
+    [
+     2389.78,
+     4247.8
+    ],
+    [
+     2390.51,
+     4244.63
+    ],
+    [
+     2387.99,
+     4244.04
+    ],
+    [
+     2388.53,
+     4241.51
+    ],
+    [
+     2386.29,
+     4241.01
+    ],
+    [
+     2386.79,
+     4238.68
+    ],
+    [
+     2387.94,
+     4238.91
+    ],
+    [
+     2388.05,
+     4238.64
+    ],
+    [
+     2400.84,
+     4241.61
+    ],
+    [
+     2397.99,
+     4255.62
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#E9B38F",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8747902TF8084N_part2)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2391.68,
+     4256.8
+    ],
+    "lado": "N",
+    "largo": 17.14,
+    "arista": 8
+   }
+  },
+  {
+   "id": "B-w877673065",
+   "osm": "w877673065",
+   "overture": "d18bff09-8cb5-42be-bbc0-9d66509c6003",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "15_26",
+   "huella": [
+    [
+     2413.85,
+     4260.87
+    ],
+    [
+     2404.45,
+     4258.52
+    ],
+    [
+     2408.48,
+     4241.43
+    ],
+    [
+     2417.68,
+     4243.52
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "Calle del Sol",
+    "Calle San Pablo",
+    "Calle Jardines",
+    ""
+   ],
+   "area": 168.8,
+   "frente": 36.7,
+   "esquina": true,
+   "plantas": 7,
+   "alturaM": 21.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E6CFA0",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8847001TF8084N_part2)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2409.15,
+     4259.69
+    ],
+    "lado": "N",
+    "largo": 9.69,
+    "arista": 0
+   }
+  },
+  {
+   "id": "B-w877673066",
+   "osm": "w877673066",
+   "overture": "5ba466b7-bcd8-45eb-bc08-a5cdce3e22d4",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "15_26",
+   "huella": [
+    [
+     2415.79,
+     4252.06
+    ],
+    [
+     2423.52,
+     4253.92
+    ],
+    [
+     2423.07,
+     4255.71
+    ],
+    [
+     2427.48,
+     4256.57
+    ],
+    [
+     2427.95,
+     4254.75
+    ],
+    [
+     2432.22,
+     4255.75
+    ],
+    [
+     2430.25,
+     4265.0
+    ],
+    [
+     2413.85,
+     4260.87
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "Calle Jardines",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 146.9,
+   "frente": 24.9,
+   "esquina": true,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#EFE3C6",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8847002TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2422.05,
+     4262.93
+    ],
+    "lado": "N",
+    "largo": 16.91,
+    "arista": 6
+   }
+  },
+  {
+   "id": "B-w877673063",
+   "osm": "w877673063",
+   "overture": "04900d3e-6c5f-41a4-9a64-9ce37e751555",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "15_26",
+   "huella": [
+    [
+     2430.25,
+     4265.0
+    ],
+    [
+     2432.22,
+     4255.75
+    ],
+    [
+     2433.02,
+     4253.42
+    ],
+    [
+     2434.41,
+     4247.25
+    ],
+    [
+     2441.16,
+     4248.75
+    ],
+    [
+     2436.99,
+     4266.68
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "calle"
+   ],
+   "calles": [
+    "",
+    "",
+    "",
+    "Calle Jardines",
+    "",
+    "Calle del Sol"
+   ],
+   "area": 127.8,
+   "frente": 13.9,
+   "esquina": true,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E6CFA0",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8847007TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2433.62,
+     4265.84
+    ],
+    "lado": "N",
+    "largo": 6.95,
+    "arista": 5
+   }
+  },
+  {
+   "id": "B-w877673062",
+   "osm": "w877673062",
+   "overture": "adbd22fb-63f6-47dd-b307-36463a5fe968",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "15_26",
+   "huella": [
+    [
+     2441.16,
+     4248.75
+    ],
+    [
+     2463.43,
+     4253.66
+    ],
+    [
+     2464.4,
+     4255.08
+    ],
+    [
+     2461.52,
+     4269.51
+    ],
+    [
+     2458.7,
+     4271.29
+    ],
+    [
+     2436.99,
+     4266.68
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "Calle Jardines",
+    "Calle Jardines",
+    "Calle del Teatro",
+    "Calle del Sol",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 441.8,
+   "frente": 64.8,
+   "esquina": true,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": [
+    [
+     2437.59,
+     4264.1
+    ],
+    [
+     2440.59,
+     4251.3
+    ],
+    [
+     2461.57,
+     4255.94
+    ],
+    [
+     2459.19,
+     4267.89
+    ],
+    [
+     2458.21,
+     4268.52
+    ]
+   ],
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#E9B38F",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8847010TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2447.84,
+     4268.99
+    ],
+    "lado": "N",
+    "largo": 22.19,
+    "arista": 4
+   }
+  },
+  {
+   "id": "B-w877673070",
+   "osm": "w877673070",
+   "overture": "a3de5732-b03b-40d2-839e-fea92a0e2ef4",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "15_26",
+   "huella": [
+    [
+     2479.94,
+     4266.76
+    ],
+    [
+     2479.27,
+     4266.63
+    ],
+    [
+     2477.74,
+     4274.78
+    ],
+    [
+     2469.37,
+     4273.0
+    ],
+    [
+     2472.29,
+     4255.58
+    ],
+    [
+     2481.65,
+     4257.89
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "",
+    "Calle del Sol",
+    "Calle del Teatro",
+    "Calle Jardines",
+    ""
+   ],
+   "area": 159.1,
+   "frente": 35.9,
+   "esquina": true,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E6CFA0",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8846301TF8084N_part2)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2473.55,
+     4273.89
+    ],
+    "lado": "N",
+    "largo": 8.56,
+    "arista": 2
+   }
+  },
+  {
+   "id": "B-w877673068",
+   "osm": "w877673068",
+   "overture": "da8b46a0-2f2e-4625-bade-62e3fc34ee79",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "15_26",
+   "huella": [
+    [
+     2479.27,
+     4266.63
+    ],
+    [
+     2482.07,
+     4267.24
+    ],
+    [
+     2481.58,
+     4268.97
+    ],
+    [
+     2483.91,
+     4269.4
+    ],
+    [
+     2484.39,
+     4267.75
+    ],
+    [
+     2490.7,
+     4269.13
+    ],
+    [
+     2488.99,
+     4278.18
+    ],
+    [
+     2477.56,
+     4275.76
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "calle",
+    "calle",
+    "patio",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "",
+    "Calle del Sol",
+    "Calle del Sol",
+    "",
+    "",
+    "",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 103.9,
+   "frente": 15.8,
+   "esquina": false,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#F2EBDD",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "A",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8846305TF8084N_part1)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2483.27,
+     4276.97
+    ],
+    "lado": "N",
+    "largo": 11.68,
+    "arista": 6
+   }
+  },
+  {
+   "id": "B-w877673071",
+   "osm": "w877673071",
+   "overture": "98dfba9e-a28f-4011-a86e-519158d4df7c",
+   "fuente": "OpenStreetMap",
+   "nombre": null,
+   "barrio": "Centro",
+   "tesela": "15_26",
+   "huella": [
+    [
+     2492.59,
+     4259.53
+    ],
+    [
+     2501.67,
+     4261.74
+    ],
+    [
+     2502.7,
+     4264.11
+    ],
+    [
+     2500.06,
+     4277.7
+    ],
+    [
+     2498.13,
+     4280.12
+    ],
+    [
+     2488.99,
+     4278.18
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "calles": [
+    "Calle Jardines",
+    "Calle Jardines",
+    "Calle Clavel",
+    "Calle Clavel",
+    "Calle del Sol",
+    ""
+   ],
+   "area": 199.6,
+   "frente": 38.2,
+   "esquina": true,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "comercial",
+   "revestimiento": "piedra_pb",
+   "color": "#E9B38F",
+   "zocalo": false,
+   "pb": "comercio",
+   "nivel": "B",
+   "fuentes": {
+    "huella": "OpenStreetMap",
+    "plantas": "Catastro (parte ES.SDGC.BU.8846304TF8084N_part2)",
+    "altura": "plantas × 3 m (baja)",
+    "catastro": null
+   },
+   "confianza": {
+    "huella": "media",
+    "plantas": "baja",
+    "altura": "baja",
+    "cubierta": "baja",
+    "tipologia": "baja"
+   },
+   "estado": "amarillo",
+   "motivos": [],
+   "reparado": [],
+   "frente_calle": {
+    "centro": [
+     2493.56,
+     4279.15
+    ],
+    "lado": "N",
+    "largo": 9.34,
+    "arista": 4
+   }
+  },
+  {
+   "id": "C-8646203TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2270.05,
+     4268.65
+    ],
+    [
+     2284.54,
+     4272.88
+    ],
+    [
+     2289.02,
+     4254.77
+    ],
+    [
+     2275.07,
+     4248.17
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "area": 300.1,
+   "plantas": 8,
+   "alturaM": 24.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8646203TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2282.04,
+     4251.47
+    ],
+    "lado": "S",
+    "largo": 15.43,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8646204TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2284.54,
+     4272.88
+    ],
+    [
+     2294.47,
+     4275.26
+    ],
+    [
+     2298.05,
+     4259.53
+    ],
+    [
+     2289.02,
+     4254.77
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "area": 174.3,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8646204TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2293.53,
+     4257.15
+    ],
+    "lado": "S",
+    "largo": 10.21,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8646208TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2294.47,
+     4275.26
+    ],
+    [
+     2301.15,
+     4276.86
+    ],
+    [
+     2303.08,
+     4268.97
+    ],
+    [
+     2296.3,
+     4267.17
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "area": 56.9,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8646208TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2299.69,
+     4268.07
+    ],
+    "lado": "S",
+    "largo": 7.01,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8646205TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2296.3,
+     4267.17
+    ],
+    [
+     2308.87,
+     4270.5
+    ],
+    [
+     2310.82,
+     4263.24
+    ],
+    [
+     2298.05,
+     4259.53
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "area": 100.9,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8646205TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2304.43,
+     4261.39
+    ],
+    "lado": "S",
+    "largo": 13.3,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8646206TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2301.15,
+     4276.86
+    ],
+    [
+     2306.79,
+     4278.2
+    ],
+    [
+     2308.87,
+     4270.5
+    ],
+    [
+     2303.08,
+     4268.97
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "area": 47.4,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8646206TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2305.97,
+     4269.74
+    ],
+    "lado": "S",
+    "largo": 5.99,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8746112TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2313.06,
+     4278.7
+    ],
+    [
+     2327.41,
+     4282.55
+    ],
+    [
+     2328.53,
+     4277.32
+    ],
+    [
+     2326.69,
+     4276.78
+    ],
+    [
+     2327.86,
+     4272.22
+    ],
+    [
+     2329.56,
+     4272.65
+    ],
+    [
+     2330.68,
+     4267.71
+    ],
+    [
+     2325.62,
+     4268.27
+    ],
+    [
+     2324.71,
+     4271.56
+    ],
+    [
+     2321.31,
+     4270.66
+    ],
+    [
+     2321.87,
+     4268.5
+    ],
+    [
+     2315.63,
+     4268.89
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "patio",
+    "patio",
+    "calle",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle"
+   ],
+   "area": 164.9,
+   "plantas": 5,
+   "alturaM": 15.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746112TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2318.75,
+     4268.7
+    ],
+    "lado": "S",
+    "largo": 6.25,
+    "arista": 10
+   }
+  },
+  {
+   "id": "C-8746101TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2315.63,
+     4268.89
+    ],
+    [
+     2321.95,
+     4268.5
+    ],
+    [
+     2321.86,
+     4265.56
+    ],
+    [
+     2324.01,
+     4265.43
+    ],
+    [
+     2324.04,
+     4268.39
+    ],
+    [
+     2330.68,
+     4267.71
+    ],
+    [
+     2330.82,
+     4267.1
+    ],
+    [
+     2331.29,
+     4267.06
+    ],
+    [
+     2331.19,
+     4262.77
+    ],
+    [
+     2316.82,
+     4264.37
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle"
+   ],
+   "area": 65.0,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746101TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2324.0,
+     4263.57
+    ],
+    "lado": "S",
+    "largo": 14.46,
+    "arista": 8
+   }
+  },
+  {
+   "id": "C-8746111TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2327.41,
+     4282.55
+    ],
+    [
+     2340.49,
+     4285.65
+    ],
+    [
+     2341.53,
+     4280.98
+    ],
+    [
+     2339.72,
+     4280.47
+    ],
+    [
+     2340.86,
+     4276.09
+    ],
+    [
+     2342.69,
+     4276.53
+    ],
+    [
+     2343.68,
+     4272.33
+    ],
+    [
+     2344.07,
+     4272.43
+    ],
+    [
+     2344.11,
+     4267.55
+    ],
+    [
+     2341.31,
+     4267.36
+    ],
+    [
+     2341.09,
+     4271.36
+    ],
+    [
+     2335.94,
+     4270.1
+    ],
+    [
+     2336.54,
+     4268.15
+    ],
+    [
+     2336.23,
+     4266.83
+    ],
+    [
+     2330.82,
+     4267.08
+    ],
+    [
+     2329.44,
+     4273.15
+    ],
+    [
+     2331.19,
+     4273.46
+    ],
+    [
+     2330.27,
+     4278.07
+    ],
+    [
+     2328.45,
+     4277.71
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera",
+    "calle",
+    "patio",
+    "patio",
+    "medianera"
+   ],
+   "area": 200.6,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746111TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2333.53,
+     4266.96
+    ],
+    "lado": "S",
+    "largo": 5.42,
+    "arista": 13
+   }
+  },
+  {
+   "id": "C-8746102TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2331.19,
+     4262.77
+    ],
+    [
+     2331.29,
+     4267.06
+    ],
+    [
+     2336.23,
+     4266.83
+    ],
+    [
+     2338.5,
+     4267.06
+    ],
+    [
+     2338.3,
+     4262.24
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "calle"
+   ],
+   "area": 31.9,
+   "plantas": 1,
+   "alturaM": 3.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746102TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2334.75,
+     4262.51
+    ],
+    "lado": "S",
+    "largo": 7.13,
+    "arista": 4
+   }
+  },
+  {
+   "id": "C-8746103TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2338.3,
+     4262.24
+    ],
+    [
+     2338.5,
+     4267.06
+    ],
+    [
+     2344.11,
+     4267.55
+    ],
+    [
+     2344.46,
+     4261.79
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle"
+   ],
+   "area": 31.3,
+   "plantas": 1,
+   "alturaM": 3.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746103TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2341.38,
+     4262.02
+    ],
+    "lado": "S",
+    "largo": 6.18,
+    "arista": 3
+   }
+  },
+  {
+   "id": "C-8746105TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2340.49,
+     4285.65
+    ],
+    [
+     2354.58,
+     4289.07
+    ],
+    [
+     2357.61,
+     4274.72
+    ],
+    [
+     2358.53,
+     4271.93
+    ],
+    [
+     2358.97,
+     4271.94
+    ],
+    [
+     2359.26,
+     4270.23
+    ],
+    [
+     2359.09,
+     4270.12
+    ],
+    [
+     2359.5,
+     4268.36
+    ],
+    [
+     2359.15,
+     4260.48
+    ],
+    [
+     2344.46,
+     4261.79
+    ],
+    [
+     2344.07,
+     4272.36
+    ],
+    [
+     2343.69,
+     4272.28
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "calle",
+    "medianera",
+    "medianera",
+    "patio"
+   ],
+   "area": 389.0,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746105TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2351.81,
+     4261.14
+    ],
+    "lado": "S",
+    "largo": 14.75,
+    "arista": 8
+   }
+  },
+  {
+   "id": "C-8746106TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2357.51,
+     4275.18
+    ],
+    [
+     2360.52,
+     4275.81
+    ],
+    [
+     2361.51,
+     4272.64
+    ],
+    [
+     2367.07,
+     4273.87
+    ],
+    [
+     2366.73,
+     4276.95
+    ],
+    [
+     2371.41,
+     4277.79
+    ],
+    [
+     2375.7,
+     4259.82
+    ],
+    [
+     2359.22,
+     4260.77
+    ],
+    [
+     2359.5,
+     4268.36
+    ],
+    [
+     2359.08,
+     4270.16
+    ],
+    [
+     2359.25,
+     4270.26
+    ],
+    [
+     2358.98,
+     4271.9
+    ],
+    [
+     2358.54,
+     4271.9
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "calle",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "area": 219.1,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746106TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2367.46,
+     4260.3
+    ],
+    "lado": "S",
+    "largo": 16.51,
+    "arista": 6
+   }
+  },
+  {
+   "id": "C-8746107TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2372.2,
+     4274.05
+    ],
+    [
+     2379.86,
+     4276.06
+    ],
+    [
+     2380.76,
+     4276.55
+    ],
+    [
+     2379.92,
+     4280.13
+    ],
+    [
+     2380.81,
+     4280.36
+    ],
+    [
+     2380.56,
+     4281.53
+    ],
+    [
+     2382.71,
+     4282.12
+    ],
+    [
+     2382.9,
+     4281.19
+    ],
+    [
+     2385.94,
+     4281.72
+    ],
+    [
+     2385.8,
+     4283.2
+    ],
+    [
+     2391.84,
+     4284.52
+    ],
+    [
+     2392.18,
+     4283.68
+    ],
+    [
+     2392.91,
+     4283.75
+    ],
+    [
+     2397.8,
+     4264.91
+    ],
+    [
+     2375.7,
+     4259.82
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "area": 404.8,
+   "plantas": 6,
+   "alturaM": 18.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8746107TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2386.75,
+     4262.37
+    ],
+    "lado": "S",
+    "largo": 22.68,
+    "arista": 13
+   }
+  },
+  {
+   "id": "C-8846101TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2397.61,
+     4281.67
+    ],
+    [
+     2404.21,
+     4283.34
+    ],
+    [
+     2408.95,
+     4266.98
+    ],
+    [
+     2404.55,
+     4265.92
+    ],
+    [
+     2402.26,
+     4267.34
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "calle",
+    "calle",
+    "calle"
+   ],
+   "area": 109.4,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846101TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2406.75,
+     4266.45
+    ],
+    "lado": "S",
+    "largo": 4.53,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8846102TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2404.21,
+     4283.34
+    ],
+    [
+     2410.89,
+     4285.04
+    ],
+    [
+     2413.81,
+     4268.15
+    ],
+    [
+     2408.95,
+     4266.98
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "area": 101.5,
+   "plantas": 1,
+   "alturaM": 3.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846102TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2411.38,
+     4267.57
+    ],
+    "lado": "S",
+    "largo": 5.0,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8846103TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2410.89,
+     4285.04
+    ],
+    [
+     2416.34,
+     4286.42
+    ],
+    [
+     2420.81,
+     4269.84
+    ],
+    [
+     2413.81,
+     4268.15
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "medianera",
+    "calle",
+    "medianera"
+   ],
+   "area": 110.9,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846103TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2417.31,
+     4269.0
+    ],
+    "lado": "S",
+    "largo": 7.2,
+    "arista": 2
+   }
+  },
+  {
+   "id": "C-8846120TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2411.53,
+     4304.04
+    ],
+    [
+     2419.15,
+     4306.01
+    ],
+    [
+     2419.98,
+     4301.03
+    ],
+    [
+     2420.86,
+     4297.88
+    ],
+    [
+     2418.9,
+     4297.28
+    ],
+    [
+     2419.46,
+     4295.39
+    ],
+    [
+     2421.42,
+     4295.92
+    ],
+    [
+     2425.48,
+     4281.59
+    ],
+    [
+     2420.81,
+     4280.66
+    ],
+    [
+     2418.84,
+     4287.38
+    ],
+    [
+     2416.27,
+     4286.67
+    ],
+    [
+     2414.35,
+     4293.54
+    ],
+    [
+     2416.68,
+     4294.28
+    ],
+    [
+     2416.03,
+     4296.51
+    ],
+    [
+     2413.73,
+     4295.88
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "calle",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio"
+   ],
+   "area": 158.6,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846120TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2423.14,
+     4281.13
+    ],
+    "lado": "S",
+    "largo": 4.76,
+    "arista": 7
+   }
+  },
+  {
+   "id": "C-8846104TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2418.2,
+     4280.04
+    ],
+    [
+     2422.1,
+     4280.96
+    ],
+    [
+     2422.7,
+     4278.11
+    ],
+    [
+     2425.86,
+     4279.2
+    ],
+    [
+     2425.48,
+     4281.59
+    ],
+    [
+     2430.23,
+     4282.96
+    ],
+    [
+     2432.8,
+     4272.37
+    ],
+    [
+     2420.81,
+     4269.84
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "medianera"
+   ],
+   "area": 121.9,
+   "plantas": 1,
+   "alturaM": 3.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846104TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2426.8,
+     4271.11
+    ],
+    "lado": "S",
+    "largo": 12.25,
+    "arista": 6
+   }
+  },
+  {
+   "id": "C-8846121TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2430.22,
+     4309.2
+    ],
+    [
+     2441.57,
+     4314.06
+    ],
+    [
+     2444.89,
+     4306.72
+    ],
+    [
+     2443.14,
+     4305.84
+    ],
+    [
+     2444.4,
+     4303.0
+    ],
+    [
+     2445.85,
+     4303.7
+    ],
+    [
+     2451.68,
+     4287.49
+    ],
+    [
+     2449.82,
+     4286.96
+    ],
+    [
+     2450.5,
+     4284.67
+    ],
+    [
+     2452.39,
+     4285.13
+    ],
+    [
+     2455.34,
+     4277.45
+    ],
+    [
+     2441.08,
+     4274.34
+    ],
+    [
+     2438.94,
+     4280.9
+    ],
+    [
+     2441.05,
+     4281.4
+    ],
+    [
+     2440.25,
+     4283.78
+    ],
+    [
+     2438.18,
+     4283.39
+    ],
+    [
+     2433.25,
+     4298.17
+    ],
+    [
+     2435.04,
+     4298.75
+    ],
+    [
+     2433.8,
+     4301.64
+    ],
+    [
+     2432.35,
+     4301.02
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "calle",
+    "calle",
+    "calle",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "calle",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio"
+   ],
+   "area": 482.7,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846121TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2448.21,
+     4275.9
+    ],
+    "lado": "S",
+    "largo": 14.6,
+    "arista": 10
+   }
+  },
+  {
+   "id": "C-8846107TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2449.56,
+     4293.37
+    ],
+    [
+     2456.33,
+     4295.81
+    ],
+    [
+     2461.14,
+     4296.91
+    ],
+    [
+     2468.13,
+     4280.33
+    ],
+    [
+     2455.34,
+     4277.45
+    ],
+    [
+     2452.39,
+     4285.13
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "calle",
+    "calle",
+    "medianera",
+    "medianera"
+   ],
+   "area": 221.8,
+   "plantas": 3,
+   "alturaM": 9.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846107TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2461.73,
+     4278.89
+    ],
+    "lado": "S",
+    "largo": 13.11,
+    "arista": 3
+   }
+  },
+  {
+   "id": "C-8846113TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2469.89,
+     4328.15
+    ],
+    [
+     2476.02,
+     4331.25
+    ],
+    [
+     2477.18,
+     4329.21
+    ],
+    [
+     2478.01,
+     4327.35
+    ],
+    [
+     2480.78,
+     4316.18
+    ],
+    [
+     2482.56,
+     4312.44
+    ],
+    [
+     2478.69,
+     4310.99
+    ],
+    [
+     2479.83,
+     4308.2
+    ],
+    [
+     2483.66,
+     4309.56
+    ],
+    [
+     2485.61,
+     4304.88
+    ],
+    [
+     2487.26,
+     4305.1
+    ],
+    [
+     2488.13,
+     4301.1
+    ],
+    [
+     2483.74,
+     4299.8
+    ],
+    [
+     2485.02,
+     4297.02
+    ],
+    [
+     2488.81,
+     4297.98
+    ],
+    [
+     2491.55,
+     4285.18
+    ],
+    [
+     2488.61,
+     4284.57
+    ],
+    [
+     2470.9,
+     4323.84
+    ],
+    [
+     2471.46,
+     4324.28
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "medianera",
+    "medianera",
+    "patio",
+    "patio",
+    "patio",
+    "medianera",
+    "calle",
+    "patio",
+    "patio",
+    "patio"
+   ],
+   "area": 257.1,
+   "plantas": 2,
+   "alturaM": 6.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "medianeras",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846113TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2490.08,
+     4284.88
+    ],
+    "lado": "S",
+    "largo": 3.0,
+    "arista": 15
+   }
+  },
+  {
+   "id": "C-8846109TF8084N",
+   "fuente": "Catastro",
+   "nombre": null,
+   "barrio": "Centro",
+   "huella": [
+    [
+     2479.95,
+     4319.99
+    ],
+    [
+     2482.86,
+     4320.84
+    ],
+    [
+     2482.14,
+     4324.06
+    ],
+    [
+     2484.69,
+     4324.73
+    ],
+    [
+     2486.82,
+     4317.34
+    ],
+    [
+     2490.3,
+     4318.27
+    ],
+    [
+     2492.38,
+     4318.56
+    ],
+    [
+     2498.26,
+     4287.34
+    ],
+    [
+     2497.66,
+     4286.45
+    ],
+    [
+     2491.55,
+     4285.18
+    ],
+    [
+     2489.71,
+     4293.84
+    ],
+    [
+     2492.09,
+     4294.36
+    ],
+    [
+     2491.59,
+     4296.79
+    ],
+    [
+     2489.19,
+     4296.32
+    ],
+    [
+     2487.27,
+     4305.06
+    ],
+    [
+     2485.62,
+     4304.86
+    ],
+    [
+     2482.17,
+     4313.5
+    ],
+    [
+     2480.78,
+     4316.18
+    ]
+   ],
+   "patios": [],
+   "caras": [
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "patio",
+    "calle",
+    "calle",
+    "medianera",
+    "calle",
+    "calle",
+    "calle",
+    "patio",
+    "medianera",
+    "medianera",
+    "medianera",
+    "medianera"
+   ],
+   "area": 300.4,
+   "plantas": 4,
+   "alturaM": 12.6,
+   "cubierta": "azotea",
+   "atico": null,
+   "tipologia": "bloque",
+   "revestimiento": "revoco",
+   "color": "#EFE7D6",
+   "zocalo": false,
+   "pb": "comercio",
+   "fuentes": {
+    "huella": "Catastro INSPIRE BU (DGC)",
+    "plantas": "Catastro",
+    "catastro": "8846109TF8084N"
+   },
+   "frente_calle": {
+    "centro": [
+     2494.61,
+     4285.82
+    ],
+    "lado": "S",
+    "largo": 6.24,
+    "arista": 8
+   }
+  }
+ ]
+}

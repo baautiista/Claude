@@ -1,0 +1,860 @@
+{
+ "lote": "CEN01-SOL",
+ "origen": [
+  2356,
+  4262
+ ],
+ "generador": 1,
+ "edificios": [
+  {
+   "id": "B-r19148123",
+   "plantas": 5,
+   "alturaM": 15.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8647110TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 3195,
+    "alto": 19.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 77,
+    "alto": 16.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w1086864320",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8647109TF8084N_part6)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 2029,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 85,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877664488",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8647108TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1302,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 70,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877664489",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8647107TF8084N_part6)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 2861,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 151,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877664496",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8647611TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 4126,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 124,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877664504",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8647610TF8084N_part2)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 822,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 46,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877664505",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8647609TF8084N_part2)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1205,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 77,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673090",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747412TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1414,
+    "alto": 10.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 78,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673091",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747411TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 659,
+    "alto": 10.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 41,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673089",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747410TF8084N_part2)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 955,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 55,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673088",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747409TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 438,
+    "alto": 7.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 46,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673087",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747408TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 730,
+    "alto": 7.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 40,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673086",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747407TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1459,
+    "alto": 10.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 61,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877660170",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747901TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 6020,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 152,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877660169",
+   "plantas": 7,
+   "alturaM": 21.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8747902TF8084N_part2)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 6116,
+    "alto": 25.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 290,
+    "alto": 22.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673065",
+   "plantas": 7,
+   "alturaM": 21.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8847001TF8084N_part2)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 6282,
+    "alto": 25.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 186,
+    "alto": 22.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673066",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8847002TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 2026,
+    "alto": 7.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 66,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673063",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8847007TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1086,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 52,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673062",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8847010TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 6554,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 148,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673070",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8846301TF8084N_part2)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 3578,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 124,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673068",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8846305TF8084N_part1)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 2146,
+    "alto": 10.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 68,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "B-w877673071",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "comercial",
+   "fuente_plantas": "Catastro (parte ES.SDGC.BU.8846304TF8084N_part2)",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 6000,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 124,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8646203TF8084N",
+   "plantas": 8,
+   "alturaM": 24.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 3692,
+    "alto": 28.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 98,
+    "alto": 25.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8646204TF8084N",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 640,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 36,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8646208TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 610,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 34,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8646205TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 2912,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 66,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8646206TF8084N",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 778,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 42,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746112TF8084N",
+   "plantas": 5,
+   "alturaM": 15.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 4502,
+    "alto": 16.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 138,
+    "alto": 16.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746101TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1710,
+    "alto": 13.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 104,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746111TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1379,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 117,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746102TF8084N",
+   "plantas": 1,
+   "alturaM": 3.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 311,
+    "alto": 4.16,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 29,
+    "alto": 4.1,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746103TF8084N",
+   "plantas": 1,
+   "alturaM": 3.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 220,
+    "alto": 4.16,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 22,
+    "alto": 4.1,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746105TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1777,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 93,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746106TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 2140,
+    "alto": 13.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 98,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8746107TF8084N",
+   "plantas": 6,
+   "alturaM": 18.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 4365,
+    "alto": 22.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 229,
+    "alto": 19.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846101TF8084N",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1313,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 65,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846102TF8084N",
+   "plantas": 1,
+   "alturaM": 3.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 164,
+    "alto": 4.16,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 20,
+    "alto": 4.1,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846103TF8084N",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 384,
+    "alto": 10.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 26,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846120TF8084N",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 601,
+    "alto": 7.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 77,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846104TF8084N",
+   "plantas": 1,
+   "alturaM": 3.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 1398,
+    "alto": 4.16,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 62,
+    "alto": 4.1,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846121TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 3018,
+    "alto": 16.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 170,
+    "alto": 13.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846107TF8084N",
+   "plantas": 3,
+   "alturaM": 9.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 3544,
+    "alto": 13.8,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 88,
+    "alto": 10.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846113TF8084N",
+   "plantas": 2,
+   "alturaM": 6.6,
+   "tipologia": "medianeras",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 749,
+    "alto": 7.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 97,
+    "alto": 7.6,
+    "problemas": []
+   }
+  },
+  {
+   "id": "C-8846109TF8084N",
+   "plantas": 4,
+   "alturaM": 12.6,
+   "tipologia": "bloque",
+   "fuente_plantas": "Catastro",
+   "ficha": true,
+   "lod0": {
+    "triangulos": 3162,
+    "alto": 13.66,
+    "problemas": []
+   },
+   "lod1": {
+    "triangulos": 128,
+    "alto": 13.6,
+    "problemas": []
+   }
+  }
+ ],
+ "render_lod0": [
+  "city-reconstruction/blender/render/CEN01-SOL-aerea.png",
+  "city-reconstruction/blender/render/CEN01-SOL-aerea2.png",
+  "city-reconstruction/blender/render/CEN01-SOL-calle.png"
+ ],
+ "render_lod1": [
+  "city-reconstruction/blender/render/CEN01-SOL-lejos.png"
+ ],
+ "render_edificios": {
+  "B-r19148123": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-r19148123.png",
+  "B-w1086864320": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w1086864320.png",
+  "B-w877664488": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877664488.png",
+  "B-w877664489": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877664489.png",
+  "B-w877664496": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877664496.png",
+  "B-w877664504": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877664504.png",
+  "B-w877664505": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877664505.png",
+  "B-w877673090": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673090.png",
+  "B-w877673091": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673091.png",
+  "B-w877673089": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673089.png",
+  "B-w877673088": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673088.png",
+  "B-w877673087": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673087.png",
+  "B-w877673086": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673086.png",
+  "B-w877660170": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877660170.png",
+  "B-w877660169": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877660169.png",
+  "B-w877673065": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673065.png",
+  "B-w877673066": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673066.png",
+  "B-w877673063": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673063.png",
+  "B-w877673062": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673062.png",
+  "B-w877673070": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673070.png",
+  "B-w877673068": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673068.png",
+  "B-w877673071": "city-reconstruction/blender/render/edificios/CEN01-SOL/B-w877673071.png",
+  "C-8646203TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8646203TF8084N.png",
+  "C-8646204TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8646204TF8084N.png",
+  "C-8646208TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8646208TF8084N.png",
+  "C-8646205TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8646205TF8084N.png",
+  "C-8646206TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8646206TF8084N.png",
+  "C-8746112TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746112TF8084N.png",
+  "C-8746101TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746101TF8084N.png",
+  "C-8746111TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746111TF8084N.png",
+  "C-8746102TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746102TF8084N.png",
+  "C-8746103TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746103TF8084N.png",
+  "C-8746105TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746105TF8084N.png",
+  "C-8746106TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746106TF8084N.png",
+  "C-8746107TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8746107TF8084N.png",
+  "C-8846101TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846101TF8084N.png",
+  "C-8846102TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846102TF8084N.png",
+  "C-8846103TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846103TF8084N.png",
+  "C-8846120TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846120TF8084N.png",
+  "C-8846104TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846104TF8084N.png",
+  "C-8846121TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846121TF8084N.png",
+  "C-8846107TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846107TF8084N.png",
+  "C-8846113TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846113TF8084N.png",
+  "C-8846109TF8084N": "city-reconstruction/blender/render/edificios/CEN01-SOL/C-8846109TF8084N.png"
+ },
+ "glb": "public/modelos/manzanas/CEN01-SOL.glb",
+ "glb_kb": 1993,
+ "segundos": 147.5,
+ "problemas": 0
+}

@@ -223,6 +223,8 @@ const DESPLAZ = new Map<Tramo, number>();
 const ejesCache = new WeakMap<Tramo, Punto[]>();
 /** Eje por el que se dibuja y circula cada calle: el de OSM, centrado en el corredor libre. */
 function eje(t: Tramo): Punto[] {
+  const aj = EJE_AJUSTADO.get(t);
+  if (aj) return aj;
   const off = DESPLAZ.get(t) ?? 0;
   if (Math.abs(off) < 0.05) return t.puntos as Punto[];
   let e = ejesCache.get(t);
@@ -248,6 +250,9 @@ function eje(t: Tramo): Punto[] {
   ejesCache.set(t, e);
   return e;
 }
+/** Calles medidas contra sus fachadas reales: eje, calzada y acera (scripts/secciones/ajustar_calle.py). */
+const ajustesCalles = import.meta.glob<Record<string, { w: number; acera: number; eje: Punto[] }>>("../datos/ciudad/ajustes.json", { eager: true, import: "default" });
+const EJE_AJUSTADO = new Map<Tramo, Punto[]>();
 /** Dobles calzadas estrechadas para dejar mediana (scripts/blender/calles/calles.py). */
 const medianas = import.meta.glob<Record<string, number>>("../datos/ciudad/medianas.json", { eager: true, import: "default" });
 const anchosReales = import.meta.glob<{ tramos: Record<number, [number, number, number]> }>("../datos/ciudad/anchos.json", { eager: true, import: "default" });
@@ -356,6 +361,15 @@ function calcularAnchos() {
     SECCION.set(t, acera >= 1.5 ? "convencional" : "acera_estrecha");
     ANCHO_TRAMO.set(t, calzada);
     ACERA_TRAMO.set(t, acera);
+  });
+  const aju = Object.values(ajustesCalles)[0] ?? {};
+  TRAMOS.forEach((t, i) => {
+    const a = aju[i];
+    if (!a) return;
+    ANCHO_TRAMO.set(t, a.w);
+    ACERA_TRAMO.set(t, a.acera);
+    SECCION.set(t, a.acera >= 1.5 ? "convencional" : "acera_estrecha");
+    EJE_AJUSTADO.set(t, a.eje);
   });
   const med = Object.values(medianas)[0] ?? {};
   TRAMOS.forEach((t, i) => {
@@ -2264,7 +2278,7 @@ export class Mundo {
     this.ciudad = new GestorCiudad(ctx, (o) => this.escena.add(o), (o) => this.escena.remove(o), (o) => this.mallasObra(o), (id, p) => this.colisionesTesela(id, p as Punto[][] | null));
     (globalThis as unknown as { __ciudad: unknown }).__ciudad = this.ciudad;
     // Manzanas modeladas en Blender (scripts/blender): sustituyen a los edificios procedurales.
-    this.blender = new ModelosBlender(ctx, (o) => this.escena.add(o));
+    this.blender = new ModelosBlender(ctx, (o) => this.escena.add(o), (id, p) => this.colisionesTesela(id, p as Punto[][]));
     this.placas = new PlacasCalle(this.escena, CX, CY, SUELO);
     (globalThis as unknown as { __blender: unknown }).__blender = this.blender;
     void conectarBackend();

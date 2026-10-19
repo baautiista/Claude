@@ -387,6 +387,8 @@
   }
  ],
  "alturas": {
+  "calzada_piedra": 0.15,
+  "acera_roja": 0.27,
   "asfalto": 0.15,
   "acera": 0.27,
   "bordillo": 0.272,

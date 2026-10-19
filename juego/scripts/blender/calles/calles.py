@@ -27,7 +27,7 @@ from shapely.ops import unary_union
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 TES = 400.0
-ALTO = {"asfalto": 0.15, "acera": 0.27, "bordillo": 0.272, "peatonal": 0.15, "sendero": 0.13, "pista": 0.13, "isleta": 0.30}
+ALTO = {"calzada_piedra": 0.15, "acera_roja": 0.27, "asfalto": 0.15, "acera": 0.27, "bordillo": 0.272, "peatonal": 0.15, "sendero": 0.13, "pista": 0.13, "isleta": 0.30}
 
 
 def polys(g):
@@ -167,9 +167,17 @@ def medianas(tramos):
 
 def main():
     tramos = json.load(open(os.path.join(RAIZ, "city-reconstruction/calles/tramos.json")))
+    # Calles medidas contra sus fachadas reales (scripts/secciones/ajustar_calle.py).
+    fa = os.path.join(RAIZ, "city-reconstruction/calles/ajustes.json")
+    ajustes = json.load(open(fa)) if os.path.exists(fa) else {}
+    for t in tramos:
+        a = ajustes.get(str(t["i"]))
+        if a:
+            t.update({"w": a["w"], "acera": a["acera"], "eje": a["eje"], "ajustado": True})
     print(f"{medianas(tramos)} tramos de doble calzada estrechados para dejar mediana")
     # El juego usa los mismos anchos para árboles, farolas y carriles.
     json.dump({str(t["i"]): round(t["w"], 2) for t in tramos if t.get("mediana")}, open(os.path.join(RAIZ, "src/datos/ciudad/medianas.json"), "w"))
+    json.dump({str(t["i"]): {"w": t["w"], "acera": t["acera"], "eje": t["eje"]} for t in tramos if t.get("ajustado")}, open(os.path.join(RAIZ, "src/datos/ciudad/ajustes.json"), "w"))
     rot = rotondas(tramos)
     en_rotonda = {i for r in rot for i in r["tramos"]}
     print(f"{len(rot)} rotondas:", ", ".join(f"{r['nombre'] or '—'} (r={r['r']:.1f})" for r in rot))
@@ -212,6 +220,13 @@ def main():
     # Bordillo: franja de 18 cm de la acera junto a la calzada.
     BO = S.intersection(A.buffer(0.18, quad_segs=3)).difference(A)
     capas = {"asfalto": A, "acera": S.difference(BO), "bordillo": BO, "peatonal": P, "sendero": SE, "pista": PI, "isleta": I}
+    # Calles revisadas con fotos: calzada de adoquín gris y acera de baldosa rojiza (como en la Calle del Sol).
+    zona = unary_union([LineString(t["eje"]).buffer(t["w"] / 2 + t["acera"] + 0.3, cap_style=2) for t in tramos if t.get("ajustado")])
+    if not zona.is_empty:
+        capas["calzada_piedra"] = capas["asfalto"].intersection(zona)
+        capas["asfalto"] = capas["asfalto"].difference(zona)
+        capas["acera_roja"] = capas["acera"].intersection(zona)
+        capas["acera"] = capas["acera"].difference(zona)
     capas = {k: shapely.make_valid(v.simplify(0.1)) for k, v in capas.items()}
     # Bordes verticales (con su altura) de las capas elevadas.
     xs = [p[0] for t in tramos for p in t["eje"]]
@@ -238,7 +253,7 @@ def main():
                         c = list(tr.exterior.coords)[:3]
                         tris.append([round(v, 3) for q in c for v in q])
                     # Bordes verticales hasta el suelo (cara del bordillo, canto de la isleta…).
-                    if k in ("acera", "bordillo", "isleta", "asfalto"):
+                    if k in ("acera", "bordillo", "isleta", "asfalto", "acera_roja", "calzada_piedra"):
                         for anillo in [p.exterior, *p.interiors]:
                             cs = list(anillo.coords)
                             for a, b in zip(cs, cs[1:]):

@@ -22,17 +22,18 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(
 import base as B  # noqa: E402
 import texturas as T  # noqa: E402
 
-CAPA_MAT = {"asfalto": "Asfalto", "acera": "Acera", "bordillo": "Bordillo", "peatonal": "Adoquin", "sendero": "Albero", "pista": "Albero", "isleta": "Cesped"}
-BORDE_MAT = {"asfalto": "Asfalto", "acera": "Bordillo", "bordillo": "Bordillo", "isleta": "Bordillo"}
-METROS = {"Asfalto": 4.0, "Acera": 2.0, "Bordillo": 1.0, "Adoquin": 2.0, "Albero": 3.0, "Cesped": 3.0}
-ALTO = {"asfalto": 0.15, "acera": 0.27, "bordillo": 0.272, "peatonal": 0.15, "sendero": 0.13, "pista": 0.13, "isleta": 0.30}
+CAPA_MAT = {"calzada_piedra": "AdoquinCalzada", "acera_roja": "AceraRoja", "asfalto": "Asfalto", "acera": "Acera", "bordillo": "Bordillo", "peatonal": "Adoquin", "sendero": "Albero", "pista": "Albero", "isleta": "Cesped"}
+BORDE_MAT = {"acera_roja": "Bordillo", "calzada_piedra": "AdoquinCalzada", "asfalto": "Asfalto", "acera": "Bordillo", "bordillo": "Bordillo", "isleta": "Bordillo"}
+METROS = {"AdoquinCalzada": 2.0, "AceraRoja": 2.0, "Asfalto": 4.0, "Acera": 2.0, "Bordillo": 1.0, "Adoquin": 2.0, "Albero": 3.0, "Cesped": 3.0}
+ALTO = {"calzada_piedra": 0.15, "acera_roja": 0.27, "asfalto": 0.15, "acera": 0.27, "bordillo": 0.272, "peatonal": 0.15, "sendero": 0.13, "pista": 0.13, "isleta": 0.30}
 
 
 def materiales():
     M = {}
     tex = {"Asfalto": T.asfalto_fino(None), "Acera": T.baldosa(None), "Bordillo": T.granito(None), "Adoquin": T.adoquin_gris(None),
-           "Albero": T.albero(None), "Cesped": T.cesped_fino(None), "Arena": T.arena_playa(None)}
-    rug = {"Asfalto": 0.92, "Acera": 0.85, "Bordillo": 0.8, "Adoquin": 0.86, "Albero": 0.95, "Cesped": 0.96, "Arena": 0.97}  # distintos: el optimizador fusiona materiales iguales
+           "Albero": T.albero(None), "Cesped": T.cesped_fino(None), "Arena": T.arena_playa(None),
+           "AdoquinCalzada": T.adoquin_gris(None, semilla=41, nombre="T_adoquin_calzada", base="#9A9890"), "AceraRoja": T.baldosa(None, semilla=42, nombre="T_acera_roja", base="#A8796A")}
+    rug = {"Asfalto": 0.92, "Acera": 0.85, "Bordillo": 0.8, "Adoquin": 0.86, "Albero": 0.95, "Cesped": 0.96, "Arena": 0.97, "AdoquinCalzada": 0.87, "AceraRoja": 0.84}  # distintos: el optimizador fusiona materiales iguales
     for n, img in tex.items():
         m = bpy.data.materials.new(n)
         m.use_nodes = True
