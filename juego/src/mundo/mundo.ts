@@ -23,7 +23,7 @@ import { presente } from "../historia";
 import { esIconoJuego, iconoJuego, iconoSvg } from "../iconos";
 import * as M from "./modelos";
 import * as T from "./texturas";
-import { animarPersonaje, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
+import { animarPersonaje, cambiarAspecto, crearPersonaje, ponerEstado, recolorear, REFERENCIA_HOMBRE, REFERENCIA_MUJER, ESCALA_PERSONAJE, type Aspecto, type Personaje } from "./personajes3d";
 import { construirCentro02, CENTRO_C02, SUSTITUYE_C02, solidosCentro02 } from "./sectores/centro02";
 import { solidosCentro01 } from "./sectores/centro01";
 import { arbolesSaccone, CENTRO_SACCONE, construirSaccone, destinoJardin, enJardinesSaccone, libreJardin, solidosSaccone } from "./sectores/saccone";
@@ -2632,6 +2632,11 @@ export class Mundo {
 
   set piel(c: string) {
     if (this.jugador.userData.aspecto.piel !== c) recolorear(this.jugador, { piel: c });
+  }
+
+  /** Aspecto elegido por el jugador (peinado, atuendo, complementos…). */
+  aspectoJugador(cambios: Partial<Aspecto>) {
+    cambiarAspecto(this.jugador, cambios);
   }
 
   colocar(nodo: string) {

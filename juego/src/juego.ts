@@ -1,7 +1,7 @@
 import { LUGARES, nodoCercano, ZONAS, zonaDeLugar, type LugarId, type Punto, type Zona } from "./datos/mapa";
 import { PERSONAJES, type PersonajeId } from "./datos/personajes";
 import {
-  dormir, esMadrugada, g, ganarXP, guardar, hora, nivel, NIVELES, pasarTiempo, progresoNivel, sinLeer, VIENTOS, type Estado,
+  dormir, esMadrugada, g, ganarXP, guardar, HABILIDADES, hora, nivel, NIVELES, pasarTiempo, progresoNivel, sinLeer, VIENTOS, type Estado, type Habilidad,
 } from "./estado";
 import * as historia from "./historia";
 import { esIconoJuego, iconoJuego, iconoSvg, type IconoJuego } from "./iconos";
@@ -63,6 +63,7 @@ export class Juego {
     this.mundo.volarA(110);
     this.mundo.ropa = e.ropa;
     this.mundo.piel = e.piel;
+    if (e.aspecto) this.aplicarAspecto();
     this.mundo.onTocar = (t) => {
       if (!this.ocupado || this.vivo) this.tocar(t);
     };
@@ -382,6 +383,7 @@ export class Juego {
     this.botonMovil = opcion("movil", "InfoLinense", () => abrirMovil(this));
     this.botonVecinos = opcion("gente", "Vecinos", () => abrirVecinos(this));
     this.menuMas = h("div", { class: "menu-mas", role: "menu" },
+      opcion("cara", "Personaje", () => void import("./ui/personaje").then((m) => m.abrirPersonaje(this))),
       opcion("diario", "Diario", () => abrirDiario(this)),
       this.botonMovil,
       this.botonVecinos,
@@ -406,8 +408,26 @@ export class Juego {
     if (n) this.botonMas.querySelector(".bola")!.append(h("span", { class: "punto" }, "•"));
   }
 
+  /** Aplica al personaje 3D el aspecto guardado (personalización). */
+  aplicarAspecto() {
+    const a = this.e.aspecto;
+    if (!a) return;
+    this.mundo.aspectoJugador({
+      ...(a.sexo ? { sexo: a.sexo } : {}), ...(a.peinado ? { peinado: a.peinado as never } : {}), ...(a.pelo ? { pelo: a.pelo } : {}),
+      ...(a.atuendo ? { atuendo: a.atuendo as never } : {}), ...(a.pantalon ? { pantalon: a.pantalon } : {}), ...(a.calzado ? { calzado: a.calzado } : {}),
+      accesorio: a.accesorio ?? null, complexion: a.complexion ?? 1, ropa: this.e.ropa, piel: this.e.piel,
+    });
+  }
+
   refrescar() {
     const e = this.e;
+    // Subida de nivel de una habilidad (la anota practicar()).
+    if (e.flags.nivelSubido) {
+      const [hab, n] = String(e.flags.nivelSubido).split(":");
+      delete e.flags.nivelSubido;
+      const H = HABILIDADES[hab as Habilidad];
+      if (H) setTimeout(() => this.aviso(`⭐ <b>${H.nombre}</b> sube a nivel <b>${n}</b>. ${H.ventaja(Number(n))}.`), 300);
+    }
     const pasoXP = Number(e.flags.pasoXP ?? 0);
     if (e.paso > pasoXP) {
       ganarXP(e, (e.paso - pasoXP) * 6);

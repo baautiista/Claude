@@ -3,8 +3,7 @@ import type { LugarId } from "../datos/mapa";
 import { CULTIVOS, OBJETOS, RECETAS, SALIDAS, TIENDAS, type CultivoId, type ObjetoId, type SalidaId } from "../datos/objetos";
 import { PERSONAJES } from "../datos/personajes";
 import {
-  amistad, cuantos, dar, ganarXP, horaDelDia, limitar, listo, precioPuesto, precioVenta, progresoCultivo, quitar, reputacion, tiene, zarpar,
-} from "../estado";
+  amistad, cuantos, dar, ganarXP, horaDelDia, limitar, listo, precioPuesto, precioVenta, progresoCultivo, quitar, reputacion, tiene, zarpar, practicar } from "../estado";
 import type { ICONOS } from "../iconos";
 import type { Juego } from "../juego";
 import { h } from "./dom";
@@ -202,6 +201,7 @@ function cosechar(j: Juego, i: number) {
   const c = CULTIVOS[b.cultivo];
   dar(e, c.da, c.cantidad);
   ganarXP(e, c.cantidad);
+  practicar(e, "huerta", 6);
   e.bancales[i] = { cultivo: null, crecido: 0 };
   e.energia = limitar(e.energia - 1, true);
   j.mundo.flotante(`+${c.cantidad} ${OBJETOS[c.da].plural}`, j.mundo.posBancal(i));
@@ -311,6 +311,7 @@ export function abrirCocina(j: Juego) {
           fn: () => {
             for (const [id, n] of Object.entries(r.necesita) as [ObjetoId, number][]) quitar(e, id, n);
             e.cocina.push({ receta: r.da, faltan: r.minutos, total: r.minutos });
+            practicar(e, "cocina", 5);
             sonido("toque");
             j.vivo?.();
           },
@@ -335,6 +336,7 @@ export function abrirBarca(j: Juego) {
             ganarXP(e, 5);
             j.mundo.flotante(`+${lista(e.barcaBotin)}`, j.mundo.posDe("barca"));
             e.barcaBotin = {};
+            practicar(e, "pesca", 8);
             e.barca = null;
             reputacion(e, "atunara", 1);
             sonido("bien");

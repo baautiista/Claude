@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { MUEBLES } from "../compartido/hogar/catalogo";
 import type { Unidad } from "../compartido/hogar/hogar";
 import { habitacionEn } from "../compartido/hogar/plano";
-import { limitar } from "../estado";
+import { limitar, nivelHab, practicar } from "../estado";
 import { iconoSvg } from "../iconos";
 import type { Juego } from "../juego";
 import { con } from "../red/conexion";
@@ -137,6 +137,11 @@ export class Vivienda {
     this.guardado.classList.add("activo");
     try {
       const r = await con.llamar<T>(op, { id: this.id, ...args });
+      // Reformar también es oficio: cada trabajo hecho suma práctica.
+      if (/^hogar(Limpiar|Basura|Pintar|Suelo|Reparar|Grieta|Electricidad|Fontaneria|Tabique|Montar)/.test(op)) {
+        this.j.e.animo = limitar(this.j.e.animo + nivelHab(this.j.e, "reformas"));
+        practicar(this.j.e, "reformas", 3);
+      }
       const ri = r as unknown as { interior?: InteriorPublico };
       if (ri && ri.interior) this.escena.cargar(ri.interior);
       this.guardado.textContent = "Guardado";
@@ -324,6 +329,7 @@ export class Vivienda {
     }
     sonido("toque");
     await this.j.pasar(t.minutos);
+    if (id === "ducha") e.higiene = 100;
     e.animo = limitar(e.animo + (t.premio.animo ?? 0));
     e.energia = limitar(e.energia + (t.premio.energia ?? 0));
     hechas.add(id);
@@ -396,6 +402,7 @@ export class Vivienda {
         }
       // falls through
       case "asearse":
+        e.higiene = limitar((e.higiene ?? 80) + (r.funcion === "ducharse" ? 100 : 25));
         e.animo = limitar(e.animo + (r.funcion === "ducharse" ? 10 : 4));
         await this.j.pasar(r.funcion === "ducharse" ? 20 : 5);
         this.escena.flotar(r.funcion === "ducharse" ? "🚿 +10 ánimo" : "+4 ánimo", yo);

@@ -88,6 +88,58 @@ export interface Estado {
   turnoDia: number;
   /** Experiencia: sube de nivel y desbloquea zonas de la ciudad. */
   xp: number;
+  /** Práctica acumulada en cada habilidad (ver HABILIDADES). */
+  habilidades?: Partial<Record<Habilidad, number>>;
+  /** Higiene 0–100: baja con el tiempo y el esfuerzo; sube con la ducha. */
+  higiene?: number;
+  /** Aspecto elegido por el jugador (personalización). */
+  aspecto?: AspectoJugador;
+}
+
+/** Aspecto que el jugador puede cambiar (peinado, ropa, complementos). */
+export interface AspectoJugador {
+  sexo?: "h" | "m";
+  peinado?: string;
+  pelo?: string;
+  atuendo?: string;
+  pantalon?: string;
+  calzado?: string;
+  accesorio?: "gafas" | "gorra" | null;
+  complexion?: number;
+  /** Prendas compradas en la tienda (ids de ROPA). */
+  armario?: string[];
+}
+
+/* ── Habilidades ─────────────────────────────────────────────────────── */
+
+export type Habilidad = "cocina" | "pesca" | "huerta" | "comercio" | "reformas" | "periodismo" | "vecindad";
+export const HABILIDADES: Record<Habilidad, { nombre: string; ventaja: (n: number) => string }> = {
+  cocina: { nombre: "Cocina", ventaja: (n) => `Los guisos se hacen un ${n * 6} % más rápido` },
+  pesca: { nombre: "Pesca", ventaja: (n) => `+${Math.floor(n / 3)} piezas por salida de la barca` },
+  huerta: { nombre: "Huerta", ventaja: (n) => `Los bancales crecen un ${n * 6} % más rápido` },
+  comercio: { nombre: "Comercio", ventaja: (n) => `Un ${n * 8} % más de clientes en el puesto` },
+  reformas: { nombre: "Reformas", ventaja: (n) => `+${n} de ánimo por cada trabajo de reforma bien hecho` },
+  periodismo: { nombre: "Periodismo", ventaja: (n) => `+${n} de amistad con Marta por cada noticia publicada` },
+  vecindad: { nombre: "Trato con los vecinos", ventaja: (n) => `La amistad sube un ${n * 5} % más` },
+};
+export const NIVEL_MAX = 10;
+/** Nivel 0–10: 20, 80, 180… puntos de práctica. */
+export const nivelHab = (e: Estado, h: Habilidad) => Math.min(NIVEL_MAX, Math.floor(Math.sqrt((e.habilidades?.[h] ?? 0) / 20)));
+/** Práctica que falta para el siguiente nivel, como fracción 0–1. */
+export function progresoHab(e: Estado, h: Habilidad) {
+  const n = nivelHab(e, h);
+  if (n >= NIVEL_MAX) return 1;
+  const a = 20 * n * n;
+  const b = 20 * (n + 1) * (n + 1);
+  return ((e.habilidades?.[h] ?? 0) - a) / (b - a);
+}
+/** Suma práctica; si sube de nivel lo deja anotado para avisar (lo muestra Juego.refrescar). */
+export function practicar(e: Estado, h: Habilidad, n: number) {
+  const antes = nivelHab(e, h);
+  e.habilidades = { ...(e.habilidades ?? {}), [h]: (e.habilidades?.[h] ?? 0) + n };
+  const despues = nivelHab(e, h);
+  if (despues > antes) e.flags.nivelSubido = `${h}:${despues}`;
+  return despues > antes;
 }
 
 const CLAVE = "mi-linea-v4";
@@ -230,27 +282,35 @@ export function pasarTiempo(e: Estado, minutos: number, esfuerzo = 0) {
   e.minuto += minutos;
   e.comida = limitar(e.comida - horas * 4, true);
   e.energia = limitar(e.energia - horas * 2 - esfuerzo, true);
-  e.social = limitar(e.social - horas * 1.5, true);
-  if (e.comida < 20 || e.social < 15) e.animo = limitar(e.animo - horas * 3, true);
+  e.higiene = limitar((e.higiene ?? 80) - horas * 2.5 - esfuerzo * 0.3, true);
+  // Sin ducharse, la gente se aparta: el trato social baja más rápido.
+  e.social = limitar(e.social - horas * (e.higiene < 25 ? 3 : 1.5), true);
+  if (e.comida < 20 || e.social < 15 || e.higiene < 15) e.animo = limitar(e.animo - horas * 3, true);
   producir(e, minutos);
 }
 
 /** Producción en segundo plano, como en Hay Day: todo sigue aunque no mires. */
 export function producir(e: Estado, minutos: number) {
-  const bonus = e.viento === "poniente" ? 1.25 : 1;
+  const bonus = (e.viento === "poniente" ? 1.25 : 1) * (1 + nivelHab(e, "huerta") * 0.06);
   for (const p of e.bancales) if (p.cultivo) p.crecido += minutos * bonus;
+  const ritmoCocina = 1 + nivelHab(e, "cocina") * 0.06;
   let resto = minutos;
   while (resto > 0 && e.cocina.length && e.cocinaListos.length < 6) {
     const f = e.cocina[0];
-    const usa = Math.min(resto, f.faltan);
-    f.faltan -= usa;
+    const usa = Math.min(resto, f.faltan / ritmoCocina);
+    f.faltan -= usa * ritmoCocina;
     resto -= usa;
     if (f.faltan <= 0) e.cocinaListos.push(e.cocina.shift()!.receta);
   }
-  if (e.barca && e.minuto >= e.barca.vuelta && !Object.keys(e.barcaBotin).length) e.barcaBotin = captura(e.barca.salida);
+  if (e.barca && e.minuto >= e.barca.vuelta && !Object.keys(e.barcaBotin).length) {
+    e.barcaBotin = captura(e.barca.salida);
+    const extra = Math.floor(nivelHab(e, "pesca") / 3);
+    const k = Object.keys(e.barcaBotin)[0] as ObjetoId | undefined;
+    if (k && extra) e.barcaBotin[k] = (e.barcaBotin[k] ?? 0) + extra;
+  }
   // Clientes del puesto 14: de media, uno cada 25 minutos.
   if (e.flags.puesto) {
-    const prob = 1 - Math.pow(1 - 1 / 25, minutos);
+    const prob = 1 - Math.pow(1 - (1 / 25) * (1 + nivelHab(e, "comercio") * 0.08), minutos);
     if (Math.random() < prob) {
       const llenas = e.puesto.map((c, i) => (c ? i : -1)).filter((i) => i >= 0);
       if (llenas.length) {
@@ -260,6 +320,7 @@ export function producir(e: Estado, minutos: number) {
         c.n -= 1;
         if (c.n <= 0) e.puesto[i] = null;
         e.flags.ventaReciente = e.minuto;
+        practicar(e, "comercio", 2);
       }
     }
   }
@@ -324,6 +385,10 @@ export function ganarXP(e: Estado, n: number) {
 /* ── Amistad y reputación ───────────────────────────────────────────── */
 
 export function amistad(e: Estado, quien: PersonajeId, n: number) {
+  if (n > 0) {
+    practicar(e, "vecindad", n / 2);
+    n = Math.round(n * (1 + nivelHab(e, "vecindad") * 0.05));
+  }
   e.amistad[quien] = limitar(e.amistad[quien] + n);
 }
 

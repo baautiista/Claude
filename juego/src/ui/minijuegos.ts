@@ -1,6 +1,6 @@
 import { cobrar } from "../economia";
 import { OBJETOS, type ObjetoId } from "../datos/objetos";
-import { amistad, dar, ganarXP, publicar, reputacion } from "../estado";
+import { amistad, dar, ganarXP, nivelHab, practicar, publicar, reputacion } from "../estado";
 import * as historia from "../historia";
 import type { Juego } from "../juego";
 import { h } from "./dom";
@@ -313,6 +313,8 @@ export function turnoRedaccion(j: Juego) {
     const puntos = aciertos + (bienTitulado ? 2 : 0);
     if (bienTitulado) {
       publicar(e, { seccion: s.seccion, titular: texto, entradilla: s.entradilla, tuya: true });
+      amistad(e, "marta", nivelHab(e, "periodismo"));
+      practicar(e, "periodismo", 10);
       reputacion(e, "centro", 2 + aciertos);
       amistad(e, "marta", 4 + aciertos);
       sonido("bien");

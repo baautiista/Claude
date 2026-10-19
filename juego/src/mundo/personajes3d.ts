@@ -867,7 +867,9 @@ export function crearPersonaje(a: Aspecto): Personaje {
       lod.remove(det);
       nivel.object = pb.raiz;
       lod.add(pb.raiz);
-      raiz.userData.blender = pb;
+      // El LOD puede haber pasado a otro grupo raíz (recolorear): se anota en su dueño actual.
+      const dueno = (lod.parent ?? raiz) as Personaje;
+      dueno.userData.blender = pb;
     })
     .catch((e) => console.warn("Personaje de Blender no disponible", e));
 
@@ -1064,6 +1066,20 @@ export function recolorear(p: Personaje, cambios: Partial<Pick<Aspecto, "piel" |
   p.userData.rig.raiz = p;
 }
 
+
+/** Cambia el aspecto completo (peinado, atuendo, complexión…) conservando posición y estado. */
+export function cambiarAspecto(p: Personaje, cambios: Partial<Aspecto>) {
+  const a: Aspecto = { ...p.userData.aspecto, ...cambios };
+  if (cambios.atuendo || cambios.sexo || cambios.pantalon || cambios.calzado) delete a.prendas;
+  const nuevo = crearPersonaje(a);
+  const lodViejo = p.children[0];
+  p.remove(lodViejo);
+  const lodNuevo = nuevo.children[0];
+  nuevo.remove(lodNuevo);
+  p.add(lodNuevo);
+  p.userData = { ...nuevo.userData, anim: p.userData.anim };
+  p.userData.rig.raiz = p;
+}
 
 /* ── Personajes de referencia (aprobación del estilo) ───────────── */
 

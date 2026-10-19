@@ -681,3 +681,21 @@ body.modo-editor #app { max-width: none; }
 .tareas-casa .tarea.hecha b { text-decoration: line-through; color: #8A8F9A; }
 .tareas-casa .boton.mini { padding: 2px 8px; font-size: 12px; }
 @media (max-width: 640px) { .tareas-casa { top: auto; bottom: 86px; right: 8px; width: 200px; font-size: 12px; } }
+
+/* Ficha del personaje */
+.barra-ficha { height: 8px; background: #E2E5EC; border-radius: 4px; overflow: hidden; }
+.barra-ficha i { display: block; height: 100%; border-radius: 4px; }
+.fila-ficha { display: grid; grid-template-columns: 1fr 2fr 36px; gap: 8px; align-items: center; margin: 4px 0; }
+.habilidad .fila-ficha { grid-template-columns: 1fr auto; }
+.habilidad { padding: 6px 0; border-top: 1px solid #EEF0F4; }
+.habilidad small { color: #5B6170; display: block; margin-top: 3px; }
+.habilidad .nivel { font: 700 12px Poppins, system-ui, sans-serif; color: #1F5EFF; }
+.aviso-ficha { color: #FF1254; }
+.fila-aspecto { margin: 8px 0; }
+.fila-aspecto > b { display: block; margin-bottom: 4px; }
+.muestra { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px #C9CED8; cursor: pointer; }
+.muestra.activo { box-shadow: 0 0 0 3px #1F5EFF; }
+.tienda-ropa .prenda { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid #EEF0F4; }
+.tienda-ropa .prenda small { display: block; color: #5B6170; }
+.tienda-ropa .prenda.puesta b { color: #1F5EFF; }
+.tienda-ropa .marca-ok { color: #1F5EFF; font-weight: 700; }
