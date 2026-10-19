@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { crearPersonajeB, poner, type PersonajeB } from "./personajeBlender";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 /**
@@ -583,6 +584,7 @@ export interface Personaje extends THREE.Group {
     rig: Rig;
     lejos: { cuerpo: THREE.Object3D; piernas: [THREE.Object3D, THREE.Object3D] };
     anim: EstadoInterno;
+    blender?: PersonajeB;
   };
 }
 
@@ -856,6 +858,18 @@ export function crearPersonaje(a: Aspecto): Personaje {
   lod.addLevel(det, 0);
   lod.addLevel(lejosG, 48);
   raiz.add(lod);
+  // De cerca, el personaje hecho en Blender (en cuanto carga sustituye al detallado).
+  void crearPersonajeB({ mujer, complexion: a.complexion ?? 1, piel: a.piel, pelo: a.pelo, peinado: a.peinado, arriba: pr.arriba, capa: pr.capa, abajo: pr.abajo, calzado: pr.calzado.color, accesorio: a.accesorio })
+    .then((pb) => {
+      pb.raiz.scale.setScalar(esc);
+      const nivel = lod.levels.find((l) => l.object === det);
+      if (!nivel) return;
+      lod.remove(det);
+      nivel.object = pb.raiz;
+      lod.add(pb.raiz);
+      raiz.userData.blender = pb;
+    })
+    .catch((e) => console.warn("Personaje de Blender no disponible", e));
 
   raiz.userData = {
     personaje: true,
@@ -893,6 +907,11 @@ const lerpAng = (o: THREE.Object3D, x: number, y: number, z: number, k: number) 
  */
 export function animarPersonaje(p: Personaje, t: number, dt: number) {
   const an = p.userData.anim;
+  const pb = p.userData.blender;
+  if (pb) {
+    poner(pb, an.estado, an.velocidad);
+    pb.mixer.update(dt);
+  }
   const R = p.userData.rig;
   const k = 1 - Math.exp(-dt * 12);
   // Giro sobre sí mismo: pasitos en el sitio.
