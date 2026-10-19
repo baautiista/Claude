@@ -34,6 +34,7 @@ import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
 import { ModelosBlender, cargarModelo, piezasModelo } from "./ciudad/modelosBlender";
 import { HAY_CALLES_BLENDER, cargarCalles } from "./ciudad/callesBlender";
+import { PlacasCalle } from "./placasCalle";
 import { conectarBackend } from "./ciudad/correcciones";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
@@ -2042,6 +2043,8 @@ export class Mundo {
   ciudad!: GestorCiudad;
   /** Lotes de edificios modelados en Blender. */
   blender!: ModelosBlender;
+  /** Placas con el nombre de las calles (solo las cercanas). */
+  placas!: PlacasCalle;
   /** Si está activo, tocar la ciudad selecciona edificios generados en vez de jugar. */
   editorCiudad: ((x: number, y: number) => void) | null = null;
   private solidosTeselas = new Map<string, P2Lista[]>();
@@ -2262,6 +2265,7 @@ export class Mundo {
     (globalThis as unknown as { __ciudad: unknown }).__ciudad = this.ciudad;
     // Manzanas modeladas en Blender (scripts/blender): sustituyen a los edificios procedurales.
     this.blender = new ModelosBlender(ctx, (o) => this.escena.add(o));
+    this.placas = new PlacasCalle(this.escena, CX, CY, SUELO);
     (globalThis as unknown as { __blender: unknown }).__blender = this.blender;
     void conectarBackend();
     // Personajes de referencia del nuevo estilo, charlando junto al monumento.
@@ -3297,6 +3301,7 @@ export class Mundo {
         const p = this.modoPOV ? this.jugador.position : this.objetivoCam;
         this.ciudad.actualizar(p.x + CX, p.z + CY);
         this.blender.actualizar(p.x + CX, p.z + CY);
+        this.placas.actualizar(p.x + CX, p.z + CY);
       } else this.ciudad.paso();
     }
     // Personaje andando por la forma real de las calles.
