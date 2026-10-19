@@ -668,3 +668,16 @@ body.modo-editor #app { max-width: none; }
 .comparar-col header .etiqueta { justify-self: start; background: var(--lima); color: var(--marino); padding: 2px 8px; border-radius: 6px; font: 700 11px var(--display); letter-spacing: 0.05em; }
 .comparar-marco { position: relative; flex: 1; min-height: 0; }
 .comparar-marco canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* Tareas de casa (vivienda) */
+.tareas-casa { position: absolute; top: 64px; right: 12px; width: 230px; background: rgba(255,255,255,.94); color: #15171C; border-radius: 12px; padding: 10px 12px; font: 13px/1.35 Inter, system-ui, sans-serif; box-shadow: 0 6px 20px rgba(0,0,0,.18); z-index: 5; }
+.tareas-casa header { display: flex; justify-content: space-between; align-items: baseline; font-family: Poppins, system-ui, sans-serif; }
+.tareas-casa .barra-tareas { height: 6px; background: #E2E5EC; border-radius: 3px; margin: 6px 0 8px; overflow: hidden; }
+.tareas-casa .barra-tareas i { display: block; height: 100%; background: #C4E910; }
+.tareas-casa .tarea { display: grid; grid-template-columns: 18px 1fr auto; gap: 6px; align-items: center; padding: 4px 0; border-top: 1px solid #EEF0F4; }
+.tareas-casa .tarea small { display: block; color: #5B6170; font-size: 11px; }
+.tareas-casa .tarea .marca { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #1F5EFF; display: grid; place-items: center; font-size: 11px; color: #fff; }
+.tareas-casa .tarea.hecha .marca { background: #1F5EFF; }
+.tareas-casa .tarea.hecha b { text-decoration: line-through; color: #8A8F9A; }
+.tareas-casa .boton.mini { padding: 2px 8px; font-size: 12px; }
+@media (max-width: 640px) { .tareas-casa { top: auto; bottom: 86px; right: 8px; width: 200px; font-size: 12px; } }

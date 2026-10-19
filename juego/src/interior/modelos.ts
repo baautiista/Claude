@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { MUEBLES } from "../compartido/hogar/catalogo";
+import { cargarModelo } from "../mundo/ciudad/modelosBlender";
 
 /**
  * Muebles en 3D para los interiores (1 unidad = 1 m). Cada modelo ocupa su
@@ -540,14 +541,82 @@ export function shade(c: string, f: number) {
 }
 
 /** Modelo de un mueble. `roto` lo envejece (trasto): gris, torcido y con polvo. */
+/* ── Biblioteca de muebles de Blender (scripts/blender/muebles/muebles.py) ───────── */
+
+let biblioteca: Map<string, THREE.Object3D> | null = null;
+const cargaBiblioteca = cargarModelo("modelos/muebles/muebles.glb")
+  .then((esc) => {
+    const m = new Map<string, THREE.Object3D>();
+    for (const o of esc.children) {
+      const tipo = o.userData?.mueble as string | undefined;
+      if (!tipo) continue;
+      o.position.set(0, 0, 0);
+      m.set(tipo, o);
+    }
+    biblioteca = m;
+    return m;
+  })
+  .catch((e) => {
+    console.error("Biblioteca de muebles no cargada", e);
+    return null;
+  });
+const recoloreados = new Map<string, THREE.MeshStandardMaterial>();
+/** Copia el mueble de Blender con los materiales «Principal…» en el color del catálogo. */
+function deBlender(tipo: string, color: string, roto: boolean) {
+  const base = biblioteca?.get(tipo);
+  if (!base) return null;
+  const c = base.clone(true);
+  c.traverse((o) => {
+    const mesh = o as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const luz = mesh.name.startsWith("pantallaLuz");
+    if (luz) mesh.name = "pantallaLuz";
+    else if (mesh.name.startsWith("pantalla")) mesh.name = "pantalla";
+    const pon = (m: THREE.Material) => {
+      const mm = m as THREE.MeshStandardMaterial;
+      let r: THREE.MeshStandardMaterial = mm;
+      if (mm.name.startsWith("Principal")) {
+        const k = `${mm.name}|${color}|${luz}`;
+        if (!recoloreados.has(k)) {
+          const n = mm.clone();
+          n.color = new THREE.Color(roto ? mezclar(color, "#8C8478", 0.6) : color);
+          if (luz) Object.assign(n, { emissive: new THREE.Color(color), emissiveIntensity: 0, side: THREE.DoubleSide });
+          recoloreados.set(k, n);
+        }
+        r = recoloreados.get(k)!;
+      }
+      return roto ? desgastar(r) : r;
+    };
+    mesh.material = Array.isArray(mesh.material) ? mesh.material.map(pon) : pon(mesh.material);
+  });
+  return c;
+}
+
 export function modeloMueble(tipo: string, color: string, roto = false) {
   const def = MUEBLES[tipo];
   const g = new THREE.Group();
+  const deB = deBlender(tipo, color, roto);
+  if (deB) {
+    g.add(deB);
+    if (roto) g.rotation.z = 0.04;
+    g.userData.tipo = tipo;
+    return sombra(g);
+  }
+  // Mientras llega la biblioteca, el modelo sencillo; luego se sustituye en el mismo grupo.
+  if (!biblioteca)
+    void cargaBiblioteca.then(() => {
+      const nuevo = deBlender(tipo, color, roto);
+      if (!nuevo) return;
+      // Se quitan las piezas del modelo provisional (no lo que haya añadido la escena, p. ej. «huella»).
+      for (const ch of [...g.children]) if (ch.userData.provisional) g.remove(ch);
+      g.add(sombra(nuevo));
+    });
   const w = def.w * 0.5;
   const d = def.d * 0.5;
   const a = def.alto * 0.5;
   const fab = MODELOS[tipo] ?? ((gg: THREE.Group) => bloque(gg, w, a, d, 0, 0, 0, color));
   fab(g, w, d, a, roto ? shade(mezclar(color, "#8C8478", 0.6), 0.85) : color);
+  for (const ch of g.children) ch.userData.provisional = true;
   if (roto) {
     g.rotation.z = 0.04;
     g.traverse((m) => {

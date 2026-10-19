@@ -337,7 +337,7 @@ def exportar(nombre, glb_rel, carpeta="singulares"):
                               export_apply=False, export_vertex_color="MATERIAL", export_image_format="JPEG", export_jpeg_quality=82)
     glb = ruta("public", glb_rel)
     subprocess.run(["npx", "--no-install", "gltf-transform", "optimize", crudo, glb, "--compress", "meshopt", "--texture-compress", "false",
-                    "--simplify", "false", "--join", "false", "--instance", "false", "--flatten", "false", "--prune", "false"], cwd=RAIZ, check=True, capture_output=True)
+                    "--simplify", "false", "--join", "false", "--instance", "false", "--flatten", "false", "--prune", "false", "--palette", "false"], cwd=RAIZ, check=True, capture_output=True)
     os.remove(crudo)
     return os.path.relpath(blend, RAIZ), glb
 

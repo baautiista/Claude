@@ -24,6 +24,28 @@ const NOMBRE_ROL: Record<Rol, string> = { titular: "Tu casa", conviviente: "Conv
  * guarda al momento en la autoridad y llega en directo a quien esté dentro),
  * con la partida (necesidades, dinero, XP) y con la interfaz.
  */
+/**
+ * Tareas de la casa de cada día: se hacen con los muebles de verdad (la cama, el fregadero, las
+ * macetas, la ducha) o desde la lista (barrer, sacar la basura). Terminar la casa da ánimo.
+ */
+interface TareaCasa {
+  id: string;
+  nombre: string;
+  pista: string;
+  /** Tipos de mueble con los que se hace (vacío: botón en la lista). */
+  tipos: string[];
+  minutos: number;
+  premio: { animo?: number; energia?: number };
+}
+const TAREAS_CASA: TareaCasa[] = [
+  { id: "cama", nombre: "Hacer la cama", pista: "Toca tu cama (de 6:00 a 14:00)", tipos: ["camaDoble", "camaIndividual", "camaTapizada"], minutos: 5, premio: { animo: 3 } },
+  { id: "ducha", nombre: "Ducharse", pista: "Toca la ducha o la bañera", tipos: ["ducha", "duchaObra", "banera", "baneraExenta"], minutos: 20, premio: { animo: 10 } },
+  { id: "platos", nombre: "Fregar los platos", pista: "Toca el fregadero", tipos: ["fregadero", "cocina"], minutos: 15, premio: { animo: 2 } },
+  { id: "regar", nombre: "Regar las plantas", pista: "Toca una maceta o los geranios", tipos: ["maceta", "plantaGrande", "geranios"], minutos: 5, premio: { animo: 3 } },
+  { id: "barrer", nombre: "Barrer y fregar el suelo", pista: "Desde esta lista", tipos: [], minutos: 25, premio: { animo: 4, energia: -6 } },
+  { id: "basura", nombre: "Bajar la basura", pista: "Desde esta lista", tipos: [], minutos: 5, premio: { animo: 1 } },
+];
+
 export class Vivienda {
   static actual: Vivienda | null = null;
   readonly escena: EscenaInterior;
@@ -57,6 +79,9 @@ export class Vivienda {
     this.barra = h("nav", { class: "dock interior-dock" });
     this.ui = h("div", { class: "ui-interior" }, this.cabecera, this.controles(), this.panel, this.barra);
     marco.append(this.ui);
+    this.listaTareas = h("aside", { class: "tareas-casa" });
+    this.ui.append(this.listaTareas);
+    this.pintarTareas();
     this.pintarCabecera();
     this.pintarBarra();
     const on = (ev: string, fn: (m: Record<string, unknown>) => void) => this.quitar.push(con.on(ev, fn));
@@ -253,6 +278,70 @@ export class Vivienda {
     }
   }
 
+  /* ── Tareas de la casa ─────────────────────────────────────────── */
+  private listaTareas!: HTMLElement;
+  private get claveTareas() {
+    return `tareasCasa:${this.j.e.dia}`;
+  }
+  private tareasHechas() {
+    return new Set(String(this.j.e.flags[this.claveTareas] ?? "").split(",").filter(Boolean));
+  }
+  /** Las que se pueden hacer en esta casa (hace falta el mueble). */
+  private tareasPosibles() {
+    const tipos = new Set(this.doc.muebles.filter((m) => !m.roto).map((m) => m.tipo));
+    return TAREAS_CASA.filter((t) => !t.tipos.length || t.tipos.some((x) => tipos.has(x)));
+  }
+  private pintarTareas() {
+    if (!this.listaTareas) return;
+    if (!this.puedeEditar) {
+      this.listaTareas.hidden = true;
+      return;
+    }
+    const hechas = this.tareasHechas();
+    const lista = this.tareasPosibles();
+    const n = lista.filter((t) => hechas.has(t.id)).length;
+    this.listaTareas.replaceChildren(
+      h("header", {}, h("b", {}, "Tareas de casa"), h("span", {}, `${n}/${lista.length}`)),
+      h("div", { class: "barra-tareas" }, h("i", { style: `width:${Math.round((n / Math.max(1, lista.length)) * 100)}%` })),
+      ...lista.map((t) =>
+        h("div", { class: `tarea${hechas.has(t.id) ? " hecha" : ""}` },
+          h("span", { class: "marca" }, hechas.has(t.id) ? "✓" : ""),
+          h("span", {}, h("b", {}, t.nombre), h("small", {}, hechas.has(t.id) ? "Hecho" : `${t.pista} · ${t.minutos} min`)),
+          !t.tipos.length && !hechas.has(t.id) ? h("button", { class: "boton mini", onclick: () => void this.hacerTarea(t.id, null) }, "Hacer") : "",
+        ),
+      ),
+    );
+  }
+  /** Hace una tarea (con su tiempo y su premio). Devuelve false si ya estaba hecha. */
+  private async hacerTarea(id: string, donde: THREE.Vector3 | null) {
+    const t = TAREAS_CASA.find((x) => x.id === id)!;
+    const hechas = this.tareasHechas();
+    if (hechas.has(id)) return false;
+    const e = this.j.e;
+    if (t.premio.energia && e.energia + t.premio.energia < 0) {
+      this.j.aviso("Estás demasiado cansado. Descansa un poco antes.");
+      return true;
+    }
+    sonido("toque");
+    await this.j.pasar(t.minutos);
+    e.animo = limitar(e.animo + (t.premio.animo ?? 0));
+    e.energia = limitar(e.energia + (t.premio.energia ?? 0));
+    hechas.add(id);
+    e.flags[this.claveTareas] = [...hechas].join(",");
+    const yo = donde ?? new THREE.Vector3(this.escena.pos.x, 2.2, this.escena.pos.y);
+    this.escena.flotar(`${t.nombre} ✓`, yo);
+    const posibles = this.tareasPosibles();
+    if (posibles.every((x) => hechas.has(x.id)) && !e.flags[`casaAlDia:${e.dia}`]) {
+      e.flags[`casaAlDia:${e.dia}`] = true;
+      e.animo = limitar(e.animo + 15);
+      sonido("bien");
+      this.j.aviso("¡Casa al día! Todo recogido y limpio. <b>+15 ánimo</b>");
+    }
+    this.pintarTareas();
+    this.j.refrescar();
+    return true;
+  }
+
   async usar(uid: string) {
     const m = this.doc.muebles.find((x) => x.uid === uid);
     if (!m) return;
@@ -260,6 +349,17 @@ export class Vivienda {
     if (m.roto) {
       this.j.aviso(`<b>${def.nombre}</b> está roto. Sácalo al contenedor desde <b>Reformas → Trastos</b>.`);
       return;
+    }
+    // Tareas de la casa con este mueble (si están pendientes).
+    if (this.puedeEditar) {
+      const horaT = (this.j.e.minuto % 1440) / 60;
+      const pend = TAREAS_CASA.find((t) => t.tipos.includes(m.tipo) && !this.tareasHechas().has(t.id));
+      const cabe = pend && (pend.id !== "cama" || (horaT >= 6 && horaT < 14)) && pend.id !== "ducha";
+      if (pend && cabe) {
+        if ((pend.id === "platos" || pend.id === "ducha") && !this.doc.fontaneria.resuelto) return void this.j.aviso("No sale agua: hay que arreglar la fontanería.");
+        await this.hacerTarea(pend.id, null);
+        return;
+      }
     }
     const r = await this.op<{ funcion: string }>("hogarUsar", { uid });
     if (!r) return;
@@ -275,7 +375,7 @@ export class Vivienda {
           e.energia = limitar(e.energia + 35);
           await this.j.pasar(120);
           this.j.aviso("Siesta en tu cama. <b>+35 energía</b>");
-        } else this.j.aviso("Todavía no tienes sueño. La siesta, a partir de las 14:00.");
+        } else this.j.aviso(this.tareasHechas().has("cama") ? "Todavía no tienes sueño. La siesta, a partir de las 14:00." : "Todavía no tienes sueño. Puedes hacer la cama (de 6:00 a 14:00).");
         break;
       case "descansar":
       case "sentarse":
@@ -290,6 +390,11 @@ export class Vivienda {
         this.escena.flotar("📺 +8 ánimo", yo);
         break;
       case "ducharse":
+        if (this.puedeEditar && !this.tareasHechas().has("ducha")) {
+          await this.hacerTarea("ducha", null);
+          break;
+        }
+      // falls through
       case "asearse":
         e.animo = limitar(e.animo + (r.funcion === "ducharse" ? 10 : 4));
         await this.j.pasar(r.funcion === "ducharse" ? 20 : 5);
