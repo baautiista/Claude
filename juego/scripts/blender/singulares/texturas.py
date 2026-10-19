@@ -210,3 +210,86 @@ def chapa(carpeta, base="#C9D2DA", semilla=12, n=256, nombre="T_chapa"):
     luz = 0.85 + 0.2 * (f < 0.2) - 0.12 * ((f > 0.2) & (f < 0.27))
     c = _hex(base)[None, None, :] * (luz[..., None] + (_fbm(rng, n)[..., None] - 0.5) * 0.06)
     return _imagen(nombre, c, carpeta)
+
+
+def asfalto_fino(carpeta, semilla=21, n=512, nombre="T_asfalto"):
+    """Aglomerado asfáltico: gris oscuro con árido claro y manchas de desgaste (cubre 4 m)."""
+    rng = np.random.default_rng(semilla)
+    base = _hex("#6E7276")[None, None, :]
+    arido = (rng.random((n, n)) > 0.93)[..., None] * 0.22 - (rng.random((n, n)) > 0.95)[..., None] * 0.12
+    desgaste = (_fbm(rng, n, (2, 4, 8), (0.5, 0.3, 0.2))[..., None] - 0.5) * 0.18
+    return _imagen(nombre, base * (1 + arido + desgaste + (rng.random((n, n, 1)) - 0.5) * 0.1), carpeta)
+
+
+def baldosa(carpeta, semilla=22, n=512, nombre="T_baldosa"):
+    """Baldosa hidráulica de acera 33 × 33 cm con pastillas (gris claro; cubre 2 m)."""
+    rng = np.random.default_rng(semilla)
+    yy, xx = np.mgrid[0:n, 0:n] / n * 2.0
+    fx = (xx / 0.333) % 1
+    fy = (yy / 0.333) % 1
+    junta = (np.minimum(fx, 1 - fx) < 0.025) | (np.minimum(fy, 1 - fy) < 0.025)
+    # Pastillas: 4 × 4 relieves por baldosa.
+    px = (fx * 4) % 1
+    py = (fy * 4) % 1
+    pastilla = (((px - 0.5) ** 2 + (py - 0.5) ** 2) < 0.09)
+    pieza = ((np.floor(xx / 0.333) * 7 + np.floor(yy / 0.333) * 13) % 6)[..., None] * 0.015
+    c = _hex("#C9C6BE")[None, None, :] * (0.97 + pieza + pastilla[..., None] * 0.05 + (_fbm(rng, n)[..., None] - 0.5) * 0.14)
+    c = np.where(junta[..., None], _hex("#9C978E")[None, None, :], c)
+    return _imagen(nombre, c, carpeta)
+
+
+def granito(carpeta, semilla=23, n=256, nombre="T_granito"):
+    """Granito gris claro de bordillo (cubre 1 m)."""
+    rng = np.random.default_rng(semilla)
+    g = rng.random((n, n, 1))
+    c = _hex("#BDBAB3")[None, None, :] * (0.88 + g * 0.2 - (g > 0.92) * 0.3 + (_fbm(rng, n)[..., None] - 0.5) * 0.08)
+    return _imagen(nombre, c, carpeta)
+
+
+def adoquin_gris(carpeta, semilla=24, n=512, nombre="T_adoquin_gris"):
+    """Adoquín de piedra gris-beige de calle peatonal, 20 × 10 cm a matajunta (cubre 2 m)."""
+    rng = np.random.default_rng(semilla)
+    yy, xx = np.mgrid[0:n, 0:n] / n * 2.0
+    fila = np.floor(yy / 0.1)
+    fx = ((xx + (fila % 2) * 0.1) / 0.2) % 1
+    fy = (yy / 0.1) % 1
+    junta = (np.minimum(fx, 1 - fx) < 0.04) | (np.minimum(fy, 1 - fy) < 0.07)
+    pieza = (np.floor((xx + (fila % 2) * 0.1) / 0.2) * 17 + fila * 5) % 9
+    c = _hex("#B7AE9F")[None, None, :] * (0.86 + pieza[..., None] * 0.025 + (_fbm(rng, n)[..., None] - 0.5) * 0.18)
+    c = np.where(junta[..., None], _hex("#7F786D")[None, None, :], c)
+    return _imagen(nombre, c, carpeta)
+
+
+def albero(carpeta, semilla=25, n=256, nombre="T_albero"):
+    """Tierra compactada / albero de sendero (cubre 3 m)."""
+    rng = np.random.default_rng(semilla)
+    c = _hex("#D2B98C")[None, None, :] * (0.9 + (_fbm(rng, n)[..., None] - 0.5) * 0.3 + (rng.random((n, n, 1)) - 0.5) * 0.12 - (rng.random((n, n, 1)) > 0.97) * 0.2)
+    return _imagen(nombre, c, carpeta)
+
+
+def arena_playa(carpeta, semilla=26, n=512, nombre="T_arena"):
+    """Arena de playa: grano fino, ondulaciones del viento, conchas y restos oscuros (cubre 6 m)."""
+    rng = np.random.default_rng(semilla)
+    yy, xx = np.mgrid[0:n, 0:n] / n
+    ond = np.sin((xx * 0.8 + yy * 0.25 + _fbm(rng, n, (3, 6), (0.6, 0.4)) * 0.12) * 2 * np.pi * 26) * 0.035
+    grano = (rng.random((n, n)) - 0.5) * 0.16
+    claro = (rng.random((n, n)) > 0.985) * 0.18
+    oscuro = (rng.random((n, n)) > 0.992) * -0.3
+    manchas = (_fbm(rng, n, (2, 4, 8, 16), (0.4, 0.3, 0.2, 0.1)) - 0.5) * 0.16
+    c = _hex("#E2CFA6")[None, None, :] * (1 + (ond + grano + claro + oscuro + manchas)[..., None])
+    return _imagen(nombre, c, carpeta)
+
+
+def cesped_fino(carpeta, semilla=27, n=512, nombre="T_cesped"):
+    """Césped con briznas (direccionales), matas más oscuras y algo de tierra (cubre 3 m)."""
+    rng = np.random.default_rng(semilla)
+    b = rng.random((n, n))
+    # Briznas: ruido estirado en vertical.
+    brizna = np.repeat(rng.random((n // 4, n)), 4, axis=0)
+    brizna = (brizna + np.roll(brizna, 2, axis=0)) / 2
+    matas = _fbm(rng, n, (3, 6, 12, 24), (0.4, 0.3, 0.2, 0.1))
+    c = _hex("#5B8F35")[None, None, :] * (0.78 + matas[..., None] * 0.35 + (brizna[..., None] - 0.5) * 0.28)
+    c += (b > 0.96)[..., None] * np.array([0.07, 0.09, 0.03])
+    tierra = (matas < 0.33)[..., None] * (b > 0.6)[..., None]
+    c = np.where(tierra, _hex("#7A6A48")[None, None, :] * (0.9 + b[..., None] * 0.2), c)
+    return _imagen(nombre, c, carpeta)

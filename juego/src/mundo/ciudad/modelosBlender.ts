@@ -133,3 +133,30 @@ export class ModelosBlender {
       .catch(fallo);
   }
 }
+
+/**
+ * Geometrías de un modelo de Blender con sus transformaciones aplicadas (en metros, origen del
+ * modelo), agrupadas por material: para instanciarlas (farolas, bancos…).
+ */
+export async function piezasModelo(ruta: string) {
+  const escena = await cargarModelo(ruta);
+  escena.updateMatrixWorld(true);
+  const piezas: { material: THREE.Material; geometria: THREE.BufferGeometry }[] = [];
+  escena.traverse((o) => {
+    const m = o as THREE.Mesh;
+    if (!m.isMesh) return;
+    const g = m.geometry.clone();
+    // Las posiciones cuantizadas (enteros normalizados) se pasan a coma flotante antes de transformar.
+    for (const k of Object.keys(g.attributes)) {
+      const a = g.attributes[k] as THREE.BufferAttribute;
+      if (a.normalized || !(a.array instanceof Float32Array)) {
+        const f = new Float32Array(a.count * a.itemSize);
+        for (let i = 0; i < a.count; i++) for (let j = 0; j < a.itemSize; j++) f[i * a.itemSize + j] = a.getComponent(i, j);
+        g.setAttribute(k, new THREE.BufferAttribute(f, a.itemSize));
+      }
+    }
+    g.applyMatrix4(m.matrixWorld);
+    piezas.push({ material: m.material as THREE.Material, geometria: g });
+  });
+  return piezas;
+}

@@ -194,6 +194,8 @@ if (new URLSearchParams(location.search).has("comparar")) {
   const ir = (a: number, b: number, c: number, d: number) => mundo.revisar(a, b, c, d);
   ir(x, y, mx, my);
   (globalThis as unknown as { __revisar: typeof ir }).__revisar = ir;
+  (globalThis as unknown as { __aerea: (x: number, y: number, d?: number) => void }).__aerea = (a, b, d) => mundo.vistaAerea(a, b, d);
+  (globalThis as unknown as { __exportarCalles: () => unknown }).__exportarCalles = () => mundo.exportarCalles();
   const rotulo = document.createElement("div");
   rotulo.className = "rotulo-revision";
   rotulo.textContent = q.get("etiqueta") || "Revisión";

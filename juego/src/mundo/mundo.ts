@@ -32,7 +32,8 @@ import { arbolesToros, CENTRO_TOROS, construirToros, solidosToros } from "./sect
 import { CENTRO_MERCADO, construirMercado, solidosMercado } from "./sectores/mercado";
 import { Marcadores } from "./marcadores";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
-import { ModelosBlender, cargarModelo } from "./ciudad/modelosBlender";
+import { ModelosBlender, cargarModelo, piezasModelo } from "./ciudad/modelosBlender";
+import { HAY_CALLES_BLENDER, cargarCalles } from "./ciudad/callesBlender";
 import { conectarBackend } from "./ciudad/correcciones";
 import { construirCentro01, SUSTITUYE_CENTRO01, TABLON_CENTRO01, ZONA_CENTRO01 } from "./sectores/centro01";
 
@@ -246,6 +247,8 @@ function eje(t: Tramo): Punto[] {
   ejesCache.set(t, e);
   return e;
 }
+/** Dobles calzadas estrechadas para dejar mediana (scripts/blender/calles/calles.py). */
+const medianas = import.meta.glob<Record<string, number>>("../datos/ciudad/medianas.json", { eager: true, import: "default" });
 const anchosReales = import.meta.glob<{ tramos: Record<number, [number, number, number]> }>("../datos/ciudad/anchos.json", { eager: true, import: "default" });
 const PUERTO_CENTRO: Punto = (() => {
   const r = DATOS.puerto.flat();
@@ -352,6 +355,10 @@ function calcularAnchos() {
     SECCION.set(t, acera >= 1.5 ? "convencional" : "acera_estrecha");
     ANCHO_TRAMO.set(t, calzada);
     ACERA_TRAMO.set(t, acera);
+  });
+  const med = Object.values(medianas)[0] ?? {};
+  TRAMOS.forEach((t, i) => {
+    if (med[i] !== undefined) ANCHO_TRAMO.set(t, Math.min(anchoDe(t), med[i]));
   });
 }
 
@@ -971,8 +978,11 @@ export class Mundo {
   private construirCapas() {
     const c = DATOS.capas;
     let orden = 1;
+    const conBlender: [THREE.MeshStandardMaterial, string, number, string][] = [];
     const poner = (nombre: string, material: THREE.Material, alto: number, uv = 1 / 30) => {
       orden++;
+      const tex = { cesped: ["Cesped", "#FFFFFF"], parque: ["Cesped", "#F2FBEA"], bosque: ["Cesped", "#D9EBCF"], matorral: ["Cesped", "#E8E2C2"], arena: ["Arena", "#FFFFFF"] }[nombre];
+      if (tex) conBlender.push([material as THREE.MeshStandardMaterial, tex[0], uv, tex[1]]);
       if (!c[nombre]?.length) return;
       const m = this.lamina(c[nombre], material, SUELO + alto, uv);
       m.renderOrder = orden;
@@ -995,6 +1005,26 @@ export class Mundo {
     poner("agua", M.mat("#3FA9F5", { roughness: 0.15 }), 0.16);
     poner("piscina", M.mat("#5BD3FF", { roughness: 0.1, emissive: "#1B7FB0", emissiveIntensity: 0.15 }), 0.45);
     poner("puerto", M.mat("#2AA0D8", { roughness: 0.15 }), 0.2);
+    // Césped y arena con las texturas hechas en Blender (materiales compartidos de las calles).
+    void cargarModelo("modelos/calles/materiales.glb").then((base) => {
+      const tex = new Map<string, THREE.Texture>();
+      base.traverse((o) => {
+        const m = (o as THREE.Mesh).material as THREE.MeshStandardMaterial | undefined;
+        if (m?.map) tex.set(m.name, m.map);
+      });
+      const metros: Record<string, number> = { Cesped: 3, Arena: 6 };
+      for (const [mat, nombre, uv, color] of conBlender) {
+        const t = tex.get(nombre)?.clone();
+        if (!t) continue;
+        t.wrapS = t.wrapT = THREE.RepeatWrapping;
+        t.repeat.setScalar(1 / (uv * metros[nombre]));
+        t.anisotropy = 8;
+        t.needsUpdate = true;
+        mat.map = t;
+        mat.color.set(color);
+        mat.needsUpdate = true;
+      }
+    });
   }
 
   /* ── Calles reales convertidas en caminos ───────────────────────────── */
@@ -1015,9 +1045,21 @@ export class Mundo {
       }
     }
     const radioCruce = (n: string) => ((cruce.get(n)?.grado ?? 0) >= 2 ? cruce.get(n)!.w / 2 + 0.4 : 0);
+    // Calles hechas en Blender (scripts/blender/calles): solo se cargan; aquí quedan las rayas.
+    if (HAY_CALLES_BLENDER) {
+      void cargarCalles(CX, CY, SUELO, (m) => {
+        this.escena.add(m);
+        this.suelos.push(m);
+        this.alturas.clear();
+      });
+    }
     for (const t of TRAMOS) {
       const w = anchoDe(t);
       const sec = SECCION.get(t);
+      if (HAY_CALLES_BLENDER) {
+        if (conAceras(t) && t.clase <= 1 && t.largo > 30) grupos.raya.push(...rayas(eje(t), ALTO_CALLE + 0.01 - SUELO));
+        continue;
+      }
       const e = eje(t);
       const fin0 = (cruce.get(t.a)?.grado ?? 0) >= 2;
       const fin1 = (cruce.get(t.b)?.grado ?? 0) >= 2;
@@ -1038,9 +1080,11 @@ export class Mundo {
       } else grupos[t.clase === 6 ? "sendero" : "pista"].push(tiras(e, w, ALTO_CALLE - 0.02, 0.5, 0.5, w / 2));
     }
     // Bordillos: caras verticales sólidas entre calzada y acera.
-    const canto = new THREE.Mesh(mergeGeometries(cantos.filter((g) => g.attributes.position.count)), M.mat("#D3CEC4", { roughness: 0.85 }));
-    canto.receiveShadow = true;
-    this.escena.add(canto);
+    if (cantos.length) {
+      const canto = new THREE.Mesh(mergeGeometries(cantos.filter((g) => g.attributes.position.count)), M.mat("#D3CEC4", { roughness: 0.85 }));
+      canto.receiveShadow = true;
+      this.escena.add(canto);
+    }
     const mats: Record<string, THREE.Material> = {
       acera: M.matTex(T.acera(), 1, 1, "#F1EADC"),
       bordillo: M.mat("#C9C4BA"),
@@ -1071,51 +1115,40 @@ export class Mundo {
       m.receiveShadow = true;
       this.escena.add(m);
     }
-    // Farolas en las vías principales (instanciadas).
+    // Farolas fernandinas (modelo de Blender, instanciado) en las aceras de las vías principales,
+    // cada 24 m y alternando lado.
     const pts: Punto[] = [];
     for (const t of TRAMOS) {
-      if (t.clase > 2) continue;
+      if (t.clase > 3 || !esCalzada(t) || aceraDe(t) < 1.2) continue;
+      let lado = 1;
       for (let i = 1; i < eje(t).length; i++) {
         const [a, b] = [eje(t)[i - 1], eje(t)[i]];
         const l = Math.hypot(b[0] - a[0], b[1] - a[1]);
-        for (let s = 18; s < l - 6; s += 46) {
+        for (let s = 9; s < l - 5; s += 24) {
           const nx = -(b[1] - a[1]) / l;
           const ny = (b[0] - a[0]) / l;
-          // Farola en la acera, cerca del bordillo (no en las aceras estrechas).
-          if (!esCalzada(t) || aceraDe(t) < 1.2) continue;
-          const off = anchoDe(t) / 2 + Math.min(0.7, aceraDe(t) * 0.4);
+          const off = (anchoDe(t) / 2 + Math.min(0.6, aceraDe(t) * 0.35)) * (t.clase <= 1 ? (lado = -lado) : 1);
           pts.push([a[0] + ((b[0] - a[0]) * s) / l + nx * off, a[1] + ((b[1] - a[1]) * s) / l + ny * off]);
         }
       }
     }
-    // Farola fernandina: basa, fuste estriado, collarín y farol hexagonal con su sombrerete.
-    const pieza = (g: THREE.BufferGeometry, y: number) => {
-      g.translate(0, y, 0);
-      g.deleteAttribute("uv");
-      return g.index ? g.toNonIndexed() : g;
-    };
-    const cuerpo = mergeGeometries([
-      pieza(new THREE.CylinderGeometry(0.42, 0.5, 0.35, 8), 0.17),
-      pieza(new THREE.CylinderGeometry(0.3, 0.42, 1.1, 8), 0.9),
-      pieza(new THREE.CylinderGeometry(0.13, 0.18, 4.8, 8), 3.85),
-      pieza(new THREE.CylinderGeometry(0.26, 0.2, 0.25, 8), 6.3),
-      pieza(new THREE.CylinderGeometry(0.42, 0.24, 0.18, 6), 6.5),
-      pieza(new THREE.CylinderGeometry(0.06, 0.62, 0.55, 6), 7.75),
-      pieza(new THREE.SphereGeometry(0.12, 6, 4), 8.1),
-    ]);
-    const postes = new THREE.InstancedMesh(cuerpo, M.mat("#1E2126", { roughness: 0.45, metalness: 0.55 }), pts.length);
     const farolMat = M.mat("#FFF0C2", { emissive: "#FFC64D", emissiveIntensity: 0.4, roughness: 0.2 });
     this.faroles.push(farolMat);
-    const farolas = new THREE.InstancedMesh(pieza(new THREE.CylinderGeometry(0.5, 0.32, 0.95, 6), 7.05), farolMat, pts.length);
-    const o = new THREE.Object3D();
-    pts.forEach((p, i) => {
-      o.position.copy(p3(p, ALTO_ACERA));
-      o.updateMatrix();
-      postes.setMatrixAt(i, o.matrix);
-      farolas.setMatrixAt(i, o.matrix);
+    void piezasModelo("modelos/mobiliario/farola.glb").then((piezas) => {
+      const o = new THREE.Object3D();
+      for (const { material, geometria } of piezas) {
+        const esFarol = material.name === "Farol";
+        const im = new THREE.InstancedMesh(geometria, esFarol ? farolMat : material, pts.length);
+        pts.forEach((p, i) => {
+          o.position.copy(p3(p, ALTO_ACERA));
+          o.rotation.y = (i * 1.7) % (Math.PI * 2);
+          o.updateMatrix();
+          im.setMatrixAt(i, o.matrix);
+        });
+        im.castShadow = !esFarol;
+        this.escena.add(im);
+      }
     });
-    postes.castShadow = true;
-    this.escena.add(postes, farolas);
 
     // Árboles de acera en avenidas y calles principales.
     const edif = new Map<string, number[][]>();
@@ -2099,6 +2132,23 @@ export class Mundo {
     if (!this.modoPOV) this.alternarPOV(true);
     this.povYaw = 0;
     this.povPitch = 0.12;
+  }
+  /**
+   * Sección final de cada tramo (eje desplazado, calzada, acera y tipo) para generar las calles en
+   * Blender (scripts/blender/calles). Solo se usa desde scripts de exportación.
+   */
+  exportarCalles() {
+    return TRAMOS.map((t, i) => {
+      const sec = SECCION.get(t);
+      const w = anchoDe(t);
+      const grupo = conAceras(t) ? "calle" : t.clase === 5 && sec !== "peatonal" ? "servicio" : t.clase <= 4 || sec === "peatonal" ? "peatonal" : t.clase === 6 ? "sendero" : "pista";
+      return { i, clase: t.clase, a: t.a, b: t.b, nombre: t.nombre ?? "", grupo, w: grupo === "servicio" ? Math.min(w, 3.5) : w, acera: grupo === "calle" ? aceraDe(t) : 0, eje: eje(t).map(([x, y]) => [Math.round(x * 100) / 100, Math.round(y * 100) / 100]) };
+    });
+  }
+  /** Vista aérea de pruebas (capturas): cámara normal del juego centrada en (x, y). */
+  vistaAerea(x: number, y: number, dist = 60) {
+    if (this.modoPOV) this.alternarPOV(false);
+    this.enfocarMapa(x, y, dist);
   }
   /** Objetos auxiliares del editor (contorno de selección). */
   ayudaEditor(o: THREE.Object3D, poner: boolean) {
