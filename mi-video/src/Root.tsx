@@ -18,6 +18,9 @@ import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
+import { PlazaConstitucion } from "./plaza/PlazaConstitucion";
+import { MiniaturaPlaza } from "./plaza/Miniatura";
+import { duracionTotal as duracionPlaza } from "./plaza/tiempos";
 import { TitleScene } from "./TitleScene";
 
 export const RemotionRoot: React.FC = () => {
@@ -60,9 +63,18 @@ export const RemotionRoot: React.FC = () => {
           width={1080}
           height={1920}
         />
-        <Still id="Miniatura" component={MiniaturaHospital} width={1080} height={1920} />
+        <Still id="MiniaturaAntiguoHospitalLaLinea" component={MiniaturaHospital} width={1080} height={1920} />
       </Folder>
       <Folder name="Urbanismo">
+        <Composition
+          id="PlazaConstitucionLaLinea"
+          component={PlazaConstitucion}
+          durationInFrames={duracionPlaza()}
+          fps={FPS}
+          width={1080}
+          height={1920}
+        />
+        <Still id="Miniatura" component={MiniaturaPlaza} width={1080} height={1920} />
         <Composition
           id="ConexionesViariasLaLinea"
           component={ConexionesViariasLaLinea}

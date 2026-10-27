@@ -29,10 +29,12 @@ const paginar = (captions: Caption[]): Pagina[] => {
  * Subtítulos InfoLinense: bloque oscuro compacto, Inter, palabra activa en lima.
  * `elevacion` sube el bloque (p. ej. cuando hay una línea de tiempo debajo).
  */
-export const Subtitulos: React.FC<{ readonly captions: Caption[]; readonly elevacion?: number }> = ({
-  captions,
-  elevacion = 0,
-}) => {
+export const Subtitulos: React.FC<{
+  readonly captions: Caption[];
+  readonly elevacion?: number;
+  /** Palabras clave (cifras incluidas) que se marcan siempre en azul; sustituye a la palabra activa en lima. */
+  readonly claves?: RegExp;
+}> = ({ captions, elevacion = 0, claves }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const paginas = useMemo(() => paginar(captions), [captions]);
@@ -78,18 +80,27 @@ export const Subtitulos: React.FC<{ readonly captions: Caption[]; readonly eleva
           })}px`,
         }}
       >
-        {pagina.palabras.map((p, i) => (
-          <span
-            key={i}
-            style={{
-              whiteSpace: "pre",
-              color: ms >= p.startMs && ms < p.endMs ? COLOR.lima : COLOR.blanco,
-              opacity: ms >= p.startMs ? 1 : 0.55,
-            }}
-          >
-            {p.text}
-          </span>
-        ))}
+        {pagina.palabras.map((p, i) => {
+          const espacio = p.text.startsWith(" ") ? " " : "";
+          const palabra = p.text.trimStart();
+          const esClave = claves ? claves.test(palabra.replace(/[,.:;…?!«»"]/g, "")) : false;
+          return (
+            <span key={i} style={{ whiteSpace: "pre", opacity: ms >= p.startMs ? 1 : 0.55 }}>
+              {espacio}
+              <span
+                style={
+                  claves
+                    ? esClave
+                      ? { color: COLOR.blanco, backgroundColor: COLOR.azul, borderRadius: 8, padding: "0 8px" }
+                      : { color: COLOR.blanco }
+                    : { color: ms >= p.startMs && ms < p.endMs ? COLOR.lima : COLOR.blanco }
+                }
+              >
+                {palabra}
+              </span>
+            </span>
+          );
+        })}
       </div>
     </AbsoluteFill>
   );

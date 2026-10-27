@@ -33,8 +33,11 @@ const config = (await import(`../src/${proyecto}/config.ts`)) as {
   PAUSAS_ENTRE_FRASES?: Record<string, number>;
   /** Ajustes de voz propios del vídeo (p. ej. { speed: 1.0 }), sobre los de marca. */
   AJUSTES_VOZ?: Record<string, number | boolean>;
+  /** Duración mínima (s) de una escena: alarga el silencio tras su última frase (p. ej. para que quepa un vídeo entero). */
+  DURACION_MINIMA_ESCENA?: Record<string, number>;
 };
 const PAUSAS = config.PAUSAS_ENTRE_FRASES ?? {};
+const MINIMAS = config.DURACION_MINIMA_ESCENA ?? {};
 const ESCENAS = config.ESCENAS;
 const PRONUNCIACION = config.PRONUNCIACION ?? {};
 
@@ -168,20 +171,33 @@ const conEscena = Object.entries(tiempos).flatMap(([id, fs]) => fs.map((f) => ({
 const todas = conEscena.map((x) => x.f);
 const segmentos: Segmento[] = [];
 let cursor = 0;
+// Duración ya montada (s) y comienzo de cada escena en el audio final (como en guion.ts: 0,15 s antes de su primera frase).
+let montado = 0;
+const enSalida = (t: number) => montado + (t - cursor);
+const inicioEscena: Record<string, number> = { [conEscena[0].id]: 0 };
+const anadir = (seg: Segmento) => {
+  segmentos.push(seg);
+  montado += seg.tipo === "audio" ? seg.fin - seg.inicio : seg.dur;
+};
 for (let i = 0; i + 1 < conEscena.length; i++) {
   const a = conEscena[i];
   const b = conEscena[i + 1];
-  const objetivo = a.id === b.id && PAUSAS[a.id] ? PAUSAS[a.id] : ELEVENLABS.pausaMaxima;
+  let objetivo = a.id === b.id && PAUSAS[a.id] ? PAUSAS[a.id] : ELEVENLABS.pausaMaxima;
+  if (a.id !== b.id && MINIMAS[a.id] !== undefined) {
+    const finEscena = enSalida(a.f.fin) + objetivo - 0.15;
+    objetivo += Math.max(0, inicioEscena[a.id] + MINIMAS[a.id] - finEscena);
+  }
   const hueco = b.f.inicio - a.f.fin;
   if (hueco > objetivo) {
-    segmentos.push({ tipo: "audio", inicio: cursor, fin: a.f.fin + objetivo / 2 });
+    anadir({ tipo: "audio", inicio: cursor, fin: a.f.fin + objetivo / 2 });
     cursor = b.f.inicio - objetivo / 2;
   } else if (hueco < objetivo - 0.02) {
     const medio = (a.f.fin + b.f.inicio) / 2;
-    segmentos.push({ tipo: "audio", inicio: cursor, fin: medio });
-    segmentos.push({ tipo: "silencio", dur: objetivo - hueco });
+    anadir({ tipo: "audio", inicio: cursor, fin: medio });
+    anadir({ tipo: "silencio", dur: objetivo - hueco });
     cursor = medio;
   }
+  if (a.id !== b.id) inicioEscena[b.id] = enSalida(b.f.inicio) - 0.15;
 }
 const finAudio = todas[todas.length - 1].fin + 0.3;
 segmentos.push({ tipo: "audio", inicio: cursor, fin: finAudio });
