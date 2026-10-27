@@ -21,7 +21,7 @@ export const ESCENAS: readonly EscenaGuion<EscenaId>[] = [
     nombre: "1. Presupuesto y plazo",
     inicio: 3,
     fin: 10,
-    frases: ["Mañana comienzan unas obras presupuestadas en 4,9 millones de euros, IVA incluido, con un plazo previsto de doce meses."],
+    frases: ["Hoy comienzan unas obras presupuestadas en 4,9 millones de euros, IVA incluido, con un plazo previsto de doce meses."],
   },
   {
     id: "superficie",

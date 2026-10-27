@@ -205,7 +205,7 @@ export const Gancho: React.FC = () => {
       <Sello texto={flash ? "ASÍ SERÁ" : "HOY"} fondo={flash ? COLOR.lima : COLOR.negro} color={flash ? COLOR.negro : COLOR.blanco} style={{ right: ZONA_SEGURA.lados, top: 560 }} />
       <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 20, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados, display: "flex", flexDirection: "column", gap: 22 }}>
         <Etiqueta desde={0}>URBANISMO</Etiqueta>
-        <Rotulo lineas={["MAÑANA COMIENZAN", "LAS OBRAS"]} desde={3} tamano={84} destacarUltima />
+        <Rotulo lineas={["HOY COMIENZAN", "LAS OBRAS"]} desde={3} tamano={84} destacarUltima />
       </div>
       {/* Línea azul que recorre el suelo y lleva al documento */}
       <svg viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
@@ -541,28 +541,52 @@ export const Infra: React.FC = () => {
       </Tramo>
       {/* Corte hacia el agua de la fuente */}
       <Tramo desde={fuente - 2} hasta={durationInFrames + 10}>
-        <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <Img
-            src={staticFile(fuenteArchivo)}
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transformOrigin: desdeCenital ? "0% 61.5%" : "50% 55%",
-              scale: interpolate(frame, [fuente - 2, durationInFrames], desdeCenital ? [2.8, 2.5] : [1.25, 1.08], clamp),
-            }}
-          />
-          <Velo />
-          {/* Nuevo revestimiento: anillo que se dibuja */}
-          <svg viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
-            <ellipse cx={desdeCenital ? 150 : 540} cy={desdeCenital ? 1181 : 1060} rx={desdeCenital ? 175 : 360} ry={desdeCenital ? 175 : 120} fill="none" stroke={COLOR.lima} strokeWidth={12} pathLength={1} strokeDasharray="1" strokeDashoffset={1 - suave(frame, revestimiento - 6, 16)} />
-          </svg>
-          <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 20, left: ZONA_SEGURA.lados }}>
-            <Rotulo lineas={["FUENTE", "CONSERVADA"]} desde={fuente} tamano={92} destacarUltima />
+        {desdeCenital ? (
+          <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+            <Img
+              src={staticFile(fuenteArchivo)}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                transformOrigin: "0% 61.5%",
+                scale: interpolate(frame, [fuente - 2, durationInFrames], [2.8, 2.5], clamp),
+              }}
+            />
+            <Velo />
+            <svg viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
+              <ellipse cx={150} cy={1181} rx={175} ry={175} fill="none" stroke={COLOR.lima} strokeWidth={12} pathLength={1} strokeDasharray="1" strokeDashoffset={1 - suave(frame, revestimiento - 6, 16)} />
+            </svg>
+            <Sello texto="Recreación del proyecto" fondo="rgba(10,10,10,0.75)" style={{ right: ZONA_SEGURA.lados, top: 520, fontSize: 24, fontWeight: 600, letterSpacing: 0 }} />
           </div>
-          {desdeCenital ? <Sello texto="Recreación del proyecto" fondo="rgba(10,10,10,0.75)" style={{ right: ZONA_SEGURA.lados, top: 520, fontSize: 24, fontWeight: 600, letterSpacing: 0 }} /> : null}
+        ) : (
+          <>
+            {/* Imagen horizontal: tarjeta con zoom hacia el agua (abajo a la izquierda) */}
+            <div style={{ position: "absolute", left: 60, top: 470 }}>
+              <Tarjeta
+                archivo={fuenteArchivo}
+                nombre="Fuente"
+                ancho={960}
+                alto={760}
+                enfoque="15% 50%"
+                zoom={interpolate(frame, [fuente - 2, durationInFrames], [1.15, 1.6], clamp)}
+                origen="20% 88%"
+              >
+                <svg viewBox="0 0 960 760" style={{ position: "absolute", inset: 0 }}>
+                  <path d="M20 590 C 200 560, 520 590, 700 740" fill="none" stroke={COLOR.lima} strokeWidth={12} strokeLinecap="round" pathLength={1} strokeDasharray="1" strokeDashoffset={1 - suave(frame, revestimiento - 6, 16)} />
+                </svg>
+                <Sello texto="Imagen de referencia" fondo="rgba(10,10,10,0.75)" style={{ right: 16, top: 16, fontSize: 24, fontWeight: 600, letterSpacing: 0 }} />
+              </Tarjeta>
+            </div>
+            <div style={{ position: "absolute", top: 1255, left: ZONA_SEGURA.lados, fontFamily: FUENTE.rotulo, fontWeight: 700, fontSize: 40, color: COLOR.blanco, opacity: suave(frame, revestimiento - 4, 8) }}>
+              Nuevo <span style={{ color: COLOR.lima }}>revestimiento</span>
+            </div>
+          </>
+        )}
+        <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 20, left: ZONA_SEGURA.lados }}>
+          <Rotulo lineas={["FUENTE", "CONSERVADA"]} desde={fuente} tamano={92} destacarUltima />
         </div>
       </Tramo>
       <BarridoEntrada frames={8} />
