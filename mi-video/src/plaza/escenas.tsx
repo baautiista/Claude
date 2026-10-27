@@ -237,16 +237,17 @@ export const Datos: React.FC = () => {
   const millones = f("millones");
   const meses = f("meses");
   const hayDoc = existe(RECURSOS.documento);
-  // Zoom del documento: hacia el presupuesto y después hacia el plazo
-  const zoom = interpolate(frame, [0, millones - 4, meses], [1, 1.5, 1.6], clamp);
-  const foco = interpolate(frame, [millones - 4, meses], [DOCUMENTO_ZONAS.presupuesto.y, DOCUMENTO_ZONAS.plazo.y], clamp);
+  // Documento a lo ancho de la tarjeta (820 px → página de 1159 px de alto), centrado en la línea del presupuesto
+  const altoPagina = 820 * (2000 / 1415);
+  const zoom = interpolate(frame, [0, millones - 4, millones + 30], [1, 1.25, 1.9], clamp);
+  const desplazamiento = 270 - (DOCUMENTO_ZONAS.enfoque.y / 100) * altoPagina;
   const barra = suave(frame, meses, 26);
   return (
     <AbsoluteFill style={{ backgroundColor: COLOR.azul }}>
       <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 10, left: ZONA_SEGURA.lados }}>
         <Etiqueta>EL PROYECTO</Etiqueta>
       </div>
-      {/* Documento original */}
+      {/* Documento original → zoom → subrayado */}
       <div
         style={{
           position: "absolute",
@@ -263,10 +264,19 @@ export const Datos: React.FC = () => {
         }}
       >
         {hayDoc ? (
-          <div style={{ position: "absolute", inset: 0, scale: zoom, transformOrigin: `30% ${foco}%` }}>
-            <Img src={staticFile(RECURSOS.documento)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 0%" }} />
-            <Subrayado zona={DOCUMENTO_ZONAS.presupuesto} progreso={suave(frame, millones - 2, 10)} />
-            <Subrayado zona={DOCUMENTO_ZONAS.plazo} progreso={suave(frame, meses - 2, 10)} />
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: desplazamiento,
+              width: 820,
+              height: altoPagina,
+              scale: zoom,
+              transformOrigin: `${DOCUMENTO_ZONAS.enfoque.x}% ${DOCUMENTO_ZONAS.enfoque.y}%`,
+            }}
+          >
+            <Img src={staticFile(RECURSOS.documento)} style={{ width: "100%", height: "100%" }} />
+            <Subrayado zona={DOCUMENTO_ZONAS.licitacion} progreso={suave(frame, millones - 2, 10)} />
           </div>
         ) : (
           <Placeholder nombre="Documento del proyecto (presupuesto y plazo)" archivo="documento-presupuesto.jpg" />
@@ -282,9 +292,10 @@ export const Datos: React.FC = () => {
             MILLONES €
           </span>
         </div>
+        <div style={{ fontFamily: FUENTE.texto, fontWeight: 600, fontSize: 34, color: COLOR.blanco, opacity: 0.85, marginTop: 6 }}>IVA incluido · presupuesto base de licitación</div>
       </div>
       {/* 12 meses: barra de 12 tramos */}
-      <div style={{ position: "absolute", top: 1130, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados, opacity: suave(frame, meses - 3, 6) }}>
+      <div style={{ position: "absolute", top: 1160, left: ZONA_SEGURA.lados, right: ZONA_SEGURA.lados, opacity: suave(frame, meses - 3, 6) }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 22, fontFamily: FUENTE.display, fontWeight: 800, color: COLOR.blanco, letterSpacing: -4 }}>
           <span style={{ fontSize: 150, lineHeight: 0.9, color: COLOR.lima }}>
             <Contador valor={12} desde={meses - 3} duracion={16} />
@@ -366,16 +377,16 @@ const DESTACADA = 4; // P05, copa de 16 m
 
 export const Pergolas: React.FC = () => {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
   const trece = f("trece");
   const copas = f("copas");
-  const diametro = f("diametro");
-  const foto = Math.min(diametro + 4, durationInFrames - 50);
+  // Orden: pérgolas en el plano → foto con personas (escala) → acercamiento con los diámetros
+  const foto = trece + 22;
+  const finFoto = Math.max(foto + 30, copas - 4);
   const p = PERGOLAS[DESTACADA];
   const px = p.x + DESPLAZAMIENTO.x;
   const py = p.y + DESPLAZAMIENTO.y;
   // Cámara: acercamiento a una pérgola para mostrar los diámetros
-  const acerca = suave(frame, copas - 4, 18) * (1 - suave(frame, foto, 10));
+  const acerca = suave(frame, finFoto - 2, 18);
   const escala = 1 + acerca * 1.6;
   const tx = (540 - px) * acerca;
   const ty = (900 - py) * acerca;
@@ -391,7 +402,7 @@ export const Pergolas: React.FC = () => {
         <MapaPlaza frame={frame} contorno={suave(frame, 0, 18)} pergolasDesde={trece} destacada={{ indice: DESTACADA, progreso: acerca }} />
       </AbsoluteFill>
       {acerca > 0.05 ? (
-        <Diametros x={540} y={900} escala={escala} progreso12={suave(frame, copas + 2, 12)} progreso16={suave(frame, copas + 12, 12)} />
+        <Diametros x={540} y={900} escala={escala} progreso12={suave(frame, finFoto + 8, 12)} progreso16={suave(frame, finFoto + 18, 12)} />
       ) : null}
       {/* 13 */}
       <div style={{ position: "absolute", top: ZONA_SEGURA.arriba + 10, left: ZONA_SEGURA.lados, display: "flex", alignItems: "baseline", gap: 20, opacity: suave(frame, trece - 3, 5) }}>
@@ -401,16 +412,16 @@ export const Pergolas: React.FC = () => {
         <span style={{ fontFamily: FUENTE.display, fontWeight: 800, fontSize: 80, color: COLOR.blanco, letterSpacing: -2 }}>PÉRGOLAS</span>
       </div>
       {/* Escala con personas */}
-      <Tramo desde={foto} hasta={durationInFrames + 10}>
+      <Tramo desde={foto} hasta={finFoto}>
         <div style={{ position: "absolute", left: 60, right: 60, top: 560 }}>
           <Tarjeta archivo={RECURSOS.pergolas} nombre="Pérgolas con personas" ancho={960} alto={560}>
             <Sello texto="Imagen de referencia" fondo="rgba(10,10,10,0.75)" style={{ left: 16, bottom: 16, fontSize: 24, fontWeight: 600, letterSpacing: 0 }} />
           </Tarjeta>
         </div>
-        <div style={{ position: "absolute", top: 1150, left: ZONA_SEGURA.lados, fontFamily: FUENTE.display, fontWeight: 800, fontSize: 70, color: COLOR.blanco, letterSpacing: -2 }}>
+      </Tramo>
+      <div style={{ opacity: suave(frame, finFoto + 10, 8), position: "absolute", top: 1220, left: ZONA_SEGURA.lados, fontFamily: FUENTE.display, fontWeight: 800, fontSize: 70, color: COLOR.blanco, letterSpacing: -2 }}>
           Ø <span style={{ color: COLOR.lima }}>12</span> Y <span style={{ color: COLOR.lima }}>16</span> METROS
         </div>
-      </Tramo>
       <BarridoEntrada frames={8} />
     </AbsoluteFill>
   );
@@ -516,7 +527,7 @@ export const Infra: React.FC = () => {
       {hayPlano ? (
         <Tramo desde={0} hasta={desdeSeccion + 6}>
           <div style={{ position: "absolute", left: 70, top: 380, rotate: "-2deg" }}>
-            <Tarjeta archivo={RECURSOS.planoDrenaje} nombre="Plano de drenaje" ancho={940} alto={700} zoom={interpolate(frame, [0, 36], [1, 1.3], clamp)} />
+            <Tarjeta archivo={RECURSOS.planoDrenaje} nombre="Plano de drenaje" ancho={940} alto={700} zoom={interpolate(frame, [0, 36], [1.05, 1.6], clamp)} origen="42% 50%" />
           </div>
         </Tramo>
       ) : null}
@@ -586,7 +597,7 @@ export const Infantil: React.FC = () => {
       {hayPlano ? (
         <Tramo desde={0} hasta={desdeRender + 6}>
           <div style={{ position: "absolute", left: 60, top: 470 }}>
-            <Tarjeta archivo={RECURSOS.planoInfantil} nombre="Plano de juegos" ancho={960} alto={600} />
+            <Tarjeta archivo={RECURSOS.planoInfantil} nombre="Plano de juegos" ancho={960} alto={600} zoom={interpolate(frame, [0, 36], [1.1, 2.4], clamp)} origen="49% 62%" />
           </div>
         </Tramo>
       ) : null}

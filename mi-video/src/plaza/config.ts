@@ -21,7 +21,7 @@ export const ESCENAS: readonly EscenaGuion<EscenaId>[] = [
     nombre: "1. Presupuesto y plazo",
     inicio: 3,
     fin: 10,
-    frases: ["Mañana comienzan unas obras de casi 4,9 millones de euros y con un plazo previsto de doce meses."],
+    frases: ["Mañana comienzan unas obras presupuestadas en 4,9 millones de euros, IVA incluido, con un plazo previsto de doce meses."],
   },
   {
     id: "superficie",
@@ -124,10 +124,13 @@ export const RECURSOS = {
   renderInfantil: "plaza/render-infantil.jpg",
 } as const;
 
-/** Zonas a subrayar en el documento (en % de la imagen); ajústalas cuando esté documento-presupuesto.jpg. */
+/**
+ * Documento: resumen del presupuesto (Memoria, pág. 54). Posiciones en % de la página.
+ * Línea "PRESUPUESTO BASE DE LICITACIÓN ... 4.902.301,54" (IVA incluido).
+ */
 export const DOCUMENTO_ZONAS = {
-  presupuesto: { x: 10, y: 55, ancho: 60 },
-  plazo: { x: 10, y: 68, ancho: 45 },
+  licitacion: { x: 42.5, y: 41.1, ancho: 39.5 },
+  enfoque: { x: 62, y: 40 },
 } as const;
 
 /** Duración de los fast motion (s): se ven enteros. */
@@ -140,11 +143,9 @@ export const PRONUNCIACION: Record<string, string> = {
 
 /** Los dos fast motion (8 s cada uno) se ven enteros: sus escenas duran al menos eso. */
 export const DURACION_MINIMA_ESCENA: Record<string, number> = {
-  gancho: 2.6,
+  gancho: 2.3,
   datos: 5.8,
-  pergolas: 6.6,
   infra: 7.4,
-  infantil: 5.5,
   superficie: 8.15,
   sombra: 8.15,
 };
