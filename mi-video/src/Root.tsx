@@ -18,6 +18,9 @@ import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
+import { ZbeLaLinea } from "./zbe/ZbeLaLinea";
+import { MiniaturaZbe } from "./zbe/Miniatura";
+import { duracionTotal as duracionZbe } from "./zbe/tiempos";
 import { PlazaConstitucion } from "./plaza/PlazaConstitucion";
 import { MiniaturaPlaza } from "./plaza/Miniatura";
 import { duracionTotal as duracionPlaza } from "./plaza/tiempos";
@@ -65,6 +68,10 @@ export const RemotionRoot: React.FC = () => {
         />
         <Still id="MiniaturaAntiguoHospitalLaLinea" component={MiniaturaHospital} width={1080} height={1920} />
       </Folder>
+      <Folder name="Movilidad">
+        <Composition id="ZbeLaLinea" component={ZbeLaLinea} durationInFrames={duracionZbe()} fps={FPS} width={1080} height={1920} />
+        <Still id="Miniatura" component={MiniaturaZbe} width={1080} height={1920} />
+      </Folder>
       <Folder name="Urbanismo">
         <Composition
           id="PlazaConstitucionLaLinea"
@@ -74,7 +81,7 @@ export const RemotionRoot: React.FC = () => {
           width={1080}
           height={1920}
         />
-        <Still id="Miniatura" component={MiniaturaPlaza} width={1080} height={1920} />
+        <Still id="MiniaturaPlazaConstitucionLaLinea" component={MiniaturaPlaza} width={1080} height={1920} />
         <Composition
           id="ConexionesViariasLaLinea"
           component={ConexionesViariasLaLinea}
