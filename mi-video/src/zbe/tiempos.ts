@@ -9,7 +9,7 @@ const tiempos = crearTiempos({
   escenas: ESCENAS,
   datos,
   firmaSegundos: CIERRE_SEGUNDOS,
-  colaFinal: 0.8,
+  colaFinal: 0.6,
   maxCaracteresSubtitulo: 30,
 });
 

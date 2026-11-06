@@ -10,7 +10,7 @@ export type EscenaId = "criticas" | "estado" | "contradiccion" | "ciudades" | "a
 export type Momento = MomentoGuion<EscenaId>;
 
 /** Cierre de marca sin locución (s). */
-export const CIERRE_SEGUNDOS = 4;
+export const CIERRE_SEGUNDOS = 3.6;
 
 export const ESCENAS: readonly EscenaGuion<EscenaId>[] = [
   {
@@ -163,16 +163,19 @@ export const PRONUNCIACION: Record<string, string> = {
 
 /** Escenas con mucho texto en pantalla: se les deja tiempo de lectura. */
 export const DURACION_MINIMA_ESCENA: Record<string, number> = {
-  criticas: 10.5,
-  estado: 13,
-  contradiccion: 13.5,
-  ciudades: 11,
-  ayuntamiento: 12.5,
-  excepciones: 14,
-  comarca: 10.5,
+  criticas: 9,
+  estado: 12.5,
+  contradiccion: 16.6,
+  ciudades: 11.8,
+  ayuntamiento: 12.6,
+  excepciones: 12.5,
+  comarca: 10.3,
 };
 
-export const PAUSAS_ENTRE_FRASES: Record<string, number> = { criticas: 0.8, reflexion: 0.5 };
+/** Voz algo más ágil para que el vídeo quede entre 100 y 110 s. */
+export const AJUSTES_VOZ = { speed: 1.2 };
+
+export const PAUSAS_ENTRE_FRASES: Record<string, number> = { criticas: 0.7, reflexion: 0.45 };
 
 export const AUDIO = {
   locucion: "zbe/locucion.mp3",
