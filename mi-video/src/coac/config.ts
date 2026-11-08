@@ -1,8 +1,9 @@
 /**
  * VÍDEO "¿CUÁNDO CANTAN LOS GRANDES DEL COAC 2027?" para @carnavalinense (45–55 s).
  * Identidad de Carnavalinense (no InfoLinense): colores por modalidad y azul noche.
- * Fechas y nombres: los de la locución facilitada. Las modalidades marcadas `null`
- * están pendientes de confirmar con el calendario del sorteo (la tarjeta sale en blanco, sin color).
+ * Fechas y nombres: los de la locución facilitada, contrastados con el orden de actuación del sorteo
+ * (8 nov. 2026). Las modalidades `null` son nombres que no aparecen en el calendario de esa sesión
+ * (posibles apodos por confirmar): su tarjeta sale en blanco, sin color de modalidad.
  */
 import type { EscenaGuion, Momento as MomentoGuion } from "../marca/guion";
 
@@ -95,7 +96,7 @@ export const SESIONES: readonly Sesion[] = [
     agrupaciones: [
       { nombre: "Luis Rivero", modalidad: "coro", momento: m("bloque1", 0, "Luis") },
       { nombre: "Molina", modalidad: null, momento: m("bloque1", 0, "Molina") },
-      { nombre: "Jona", modalidad: null, momento: m("bloque1", 0, "Jona") },
+      { nombre: "Jona", modalidad: "comparsa", momento: m("bloque1", 0, "Jona") },
     ],
   },
   {
@@ -103,7 +104,7 @@ export const SESIONES: readonly Sesion[] = [
     semana: "SÁBADO",
     momento: m("bloque1", 1, "9"),
     agrupaciones: [
-      { nombre: "Los Villegas", modalidad: "comparsa", momento: m("bloque1", 1, "Villegas") },
+      { nombre: "Los Villegas", modalidad: "chirigota", momento: m("bloque1", 1, "Villegas") },
       { nombre: "Gago", modalidad: null, momento: m("bloque1", 1, "Gago") },
     ],
   },
@@ -112,8 +113,8 @@ export const SESIONES: readonly Sesion[] = [
     semana: "DOMINGO",
     momento: m("bloque1", 2, "10"),
     agrupaciones: [
-      { nombre: "Carlitos Pérez", modalidad: null, momento: m("bloque1", 2, "Carlitos") },
-      { nombre: "Los Pastrana", modalidad: null, momento: m("bloque1", 2, "Pastrana") },
+      { nombre: "Carlitos Pérez", modalidad: "chirigota", momento: m("bloque1", 2, "Carlitos") },
+      { nombre: "Los Pastrana", modalidad: "comparsa", momento: m("bloque1", 2, "Pastrana") },
     ],
   },
   {
@@ -131,7 +132,7 @@ export const SESIONES: readonly Sesion[] = [
     momento: m("bloque2", 0, "12"),
     agrupaciones: [
       { nombre: "Los Molina", modalidad: null, momento: m("bloque2", 0, "Molina") },
-      { nombre: "Iván Romero", modalidad: null, momento: m("bloque2", 0, "Iván") },
+      { nombre: "Iván Romero", modalidad: "cuarteto", momento: m("bloque2", 0, "Iván") },
     ],
   },
   {
@@ -140,9 +141,9 @@ export const SESIONES: readonly Sesion[] = [
     momento: m("bloque2", 1, "13"),
     estrella: true,
     agrupaciones: [
-      { nombre: "El Patriota", modalidad: null, momento: m("bloque2", 2, "Patriota") },
+      { nombre: "El Patriota", modalidad: "comparsa", momento: m("bloque2", 2, "Patriota") },
       { nombre: "El Bizcocho", modalidad: "chirigota", momento: m("bloque2", 2, "Bizcocho"), destacada: true },
-      { nombre: "Los Carapapas", modalidad: "chirigota", momento: m("bloque2", 2, "Carapapas"), destacada: true },
+      { nombre: "Los Carapapas", modalidad: "comparsa", momento: m("bloque2", 2, "Carapapas"), destacada: true },
     ],
   },
   {
@@ -160,20 +161,20 @@ export const SESIONES: readonly Sesion[] = [
     momento: m("bloque3", 1, "16"),
     agrupaciones: [
       { nombre: "Los Pibes", modalidad: null, momento: m("bloque3", 1, "Pibes") },
-      { nombre: "El Chapa", modalidad: "chirigota", momento: m("bloque3", 1, "Chapa") },
+      { nombre: "El Chapa", modalidad: "comparsa", momento: m("bloque3", 1, "Chapa") },
     ],
   },
   {
     dia: 17,
     semana: "DOMINGO",
     momento: m("bloque3", 2, "17"),
-    agrupaciones: [{ nombre: "Llull", modalidad: null, momento: m("bloque3", 2, "Llull") }],
+    agrupaciones: [{ nombre: "Llull", modalidad: "chirigota", momento: m("bloque3", 2, "Llull") }],
   },
   {
     dia: 18,
     semana: "LUNES",
     momento: m("bloque3", 2, "18"),
-    agrupaciones: [{ nombre: "Antoñito Molina", modalidad: null, momento: m("bloque3", 2, "Antoñito") }],
+    agrupaciones: [{ nombre: "Antoñito Molina", modalidad: "comparsa", momento: m("bloque3", 2, "Antoñito") }],
   },
   {
     dia: 19,
@@ -181,7 +182,7 @@ export const SESIONES: readonly Sesion[] = [
     momento: m("bloque4", 0, "19"),
     agrupaciones: [
       { nombre: "Peluca", modalidad: "chirigota", momento: m("bloque4", 0, "Peluca") },
-      { nombre: "Bustelo", modalidad: null, momento: m("bloque4", 0, "Bustelo") },
+      { nombre: "Bustelo", modalidad: "comparsa", momento: m("bloque4", 0, "Bustelo") },
     ],
   },
   {
@@ -189,7 +190,7 @@ export const SESIONES: readonly Sesion[] = [
     semana: "MIÉRCOLES",
     momento: m("bloque4", 1, "20"),
     agrupaciones: [
-      { nombre: "Cornejo", modalidad: null, momento: m("bloque4", 1, "Cornejo") },
+      { nombre: "Cornejo", modalidad: "comparsa", momento: m("bloque4", 1, "Cornejo") },
       { nombre: "Martínez Ares", modalidad: "comparsa", momento: m("bloque4", 1, "Martínez"), destacada: true },
     ],
   },
@@ -198,8 +199,8 @@ export const SESIONES: readonly Sesion[] = [
     semana: "JUEVES",
     momento: m("bloque4", 2, "21"),
     agrupaciones: [
-      { nombre: "Piru y Tomate", modalidad: null, momento: m("bloque4", 2, "Piru"), destacada: true },
-      { nombre: "El Sheriff", modalidad: null, momento: m("bloque4", 2, "Sheriff"), destacada: true },
+      { nombre: "Piru y Tomate", modalidad: "comparsa", momento: m("bloque4", 2, "Piru"), destacada: true },
+      { nombre: "El Sheriff", modalidad: "chirigota", momento: m("bloque4", 2, "Sheriff"), destacada: true },
     ],
   },
 ];
@@ -231,7 +232,8 @@ export const PRONUNCIACION: Record<string, string> = {
   "19": "diecinueve",
   "20": "veinte",
   "21": "veintiuno",
-  "OBDC": "O B D C",
+  "OBDC": "obedecé",
+  "Jona": "Yona",
 };
 
 /** Voz juvenil y con energía (ElevenLabs: "Ismael - Andalusian from Málaga"). */
