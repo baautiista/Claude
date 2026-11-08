@@ -2,8 +2,7 @@
  * VÍDEO "¿CUÁNDO CANTAN LOS GRANDES DEL COAC 2027?" para @carnavalinense (45–55 s).
  * Identidad de Carnavalinense (no InfoLinense): colores por modalidad y azul noche.
  * Fechas y nombres: los de la locución facilitada, contrastados con el orden de actuación del sorteo
- * (8 nov. 2026). Las modalidades `null` son nombres que no aparecen en el calendario de esa sesión
- * (posibles apodos por confirmar): su tarjeta sale en blanco, sin color de modalidad.
+ * (8 nov. 2026). Las modalidades de apodos que no figuran en el calendario las ha indicado Carnavalinense.
  */
 import type { EscenaGuion, Momento as MomentoGuion } from "../marca/guion";
 
@@ -95,7 +94,7 @@ export const SESIONES: readonly Sesion[] = [
     momento: m("bloque1", 0, "8"),
     agrupaciones: [
       { nombre: "Luis Rivero", modalidad: "coro", momento: m("bloque1", 0, "Luis") },
-      { nombre: "Molina", modalidad: null, momento: m("bloque1", 0, "Molina") },
+      { nombre: "Molina", modalidad: "chirigota", momento: m("bloque1", 0, "Molina") },
       { nombre: "Jona", modalidad: "comparsa", momento: m("bloque1", 0, "Jona") },
     ],
   },
@@ -105,7 +104,7 @@ export const SESIONES: readonly Sesion[] = [
     momento: m("bloque1", 1, "9"),
     agrupaciones: [
       { nombre: "Los Villegas", modalidad: "chirigota", momento: m("bloque1", 1, "Villegas") },
-      { nombre: "Gago", modalidad: null, momento: m("bloque1", 1, "Gago") },
+      { nombre: "Gago", modalidad: "cuarteto", momento: m("bloque1", 1, "Gago") },
     ],
   },
   {
@@ -122,8 +121,8 @@ export const SESIONES: readonly Sesion[] = [
     semana: "LUNES",
     momento: m("bloque1", 3, "11"),
     agrupaciones: [
-      { nombre: "Yoly Álvarez", modalidad: null, momento: m("bloque1", 3, "Yoly") },
-      { nombre: "Subiela", modalidad: null, momento: m("bloque1", 3, "Subiela") },
+      { nombre: "Yoly Álvarez", modalidad: "comparsa", momento: m("bloque1", 3, "Yoly") },
+      { nombre: "Subiela", modalidad: "comparsa", momento: m("bloque1", 3, "Subiela") },
     ],
   },
   {
@@ -131,7 +130,7 @@ export const SESIONES: readonly Sesion[] = [
     semana: "MARTES",
     momento: m("bloque2", 0, "12"),
     agrupaciones: [
-      { nombre: "Los Molina", modalidad: null, momento: m("bloque2", 0, "Molina") },
+      { nombre: "Los Molina", modalidad: "chirigota", momento: m("bloque2", 0, "Molina") },
       { nombre: "Iván Romero", modalidad: "cuarteto", momento: m("bloque2", 0, "Iván") },
     ],
   },
@@ -160,7 +159,7 @@ export const SESIONES: readonly Sesion[] = [
     semana: "SÁBADO",
     momento: m("bloque3", 1, "16"),
     agrupaciones: [
-      { nombre: "Los Pibes", modalidad: null, momento: m("bloque3", 1, "Pibes") },
+      { nombre: "Los Pibes", modalidad: "chirigota", momento: m("bloque3", 1, "Pibes") },
       { nombre: "El Chapa", modalidad: "comparsa", momento: m("bloque3", 1, "Chapa") },
     ],
   },
@@ -174,7 +173,7 @@ export const SESIONES: readonly Sesion[] = [
     dia: 18,
     semana: "LUNES",
     momento: m("bloque3", 2, "18"),
-    agrupaciones: [{ nombre: "Antoñito Molina", modalidad: "comparsa", momento: m("bloque3", 2, "Antoñito") }],
+    agrupaciones: [{ nombre: "Antoñito Molina", modalidad: "chirigota", momento: m("bloque3", 2, "Antoñito") }],
   },
   {
     dia: 19,
