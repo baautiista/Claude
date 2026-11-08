@@ -18,6 +18,9 @@ import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
+import { VotaCoacCinco } from "./votacoac/VotaCoacCinco";
+import { PortadaVotaCoac } from "./votacoac/Portada";
+import { duracionTotal as duracionVotaCoac } from "./votacoac/tiempos";
 import { CoacGrandes2027 } from "./coac/CoacGrandes2027";
 import { PortadaCoac } from "./coac/Portada";
 import { duracionTotal as duracionCoac } from "./coac/tiempos";
@@ -70,6 +73,10 @@ export const RemotionRoot: React.FC = () => {
           height={1920}
         />
         <Still id="MiniaturaAntiguoHospitalLaLinea" component={MiniaturaHospital} width={1080} height={1920} />
+      </Folder>
+      <Folder name="VotaCOAC">
+        <Composition id="VotaCoacCincoDelPublico" component={VotaCoacCinco} durationInFrames={duracionVotaCoac()} fps={FPS} width={1080} height={1920} />
+        <Still id="PortadaVotaCoac" component={PortadaVotaCoac} width={1080} height={1920} />
       </Folder>
       <Folder name="Carnavalinense">
         <Composition id="CoacGrandes2027" component={CoacGrandes2027} durationInFrames={duracionCoac()} fps={FPS} width={1080} height={1920} />
