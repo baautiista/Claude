@@ -18,6 +18,9 @@ import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
+import { CoacGrandes2027 } from "./coac/CoacGrandes2027";
+import { PortadaCoac } from "./coac/Portada";
+import { duracionTotal as duracionCoac } from "./coac/tiempos";
 import { ZbeLaLinea } from "./zbe/ZbeLaLinea";
 import { MiniaturaZbe } from "./zbe/Miniatura";
 import { duracionTotal as duracionZbe } from "./zbe/tiempos";
@@ -67,6 +70,10 @@ export const RemotionRoot: React.FC = () => {
           height={1920}
         />
         <Still id="MiniaturaAntiguoHospitalLaLinea" component={MiniaturaHospital} width={1080} height={1920} />
+      </Folder>
+      <Folder name="Carnavalinense">
+        <Composition id="CoacGrandes2027" component={CoacGrandes2027} durationInFrames={duracionCoac()} fps={FPS} width={1080} height={1920} />
+        <Still id="PortadaCoacGrandes2027" component={PortadaCoac} width={1080} height={1920} />
       </Folder>
       <Folder name="Movilidad">
         <Composition id="ZbeLaLinea" component={ZbeLaLinea} durationInFrames={duracionZbe()} fps={FPS} width={1080} height={1920} />
