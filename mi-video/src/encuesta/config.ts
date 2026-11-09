@@ -45,9 +45,7 @@ export const PRONUNCIACION: Record<string, string> = {
   "panel.infolinense.com": "panel punto infolinense punto com,",
 };
 
-/** Voz masculina con acento andaluz suave (ElevenLabs: "Helmut - Clear, Warm and Powerful", andaluz). */
-export const VOZ_ID = "sAGvECw4aXyojkGBisG4";
-export const AJUSTES_VOZ = { stability: 0.42, style: 0.35, speed: 1.08 };
+/** Voz habitual de InfoLinense (VOZ.vozPorDefecto y VOZ.ajustes de src/marca/voz.ts, sin cambios). */
 
 /** Tiempos mínimos para que cada bloque se lea; el final deja la web en pantalla 3 s o más. */
 export const DURACION_MINIMA_ESCENA: Record<string, number> = { gancho: 2.6, identidad: 4, encuesta: 5.8, exclusividad: 4.6 };
