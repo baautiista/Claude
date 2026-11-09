@@ -4,7 +4,7 @@ import { Etiqueta } from "../marca/Etiqueta";
 import { COLOR, FUENTE, ZONA_SEGURA } from "../marca/marca";
 import { FRONTERA, LIENZO, MAR, PISTA, PUNTOS } from "../zbe/bahia";
 import { Icono } from "../zbe/piezas";
-import { Arriba, Azul, Bocadillo, clamp, Destacado, Foto, Titulo, Tramo } from "./piezas";
+import { Arriba, Azul, Bocadillo, clamp, Destacado, Foto, fotoDe, Titulo, Tramo } from "./piezas";
 import { M } from "./tiempos";
 
 /* ---------- 1. Gancho ---------- */
@@ -397,8 +397,8 @@ export const DronesEscena: React.FC = () => {
   const navidad = M("drones", 1);
   return (
     <AbsoluteFill>
-      <Foto k="drones" nombre="Espectáculo de drones" oscurecer={0.75} />
-      <Drones desde={4} />
+      <Foto k="drones" nombre="Espectáculo de drones" oscurecer={fotoDe("drones") ? 0.3 : 0.75} zoom={[1.0, 1.12]} />
+      {fotoDe("drones") ? null : <Drones desde={4} />}
       <Tramo desde={0} hasta={navidad}>
         <div style={{ position: "absolute", top: 1100, left: 80, right: 80 }}>
           <Titulo lineas={["¿Y LOS DRONES", "*FAVORECEN A LAS", "*FRANQUICIAS?"]} desde={8} tam={86} />

@@ -32,6 +32,9 @@ export const Foto: React.FC<{ readonly k: ClaveFoto; readonly nombre: string; re
         <Placeholder nombre={nombre} archivo={FOTOS[k][0].split("/").pop()} />
       )}
       <AbsoluteFill style={{ background: `linear-gradient(180deg, rgba(6,30,92,${oscurecer + 0.3}) 0%, rgba(6,30,92,${oscurecer * 0.4}) 38%, rgba(6,30,92,${oscurecer * 0.4}) 58%, rgba(6,30,92,${oscurecer + 0.35}) 100%)` }} />
+      {archivo && k === "centroComercial" ? (
+        <div style={{ position: "absolute", right: ZONA_SEGURA.lados, bottom: ZONA_SEGURA.abajo + 170, backgroundColor: "rgba(10,10,10,0.7)", color: COLOR.blanco, fontFamily: FUENTE.texto, fontWeight: 600, fontSize: 24, padding: "4px 12px", borderRadius: 6 }}>Imagen del proyecto</div>
+      ) : null}
     </AbsoluteFill>
   );
 };
