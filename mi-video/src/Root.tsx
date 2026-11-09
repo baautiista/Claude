@@ -18,6 +18,8 @@ import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
+import { EncuestaElectoral, duracionEncuesta } from "./encuesta/EncuestaElectoral";
+import { MiniaturaEncuesta } from "./encuesta/Miniatura";
 import { VotaCoacCinco } from "./votacoac/VotaCoacCinco";
 import { PortadaVotaCoac } from "./votacoac/Portada";
 import { duracionTotal as duracionVotaCoac } from "./votacoac/tiempos";
@@ -74,6 +76,10 @@ export const RemotionRoot: React.FC = () => {
         />
         <Still id="MiniaturaAntiguoHospitalLaLinea" component={MiniaturaHospital} width={1080} height={1920} />
       </Folder>
+      <Folder name="Encuestas">
+        <Composition id="EncuestaElectoralLaLinea" component={EncuestaElectoral} durationInFrames={duracionEncuesta()} fps={FPS} width={1080} height={1920} />
+        <Still id="Miniatura" component={MiniaturaEncuesta} width={1080} height={1920} />
+      </Folder>
       <Folder name="VotaCOAC">
         <Composition id="VotaCoacCincoDelPublico" component={VotaCoacCinco} durationInFrames={duracionVotaCoac()} fps={FPS} width={1080} height={1920} />
         <Still id="PortadaVotaCoac" component={PortadaVotaCoac} width={1080} height={1920} />
@@ -84,7 +90,7 @@ export const RemotionRoot: React.FC = () => {
       </Folder>
       <Folder name="Movilidad">
         <Composition id="ZbeLaLinea" component={ZbeLaLinea} durationInFrames={duracionZbe()} fps={FPS} width={1080} height={1920} />
-        <Still id="Miniatura" component={MiniaturaZbe} width={1080} height={1920} />
+        <Still id="MiniaturaZbeLaLinea" component={MiniaturaZbe} width={1080} height={1920} />
       </Folder>
       <Folder name="Urbanismo">
         <Composition
