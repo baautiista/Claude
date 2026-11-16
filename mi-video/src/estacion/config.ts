@@ -105,7 +105,10 @@ export const PRONUNCIACION: Record<string, string> = {
 };
 
 /** Pausas expresivas (reportaje): el gancho respira antes de «Mira ahora la entrada». */
-export const PAUSAS_ENTRE_FRASES: Record<string, number> = { gancho: 0.6, deterioro: 0.5, denuncias: 0.55, respuesta: 0.55, cambio: 0.6, reapertura: 0.6 };
+export const PAUSAS_ENTRE_FRASES: Record<string, number> = { gancho: 0.45, deterioro: 0.3, denuncias: 0.3, respuesta: 0.3, cambio: 0.35, reapertura: 0.35 };
+
+/** Misma voz y ajustes de siempre, con más ritmo (velocidad máxima de ElevenLabs). */
+export const AJUSTES_VOZ = { speed: 1.2 };
 
 export const AUDIO = {
   locucion: "estacion/locucion.mp3",
