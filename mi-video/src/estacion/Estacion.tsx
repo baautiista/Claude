@@ -22,7 +22,7 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 /* ---------- Fotos ---------- */
 
 const FOTOS = {
-  fachadaActual: { archivo: "estacion/fachada-actual.jpg", nombre: "Fachada actual", enfoque: "55% 60%" },
+  fachadaActual: { archivo: "estacion/fachada-actual.jpg", nombre: "Fachada actual", enfoque: "56% 52%" },
   fachadaAntigua: { archivo: "estacion/fachada-antigua.jpg", nombre: "Fachada antigua", enfoque: "72% 55%", archivoAntiguo: true },
   interiorAntiguo: { archivo: "estacion/interior-antiguo.jpg", nombre: "Interior antiguo", enfoque: "50% 50%", archivoAntiguo: true },
   interiorRenovado: { archivo: "estacion/interior-renovado.jpg", nombre: "Interior renovado", enfoque: "40% 50%", credito: "Foto: Fabián España" },
