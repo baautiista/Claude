@@ -18,6 +18,8 @@ import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
+import { EstacionAutobuses, duracionEstacion } from "./estacion/Estacion";
+import { MiniaturaEstacion } from "./estacion/Miniatura";
 import { EditorialAvance } from "./editorial/Editorial";
 import { MiniaturaEditorial } from "./editorial/Miniatura";
 import { duracionTotal as duracionEditorial } from "./editorial/tiempos";
@@ -79,9 +81,13 @@ export const RemotionRoot: React.FC = () => {
         />
         <Still id="MiniaturaAntiguoHospitalLaLinea" component={MiniaturaHospital} width={1080} height={1920} />
       </Folder>
+      <Folder name="Reportajes">
+        <Composition id="EstacionAutobusesLaLinea" component={EstacionAutobuses} durationInFrames={duracionEstacion()} fps={FPS} width={1080} height={1920} />
+        <Still id="Miniatura" component={MiniaturaEstacion} width={1080} height={1920} />
+      </Folder>
       <Folder name="Opinion">
         <Composition id="EditorialAvanceLaLinea" component={EditorialAvance} durationInFrames={duracionEditorial()} fps={FPS} width={1080} height={1920} />
-        <Still id="Miniatura" component={MiniaturaEditorial} width={1080} height={1920} />
+        <Still id="MiniaturaEditorialAvanceLaLinea" component={MiniaturaEditorial} width={1080} height={1920} />
       </Folder>
       <Folder name="Encuestas">
         <Composition id="EncuestaElectoralLaLinea" component={EncuestaElectoral} durationInFrames={duracionEncuesta()} fps={FPS} width={1080} height={1920} />
