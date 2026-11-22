@@ -88,6 +88,7 @@ class Calco {
     this.malla = new THREE.Mesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), mat);
     this.malla.renderOrder = orden;
     this.malla.castShadow = false;
+    this.malla.userData.sinOclusion = true;
     this.malla.receiveShadow = false;
     this.malla.visible = false;
     // Invisible para los toques: nunca tapa un edificio ni un vecino.

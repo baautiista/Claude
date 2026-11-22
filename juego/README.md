@@ -22,6 +22,8 @@ Juego narrativo para móvil ambientado en La Línea de la Concepción. Mezcla la
 
 **Multijugador:** dentro de InfoLinense (claude.ai) ves a los demás jugadores paseando por la ciudad con su nombre, puedes saludarles con emojis, hay un **ranking** de los linenses con más experiencia y un **mercadillo** para comprar y vender cosechas, pescado y platos entre jugadores. Fuera de la plataforma, las pestañas del mismo navegador se ven entre sí.
 
+**Cámara:** vista cenital oblicua ortográfica, a 62° sobre el suelo y con el norte arriba, como el mapa: dominan los tejados y las copas, pero se ven fachadas, portales y el cuerpo de los personajes. Sigue al personaje; se puede girar en cuartos de vuelta, acercar y alejar, o pasar a la vista a pie de calle. Lo que tapa al personaje (tejados, balcones, copas) se vuelve transparente a su alrededor con un tramado (`mundo/oclusion.ts`), sin tocar el suelo ni a los personajes.
+
 **Autobús urbano:** el botón central del dock abre las paradas (1 €); el autobús recorre las calles reales y la cámara lo sigue.
 
 **Interfaz de juego:** portada con sobrevuelo 3D de la ciudad, HUD con avatar, nivel y XP, monedas, reloj y necesidades en indicadores circulares, dock de botones redondos, paneles con cabecera y animaciones (subida de nivel con confeti, avisos, rebotes). Tipografías Fredoka y Nunito.
@@ -105,7 +107,7 @@ pruebas/                pruebas automáticas por fases
 scripts/geojson-a-mapa.mjs  GeoJSON de OSM → geometría del juego (linea.json)
 ```
 
-## El mapa: La Línea real, en isométrico
+## El mapa: La Línea real, en vista cenital
 
 El mapa se construye desde **datos reales de OpenStreetMap** (GeoJSON exportado con Overpass), no desde una imagen:
 

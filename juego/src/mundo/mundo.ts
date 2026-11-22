@@ -31,6 +31,7 @@ import { PavoReal } from "./pavos";
 import { arbolesToros, CENTRO_TOROS, construirToros, solidosToros } from "./sectores/toros";
 import { CENTRO_MERCADO, construirMercado, solidosMercado } from "./sectores/mercado";
 import { Marcadores } from "./marcadores";
+import { oclusion, parchearEscena } from "./oclusion";
 import { GestorCiudad, auditarEdificio, SUSTITUIDOS } from "./ciudad/teselas";
 import { ModelosBlender, cargarModelo, piezasModelo } from "./ciudad/modelosBlender";
 import { HAY_CALLES_BLENDER, cargarCalles } from "./ciudad/callesBlender";
@@ -173,6 +174,8 @@ type EdificioDet = Edificio & { idx: number };
 
 /** Dirección del sol: alto y del sureste, para que las fachadas que ve la cámara tengan luz y sombra. */
 const DIR_SOL = new THREE.Vector3(0.5, 1, 0.62).normalize();
+/** Inclinación de la vista cenital oblicua (grados sobre el suelo; 90 sería mirar en vertical). */
+const INCLINACION = 62;
 
 const C_DIA = new THREE.Color("#BFE0F7");
 const C_NOCHE = new THREE.Color("#14224A");
@@ -639,7 +642,15 @@ function azar(semilla: number) {
 export class Mundo {
   private renderer: THREE.WebGLRenderer;
   private escena = new THREE.Scene();
-  private camara = new THREE.PerspectiveCamera(30, 1, 2, 14000);
+  /** Vista normal: cámara ortográfica cenital oblicua (62° sobre el suelo, norte arriba). */
+  private orto = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 14000);
+  /** Vista a pie de calle: cámara en perspectiva en los ojos del personaje. */
+  private persp = new THREE.PerspectiveCamera(30, 1, 2, 14000);
+  private get camara(): THREE.OrthographicCamera | THREE.PerspectiveCamera {
+    return this.modoPOV ? this.persp : this.orto;
+  }
+  private aspecto = 1;
+  private ultimoParche = 0;
   private composer!: EffectComposer;
   private ao: GTAOPass | null = null;
   ajustesCalidad: Calidad;
@@ -676,7 +687,7 @@ export class Mundo {
   /** Distancia de la cámara (zoom): menor = más cerca. */
   private alto = 110;
   private altoMeta: number | null = null;
-  /** Giro de la cámara en cuartos de vuelta (0: desde el noreste, mirando al Peñón). */
+  /** Giro de la cámara en cuartos de vuelta (0: desde el sur, mirando al norte como el mapa). */
   private giro = 0;
   private giroActual = 0;
   private jugador: Personaje;
@@ -2825,7 +2836,7 @@ export class Mundo {
 
   /** Dirección horizontal hacia la que mira la cámara. */
   private direccion() {
-    const a = Math.PI / 4 + this.giroActual * (Math.PI / 2);
+    const a = this.rumboCam();
     return new THREE.Vector3(-Math.sin(a), 0, Math.cos(a));
   }
 
@@ -2837,6 +2848,7 @@ export class Mundo {
     this.composer?.dispose();
     this.composer = new EffectComposer(this.renderer, rt);
     this.composer.addPass(new RenderPass(this.escena, this.camara));
+    // La AO y el render guardan la cámara: al cambiar de vista se vuelve a montar la cadena.
     this.ao = null;
     if (q.ao) {
       this.ao = new GTAOPass(this.escena, this.camara, 1, 1);
@@ -2883,14 +2895,15 @@ export class Mundo {
     this.renderer.setSize(r.width, r.height, false);
     this.composer.setPixelRatio(this.renderer.getPixelRatio());
     this.composer.setSize(r.width, r.height);
-    this.camara.aspect = r.width / Math.max(1, r.height);
+    this.aspecto = r.width / Math.max(1, r.height);
+    this.persp.aspect = this.aspecto;
     this.proyeccion();
   }
 
   private proyeccion() {
     const r = this.canvas.getBoundingClientRect();
-    this.camara.fov = this.camara.aspect > 1 ? 26 : 34;
-    this.camara.updateProjectionMatrix();
+    if (this.modoPOV) this.persp.updateProjectionMatrix();
+    else this.encuadreOrto();
     // Tamaño de la sombra por escalones: si cambiase con cada zoom, las sombras temblarían.
     const sc = this.sol.shadow.camera;
     const s = Math.min(650, 120 * Math.pow(1.25, Math.ceil(Math.log(Math.max(1, (this.alto * 0.85) / 120)) / Math.log(1.25))));
@@ -2916,10 +2929,10 @@ export class Mundo {
       this.povPitch = 0;
     } else {
       this.alto = this.altoAntesPOV;
-      this.camara.near = 2;
       this.jugador.visible = true;
     }
-    this.proyeccion();
+    this.montarComposer();
+    this.ajustar();
   }
 
   /**
@@ -2935,23 +2948,24 @@ export class Mundo {
     const ojos = 1.62 * ESCALA_PERSONAJE;
     if (this.enBus) {
       const deseada = new THREE.Vector3(j.position.x - fx * 16, j.position.y + ojos + 5 + this.povPitch * 2.5, j.position.z - fz * 16);
-      if (this.camara.position.distanceTo(deseada) > 40) this.camara.position.copy(deseada);
-      else this.camara.position.lerp(deseada, 0.18);
-      this.camara.lookAt(j.position.x + fx * 6, j.position.y + ojos * 0.9 - this.povPitch * 6, j.position.z + fz * 6);
+      if (this.persp.position.distanceTo(deseada) > 40) this.persp.position.copy(deseada);
+      else this.persp.position.lerp(deseada, 0.18);
+      this.persp.lookAt(j.position.x + fx * 6, j.position.y + ojos * 0.9 - this.povPitch * 6, j.position.z + fz * 6);
     } else {
       this.jugador.visible = false;
       // Los ojos van un poco por delante del centro del cuerpo; la mirada sube y baja con el arrastre.
-      this.camara.position.set(j.position.x + fx * 0.12, j.position.y + ojos, j.position.z + fz * 0.12);
+      this.persp.position.set(j.position.x + fx * 0.12, j.position.y + ojos, j.position.z + fz * 0.12);
       const p = this.povPitch * 0.9;
-      this.camara.lookAt(this.camara.position.x + fx * Math.cos(p), this.camara.position.y - Math.sin(p), this.camara.position.z + fz * Math.cos(p));
+      this.persp.lookAt(this.persp.position.x + fx * Math.cos(p), this.persp.position.y - Math.sin(p), this.persp.position.z + fz * Math.cos(p));
     }
     this.objetivoCam.set(j.position.x, SUELO, j.position.z);
+    oclusion.activo.value = 0;
     const fov = this.enBus ? 60 : this.povFov;
-    if (this.camara.fov !== fov || this.camara.near !== 0.08) {
-      this.camara.fov = fov;
-      this.camara.near = 0.08;
-      this.camara.far = 1400;
-      this.camara.updateProjectionMatrix();
+    if (this.persp.fov !== fov || this.persp.near !== 0.08) {
+      this.persp.fov = fov;
+      this.persp.near = 0.08;
+      this.persp.far = 1400;
+      this.persp.updateProjectionMatrix();
     }
     // Calima a pie de calle: da profundidad y oculta el final de la ciudad cargada.
     const niebla = this.escena.fog as THREE.Fog;
@@ -2961,28 +2975,61 @@ export class Mundo {
     this.tiltV.uniforms.v.value = 0;
   }
 
+  /** Rumbo base de la vista: la cámara al sur del objetivo mirando al norte, como el mapa. */
+  private rumboCam() {
+    return Math.PI + this.giroActual * (Math.PI / 2) + this.demoAng;
+  }
+
+  /**
+   * Tamaño del encuadre ortográfico según el zoom (`alto`): se ve lo mismo que veía la antigua
+   * cámara en perspectiva a esa distancia, así el zoom, el nivel de detalle y las sombras siguen igual.
+   */
+  private encuadreOrto() {
+    const medio = this.alto * Math.tan(THREE.MathUtils.degToRad(this.aspecto > 1 ? 13 : 17));
+    const o = this.orto;
+    const ancho = medio * this.aspecto;
+    if (Math.abs(o.top - medio) > 1e-4 || Math.abs(o.right - ancho) > 1e-4) {
+      o.top = medio;
+      o.bottom = -medio;
+      o.right = ancho;
+      o.left = -ancho;
+      o.updateProjectionMatrix();
+    }
+  }
+
   private colocarCamara() {
     if (this.modoPOV) return this.colocarCamaraPOV();
-    const a = Math.PI / 4 + this.giroActual * (Math.PI / 2) + this.demoAng;
-    const el = THREE.MathUtils.degToRad(Math.min(64, 38 + (this.alto - 120) * 0.012));
+    const a = this.rumboCam();
+    const el = THREE.MathUtils.degToRad(INCLINACION);
+    // En ortográfica la distancia no cambia la imagen: se aleja lo bastante para que ningún
+    // edificio alto quede detrás del plano cercano.
     const d = this.alto;
-    this.camara.position.set(
-      this.objetivoCam.x + Math.sin(a) * Math.cos(el) * d,
-      this.objetivoCam.y + Math.sin(el) * d,
-      this.objetivoCam.z - Math.cos(a) * Math.cos(el) * d,
+    const D = Math.max(400, d * 1.5);
+    this.orto.position.set(
+      this.objetivoCam.x + Math.sin(a) * Math.cos(el) * D,
+      this.objetivoCam.y + Math.sin(el) * D,
+      this.objetivoCam.z - Math.cos(a) * Math.cos(el) * D,
     );
-    this.camara.lookAt(this.objetivoCam);
-    // Planos de recorte ajustados a la distancia: mucha más precisión de profundidad.
-    const cerca = Math.max(1, d * 0.05);
-    const lejos = d * 9 + 2500;
-    if (Math.abs(this.camara.near - cerca) > 0.01 || Math.abs(this.camara.far - lejos) > 1) {
-      this.camara.near = cerca;
-      this.camara.far = lejos;
-      this.camara.updateProjectionMatrix();
+    this.orto.lookAt(this.objetivoCam);
+    this.encuadreOrto();
+    const lejos = D + d * 6 + 3000;
+    if (Math.abs(this.orto.far - lejos) > 1) {
+      this.orto.near = 1;
+      this.orto.far = lejos;
+      this.orto.updateProjectionMatrix();
     }
     const niebla = this.escena.fog as THREE.Fog;
-    niebla.near = d * 3;
-    niebla.far = d * 10 + 900;
+    niebla.near = D + d * 2.5;
+    niebla.far = D + d * 8 + 900;
+    // Lo que tapa al personaje (tejados, balcones, copas) se vuelve transparente a su alrededor.
+    const j = this.enBus ? this.busJugador.position : this.jugador.position;
+    this.orto.getWorldDirection(oclusion.direccion.value);
+    oclusion.jugador.value.set(j.x, j.y + 1.0 * ESCALA_PERSONAJE, j.z);
+    oclusion.suelo.value = j.y;
+    oclusion.radio.value = Math.max(3.4, Math.min(7, d * 0.045));
+    const quiere = this.modoDemo || d > 420 ? 0 : 1;
+    oclusion.activo.value += (quiere - oclusion.activo.value) * 0.15;
+    if (oclusion.activo.value < 0.01) oclusion.activo.value = 0;
     // Sol fijo (de sureste) y centrado en la cámara, pero encajado en la rejilla de
     // texels del mapa de sombras para que los bordes no tiemblen al moverse.
     const texel = (2 * this.sol.shadow.camera.right) / this.sol.shadow.mapSize.x;
@@ -3526,6 +3573,10 @@ export class Mundo {
       }
     }
     this.colocarCamara();
+    if (performance.now() - this.ultimoParche > 700) {
+      this.ultimoParche = performance.now();
+      parchearEscena(this.escena);
+    }
 
     // Mar con oleaje (más fuerte con levante); el plano acompaña a la cámara.
     const fuerza = this.viento === "levanteFuerte" ? 1.6 : this.viento === "levante" ? 1 : this.viento === "calma" ? 0.25 : 0.55;
@@ -3582,7 +3633,8 @@ export class Mundo {
     }
     // Personajes: animaciones compartidas (los lejanos se actualizan menos a menudo).
     this.cuadro = (this.cuadro + 1) % 4;
-    const cam = this.camara.position;
+    // Distancia a lo que se mira (en ortográfica la cámara está lejos y no sirve de referencia).
+    const cam = this.modoPOV ? this.persp.position : this.objetivoCam;
     const animar = (g: Personaje, i: number) => {
       if (!g.visible) return;
       // Los que están en la escena se apoyan en el suelo real (los del estadio van en su grupo).

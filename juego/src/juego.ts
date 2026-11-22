@@ -60,7 +60,7 @@ export class Juego {
     this.mundo = previo?.mundo ?? new Mundo(canvas as HTMLCanvasElement, rotulos);
     this.mundo.modoDemo = false;
     this.mundo.colocar(e.nodo);
-    this.mundo.volarA(110);
+    this.mundo.volarA(85);
     this.mundo.ropa = e.ropa;
     this.mundo.piel = e.piel;
     if (e.aspecto) this.aplicarAspecto();
