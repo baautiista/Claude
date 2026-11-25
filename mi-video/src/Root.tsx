@@ -18,6 +18,8 @@ import { duracionTotal as duracionConexiones } from "./conexiones/tiempos";
 import { BarChartScene } from "./BarChartScene";
 import { CounterScene } from "./CounterScene";
 import { DataVideo } from "./DataVideo";
+import { PremiosCategoria, duracionPremios } from "./premios/PremiosCategoria";
+import { CATEGORIAS } from "./premios/guion";
 import { EstacionAutobuses, duracionEstacion } from "./estacion/Estacion";
 import { MiniaturaEstacion } from "./estacion/Miniatura";
 import { EditorialAvance } from "./editorial/Editorial";
@@ -80,6 +82,20 @@ export const RemotionRoot: React.FC = () => {
           height={1920}
         />
         <Still id="MiniaturaAntiguoHospitalLaLinea" component={MiniaturaHospital} width={1080} height={1920} />
+      </Folder>
+      <Folder name="Premios-InfoLinense-2026">
+        {CATEGORIAS.map((c) => (
+          <Composition
+            key={c.slug}
+            id={`Premios-${c.slug}`}
+            component={PremiosCategoria}
+            defaultProps={{ slug: c.slug }}
+            durationInFrames={duracionPremios(c.slug)}
+            fps={FPS}
+            width={1080}
+            height={1920}
+          />
+        ))}
       </Folder>
       <Folder name="Reportajes">
         <Composition id="EstacionAutobusesLaLinea" component={EstacionAutobuses} durationInFrames={duracionEstacion()} fps={FPS} width={1080} height={1920} />

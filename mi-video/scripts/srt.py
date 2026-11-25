@@ -7,7 +7,7 @@ datos = json.load(open(f"src/{video}/locucion-tiempos.json"))["frases"]
 cfg = open(f"src/{video}/config.ts", encoding="utf-8").read()
 bloque = cfg[cfg.index("export const ESCENAS"):]
 frases = {}
-for m in re.finditer(r'id: "(\w+)".*?frases: \[(.*?)\]', bloque, re.S):
+for m in re.finditer(r'"?id"?: "(\w+)".*?"?frases"?: \[(.*?)\]', bloque, re.S):
     frases[m.group(1)] = re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(2))
 
 def hms(t):

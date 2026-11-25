@@ -1,0 +1,772 @@
+{
+  "edicion": 2026,
+  "web": "premios.infolinense.com",
+  "categorias": [
+    {
+      "slug": "merito-deportivo",
+      "nombre": "Mérito Deportivo",
+      "titulo": "Deportista del año",
+      "pregunta": "¿Qué deportista de La Línea merece este premio?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#00AA4F",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "alfredo-mena",
+          "nombre": "Alfredo Mena",
+          "subtitulo": "Remo de mar · Club Remo de Mar La Línea",
+          "motivo": "Campeón de Europa sub-19 de beach sprint y bronce mundial en doble mixto; uno de los grandes nombres del remo linense en 2026.",
+          "meritos": [
+            "Campeón de Europa sub-19 de beach sprint en doble mixto, con Blanca López.",
+            "Bronce en el Mundial sub-19 de beach sprint en Qingdao (China).",
+            "Campeón de España sub-19 de doble masculino con Abel Salas."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "desi-marquez",
+          "nombre": "Desi Márquez",
+          "subtitulo": "Taekwondo · Poomsae · Club Seúl Gym",
+          "motivo": "Medallista en el Campeonato de España de poomsae y subcampeona en la prueba de trío del Open de España 2026.",
+          "meritos": [
+            "Bronce de poomsae en el Campeonato de España, según reconocimiento al Seúl Gym de febrero.",
+            "Plata en trío 31-50 en el Open de España de poomsae de Ciudad Real.",
+            "Bronce en trío en el Campeonato de Andalucía de junio."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "gonzalo-herrera",
+          "nombre": "Gonzalo Herrera",
+          "subtitulo": "Deportista · disciplina pendiente de confirmar",
+          "motivo": "Candidatura deportiva propuesta por los lectores; pendiente de confirmar su disciplina y sus resultados en 2026.",
+          "meritos": [],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "raquel-retamero",
+          "nombre": "Raquel Retamero",
+          "subtitulo": "Vela · ILCA 6 · Real Club Náutico de La Línea",
+          "motivo": "Ganadora de la Copa de Andalucía de ILCA 6 y representante linense en el Campeonato de Europa sub-21.",
+          "meritos": [
+            "Campeona de la Copa de Andalucía de ILCA 6.",
+            "Subcampeona femenina en la XXI Semana Olímpica Andaluza.",
+            "Participación en el Europeo sub-21 de ILCA 6 (40.º puesto)."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "sonia-castillo-arenillas",
+          "nombre": "Sonia Castillo Arenillas",
+          "subtitulo": "Judo · −48 kg · Club Judo Salesianos",
+          "motivo": "Subcampeona del sector sur de España absoluto de judo y medallista de bronce en la Supercopa de España júnior de Madrid.",
+          "meritos": [
+            "Subcampeona del sector sur del Campeonato de España absoluto de judo.",
+            "Clasificada para la final del Campeonato de España absoluto.",
+            "Bronce en la Supercopa de España júnior de Madrid (Colmenar Viejo)."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "talento-emprendedor",
+      "nombre": "Talento Emprendedor",
+      "titulo": "Emprendimiento del año",
+      "pregunta": "¿A quién premiarías por el negocio o proyecto que ha puesto en marcha este año en La Línea?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#081A54",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "etikal-consulting",
+          "nombre": "Etikal Consulting",
+          "subtitulo": "Marta Castellano y Elena Trillo · consultoría",
+          "motivo": "Firma fundada por Marta Castellano y Elena Trillo, finalista provincial de los Premios Emprendemos TOP50 2026.",
+          "meritos": [
+            "Seleccionada entre las quince candidaturas finalistas del comité provincial de Cádiz en los Premios Emprendemos TOP50 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "jd-otero",
+          "nombre": "JD Otero",
+          "subtitulo": "Barbero y emprendedor · Especialista en cortes masculinos",
+          "motivo": "Por destacar en la barbería competitiva, proclamándose campeón de Fast Fade y alcanzando las semifinales de una importante competición europea celebrada en Madrid.",
+          "meritos": [
+            "Semifinalista en una competición europea de barbería celebrada en Madrid.",
+            "Proyección profesional en el ámbito de la barbería competitiva.",
+            "Título de campeón de la categoría Fast Fade (año pendiente de confirmar)."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "quintiestudio",
+          "nombre": "Quintiestudio",
+          "subtitulo": "Diseño gráfico, comunicación de marca y emprendimiento femenino",
+          "motivo": "Por impulsar el emprendimiento femenino desde el diseño y la comunicación, organizando las jornadas Mujeres que Inspiran y dando visibilidad al talento empresarial de la comarca.",
+          "meritos": [
+            "Organización de las II Jornadas Mujeres que Inspiran.",
+            "Promoción del liderazgo y emprendimiento femenino.",
+            "Impartición de talleres sobre identidad de marca y comunicación.",
+            "Colaboración con instituciones y profesionales del Campo de Gibraltar.",
+            "Desarrollo de proyectos de diseño y comunicación desde Quintiestudio."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "sintesis",
+          "nombre": "Síntesis",
+          "subtitulo": "Gastronomía contemporánea · Cocina de raíces gaditanas",
+          "motivo": "Por abrir en 2026 un restaurante que recupera la memoria gastronómica de La Línea y la transforma en una propuesta contemporánea de cocina de autor.",
+          "meritos": [
+            "Apertura del restaurante Síntesis el 12 de febrero de 2026.",
+            "Desarrollo de una propuesta propia de cocina contemporánea.",
+            "Presentación de nuevas propuestas gastronómicas, incluido Éxtasis.",
+            "Repercusión en medios gastronómicos y nacionales.",
+            "Nominación a los Premios Gurmé en la categoría de cocina creativa."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "xora-intelligence",
+          "nombre": "Xora Intelligence",
+          "subtitulo": "Inteligencia artificial, innovación tecnológica y sostenibilidad",
+          "motivo": "Por desarrollar soluciones de inteligencia artificial y promover un proyecto innovador que busca aprovechar el alga invasora para proteger los alcornocales.",
+          "meritos": [
+            "Desarrollo de soluciones de inteligencia artificial para empresas.",
+            "Proyecto de aprovechamiento sostenible del alga invasora.",
+            "Propuesta de aplicación de drones e IA a la conservación de los alcornocales.",
+            "Colaboración con iniciativas de investigación ambiental de la comarca."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "comercio-a-pie-de-calle",
+      "nombre": "Comercio a Pie de Calle",
+      "titulo": "Comercio local del año",
+      "pregunta": "¿Qué comercio de La Línea premiarías por su trayectoria y su trato?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#FE8E1A",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "esteban-del-mar",
+          "nombre": "Esteban del Mar",
+          "subtitulo": "Comercio histórico de moda · Sastrería y camisería a medida",
+          "motivo": "Por más de medio siglo vistiendo a generaciones de linenses, manteniendo la tradición de la sastrería e incorporando nuevos servicios de confección a medida.",
+          "meritos": [
+            "Más de 50 años de actividad comercial en La Línea.",
+            "Incorporación de servicios de camisería a medida.",
+            "Incorporación de servicios de sastrería a medida.",
+            "Formación y renovación continua.",
+            "Atención personalizada a varias generaciones de clientes."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "la-escocesa",
+          "nombre": "La Escocesa",
+          "subtitulo": "Comercio histórico · Moda, bolsos y complementos desde 1932",
+          "motivo": "Por sus 94 años de historia y su capacidad para mantener vivo uno de los comercios tradicionales de La Línea, adaptándose a los nuevos tiempos sin perder su identidad.",
+          "meritos": [
+            "Cumplimiento de 94 años de actividad en La Línea.",
+            "Continuidad del establecimiento histórico de la calle Real.",
+            "Mantenimiento de la actividad comercial familiar.",
+            "Adaptación del comercio tradicional a la venta online."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "la-pecera-libreria",
+          "nombre": "La Pecera Librería",
+          "subtitulo": "Librería · Marta Ojeda",
+          "motivo": "Convierte la librería en un espacio de animación a la lectura, con cuentacuentos y actividades para los más pequeños.",
+          "meritos": [
+            "Participación en la Feria del Libro de La Línea 2026.",
+            "Sesiones de cuentacuentos a cargo de Marta Ojeda durante la feria."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "ohana",
+          "nombre": "Ohana",
+          "subtitulo": "Moda y complementos · Emprendimiento familiar y comercio local desde 2018",
+          "motivo": "Por convertir años de trabajo y emprendimiento en una tienda física en La Línea, apostando por dar vida al comercio local sin renunciar a crecer en el mundo digital.",
+          "meritos": [
+            "Consolidación de su tienda física en La Línea, abierta hace aproximadamente dos años.",
+            "Puesta en marcha de su tienda online Ohana La Línea.",
+            "Continuidad de un proyecto emprendedor iniciado en 2018.",
+            "Participación en iniciativas comerciales y eventos locales a lo largo de su trayectoria.",
+            "Apuesta por el comercio de proximidad y la dinamización de las calles de La Línea.",
+            "Participación prevista en el Pueblo Navideño de 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "tienda-con-m",
+          "nombre": "Tienda Con M",
+          "subtitulo": "Moda de autor · Diseño y moda flamenca",
+          "motivo": "Por más de una década apostando por la moda en La Línea, convirtiendo un pequeño negocio iniciado a los 22 años en un referente local de la moda flamenca.",
+          "meritos": [
+            "Participación como firma de diseño en La Línea Flamenca 2026.",
+            "Presentación de creaciones propias en la pasarela.",
+            "Participación en el espacio comercial del evento.",
+            "Promoción del talento y la moda de autor local."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "arte-con-firma",
+      "nombre": "Arte con Firma",
+      "titulo": "Artista linense del año",
+      "pregunta": "¿Qué artista de La Línea te ha sorprendido con su obra este año?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#E72E79",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "conchi-trudier",
+          "nombre": "Conchi Trudier",
+          "subtitulo": "Ilustradora y autora de cómic · Arte gráfico",
+          "motivo": "Por ganar la Beca Internacional Cómic Barcelona–Lyon 2026, que le permitirá desarrollar un proyecto artístico durante una residencia de tres meses en Francia.",
+          "meritos": [
+            "Ganadora de la cuarta Beca Cómic Barcelona–Lyon.",
+            "Seleccionada para una residencia artística de tres meses en Francia.",
+            "Presentación de un proyecto de festival de fanzines en La Línea.",
+            "Proyección internacional de su trabajo como ilustradora y autora de cómic."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "gavilana-atelier",
+          "nombre": "Gavilana Atelier",
+          "subtitulo": "Artista multidisciplinar linense · Ilustración, artesanía y creación con conciencia social",
+          "motivo": "Su trayectoria en la ilustración y la creación multidisciplinar, junto al desarrollo de proyectos artísticos que combinan creatividad, sensibilización social y nuevas técnicas artesanales, refleja una apuesta personal por el arte como herramienta de expresión y reflexión.",
+          "meritos": [
+            "Desarrollo y evolución de Mother Planet, proyecto de ilustración dedicado a representar distintas realidades de la maternidad y las familias.",
+            "Continuidad de Animal Kika Planet, iniciativa artística de sensibilización contra el maltrato animal y promoción del vínculo entre la infancia y los animales.",
+            "Impulso de Gavilana Atelier como espacio creativo multidisciplinar que integra ilustración, artesanía, restauración y diseño decorativo.",
+            "Presentación de Casta Diva durante la campaña navideña de 2026, incorporando técnicas de decoupage y restauración artesanal a piezas de decoración para la mesa.",
+            "Ampliación de sus líneas de creación artística mediante nuevas propuestas vinculadas a la artesanía, el diseño y la intervención decorativa de objetos cotidianos."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "laura-maras",
+          "nombre": "Laura Maras",
+          "subtitulo": "Ilustradora, tatuadora y diseñadora · Laura Maras Estudio",
+          "motivo": "Por su talento como ilustradora, tatuadora y diseñadora, creando arte con identidad propia, inspirado en sus raíces linenses y vinculado a la comunidad.",
+          "meritos": [
+            "Publicación del cuento ilustrado Aceituna.",
+            "Desarrollo de proyectos de ilustración y tatuaje desde Laura Maras Estudio.",
+            "Creación artística y diseño vinculados a La Línea."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "maral-rios",
+          "nombre": "Maral Ríos",
+          "subtitulo": "Artista plástica · Pintura contemporánea y creación artística",
+          "motivo": "Por ganar el Premio Cultura en Femenino de Cádiz 2026 y ser seleccionada para representar a la provincia en los Premios de Emprendimiento y Liderazgo Femenino de Andalucía.",
+          "meritos": [
+            "Ganadora del Premio Cultura en Femenino de la provincia de Cádiz.",
+            "Finalista de los Premios de Emprendimiento y Liderazgo Femenino de Andalucía.",
+            "Representante de Cádiz en la categoría cultural del certamen autonómico.",
+            "Creación y difusión de obras de pintura contemporánea."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "queen-lidhia",
+          "nombre": "Queen Lidhia",
+          "subtitulo": "Artista drag · Interpretación, caracterización y expresión escénica",
+          "motivo": "Por sus diez años de trayectoria en el arte drag, reconocidos en los Premios Roja Directa Diversidad 2026 por su aportación a la visibilidad y la expresión artística LGTBI+.",
+          "meritos": [
+            "Diez años de trayectoria en el mundo drag.",
+            "Premio Roja Directa Diversidad 2026.",
+            "Reconocimiento en Juventud, Visibilidad y Futuro LGTBI+.",
+            "Contribución a la visibilidad del arte drag en el Campo de Gibraltar."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "creacion-en-red",
+      "nombre": "Creación en Red",
+      "titulo": "Creador digital del año",
+      "pregunta": "¿Qué linense ha destacado este año con sus vídeos, pódcast o publicaciones en redes?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#62DBD1",
+      "tinta": "#081A54",
+      "nominados": [
+        {
+          "slug": "aday-montes",
+          "nombre": "Aday Montes",
+          "subtitulo": "Fotografía y vídeo de naturaleza",
+          "motivo": "Sus imágenes de una manga marina y la bioluminiscencia de la bahía dieron repercusión a La Línea en 2026.",
+          "meritos": [
+            "Captó una manga marina en La Línea en febrero de 2026.",
+            "Registró en vídeo la bioluminiscencia de la Bahía de Algeciras en septiembre de 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "berto",
+          "nombre": "Berto",
+          "subtitulo": "Creación digital · perfil pendiente",
+          "motivo": "Candidatura propuesta por los lectores; pendiente de identificar el perfil y las publicaciones de 2026.",
+          "meritos": [],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "hippie-domaris",
+          "nombre": "Hippie Domaris",
+          "subtitulo": "TikTok · viajes y divulgación cotidiana",
+          "motivo": "Creadora de viajes y naturaleza con más de un millón de seguidores en TikTok y una destacada proyección digital.",
+          "meritos": [
+            "Más de un millón de seguidores en TikTok según medición pública de octubre de 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "josele-fotografia",
+          "nombre": "Josele Fotografía",
+          "subtitulo": "Fotografía y contenido audiovisual",
+          "motivo": "Creador nominado por su trabajo fotográfico; se están recopilando sus principales coberturas y publicaciones de 2026.",
+          "meritos": [],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "zequi-rojas",
+          "nombre": "Zequi Rojas",
+          "subtitulo": "Creación digital · perfil pendiente",
+          "motivo": "Candidatura propuesta por los lectores; sus contenidos y principales resultados de 2026 están pendientes de confirmar.",
+          "meritos": [],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "vocacion-educativa",
+      "nombre": "Vocación Educativa",
+      "titulo": "Premio a la educación",
+      "pregunta": "¿Qué docente o centro educativo de La Línea merece un premio por su labor este año?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#00AA4F",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "academia-la-fuente",
+          "nombre": "Academia La Fuente",
+          "subtitulo": "Refuerzo educativo · La Línea",
+          "motivo": "Acompaña el aprendizaje de estudiantes linenses con refuerzo académico y atención cercana a sus necesidades.",
+          "meritos": [],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "ies-tolosa",
+          "nombre": "IES Tolosa",
+          "subtitulo": "Proyecto STEM Racing · alumnado de ESO y Bachillerato",
+          "motivo": "Proyecto en el que estudiantes del IES Tolosa diseñan un monoplaza de Fórmula 1 a escala y aprenden ingeniería y trabajo en equipo.",
+          "meritos": [
+            "Desarrollo de un prototipo de Fórmula 1 a escala para el programa STEM Racing 2026.",
+            "Preparación para las finales regionales de Andalucía de mayo de 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "nemesio-andrades-neme",
+          "nombre": "Nemesio Andrades (Neme)",
+          "subtitulo": "Maestro · CEIP Santiago",
+          "motivo": "Tercer premio nacional NeuroEduca 2026 por un proyecto sobre neuroarquitectura y diseño de espacios educativos.",
+          "meritos": [
+            "Tercer puesto en los I Premios NeuroEduca 2026.",
+            "Reconocimiento a su proyecto sobre diseño de espacios educativos."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "noelia-valle-ruiz",
+          "nombre": "Noelia Valle Ruiz",
+          "subtitulo": "Psicopedagoga · «Ni de Venus ni de Marte»",
+          "motivo": "Impulsa un proyecto altruista de divulgación y acompañamiento a familias y docentes sobre altas capacidades y TDAH.",
+          "meritos": [
+            "Colaboración prevista en el programa municipal de altas capacidades para 2026; confirmar actuaciones efectivamente realizadas."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "nuria-vinas-martinez",
+          "nombre": "Nuria Viñas Martínez",
+          "subtitulo": "Formación · Centro V&G",
+          "motivo": "Profesional de la formación nominada por su contribución educativa; pendiente de concretar sus proyectos y resultados de 2026.",
+          "meritos": [],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "vida-asociativa",
+      "nombre": "Vida Asociativa",
+      "titulo": "Asociación del año",
+      "pregunta": "¿Qué asociación de La Línea destacarías por su labor en 2026?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#2756CD",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "acali-el-volao-vida-asociativa",
+          "nombre": "ACALI El Volaó",
+          "subtitulo": "Asociación de Carnavaleros Linenses",
+          "motivo": "Promovió un campamento gratuito para que 25 menores conocieran las coplas, la música y la tradición del Carnaval.",
+          "meritos": [
+            "Primer campamento de verano para la cantera del Carnaval en 2026.",
+            "25 plazas cubiertas en el campamento gratuito."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "afal",
+          "nombre": "AFAL",
+          "subtitulo": "Agrupación Fotográfica Artística Linense",
+          "motivo": "Celebró seis décadas de fotografía en La Línea con la exposición colectiva «Sexagenia 6.0» en el Museo Cruz Herrera.",
+          "meritos": [
+            "60.º aniversario de AFAL en 2026.",
+            "Exposición colectiva «Sexagenia 6.0» en el Museo Cruz Herrera."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "asociacion-ruta-de-los-bunkeres",
+          "nombre": "Asociación Ruta de los Búnkeres",
+          "subtitulo": "Patrimonio e historia local",
+          "motivo": "Colabora en la divulgación de las fortificaciones linenses mediante visitas que reunieron a 1.600 participantes hasta septiembre.",
+          "meritos": [
+            "Colaboración en las visitas de las fortificaciones que sumaron 1.600 participantes entre enero y septiembre de 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "crocheteras-linenses",
+          "nombre": "Crocheteras Linenses",
+          "subtitulo": "Asociación de Crocheteras Linenses",
+          "motivo": "Llenaron de color la calle Méndez Núñez con nuevas composiciones tejidas a mano para la Calle de los Mandalas.",
+          "meritos": [
+            "Confección de 760 piezas para la nueva decoración de la calle Méndez Núñez en septiembre de 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "los-locos-del-parque",
+          "nombre": "Los Locos del Parque",
+          "subtitulo": "Protección ambiental · Parque Princesa Sofía",
+          "motivo": "Reconocidos oficialmente por su trabajo de conservación de la flora y la fauna del Parque Princesa Sofía.",
+          "meritos": [
+            "Mención honorífica municipal en enero de 2026 por su trabajo ambiental."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "accion-de-barrio",
+      "nombre": "Acción de Barrio",
+      "titulo": null,
+      "pregunta": null,
+      "descripcion": "Cuatro candidaturas que reconocen el compromiso vecinal, la recuperación de espacios, la conservación de las tradiciones populares y la participación ciudadana en La Línea de la Concepción.",
+      "nota": "Cuatro candidaturas propuestas por la FLAVI.",
+      "color": "#FFB627",
+      "tinta": "#081A54",
+      "nominados": [
+        {
+          "slug": "asociacion-de-mujeres-gaviota",
+          "nombre": "Asociación de Mujeres «Gaviota»",
+          "subtitulo": "Asociacionismo femenino · Recuperación de espacios sociales y participación comunitaria",
+          "motivo": "Su compromiso con la recuperación y el mantenimiento de La Cátedra del Junquillo, un espacio de referencia para la formación, la convivencia y las actividades sociales de la barriada.",
+          "meritos": [
+            "Participación en las reivindicaciones para recuperar el uso social de La Cátedra tras su cierre.",
+            "Defensa de la continuidad de las actividades formativas y culturales del Centro Social del Junquillo.",
+            "Recuperación de espacios para desarrollar talleres de corte y confección, dibujo, pintura y gimnasia, mediante la cesión acordada en 2018.",
+            "Continuidad de su vinculación con La Cátedra mediante los convenios de uso de las instalaciones.",
+            "Contribución al mantenimiento de un espacio comunitario compartido con otras asociaciones sociales."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "asociacion-de-vecinos-san-pedro",
+          "nombre": "Asociación de Vecinos San Pedro",
+          "subtitulo": "Defensa vecinal · Asesoramiento, acompañamiento y reparación de viviendas",
+          "motivo": "Su labor de asesoramiento y acompañamiento a las familias afectadas por los daños en una veintena de viviendas de la calle Crespo y su entorno, contribuyendo a conseguir su reparación.",
+          "meritos": [
+            "Asesoramiento y acompañamiento a las familias afectadas por los daños en una veintena de inmuebles de las calles Crespo y Antonio Maura.",
+            "Conclusión de las obras de reparación el 7 de octubre de 2026, tras la revisión municipal comunicada por la asociación y cuatro años de reivindicaciones vecinales.",
+            "Celebración de las fiestas del barrio de San Pedro, con la participación de la asociación Avanvida, invitada nuevamente por la entidad vecinal (27 de junio).",
+            "Incorporación de los Campanilleros del Junquillo al centro vecinal de la calle Santa Ana, número 14 (septiembre)."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "asociacion-de-vecinos-santiago-conchal-castillo",
+          "nombre": "Asociación de Vecinos Santiago-Conchal-Castillo",
+          "subtitulo": "Arrastre de Latas · Tradición popular, infancia, creatividad y convivencia vecinal",
+          "motivo": "Su dedicación durante años a mantener vivo el tradicional Arrastre de Latas, despertando la ilusión de los más pequeños y fomentando la creatividad y la convivencia entre las familias del barrio.",
+          "meritos": [
+            "Organización del tradicional Arrastre de Latas el 5 de enero de 2026.",
+            "Programación de regalos y premios para los participantes.",
+            "Continuidad de una celebración organizada por la asociación desde hace más de una década."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "mi-barrio-bonito",
+          "nombre": "Mi Barrio Bonito",
+          "subtitulo": "Participación ciudadana · Recuperación de espacios, voluntariado y radio comunitaria",
+          "motivo": "Su iniciativa para mejorar y recuperar espacios de La Atunara, junto a una trayectoria de participación ciudadana y comunicación vecinal impulsada durante años a través de su programa de radio.",
+          "meritos": [
+            "Impulso de iniciativas vecinales para mejorar y recuperar espacios de La Atunara.",
+            "Desarrollo durante años de un programa de radio orientado a fomentar la participación ciudadana.",
+            "Colaboración anunciada en la jornada ambiental de limpieza de la playa de Poniente de septiembre de 2026.",
+            "Participación en iniciativas de voluntariado y concienciación sobre el cuidado de los espacios comunes."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "carnaval-linense",
+      "nombre": "Carnaval Linense",
+      "titulo": "Premio al Carnaval",
+      "pregunta": "¿Qué persona, agrupación o iniciativa merece un premio por su aportación al Carnaval de La Línea en 2026?",
+      "descripcion": null,
+      "nota": null,
+      "color": "#3A86FF",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "acali-el-volao-carnaval-linense",
+          "nombre": "ACALI El Volaó",
+          "subtitulo": "Asociación de Carnavaleros Linenses",
+          "motivo": "Creó un campamento para acercar el Carnaval a 25 menores y fomentar el relevo generacional de las coplas.",
+          "meritos": [
+            "Organización del primer campamento gratuito de cantera, con 25 plazas."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "disfraz-de-coplas",
+          "nombre": "Disfraz de Coplas",
+          "subtitulo": "Programa de radio · Cadena Joven",
+          "motivo": "Cumple diez temporadas y supera los 200 programas dedicados a divulgar el Carnaval.",
+          "meritos": [
+            "Inicio de la décima temporada en 2026.",
+            "Superación de las 200 emisiones del programa."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "juan-miguel-novo-vazquez",
+          "nombre": "Juan Miguel Novo Vázquez",
+          "subtitulo": "Presentación y divulgación del Carnaval",
+          "motivo": "Presentador de la Noche Carnavalesca 2026 y colaborador en la divulgación de la historia del Carnaval linense.",
+          "meritos": [
+            "Presentación de la Noche Carnavalesca de La Línea 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "la-bateria",
+          "nombre": "La Batería",
+          "subtitulo": "Comparsa del Carnaval linense",
+          "motivo": "Comparsa ganadora del primer premio en el Concurso del Carnaval de la Concha Fina 2026.",
+          "meritos": [
+            "Primer premio de comparsas en el Concurso del Carnaval de la Concha Fina 2026."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "los-desparasitaos",
+          "nombre": "Los Desparasitaos",
+          "subtitulo": "Agrupación infantil y juvenil · chiriparsa",
+          "motivo": "La chiriparsa infantil llevó a los más pequeños a los escenarios del Carnaval de la Concha Fina 2026.",
+          "meritos": [
+            "Actuación de la agrupación infantil fuera de concurso en la Gran Final del Carnaval de la Concha Fina 2026."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "vocacion-cofrade",
+      "nombre": "Vocación Cofrade",
+      "titulo": "Premio a la Vocación Cofrade",
+      "pregunta": "¿Qué persona o trayectoria del mundo cofrade de La Línea merece este premio?",
+      "descripcion": "Reconoce a las personas que dedican su trayectoria a mantener viva y engrandecer la Semana Santa linense.",
+      "nota": "Premio cofrade 1 de 2 · Personas y trayectorias. Categoría independiente, con su propio voto, su propio ganador y su propio trofeo.",
+      "color": "#080B8F",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "antonia-gil",
+          "nombre": "Antonia Gil Muñoz",
+          "subtitulo": "Bordadora, pregonera y directora de talleres de bordado cofrade",
+          "motivo": "Por más de tres décadas dedicadas al bordado cofrade, dirigiendo talleres de distintas hermandades y formando a nuevas generaciones de bordadoras que enriquecen el patrimonio de La Línea.",
+          "meritos": [
+            "Impulso del taller de bordados de la Oración en el Huerto en 1993.",
+            "Dirección de la Escuela-Taller de Bordados del Medinaceli desde su creación en 2006.",
+            "Dirección de trabajos del taller de Perdón y Salud.",
+            "Elaboración de bambalinas, sayas, estandartes y otras piezas patrimoniales.",
+            "Culminación del techo de palio de María Santísima del Amor en 2010.",
+            "Pregonera oficial de la Semana Santa de La Línea en 2014.",
+            "Formación de nuevas generaciones en las técnicas del bordado cofrade."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "ernesto-frigolet-y-pepe-guzman",
+          "nombre": "Ernesto Frigolet y Pepe Guzmán",
+          "subtitulo": "Capataces de la Sagrada Flagelación desde 1996 · Tres décadas de martillo",
+          "motivo": "Por cumplir 30 años al frente del paso de la Sagrada Flagelación, transformando una pequeña cuadrilla en una gran familia de más de un centenar de costaleros y aspirantes.",
+          "meritos": [
+            "30 años ininterrumpidos al frente del misterio de la Sagrada Flagelación.",
+            "Más de 100 costaleros y aspirantes en 2026.",
+            "Cerca de 300 costaleros formados o vinculados a la cuadrilla durante su trayectoria, según la estimación de Pepe.",
+            "Desarrollo de un estilo propio de andar del paso.",
+            "Participación en salidas extraordinarias e hitos históricos de la hermandad.",
+            "Continuidad de un equipo de capataces y auxiliares consolidado durante décadas."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "josema-sanchez-bautista",
+          "nombre": "Josema Sánchez Bautista",
+          "subtitulo": "Vestidor de imágenes religiosas y divulgador de la cultura cofrade",
+          "motivo": "Por su dedicación como vestidor de distintas imágenes de la Semana Santa linense, entre ellas Nuestra Señora del Mayor Dolor, y su contribución a la conservación de las tradiciones cofrades.",
+          "meritos": [
+            "Labor como vestidor de Nuestra Señora del Mayor Dolor.",
+            "Vestidor de Nuestro Padre Jesús del Gran Poder.",
+            "Vestidor de María Santísima Reina de los Ángeles.",
+            "Vestidor de María Santísima del Amor y del Rosario.",
+            "XXIX Exaltación de la Saeta de Algeciras en 2026.",
+            "Participación en la preparación de la salida extraordinaria del Mayor Dolor en 2025.",
+            "Conservación de la tradición de vestir imágenes religiosas."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    },
+    {
+      "slug": "impulso-cofrade",
+      "nombre": "Impulso Cofrade",
+      "titulo": "Premio al Impulso Cofrade",
+      "pregunta": "¿Qué proyecto, iniciativa o entidad cofrade de La Línea merece este premio?",
+      "descripcion": "Reconoce proyectos e iniciativas que conservan, enriquecen y divulgan el patrimonio y la cultura cofrade de La Línea.",
+      "nota": "Premio cofrade 2 de 2 · Proyectos e iniciativas. Categoría independiente, con su propio voto, su propio ganador y su propio trofeo.",
+      "color": "#222366",
+      "tinta": "#FFFFFF",
+      "nominados": [
+        {
+          "slug": "cinema-cofrade",
+          "nombre": "Cinema Cofrade",
+          "subtitulo": "Diseño gráfico y cartelería · Divulgación visual de la Semana Santa",
+          "motivo": "Por cuatro años consecutivos creando carteles para la Semana Santa linense, aportando una mirada artística y contemporánea a la divulgación de nuestras tradiciones cofrades.",
+          "meritos": [
+            "Cuarto cartel consecutivo de Cinema Cofrade dedicado a la Semana Santa linense.",
+            "Creación del cartel de la XXV Exaltación a María Santísima de la Estrella.",
+            "Maquetación del cartel de la Hermandad de la Soledad.",
+            "Divulgación del patrimonio cofrade mediante diseño y comunicación visual."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "sila-restauracion",
+          "nombre": "Sila Restauración",
+          "subtitulo": "Conservación y restauración del patrimonio artístico · Marina Muñoz Villalta",
+          "motivo": "Por llevar el talento linense a la conservación del patrimonio cofrade andaluz, participando en la restauración de bordados históricos y piezas de gran valor artístico.",
+          "meritos": [
+            "Intervención sobre los bordados del palio del Desamparo de Jerez.",
+            "Encargo de conservación del manto histórico de la Virgen de la Amargura de Utrera.",
+            "Trabajo especializado en conservación del patrimonio textil cofrade.",
+            "Proyección profesional en hermandades andaluzas."
+          ],
+          "foto": null,
+          "credito": null
+        },
+        {
+          "slug": "tertulia-cofrade-el-punal",
+          "nombre": "Tertulia Cofrade El Puñal",
+          "subtitulo": "Tertulia cultural · Divulgación y cartelería cofrade",
+          "motivo": "Por dar visibilidad a las hermandades y a quienes trabajan por la Semana Santa linense, impulsando nuevas iniciativas culturales y una visión cercana y renovadora del mundo cofrade.",
+          "meritos": [
+            "Anuncio de su primer proyecto de cartelería cofrade.",
+            "Designación de Ildefonso Pérez López como autor del cartel.",
+            "Divulgación de actividades y proyectos de las hermandades linenses.",
+            "Visibilidad a colaboradores y establecimientos vinculados a sus iniciativas."
+          ],
+          "foto": null,
+          "credito": null
+        }
+      ]
+    }
+  ]
+}
