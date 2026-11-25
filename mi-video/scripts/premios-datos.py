@@ -1,6 +1,7 @@
 """Exporta los datos oficiales de los Premios InfoLinense 2026 para los vídeos.
 
-Uso: python3 -I scripts/premios-datos.py <ruta al repositorio premios-infolinense>
+Uso: python3 -I scripts/premios-datos.py --web            (datos y fotos publicados en premios.infolinense.com)
+     python3 -I scripts/premios-datos.py <ruta al repositorio premios-infolinense>
 
 Reconstruye la base de datos aplicando las migraciones del repositorio (la misma que usa la web)
 y escribe src/premios/datos.json y una carpeta src/premios/<slug>/ por categoría con votación,
@@ -9,29 +10,66 @@ Solo candidaturas publicadas y no suplentes. Orden alfabético dentro de cada ca
 """
 import glob, json, os, sqlite3, sys, unicodedata
 
-repo = [a for a in sys.argv[1:] if not a.startswith("--")][0]
-db = sqlite3.connect(":memory:")
-db.row_factory = sqlite3.Row
-for f in sorted(glob.glob(os.path.join(repo, "migrations", "*.sql"))):
-    db.executescript(open(f, encoding="utf-8").read())
+args = [a for a in sys.argv[1:] if not a.startswith("--")]
+WEB_ORIGEN = "https://premios.infolinense.com"
 
 def clave(s):
     return unicodedata.normalize("NFD", s).encode("ascii", "ignore").decode().lower()
 
+def curl_json(path):
+    import subprocess, urllib.parse
+    url = f"{WEB_ORIGEN}/api/page?path={urllib.parse.quote(path)}"
+    return json.loads(subprocess.check_output(["curl", "-sS", "--fail", "--max-time", "60", url]))["data"]
+
+def foto_local(n):
+    """Descarga la fotografía oficial (sin retocar) a public/premios/fotos/."""
+    import subprocess
+    if not n.get("photo_portrait"):
+        return None
+    ext = os.path.splitext(n["photo_portrait"])[1] or ".webp"
+    rel = f"premios/fotos/{n['slug']}{ext}"
+    destino = os.path.join(os.path.dirname(__file__), "..", "public", rel)
+    os.makedirs(os.path.dirname(destino), exist_ok=True)
+    subprocess.check_call(["curl", "-sS", "--fail", "--max-time", "60", "-o", destino, WEB_ORIGEN + n["photo_portrait"]])
+    return rel
+
 categorias = []
-for c in db.execute("select * from categories where published = 1 and votable = 1 order by position"):
-    nominados = [dict(n) for n in db.execute(
-        "select * from nominees where category_id = ? and published = 1 and is_alternate = 0", (c["id"],))]
-    nominados.sort(key=lambda n: clave(n["name"]))
-    categorias.append({
-        "slug": c["slug"], "nombre": c["name"], "titulo": c["award_title"], "pregunta": c["question"],
-        "descripcion": c["description"], "nota": c["nomination_note"], "color": c["color"], "tinta": c["ink"],
-        "nominados": [{
-            "slug": n["slug"], "nombre": n["name"], "subtitulo": n["subtitle"], "motivo": n["reason"],
-            "meritos": [m.strip() for m in (n["merits"] or "").split("\n") if m.strip()],
-            "foto": n["photo_portrait"], "credito": n["photo_credit"],
-        } for n in nominados],
-    })
+if "--web" in sys.argv:
+    # Datos publicados en premios.infolinense.com (fuente actualizada)
+    for c in curl_json("/categorias")["categories"]:
+        if not c.get("votable"):
+            continue
+        detalle = curl_json(f"/categorias/{c['slug']}")
+        nominados = sorted(detalle["nominees"], key=lambda n: clave(n["name"]))
+        categorias.append({
+            "slug": c["slug"], "nombre": c["name"], "titulo": c.get("award_title"), "pregunta": c.get("question"),
+            "descripcion": c.get("description"), "nota": c.get("nomination_note"), "color": c["color"], "tinta": c["ink"],
+            "nominados": [{
+                "slug": n["slug"], "nombre": n["name"], "subtitulo": n.get("subtitle"), "motivo": n.get("reason"),
+                "meritos": [m.strip() for m in (n.get("merits") or []) if m and m.strip()] if isinstance(n.get("merits"), list) else [m.strip() for m in (n.get("merits") or "").split("\n") if m.strip()],
+                "foto": foto_local(n), "credito": n.get("photo_credit"),
+            } for n in nominados],
+        })
+else:
+    # Datos de las migraciones del repositorio
+    repo = args[0]
+    db = sqlite3.connect(":memory:")
+    db.row_factory = sqlite3.Row
+    for f in sorted(glob.glob(os.path.join(repo, "migrations", "*.sql"))):
+        db.executescript(open(f, encoding="utf-8").read())
+    for c in db.execute("select * from categories where published = 1 and votable = 1 order by position"):
+        nominados = [dict(n) for n in db.execute(
+            "select * from nominees where category_id = ? and published = 1 and is_alternate = 0", (c["id"],))]
+        nominados.sort(key=lambda n: clave(n["name"]))
+        categorias.append({
+            "slug": c["slug"], "nombre": c["name"], "titulo": c["award_title"], "pregunta": c["question"],
+            "descripcion": c["description"], "nota": c["nomination_note"], "color": c["color"], "tinta": c["ink"],
+            "nominados": [{
+                "slug": n["slug"], "nombre": n["name"], "subtitulo": n["subtitle"], "motivo": n["reason"],
+                "meritos": [m.strip() for m in (n["merits"] or "").split("\n") if m.strip()],
+                "foto": None, "credito": n["photo_credit"],
+            } for n in nominados],
+        })
 
 base = os.path.join(os.path.dirname(__file__), "..", "src", "premios")
 json.dump({"edicion": 2026, "web": "premios.infolinense.com", "categorias": categorias},
@@ -45,7 +83,7 @@ PRONUNCIACION = {
 }
 
 def ambito(n):
-    return (n["subtitulo"] or "").split("·")[0].strip()
+    return (n["subtitulo"] or "").split("·")[0].strip().rstrip(".")
 
 def lema(c):
     if c["pregunta"]:
@@ -74,7 +112,7 @@ def guion(c):
                {"id": "categoria", "nombre": "Categoría", "inicio": 3, "fin": 8, "frases": [c["nombre"] + ".", lema(c), "Estas son las candidaturas."]}]
     t = 8
     for i, n in enumerate(c["nominados"]):
-        escenas.append({"id": f"n{i}", "nombre": n["nombre"], "inicio": t, "fin": t + SEGUNDOS_CANDIDATURA, "frases": [f'{n["nombre"]}. {ambito(n)}.']})
+        escenas.append({"id": f"n{i}", "nombre": n["nombre"], "inicio": t, "fin": t + SEGUNDOS_CANDIDATURA, "frases": [f'{n["nombre"].split(" — ")[0]}. {ambito(n)}.']})
         t += SEGUNDOS_CANDIDATURA
     escenas.append({"id": "votar", "nombre": "Cómo votar", "inicio": t, "fin": t + 8, "frases": [
         f"Entra en {WEB} y pulsa «Vota».",

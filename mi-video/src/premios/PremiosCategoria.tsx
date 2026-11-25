@@ -96,7 +96,7 @@ const iniciales = (nombre: string) => {
 /** Retrato 4:5: fotografía oficial sin retocar (public/premios/fotos/<slug>.jpg) o, si no hay, iniciales (como la web). */
 const Retrato: React.FC<{ readonly n: Nominado; readonly c: Categoria; readonly ancho: number }> = ({ n, c, ancho }) => {
   const frame = useCurrentFrame();
-  const archivo = `premios/fotos/${n.slug}.jpg`;
+  const archivo = n.foto ?? `premios/fotos/${n.slug}.jpg`;
   const mascara = suave(frame, 2, 18);
   const alto = Math.round(ancho * 1.25);
   return (

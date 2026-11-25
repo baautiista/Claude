@@ -22,11 +22,11 @@ export const ESCENAS = [
   },
   {
     "id": "n0",
-    "nombre": "Etikal Consulting",
+    "nombre": "Grupo MoM",
     "inicio": 8,
     "fin": 13.8,
     "frases": [
-      "Etikal Consulting. Marta Castellano y Elena Trillo."
+      "Grupo MoM. Construcción y desarrollo de proyectos."
     ]
   },
   {
@@ -103,11 +103,11 @@ export const PRONUNCIACION: Record<string, string> = {
 
 export const DURACION_MINIMA_ESCENA: Record<string, number> = {
   "apertura": 2.6,
-  "n0": 5.83,
-  "n1": 5.83,
-  "n2": 5.83,
-  "n3": 5.83,
-  "n4": 5.83
+  "n0": 5.87,
+  "n1": 5.87,
+  "n2": 5.87,
+  "n3": 5.87,
+  "n4": 5.87
 };
 
 export const PAUSAS_ENTRE_FRASES: Record<string, number> = { categoria: 0.3, votar: 0.35, cierre: 0.45 };

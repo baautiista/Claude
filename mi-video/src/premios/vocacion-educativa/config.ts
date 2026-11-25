@@ -35,34 +35,34 @@ export const ESCENAS = [
     "inicio": 13.8,
     "fin": 19.6,
     "frases": [
-      "IES Tolosa. Proyecto STEM Racing."
+      "IES Tolosa. Proyecto de ingeniería y tecnología."
     ]
   },
   {
     "id": "n2",
-    "nombre": "Nemesio Andrades (Neme)",
+    "nombre": "Nemesio Andrades Rodríguez (Neme)",
     "inicio": 19.6,
     "fin": 25.400000000000002,
     "frases": [
-      "Nemesio Andrades (Neme). Maestro."
+      "Nemesio Andrades Rodríguez (Neme). Maestro de Educación Infantil."
     ]
   },
   {
     "id": "n3",
-    "nombre": "Noelia Valle Ruiz",
+    "nombre": "Noelia Valle Ruiz — Ni de Venus ni de Marte",
     "inicio": 25.400000000000002,
     "fin": 31.200000000000003,
     "frases": [
-      "Noelia Valle Ruiz. Psicopedagoga."
+      "Noelia Valle Ruiz. Maestra, psicopedagoga y especialista en altas capacidades intelectuales."
     ]
   },
   {
     "id": "n4",
-    "nombre": "Nuria Viñas Martínez",
+    "nombre": "Nuria Viñas Martínez — Centro de Formación V&G",
     "inicio": 31.200000000000003,
     "fin": 37.0,
     "frases": [
-      "Nuria Viñas Martínez. Formación."
+      "Nuria Viñas Martínez. Docente y emprendedora educativa."
     ]
   },
   {
@@ -103,11 +103,11 @@ export const PRONUNCIACION: Record<string, string> = {
 
 export const DURACION_MINIMA_ESCENA: Record<string, number> = {
   "apertura": 2.6,
-  "n0": 5.0,
-  "n1": 5.0,
-  "n2": 5.0,
-  "n3": 5.0,
-  "n4": 5.0
+  "n0": 6.19,
+  "n1": 6.19,
+  "n2": 6.19,
+  "n3": 6.19,
+  "n4": 6.19
 };
 
 export const PAUSAS_ENTRE_FRASES: Record<string, number> = { categoria: 0.3, votar: 0.35, cierre: 0.45 };

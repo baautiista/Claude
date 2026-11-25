@@ -44,7 +44,7 @@ export const ESCENAS = [
     "inicio": 19.6,
     "fin": 25.400000000000002,
     "frases": [
-      "Gonzalo Herrera. Deportista."
+      "Gonzalo Herrera. Deportista de CrossFit y entrenador en Ghetto Crosstraining La Línea."
     ]
   },
   {
@@ -103,11 +103,11 @@ export const PRONUNCIACION: Record<string, string> = {
 
 export const DURACION_MINIMA_ESCENA: Record<string, number> = {
   "apertura": 2.6,
-  "n0": 5.0,
-  "n1": 5.0,
-  "n2": 5.0,
-  "n3": 5.0,
-  "n4": 5.0
+  "n0": 5.64,
+  "n1": 5.64,
+  "n2": 5.64,
+  "n3": 5.64,
+  "n4": 5.64
 };
 
 export const PAUSAS_ENTRE_FRASES: Record<string, number> = { categoria: 0.3, votar: 0.35, cierre: 0.45 };

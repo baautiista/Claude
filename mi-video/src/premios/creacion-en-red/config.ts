@@ -26,7 +26,7 @@ export const ESCENAS = [
     "inicio": 8,
     "fin": 13.8,
     "frases": [
-      "Aday Montes. Fotografía y vídeo de naturaleza."
+      "Aday Montes. Fotógrafo y creador audiovisual."
     ]
   },
   {
@@ -40,29 +40,29 @@ export const ESCENAS = [
   },
   {
     "id": "n2",
-    "nombre": "Hippie Domaris",
+    "nombre": "Ezequiel Martín",
     "inicio": 19.6,
     "fin": 25.400000000000002,
     "frases": [
-      "Hippie Domaris. TikTok."
+      "Ezequiel Martín. Creación digital."
     ]
   },
   {
     "id": "n3",
-    "nombre": "Josele Fotografía",
+    "nombre": "Hippie Domaris",
     "inicio": 25.400000000000002,
     "fin": 31.200000000000003,
     "frases": [
-      "Josele Fotografía. Fotografía y contenido audiovisual."
+      "Hippie Domaris. Creadora digital."
     ]
   },
   {
     "id": "n4",
-    "nombre": "Zequi Rojas",
+    "nombre": "Josele Fotografía",
     "inicio": 31.200000000000003,
     "fin": 37.0,
     "frases": [
-      "Zequi Rojas. Creación digital."
+      "Josele Fotografía. Fotógrafo deportivo."
     ]
   },
   {

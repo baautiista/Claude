@@ -62,7 +62,7 @@ export const ESCENAS = [
     "inicio": 31.200000000000003,
     "fin": 37.0,
     "frases": [
-      "Los Desparasitaos. Agrupación infantil y juvenil."
+      "Los Desparasitaos. Agrupación infantil."
     ]
   },
   {

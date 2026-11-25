@@ -40,20 +40,20 @@ export const ESCENAS = [
   },
   {
     "id": "n2",
-    "nombre": "La Pecera Librería",
+    "nombre": "Ohana",
     "inicio": 19.6,
     "fin": 25.400000000000002,
     "frases": [
-      "La Pecera Librería. Librería."
+      "Ohana. Moda y complementos."
     ]
   },
   {
     "id": "n3",
-    "nombre": "Ohana",
+    "nombre": "Rocío Hernández",
     "inicio": 25.400000000000002,
     "fin": 31.200000000000003,
     "frases": [
-      "Ohana. Moda y complementos."
+      "Rocío Hernández. Peluquería y belleza."
     ]
   },
   {

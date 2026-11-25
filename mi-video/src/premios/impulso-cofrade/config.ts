@@ -85,9 +85,9 @@ export const PRONUNCIACION: Record<string, string> = {
 
 export const DURACION_MINIMA_ESCENA: Record<string, number> = {
   "apertura": 2.6,
-  "n0": 5.0,
-  "n1": 5.0,
-  "n2": 5.0
+  "n0": 5.05,
+  "n1": 5.05,
+  "n2": 5.05
 };
 
 export const PAUSAS_ENTRE_FRASES: Record<string, number> = { categoria: 0.3, votar: 0.35, cierre: 0.45 };
