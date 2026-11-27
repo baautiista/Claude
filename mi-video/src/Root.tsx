@@ -40,10 +40,16 @@ import { PlazaConstitucion } from "./plaza/PlazaConstitucion";
 import { MiniaturaPlaza } from "./plaza/Miniatura";
 import { duracionTotal as duracionPlaza } from "./plaza/tiempos";
 import { TitleScene } from "./TitleScene";
+import { AlumbradoNavidad, duracionAlumbrado } from "./alumbrado/Alumbrado";
+import { MiniaturaAlumbrado } from "./alumbrado/Miniatura";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Folder name="Documentales">
+        <Composition id="AlumbradoNavidadLaLinea" component={AlumbradoNavidad} durationInFrames={duracionAlumbrado} fps={FPS} width={1080} height={1920} />
+        <Still id="Miniatura" component={MiniaturaAlumbrado} width={1080} height={1920} />
+      </Folder>
       <Folder name="Costa">
         <Composition
           id="RellenosYPuertosLaLinea"
@@ -99,7 +105,7 @@ export const RemotionRoot: React.FC = () => {
       </Folder>
       <Folder name="Reportajes">
         <Composition id="EstacionAutobusesLaLinea" component={EstacionAutobuses} durationInFrames={duracionEstacion()} fps={FPS} width={1080} height={1920} />
-        <Still id="Miniatura" component={MiniaturaEstacion} width={1080} height={1920} />
+        <Still id="MiniaturaEstacionAutobusesLaLinea" component={MiniaturaEstacion} width={1080} height={1920} />
       </Folder>
       <Folder name="Opinion">
         <Composition id="EditorialAvanceLaLinea" component={EditorialAvance} durationInFrames={duracionEditorial()} fps={FPS} width={1080} height={1920} />
