@@ -42,10 +42,14 @@ import { duracionTotal as duracionPlaza } from "./plaza/tiempos";
 import { TitleScene } from "./TitleScene";
 import { AlumbradoNavidad, duracionAlumbrado } from "./alumbrado/Alumbrado";
 import { MiniaturaAlumbrado } from "./alumbrado/Miniatura";
+import { NavidadDePelicula, duracionNavidad, FPS_NAVIDAD } from "./navidad2026/NavidadDePelicula";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Folder name="Navidad">
+        <Composition id="NavidadDePelicula2026" component={NavidadDePelicula} durationInFrames={duracionNavidad} fps={FPS_NAVIDAD} width={1080} height={1920} />
+      </Folder>
       <Folder name="Documentales">
         <Composition id="AlumbradoNavidadLaLinea" component={AlumbradoNavidad} durationInFrames={duracionAlumbrado} fps={FPS} width={1080} height={1920} />
         <Still id="Miniatura" component={MiniaturaAlumbrado} width={1080} height={1920} />
