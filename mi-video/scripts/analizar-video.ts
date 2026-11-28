@@ -59,15 +59,15 @@ const p5 = orden[Math.floor(orden.length * 0.05)] ?? 0;
 const p98 = orden[Math.floor(orden.length * 0.98)] ?? 1;
 const envolvente = suave.map((v) => Math.round(Math.min(1, Math.max(0, (v - p5) / (p98 - p5 || 1))) * 1000) / 1000);
 
-// Golpes: subida de la envolvente rápida frente a la media de los 1,5 s anteriores.
+// Golpes: picos de intensidad de la música (máximos locales en ±0,5 s por encima de 0,7).
+// La ópera grabada en la calle tiene poco rango dinámico, así que se buscan los picos relativos.
 const golpes: number[] = [];
-const atras = Math.round(fps * 1.5);
-for (let i = atras; i < rms.length; i++) {
-  let m = 0;
-  for (let k = i - atras; k < i; k++) m += rms[k];
-  m /= atras;
-  const subida = rms[i] / (m || 1e-6);
-  if (subida > 1.8 && rms[i] > p5 * 2 && (golpes.length === 0 || i - golpes[golpes.length - 1] > fps * 1.2)) golpes.push(i);
+const radio = Math.round(fps * 0.5);
+for (let i = radio; i < envolvente.length - radio; i++) {
+  if (envolvente[i] < 0.7) continue;
+  let max = true;
+  for (let k = i - radio; k <= i + radio && max; k++) if (envolvente[k] > envolvente[i] || (envolvente[k] === envolvente[i] && k < i)) max = false;
+  if (max && (golpes.length === 0 || i - golpes[golpes.length - 1] > fps * 1.2)) golpes.push(i);
 }
 
 /* ---------- Luces reales: puntos brillantes cada 0,5 s ---------- */

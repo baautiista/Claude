@@ -151,7 +151,7 @@ const RecortePrensa: React.FC<{ readonly p: Extract<Plano, { tipo: "recorte" }>;
 const cortes = (fps: number) =>
   ARCHIVO.map((p, i) => {
     const base = Math.round(p.inicio * fps);
-    if (i === 0 || A.provisional) return base;
+    if (i === 0 || A.provisional || p.tipo === "recorte") return base;
     const cerca = A.golpes.filter((g) => Math.abs(g - base) <= fps * 0.6 && g < REVELACION * fps - fps);
     return cerca.length ? cerca.reduce((a, b) => (Math.abs(b - base) < Math.abs(a - base) ? b : a)) : base;
   });
@@ -466,7 +466,7 @@ const TituloPelicula: React.FC = () => {
   return (
     <AbsoluteFill style={{ pointerEvents: "none", opacity: 1 - sale, scale: 1 + sale * 0.06, filter: sale ? `blur(${sale * 8}px)` : undefined }}>
       {/* Velo oscuro muy suave para leer el título sin tapar el espectáculo */}
-      <AbsoluteFill style={{ background: `radial-gradient(ellipse 70% 30% at 50% ${(yCentro / 1920) * 100}%, rgba(3,3,8,${0.45 * Math.min(1, pLinea * 1.5)}) 0%, rgba(3,3,8,0) 100%)` }} />
+      <AbsoluteFill style={{ background: `radial-gradient(ellipse 85% 26% at 50% ${((yCentro - 20) / 1920) * 100}%, rgba(3,3,8,${0.62 * Math.min(1, pLinea * 1.5)}) 0%, rgba(3,3,8,${0.3 * Math.min(1, pLinea * 1.5)}) 55%, rgba(3,3,8,0) 100%)` }} />
       <svg width="1080" height="1920" viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0 }}>
         <defs>
           <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0.25">

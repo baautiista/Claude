@@ -14,13 +14,13 @@ export const VIDEO = "navidad2026/espectaculo.mp4";
 export const ENCUADRE: "cover" | "contain" = "cover";
 
 /** Segundo en que vuelve el vídeo original (la revelación). */
-export const REVELACION = 12;
+export const REVELACION = 12.2;
 
 /** Tiempos del título (segundos): aparece con la revelación y se va suavemente. */
-export const TITULO = { entra: 12.4, sale: 19.5 } as const;
+export const TITULO = { entra: 12.5, sale: 17.4 } as const;
 
 /** Segundos finales con el logotipo. */
-export const LOGO_SEGUNDOS = 3.5;
+export const LOGO_SEGUNDOS = 2.8;
 
 /** Intensidad general de los efectos (0–1). 1 = la propuesta; bájalo si molestan. */
 export const INTENSIDAD_EFECTOS = 1;
@@ -55,7 +55,7 @@ export const RESERVAS: Record<string, string> = {
 export const ARCHIVO: readonly (Plano & { readonly inicio: number })[] = [
   { inicio: 0, tipo: "foto", archivo: "navidad2026/archivo/iglesia-arboles-azules.jpg", enfoque: "50% 45%", zoom: [1.18, 1.05], deriva: [0, -40] },
   {
-    inicio: 2.6,
+    inicio: 2.2,
     tipo: "recorte",
     archivo: "navidad2026/archivo/prensa-diarioarea.jpg",
     natural: { w: 2000, h: 1522 },
@@ -66,11 +66,11 @@ export const ARCHIVO: readonly (Plano & { readonly inicio: number })[] = [
     giro: -2,
   },
   {
-    inicio: 5.2,
+    inicio: 4.8,
     tipo: "recorte",
     archivo: "navidad2026/archivo/prensa-larazon.jpg",
     natural: { w: 1206, h: 1574 },
-    fondo: "navidad2026/archivo/plaza-esculturas-arboles-azules.jpg",
+    fondo: "navidad2026/archivo/plaza-arbol-anillos.jpg",
     foco: { x: 10, y: 70, w: 1180, h: 320 },
     marcas: [{ x: 22, y: 370, w: 1110, h: 8 }],
     ancho: 900,
@@ -87,6 +87,6 @@ export const ARCHIVO: readonly (Plano & { readonly inicio: number })[] = [
     ancho: 960,
     giro: -1.2,
   },
-  { inicio: 9.4, tipo: "foto", archivo: "navidad2026/archivo/iglesia-guirnaldas-blancas.jpg", enfoque: "50% 40%", zoom: [1.05, 1.16], deriva: [-30, 0] },
-  { inicio: 10.6, tipo: "foto", archivo: "navidad2026/archivo/plaza-arbol-anillos.jpg", enfoque: "55% 50%", zoom: [1.12, 1.25], deriva: [30, -20] },
+  { inicio: 9.9, tipo: "foto", archivo: "navidad2026/archivo/iglesia-guirnaldas-blancas.jpg", enfoque: "50% 35%", zoom: [1.06, 1.16], deriva: [-20, 10] },
+  { inicio: 11.0, tipo: "foto", archivo: "navidad2026/archivo/plaza-esculturas-arboles-azules.jpg", enfoque: "62% 50%", zoom: [1.1, 1.22], deriva: [25, -15] },
 ];

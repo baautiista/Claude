@@ -17,11 +17,11 @@ Composición `NavidadDePelicula2026`, en la carpeta *Navidad* de Remotion Studio
 
 | Tiempo | Qué ocurre |
 |---|---|
-| 0–12 s | **Hemeroteca.** Fotos antiguas con parallax y recortes de prensa superpuestos, con sombra y papel. La cámara se acerca a los titulares y hay un subrayado dorado discreto. Los titulares no se tocan. Suena ya el audio original. |
-| 10,6–13,6 s | **Resplandor dorado** que llena la pantalla y revela el vídeo original. |
-| 12,4–21 s | **Título.** «La Línea» en Cinzel con brillo metálico; «2026» en Cormorant entre filetes; «Una Navidad de película» en Great Vibes, escrita con un hilo de luz. Se va con un desenfoque suave. |
-| 12 s–final | **Vídeo original** con etalonaje (negros profundos, contraste de cine, dorados cálidos, color del espectáculo intacto) y resplandor solo en las luces altas. Encima: partículas suspendidas a tres profundidades, hilos de luz, estelas de polvo dorado (algunas pasan cerca de la cámara), destellos sobre luces reales y reflejos en los acentos de la ópera. |
-| Últimos 3,5 s | **Logo** de InfoLinense en blanco con un pequeño destello. |
+| 0–12,2 s | **Hemeroteca.** Fotos antiguas con parallax y recortes de prensa superpuestos, con sombra y papel. La cámara se acerca a los titulares y hay un subrayado dorado discreto. Los titulares no se tocan. Suena ya el audio original. |
+| 10,8–13,8 s | **Resplandor dorado** que llena la pantalla y revela el vídeo original. |
+| 12,5–18,9 s | **Título.** «La Línea» en Cinzel con brillo metálico; «2026» en Cormorant entre filetes; «Una Navidad de película» en Great Vibes, escrita con un hilo de luz. Se va con un desenfoque suave. |
+| 12,2 s–final | **Vídeo original** con etalonaje (negros profundos, contraste de cine, dorados cálidos, color del espectáculo intacto) y resplandor solo en las luces altas. Encima: partículas suspendidas a tres profundidades, hilos de luz, estelas de polvo dorado (algunas pasan cerca de la cámara), destellos sobre luces reales y reflejos en los acentos de la ópera. |
+| Últimos 2,8 s | **Logo** de InfoLinense en blanco con un pequeño destello. |
 
 Los parámetros están en `config.ts`:
 
@@ -40,7 +40,7 @@ Los parámetros están en `config.ts`:
 | `recorte-concejal.jpg` | Recorte aportado: «Recuerda el concejal que hubo un año sin luz municipal…». El medio no figura |
 | `arco-estrellas-2023.jpg` | Foto de 2023, recortada de la captura de Diario Área |
 | `iglesia-arboles-azules.jpg`, `plaza-arbol-anillos.jpg`, `calle-adornos.jpg` | Fotos antiguas aportadas, sin fecha |
-| `plaza-esculturas-arboles-azules.jpg`, `iglesia-guirnaldas-blancas.jpg` | **Pendientes:** se vieron en el chat, pero no llegaron al servidor. Mientras tanto se usan otras fotos del archivo (`RESERVAS` en `config.ts`) |
+| `plaza-esculturas-arboles-azules.jpg`, `iglesia-guirnaldas-blancas.jpg` | Fotos antiguas aportadas, sin fecha |
 
 No se ha añadido música, locución ni texto inventado.
 
